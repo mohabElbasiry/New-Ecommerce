@@ -9,6 +9,8 @@ export const InputWithLabelComponent = ({
   MoreInfoText = "",
   Input = false,
   selectArray = [],
+  isError=false,
+  message="",
   ...props
 }) => {
   return (
@@ -59,6 +61,12 @@ export const InputWithLabelComponent = ({
           })}
         </select>
       )}
+  {
+    console.log(message,'message')
+  }
+      {
+        isError?<>{message}</>:null
+      }
     </div>
   );
 };
