@@ -1,4 +1,4 @@
-export const ProductNav = () => {
+export const ProductNav = ({nav,setNav}) => {
   return (
     <div>
       <div className="sm:hidden">
@@ -17,34 +17,40 @@ export const ProductNav = () => {
       <div className="hidden sm:block">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex gap-6" aria-label="Tabs">
-            <a
+            <button
               href="#"
               className="shrink-0 border-b-2 border-[#333] px-1 pb-4 text-sm font-medium text-[#333]"
+              onClick={()=>setNav('basic')}
             >
               Basic Information
-            </a>
+            </button>
 
-            <a
-              href="#"
+            <button
+             
               className="shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+              onClick={()=>setNav('Varations')}
+
             >
               Product Varations
-            </a>
+            </button>
 
-            <a
+            <button
               href="#"
               className="shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+              onClick={()=>setNav('Seo')}
+
             >
               Seo
-            </a>
-
-            <a
+            </button>
+            <button
               href="#"
               className="shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
               aria-current="page"
+              onClick={()=>setNav('Notifications')}
+
             >
               Notifications
-            </a>
+            </button>
           </nav>
         </div>
       </div>

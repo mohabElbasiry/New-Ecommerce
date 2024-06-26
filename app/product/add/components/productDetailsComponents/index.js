@@ -3,126 +3,32 @@ import DraftEditor from "@/components/drafteditor/Draft";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { ProductNav } from "../productNav";
 import Image from "next/image";
+import { BasicData } from "./BasicInfeo";
+import SubCategoriesSelect from "./categoriesWithSub";
+import { Inventory } from "./inventory";
+import Pricing from "./pricing";
+import Tags from "./tags";
+import { useState } from "react";
+import ProductVariation from "../productVariations/createVariations";
 
 export const ProductDetailsComponent = () => {
+  const [nav, setNav] = useState("basic");
+  // ['basic',Varations,Seo,Notifications]
   return (
     <div className=" w-[80%]  justify-end gap-1 p-3 ml-auto">
-      <ProductNav />
+      <ProductNav nav={nav} setNav={setNav} />
 
       <div className="flex gap-3 mt-3 ml-auto ">
-        <div className="container p-3 m-1 h-full w-[70%] shadow flex flex-col gap-3 ">
-          <InputWithLabelComponent
-            Input
-            label="product name"
-            PlaceHolder="Add product name"
-          />
-          <InputWithLabelComponent
-            Input={false}
-            selectArray={["hello", "dummy"]}
-            label="product name"
-            PlaceHolder="Add product name"
-          />
-          <DraftEditor
-            field="Product Description"
-            edit={false}
-            handleChange={(value) => {}}
-            handleBlur={() => {}}
-          />
-
-          {/* //
-             subcategories */}
-          <div className=" grid grid-cols-3 gap-2">
-            <InputWithLabelComponent
-              Input={false}
-              selectArray={["hello", "dummy"]}
-              label="Parent Category "
-              PlaceHolder="Add product name"
-              inputCss="w-[100%]"
-            />
-            {/* <hr className="w-[100px]  bg-black" /> */}
-
-            <InputWithLabelComponent
-              Input={false}
-              selectArray={["hello", "dummy"]}
-              label="Category"
-              PlaceHolder="Add product name"
-              inputCss="w-[100%]"
-            />
-
-            {/* <hr className="w-[100px]  bg-black" /> */}
-            <InputWithLabelComponent
-              Input={false}
-              selectArray={["hello", "dummy"]}
-              label="Sub Category"
-              PlaceHolder="Add product name"
-              inputCss="w-[100%]"
-            />
+        {nav === "basic" && (
+          <div className="container p-3 m-1 h-full w-[70%] shadow flex flex-col gap-3 ">
+            {" "}
+            <BasicData /> <SubCategoriesSelect /> <Inventory /> <Pricing />{" "}
+            <Tags />{" "}
           </div>
-
-          {/* //
-             subcategories */}
-
-          <p className="font-semibold">Inventory</p>
-
-          <div className="grid grid-cols-2 gap-2">
-            <InputWithLabelComponent
-              label="Quantity"
-              PlaceHolder="Add product name"
-              Input
-              inputType="number"
-            />
-            <InputWithLabelComponent
-              label="SKU(optional)"
-              PlaceHolder="Add product name"
-              Input
-            />
-          </div>
-          <p className="font-semibold">Pricing</p>
-
-          <div className="grid grid-cols-4 gap-2">
-            <InputWithLabelComponent
-              label="price"
-              PlaceHolder="Add product name"
-              Input
-              inputType="number"
-            />
-            <InputWithLabelComponent
-              label="Cost Per Item"
-              PlaceHolder="Cost Per Item"
-              Input
-              inputType="number"
-            />
-            <InputWithLabelComponent
-              label="Discount Price"
-              PlaceHolder="Add product name"
-              Input
-            />
-            <InputWithLabelComponent
-              label="margin"
-              PlaceHolder="Margin"
-              Input
-              inputCss="bg-[#fff] text-white border-none  "
-            />
-          </div>
-
-          <p>Tags</p>
-          <div className=" relative">
-            <InputWithLabelComponent
-              PlaceHolder="Add Tag"
-              Input
-              inputCss="bg-[#f9f9f9]"
-            />
-
-            <button className="  p-2 absolute top-[10%] right-3">+</button>
-          </div>
-          <div className="tags">
-            <div className="TagItem min-w-[70px]  flex gap-2 justify-around  border w-fit p-1  rounded-md bg-[#dddddd]  text-black">
-              Tag
-              <button>x</button>
-            </div>
-          </div>
-        </div>
-
+        )}
+    {
+      nav==="Varations"&&<ProductVariation/>
+    }
         <div className="w-[38%] shadow p-2 flex flex-col gap-3">
           <p className="font-medium">Visablility</p>
 
