@@ -25,7 +25,7 @@ export default function ProductVariation() {
     if (
       event?.target?.value !== "" &&
       currentValues?.length &&
-      currentValues?.some((item) => item.trim() === event.target.value)
+      currentValues?.some((item,idx) => index ===idx)
     ) {
       setError((prev) => {
         if (prev?.length) {
@@ -44,7 +44,7 @@ export default function ProductVariation() {
       });
     }
     const founded = error?.find((item, idx) => item?.index === index);
-
+     
     if (founded) {
       console.log("Founded", founded);
       setError((prev) =>
