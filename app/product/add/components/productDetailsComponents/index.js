@@ -9,8 +9,8 @@ import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 import Tags from "./tags";
 import { useState } from "react";
-import ProductVariation from "../productVariations/createVariations";
-
+import { ProductVariation } from "../productVariations";
+ 
 export const ProductDetailsComponent = () => {
   const [nav, setNav] = useState("basic");
   // ['basic',Varations,Seo,Notifications]

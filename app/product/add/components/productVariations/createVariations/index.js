@@ -1,23 +1,46 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { SketchPicker } from "react-color";
+import { handleError } from "./functions/setError";
 
-export default function ProductVariation() {
-  const [options, setOptions] = useState([]);
-  const [currentOption, setCurrentOption] = useState("");
+export default function CreateVariation({
+  handleSubmit = () => {},
+  listIndex,
+  setList,
+  list,
+}) {
+  const [currentOption, setCurrentOption] = useState({
+    option_en: "",
+    option_ar: "",
+  });
   const [currentValues, setCurrentValues] = useState([
     { value_ar: "", value_en: "", color: "" },
   ]);
+  const [color, opencolor] = useState({ index: -1, open: false });
+  const [GeneralErrorMessage, setGeneralErrorMessage] = useState({
+    isError: false,
+    ErrorMessage: "",
+  });
   const [error, setError] = useState([]);
   const handleOptionChange = (event) => {
-    setCurrentOption(event.target.value);
+    setCurrentOption({
+      ...currentOption,
+      [event?.target.name]: event?.target.value,
+    });
   };
   const handleKeyDown = useCallback(
-    (event, index) => {
-      if (event.keyCode === 8 && event.target.value === "") {
+    (event, index, item) => {
+      const itemFounded = currentValues?.find((_, idx) => idx === index);
+      if (
+        event.keyCode === 8 &&
+        event.target.value === "" &&
+        itemFounded &&
+        itemFounded?.value_ar === "" &&
+        itemFounded?.value_en === ""
+      ) {
         if (index === 0) {
           return;
         }
-
         if (currentValues?.some((item, idx) => idx === index)) {
           if (event?.target?.value === "") {
             setTimeout(() => {
@@ -25,95 +48,48 @@ export default function ProductVariation() {
                 return prev?.filter((_, idx) => idx !== index);
               });
             }, 100);
+            setError((prev) => {
+              if (
+                error?.length &&
+                prev?.some((item) => item?.index === index)
+              ) {
+                return prev?.filter((item) => item?.index !== index);
+              } else {
+                return prev;
+              }
+            });
           }
         }
       }
     },
     [currentValues]
   );
+
   const handleValueChange = useCallback(
     (event, index, isAr = false) => {
-      if (
-        (event?.target?.value !== "" &&
-          currentValues?.length &&
-          currentValues?.some(
-            (item) => item?.value_en?.trim() === event.target.value
-          )) ||
-        currentValues?.some(
-          (item) => item?.value_ar?.trim() === event.target.value
-        )
-      ) {
-        setError((prev) => {
-          if (prev?.length) {
-            const founded = prev?.find((item, idx) => item?.index === index);
-            if (founded) {
-              return prev;
-            }
-          }
-          const newObj = {
-            index: index,
-            Message: "This Value Already Exist",
-            isAr,
-            isEn: !isAr,
-          };
-          return [...prev, newObj];
-        });
-      }
-      const founded = error?.find((item, idx) => item?.index === index);
-      if (founded) {
-        console.log("Founded", founded);
-        setError((prev) =>
-          prev?.filter((item, idx) => item?.index !== founded?.index)
-        );
-      }
+      handleError(event, index, isAr, setError, currentValues, error);
+
       const newValues = [...currentValues];
+
       if (isAr) {
         newValues[index] = {
+          ...newValues[index],
           value_ar: event.target.value,
           color: "",
         };
       } else {
         newValues[index] = {
+          ...newValues[index],
           value_en: event.target.value,
           color: "",
         };
       }
-
       setCurrentValues(newValues);
-      updateOptions(currentOption, newValues);
+      // updateOptions(currentOption, newValues);
     },
     [currentValues]
   );
 
-  const updateOptions = (optionName, optionValues) => {
-    if (optionName.trim() !== "") {
-      const newOptions = [...options];
-      const optionIndex = newOptions.findIndex(
-        (option) => option.name === optionName
-      );
-
-      if (optionIndex !== -1) {
-        newOptions[optionIndex].values = optionValues.filter(
-          (value) => value.trim() !== ""
-        );
-      } else {
-        newOptions.push({
-          name: optionName,
-          values: optionValues.filter((value) => value.trim() !== ""),
-        });
-      }
-      setOptions(newOptions);
-    }
-  };
-
-  useMemo(() => {
-    if (currentValues[currentValues.length - 1]?.value_en?.trim() !== "") {
-      setCurrentValues([
-        ...currentValues,
-        { value_ar: "", value_en: "", color: "" },
-      ]);
-    }
-  }, [JSON.stringify(currentValues)]);
   const HandleDelete = useCallback(
     (index) => {
       setCurrentValues((prev) => {
@@ -123,11 +99,9 @@ export default function ProductVariation() {
     },
     [JSON.stringify(currentValues)]
   );
-  console.log(currentValues, "currentValues");
   const handleBlur = (e, idx) => {
     if (currentValues?.length) {
       const founded = currentValues?.some((item, iedx) => iedx === idx);
-      console.log(founded && e.target.value === "", "foundeddsa");
       if (
         founded &&
         e.target.value === "" &&
@@ -154,60 +128,180 @@ export default function ProductVariation() {
       }
     }
   };
-  return (
-    <div className="w-[60%]">
-      <p>Option Name</p>
 
+  useMemo(() => {
+    if (
+      currentValues[currentValues.length - 1]?.value_en?.trim() !== "" &&
+      currentValues[currentValues.length - 1]?.value_ar?.trim() !== ""
+    ) {
+      setCurrentValues([
+        ...currentValues,
+        { value_ar: "", value_en: "", color: "" },
+      ]);
+    }
+  }, [JSON.stringify(currentValues)]);
+
+  useEffect(()=>{
+    if(list?.length){
+
+      setCurrentOption(list[listIndex]?.optionname);
+      setCurrentValues(list[listIndex]?.currentValues)
+    }
+  },[list])
+  return (
+    <form
+      className="w-[60%]"
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log(currentValues, "handleSubmit");
+        if (
+          currentValues?.length === 1 &&
+          currentValues?.[0]?.value_ar?.trim() === "" &&
+          currentValues?.[0]?.value_en?.trim() === ""
+        ) {
+          setGeneralErrorMessage((prev) => ({
+            ...prev,
+            ErrorMessage: "please Fill This Form",
+            isError: true,
+          }));
+
+          return;
+        }
+        if (
+          currentValues?.length > 1 &&
+          currentValues
+            ?.filter((idx) => idx !== currentValues - 1)
+            .every(
+              (item) =>
+                item?.value_ar?.trim() === "" && item?.value_en?.trim() === ""
+            )
+        ) {
+          setGeneralErrorMessage((prev) => ({
+            ...prev,
+            ErrorMessage: "please Fill This Form",
+            isError: true,
+          }));
+        }
+
+        setGeneralErrorMessage((prev) => ({
+          ...prev,
+          ErrorMessage: "",
+          isError: false,
+        }));
+        console.log(list[listIndex], "adssssssssindex");
+
+        setList((prev) => {
+        return  prev?.map((item,idx)=>{
+              if(idx===listIndex){
+              return  {
+                  ...item,
+                  optionname:currentOption,
+                  currentValues:currentValues,
+                  edit:false
+                }
+              } 
+              return item
+          })
+
+          // [
+          //   ...list,
+          //   {
+          //     isColor: "",
+          //     optionname: {
+          //       option_en: "",
+          //       option_ar: "",
+          //     },
+          //     currentValues: [
+          //       {
+          //         value_ar: "",
+          //         value_en: "",
+          //         color: "",
+          //       },
+          //     ],
+          //     edit: true,
+          //   },
+          // ]
+        });
+      }}
+    >
       <div>
-        <InputWithLabelComponent
-          Input
-          type="text"
-          value={currentOption}
-          onChange={handleOptionChange}
-          placeholder="Enter option name"
-        />
+        <div className="flex gap-1">
+          <InputWithLabelComponent
+            Input
+            type="text"
+            name={"option_en"}
+            value={currentOption?.option_en}
+            onChange={handleOptionChange}
+            placeholder="Enter option name"
+            isRequired
+            label="option in en"
+            PlaceHolder={`colors`}
+          />
+          <InputWithLabelComponent
+            Input
+            type="text"
+            value={currentOption?.option_ar}
+            name={"option_ar"}
+            onChange={handleOptionChange}
+            placeholder="Enter option name"
+            isRequired
+            label="option in ar"
+            PlaceHolder={`الالوان`}
+          />
+        </div>
         <p className="my-3">Option values</p>
+
         {currentValues.map((value, index) => (
-          <div className="flex gap-2  w-fit flex-col">
-            <div className="flex gap-1">
+          <div className="flex gap-2  w-[60%] flex-col ">
+            <div className="flex gap-3 relative items-center">
               <InputWithLabelComponent
                 Input
                 type="text"
-                label="option in English"
                 name="value_en"
                 key={index}
                 value={value?.value_en}
                 onChange={(event) => handleValueChange(event, index, false)}
-                placeholder={`Enter value ${index + 1}`}
+                PlaceHolder={`value in english`}
                 isRequired={index !== currentValues?.length - 1}
-                onKeyDown={(e) => handleKeyDown(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index, value)}
                 onBlur={(e) => handleBlur(e, index)}
                 isError={
-                  error?.some((item) => item?.index === index) &&
-                  index !== currentValues?.length - 1 &&
-                  error?.find((item) => item?.index === index)?.isEn
+                  error?.find((item) => item?.index === index)?.en?.Message
                 }
-                message={error?.find((item) => item?.index === index)?.Message}
+                message={
+                  error?.find((item) => item?.index === index)?.en?.Message
+                }
               />
               <InputWithLabelComponent
                 Input
-                label="option in arabic"
                 type="text"
                 name="value_ar"
                 key={index}
                 value={value?.value_ar}
                 onChange={(event) => handleValueChange(event, index, true)}
-                placeholder={`Enter value ${index + 1}`}
+                PlaceHolder={`value in Arabic`}
                 isRequired={index !== currentValues?.length - 1}
-                onKeyDown={(e) => handleKeyDown(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index, value)}
                 onBlur={(e) => handleBlur(e, index)}
                 isError={
-                  error?.some((item) => item?.index === index) &&
-                  index !== currentValues?.length - 1 &&
-                  error?.find((item) => item?.index === index)?.isAr
+                  error?.find((item) => item?.index === index)?.ar?.Message
                 }
-                message={error?.find((item) => item?.index === index)?.Message}
+                message={
+                  error?.find((item) => item?.index === index)?.ar?.Message
+                }
               />
+              <div
+                className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
+                onClick={() => {
+                  opencolor({ ...color, index: index, open: !color?.open });
+                }}
+              ></div>
+
+              <div className="absolute top-0 right-[-250px]">
+                {color?.index === index && color?.open ? (
+                  <SketchPicker />
+                ) : null}
+              </div>
               {currentValues?.some((_, idx) => idx === index) &&
               index !== currentValues?.length - 1 ? (
                 <button
@@ -218,17 +312,28 @@ export default function ProductVariation() {
                 </button>
               ) : null}
             </div>
-
-            <div>
-              {/* {error?.some((item) => item?.index === index)
-                ? error?.find((item) => item.index === index)?.Message
-                : null} */}
-            </div>
+            <div></div>
           </div>
         ))}
       </div>
-
-      <div></div>
-    </div>
+      {GeneralErrorMessage?.isError ? GeneralErrorMessage?.ErrorMessage : ""}
+      <div className={"flex justify-between"}>
+        <button
+          type="button"
+          onClick={() => {
+            setList((prev) => prev?.filter((_, idx) => idx !== listIndex));
+          }}
+          className="bg-[#eee] text-black rounded-lg px-5 p-1"
+        >
+          Delete
+        </button>
+        <button
+          type="submit"
+          className="bg-[#000] text-white rounded-lg px-5 p-1"
+        >
+          Add
+        </button>
+      </div>
+    </form>
   );
 }

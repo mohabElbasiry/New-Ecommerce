@@ -9,8 +9,8 @@ export const InputWithLabelComponent = ({
   MoreInfoText = "",
   Input = false,
   selectArray = [],
-  isError=false,
-  message="",
+  isError = false,
+  message = "",
   ...props
 }) => {
   return (
@@ -26,6 +26,7 @@ export const InputWithLabelComponent = ({
            py-2 px-3   leading-tight focus:outline-none
             focus:shadow-outline
             focus:border-[#504a4a] !bg-[#f9f9f9]
+            ${isError?"border-red-400":""}
         ${inputCss} `}
           {...props}
           placeholder={PlaceHolder}
@@ -61,12 +62,8 @@ export const InputWithLabelComponent = ({
           })}
         </select>
       )}
-  {
-    console.log(message,'message')
-  }
-      {
-        isError?<>{message}</>:null
-      }
+
+      <p className="text-red-500 text-xs ml-2">{isError ? <>*{message}</> : null}</p>
     </div>
   );
 };
