@@ -38,13 +38,13 @@ export const InputWithLabelComponent = ({
           name="HeadlineAct"
           id="HeadlineAct"
           {...props}
-          className="
+          className={`
           border border-[#ddd] w-full focus-none font-sem p-1
         bg-transparent rounded-md 
        text-[#333]   appearance-none  
         py-2 px-3   leading-tight focus:outline-none
          focus:shadow-outline
-         focus:border-[#504a4a !bg-[#f9f9f9]"
+         focus:border-[#504a4a !bg-[#f9f9f9] ${inputCss}`}
         >
           {" "}
           <option value={""}>Please Select Value</option>

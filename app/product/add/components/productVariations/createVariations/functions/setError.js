@@ -52,8 +52,8 @@ export const handleError = (event, index, isAr,setError,currentValues,error) => 
             });
           } else {
             newObj.ar = {
-              index: index,
-              Message: "This Value Already Exist",
+              index: -1,
+              Message: "",
               isAr,
             };
           }
@@ -61,9 +61,10 @@ export const handleError = (event, index, isAr,setError,currentValues,error) => 
           if (obj) {
             if (
               currentValues?.some(
-                (item) => item?.value_en === event?.target?.value
+                (item) => item?.value_en?.trim() === event?.target?.value?.trim()
               )
             ) {
+              console.log(obj)
               return prev?.map((item) => {
                 if (item?.index === index) {
                   return {
@@ -94,10 +95,12 @@ export const handleError = (event, index, isAr,setError,currentValues,error) => 
               }
             });
           } else {
+
+
             newObj.en = {
-              index: index,
-              Message: "This Value Already Exist",
-              isAr: false,
+              index: -1,
+              Message: "",
+              isAr,
             };
           }
         }

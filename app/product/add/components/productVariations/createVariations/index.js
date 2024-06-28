@@ -2,19 +2,19 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SketchPicker } from "react-color";
 import { handleError } from "./functions/setError";
+import { Reorder } from "framer-motion";
 
-export default function CreateVariation({
-  handleSubmit = () => {},
-  listIndex,
-  setList,
-  list,
-}) {
+export default function CreateVariation({ listIndex, setList, list }) {
   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
   });
   const [currentValues, setCurrentValues] = useState([
-    { value_ar: "", value_en: "", color: "" },
+    {
+      value_ar: "",
+      value_en: "",
+      color: "",
+    },
   ]);
   const [color, opencolor] = useState({ index: -1, open: false });
   const [GeneralErrorMessage, setGeneralErrorMessage] = useState({
@@ -129,28 +129,34 @@ export default function CreateVariation({
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     if (
       currentValues[currentValues.length - 1]?.value_en?.trim() !== "" &&
       currentValues[currentValues.length - 1]?.value_ar?.trim() !== ""
     ) {
       setCurrentValues([
         ...currentValues,
-        { value_ar: "", value_en: "", color: "" },
+        {
+          value_ar: "",
+          value_en: "",
+          color: "",
+        },
       ]);
     }
-  }, [JSON.stringify(currentValues)]);
+  }, [currentValues]);
 
-  useEffect(()=>{
-    if(list?.length){
-
-      setCurrentOption(list[listIndex]?.optionname);
-      setCurrentValues(list[listIndex]?.currentValues)
+  useEffect(() => {
+    if (list?.length) {
+      setCurrentOption((prev) => ({
+        option_ar: list[listIndex]?.key_ar,
+        option_en: list[listIndex]?.key_en,
+      }));
+      setCurrentValues(list[listIndex]?.values);
     }
-  },[list])
+  }, [list]);
   return (
     <form
-      className="w-[60%]"
+      className="w-[100%]"
       onSubmit={(e) => {
         e.preventDefault();
         console.log(currentValues, "handleSubmit");
@@ -188,44 +194,27 @@ export default function CreateVariation({
           ErrorMessage: "",
           isError: false,
         }));
-        console.log(list[listIndex], "adssssssssindex");
 
         setList((prev) => {
-        return  prev?.map((item,idx)=>{
-              if(idx===listIndex){
-              return  {
-                  ...item,
-                  optionname:currentOption,
-                  currentValues:currentValues,
-                  edit:false
-                }
-              } 
-              return item
-          })
-
-          // [
-          //   ...list,
-          //   {
-          //     isColor: "",
-          //     optionname: {
-          //       option_en: "",
-          //       option_ar: "",
-          //     },
-          //     currentValues: [
-          //       {
-          //         value_ar: "",
-          //         value_en: "",
-          //         color: "",
-          //       },
-          //     ],
-          //     edit: true,
-          //   },
-          // ]
+          return prev?.map((item, idx) => {
+            if (idx === listIndex) {
+              return {
+                ...item,
+                key_en: currentOption?.option_en,
+                key_ar: currentOption?.option_ar,
+                values: currentValues?.filter(
+                  (item) => item?.value_ar !== "" && item?.value_en !== ""
+                ),
+                edit: false,
+              };
+            }
+            return item;
+          });
         });
       }}
     >
-      <div>
-        <div className="flex gap-1">
+      <div className="w-[100%] p-3">
+        <div className="grid grid-cols-2 gap-1  ">
           <InputWithLabelComponent
             Input
             type="text"
@@ -250,88 +239,101 @@ export default function CreateVariation({
           />
         </div>
         <p className="my-3">Option values</p>
+        {console.log(currentValues, "currentValues")}
+        <Reorder.Group values={currentValues} onReorder={setCurrentValues}>
+          {currentValues?.map((value, index) => (
+            <div>
+              <Reorder.Item
+                value={value}
+                key={value}
+                className="flex gap-2  w-[100%] flex-col "
+              >
+                <div className="flex gap-3 relative items-center">
+                  <InputWithLabelComponent
+                    Input
+                    type="text"
+                    name="value_en"
+                    key={index}
+                    value={value?.value_en}
+                    onChange={(event) => handleValueChange(event, index, false)}
+                    PlaceHolder={`value in english`}
+                    isRequired={index !== currentValues?.length - 1}
+                    onKeyDown={(e) => handleKeyDown(e, index, value)}
+                    onBlur={(e) => handleBlur(e, index)}
+                    isError={
+                      error?.find((item) => item?.index === index)?.en?.Message
+                    }
+                    message={
+                      error?.find((item) => item?.index === index)?.en?.Message
+                    }
+                  />
+                  <InputWithLabelComponent
+                    Input
+                    type="text"
+                    name="value_ar"
+                    key={index}
+                    value={value?.value_ar}
+                    onChange={(event) => handleValueChange(event, index, true)}
+                    PlaceHolder={`value in Arabic`}
+                    isRequired={index !== currentValues?.length - 1}
+                    onKeyDown={(e) => handleKeyDown(e, index, value)}
+                    onBlur={(e) => handleBlur(e, index)}
+                    isError={
+                      error?.find((item) => item?.index === index)?.ar?.Message
+                    }
+                    message={
+                      error?.find((item) => item?.index === index)?.ar?.Message
+                    }
+                  />
+                  <div
+                    className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
+                    onClick={() => {
+                      opencolor({
+                        ...color,
+                        index: index,
+                        open: !color?.open,
+                      });
+                    }}
+                  ></div>
 
-        {currentValues.map((value, index) => (
-          <div className="flex gap-2  w-[60%] flex-col ">
-            <div className="flex gap-3 relative items-center">
-              <InputWithLabelComponent
-                Input
-                type="text"
-                name="value_en"
-                key={index}
-                value={value?.value_en}
-                onChange={(event) => handleValueChange(event, index, false)}
-                PlaceHolder={`value in english`}
-                isRequired={index !== currentValues?.length - 1}
-                onKeyDown={(e) => handleKeyDown(e, index, value)}
-                onBlur={(e) => handleBlur(e, index)}
-                isError={
-                  error?.find((item) => item?.index === index)?.en?.Message
-                }
-                message={
-                  error?.find((item) => item?.index === index)?.en?.Message
-                }
-              />
-              <InputWithLabelComponent
-                Input
-                type="text"
-                name="value_ar"
-                key={index}
-                value={value?.value_ar}
-                onChange={(event) => handleValueChange(event, index, true)}
-                PlaceHolder={`value in Arabic`}
-                isRequired={index !== currentValues?.length - 1}
-                onKeyDown={(e) => handleKeyDown(e, index, value)}
-                onBlur={(e) => handleBlur(e, index)}
-                isError={
-                  error?.find((item) => item?.index === index)?.ar?.Message
-                }
-                message={
-                  error?.find((item) => item?.index === index)?.ar?.Message
-                }
-              />
-              <div
-                className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
-                onClick={() => {
-                  opencolor({ ...color, index: index, open: !color?.open });
-                }}
-              ></div>
-
-              <div className="absolute top-0 right-[-250px]">
-                {color?.index === index && color?.open ? (
-                  <SketchPicker />
-                ) : null}
-              </div>
-              {currentValues?.some((_, idx) => idx === index) &&
-              index !== currentValues?.length - 1 ? (
-                <button
-                  onClick={() => HandleDelete(index)}
-                  className="w-[25px]   right-3 top-[30%]"
-                >
-                  <img src="/trash.svg" />
-                </button>
-              ) : null}
+                  <div className="absolute top-0 right-[-250px]">
+                    {color?.index === index && color?.open ? (
+                      <SketchPicker />
+                    ) : null}
+                  </div>
+                  {currentValues?.some((_, idx) => idx === index) &&
+                  index !== currentValues?.length - 1 ? (
+                    <button
+                      onClick={() => HandleDelete(index)}
+                      className="w-[25px]   right-3 top-[30%]"
+                    >
+                      <img src="/trash.svg" />
+                    </button>
+                  ) : null}
+                </div>
+              </Reorder.Item>
             </div>
-            <div></div>
-          </div>
-        ))}
+          ))}
+        </Reorder.Group>
       </div>
-      {GeneralErrorMessage?.isError ? GeneralErrorMessage?.ErrorMessage : ""}
-      <div className={"flex justify-between"}>
+      <p className="p-2 text-sm capitalize text-red-500">
+        {GeneralErrorMessage?.isError ? GeneralErrorMessage?.ErrorMessage : ""}
+      </p>
+      <div className={"flex justify-between p-3 border-t-2  border-b-2 "}>
         <button
           type="button"
           onClick={() => {
             setList((prev) => prev?.filter((_, idx) => idx !== listIndex));
           }}
-          className="bg-[#eee] text-black rounded-lg px-5 p-1"
+          className="bg-[#eee] shadow text-black text-xs   rounded-lg px-3 p-1"
         >
           Delete
         </button>
         <button
           type="submit"
-          className="bg-[#000] text-white rounded-lg px-5 p-1"
+          className="bg-[#fefefed] shadow text-black text-xs border border-[#33333370] rounded-lg px-3 p-1"
         >
-          Add
+          Done
         </button>
       </div>
     </form>
