@@ -64,8 +64,7 @@ export const handleError = (event, index, isAr,setError,currentValues,error) => 
                 (item) => item?.value_en?.trim() === event?.target?.value?.trim()
               )
             ) {
-              console.log(obj)
-              return prev?.map((item) => {
+               return prev?.map((item) => {
                 if (item?.index === index) {
                   return {
                     ...item,

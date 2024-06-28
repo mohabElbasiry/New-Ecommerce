@@ -266,6 +266,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                     message={
                       error?.find((item) => item?.index === index)?.en?.Message
                     }
+                    Autocomplete="off"
                   />
                   <InputWithLabelComponent
                     Input
@@ -284,6 +285,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                     message={
                       error?.find((item) => item?.index === index)?.ar?.Message
                     }
+                    Autocomplete="off"
                   />
                   <div
                     className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
