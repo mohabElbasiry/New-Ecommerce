@@ -24,6 +24,7 @@ export const VariationTable = ({ varitions }) => {
           values,
         };
       });
+      console.log(varitions,'varitions')
       setAutoGenerate(generateQualities(varitions));
     }
   }, [varitions]);
