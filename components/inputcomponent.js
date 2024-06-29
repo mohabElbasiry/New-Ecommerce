@@ -11,6 +11,7 @@ export const InputWithLabelComponent = ({
   selectArray = [],
   isError = false,
   message = "",
+  defaultSelected="",
   ...props
 }) => {
   return (
@@ -32,6 +33,7 @@ export const InputWithLabelComponent = ({
           placeholder={PlaceHolder}
           type={inputType}
           required={isRequired}
+          autoComplete="off"
         />
       ) : (
         <select
@@ -45,9 +47,10 @@ export const InputWithLabelComponent = ({
         py-2 px-3   leading-tight focus:outline-none
          focus:shadow-outline
          focus:border-[#504a4a !bg-[#f9f9f9] ${inputCss}`}
+         
         >
           {" "}
-          <option value={""}>Please Select Value</option>
+          <option value={""}>{defaultSelected!==""?defaultSelected:"Please Select Value"}</option>
           {selectArray?.map((item, idx) => {
             return (
               <option
