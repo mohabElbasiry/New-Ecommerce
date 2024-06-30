@@ -9,15 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.1",
+    "@radix-ui/react-alert-dialog": "^1.1.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "draft-js": "^0.11.7",
     "draft-js-import-html": "^1.4.1",
     "draftjs-to-html": "^0.9.1",
     "framer-motion": "^11.2.12",
+    "lucide-react": "^0.399.0",
     "next": "14.2.4",
     "react": "^18",
     "react-color": "^2.19.3",
     "react-dom": "^18",
-    "react-draft-wysiwyg": "^1.15.0"
+    "react-draft-wysiwyg": "^1.15.0",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "postcss": "^8",

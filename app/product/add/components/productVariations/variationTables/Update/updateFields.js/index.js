@@ -1,0 +1,63 @@
+import { InputWithLabelComponent } from "@/components/inputcomponent";
+import { useState } from "react";
+import { MultibleFields } from "./multibleFields";
+
+export const UpdateFeildActionFunction = ({
+  item = false,
+  checkedElements,
+  setAutoGenerate,
+  property,
+  setBeforeFiltered,
+  value,
+  idx,
+}) => {
+  const FIlterOutF = (prev, value, idx) => {
+    return prev?.map((item, itemdx) => {
+      if (itemdx === idx) {
+        return {
+          ...item,
+          [property]: value,
+        };
+      } else {
+        return item;
+      }
+    });
+  };
+
+  const handleChangeItem = (value) => {
+    setAutoGenerate((prev) => {
+      const UpdatedPrice = FIlterOutF(prev, value, idx);
+      console.log(UpdatedPrice, "UpdatedPrice");
+      return UpdatedPrice;
+    });
+    setBeforeFiltered((prev) => {
+      const UpdatedPrice = FIlterOutF(prev, value, idx);
+      return UpdatedPrice;
+    });
+  };
+
+  if (item) {
+    return (
+      <InputWithLabelComponent
+        Input
+        inputCss="w-fit   text-sm !px-1 shadow 
+    p-2 text-center  border border-black   flex justify-center !p-0 
+     shadow bg-white max-w-[100px] !p-3 h-[30px]"
+        inputType="number"
+        value={value}
+        onChange={(e) => {
+          handleChangeItem(e?.target.value, idx);
+        }}
+      />
+    );
+  } else {
+    return (
+      <MultibleFields
+        checkedElements={checkedElements}
+        property={property}
+        setAutoGenerate={setAutoGenerate}
+        setBeforeFiltered={setBeforeFiltered}
+      />
+    );
+  }
+};

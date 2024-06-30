@@ -1,14 +1,16 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { generateQualities } from "./generateQualitiesOptions";
 import { getKeysAndValues } from "./getUniqukeysAndValue";
 import { TableData } from "./tableBody/tableData";
 import { SearchInput } from "./Filters/Search";
 import { FiltersKeys_values } from "./Filters/FiltersKeys_values";
 import { filterData } from "./Filters/function/FilterFunction";
+import { CustomDialoge } from "@/components/Modal";
 
-export const VariationTable = ({ varitions }) => {
+const VariationTable = ({ varitions }) => {
   const [autoGenerate, setAutoGenerate] = useState([]);
+  const [BeforeFiltered, setBeforeFiltered] = useState([]);
   const isAr = "ar";
   const [filters, setFilters] = useState({
     filterByValues: [],
@@ -19,38 +21,41 @@ export const VariationTable = ({ varitions }) => {
       key_en: item?.option,
     };
   });
-
   useEffect(() => {
+    if (localStorage?.getItem("saved")) {
+      const items = JSON.parse(localStorage?.getItem("saved"));
+      setAutoGenerate(items);
+      setBeforeFiltered(items);
+    }
+  }, []);
+  useMemo(() => {
     if (varitions?.length) {
-      const Refactor = varitions?.map((item) => {
-        const { key_en, key_ar, values } = item;
-
-        return {
-          key_en,
-          key_ar,
-          values,
-        };
+      setAutoGenerate((prev) => {
+        return generateQualities(prev, varitions);
       });
-      setAutoGenerate(generateQualities(varitions));
+      setBeforeFiltered((prev) => {
+        localStorage.setItem(
+          "saved",
+          JSON.stringify(generateQualities(prev, varitions))
+        );
+        localStorage?.setItem("list", JSON.stringify(varitions));
+        return generateQualities(prev, varitions);
+      });
     }
     setAutoGenerate((prev) => {
       if (filters?.filterByValues?.length) {
+        console.log(BeforeFiltered, "BeforeFilteredadssssssssssss");
         const Filtered = filterData(
-          generateQualities(varitions),
+          generateQualities(BeforeFiltered || [], varitions),
           filters?.filterByValues
         );
         return Filtered;
       } else {
-        return generateQualities(varitions);
+        return generateQualities(BeforeFiltered || [], varitions);
       }
-
       // return FilteredOutByValuesAndKeys;
     });
-  }, [filters, varitions]);
-
-  // useEffect(() => {
-
-  // }, [filters, varitions]);
+  }, [JSON.stringify(filters), JSON.stringify(varitions)]);
 
   return (
     <div className="w-[100%] mt-3 bg-[#eeeeee7d] p-2 rounded-3 border shadow-md">
@@ -88,10 +93,19 @@ export const VariationTable = ({ varitions }) => {
         />
         <FiltersKeys_values setFilters={setFilters} varitions={varitions} />
       </div>
+      {console.log(
+        autoGenerate?.filter((item) => !item?.values.length),
+        "asdddddd"
+      )}
       <TableData
-        autoGenerate={autoGenerate}
+        autoGenerate={autoGenerate?.filter((item) => item?.values.length)}
         setAutoGenerate={setAutoGenerate}
+        setBeforeFiltered={setBeforeFiltered}
       />
     </div>
   );
 };
+export default memo(VariationTable);
+// , (prevProps, nextProps) => {
+//   return JSON.stringify(prevProps.varitions) !== JSON.stringify(nextProps.varitions);
+// }

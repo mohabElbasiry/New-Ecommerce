@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateVariation from "./createVariations";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
-import { VariationTable } from "./variationTables";
+import VariationTable from "./variationTables";
 
 export const ProductVariation = () => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
-  console.log(list, "LIIIII");
+
+  useEffect(() => {
+    if (localStorage?.getItem("list")) {
+      const list = JSON.parse(localStorage?.getItem("list"));
+      if (list?.length) {
+        setList(list);
+      }
+    }
+  },[]);
+
   return (
     <>
       <div className="w-[70%] ">
@@ -24,10 +33,7 @@ export const ProductVariation = () => {
             >
               {list?.map((item, idx) => {
                 return (
-                  <Reorder.Item
-                    value={item}
-                    key={item?.key_ar + idx}
-                  >
+                  <Reorder.Item value={item} key={item?.key_ar + idx}>
                     {item?.edit ? (
                       <CreateVariation
                         setList={setList}
@@ -49,6 +55,7 @@ export const ProductVariation = () => {
                               return item;
                             });
                           });
+                          localStorage?.setItem("list", JSON.stringify(list));
                         }}
                       >
                         <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">
@@ -81,8 +88,8 @@ export const ProductVariation = () => {
                   ...list,
                   {
                     isColor: "",
-                    key_ar:"",
-                    key_en:"",
+                    key_ar: "",
+                    key_en: "",
                     values: [
                       {
                         value_ar: "",
@@ -91,7 +98,6 @@ export const ProductVariation = () => {
                       },
                     ],
                     edit: true,
-                   
                   },
                 ])
               }
@@ -122,7 +128,6 @@ export const ProductVariation = () => {
                     },
                   ],
                   edit: true,
-             
                 },
               ])
             }

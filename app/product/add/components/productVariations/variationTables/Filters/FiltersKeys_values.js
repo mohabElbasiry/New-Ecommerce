@@ -2,7 +2,7 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 
 export const FiltersKeys_values = ({setFilters,varitions}) => {
     const HandleChangeSelection = (e, key) => {
-        setFilters((prev) => {
+        setFilters((prev=[]) => {
           const FoundedItem = prev?.filterByValues?.find((item) => {
             return item?.key === key;
           });
@@ -35,11 +35,11 @@ export const FiltersKeys_values = ({setFilters,varitions}) => {
               };
             }
           }
+
           if (e?.target?.value !== "") {
             return {
               ...prev,
-              filterByValues:
-                [...prev?.filterByValues, { key, value: e.target.value }] || [],
+              filterByValues: [...prev?.filterByValues||[], { key, value: e.target.value }] || [],
             };
           }
         });

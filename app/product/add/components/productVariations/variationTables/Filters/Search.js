@@ -28,7 +28,7 @@ export const SearchInput=({setAutoGenerate,autoGenerate,filters})=>{
               );
               return Filtered;
             } else {
-              return generateQualities(varitions);
+              return generateQualities(prev,varitions);
             }
     
             // return FilteredOutByValuesAndKeys;
