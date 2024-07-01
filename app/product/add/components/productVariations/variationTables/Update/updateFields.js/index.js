@@ -10,10 +10,11 @@ export const UpdateFeildActionFunction = ({
   setBeforeFiltered,
   value,
   idx,
+  itemValue
 }) => {
-  const FIlterOutF = (prev, value, idx) => {
+  const FIlterOutF = (prev, value) => {
     return prev?.map((item, itemdx) => {
-      if (itemdx === idx) {
+      if (item?.itemIndex === itemValue?.itemIndex) {
         return {
           ...item,
           [property]: value,
@@ -26,12 +27,11 @@ export const UpdateFeildActionFunction = ({
 
   const handleChangeItem = (value) => {
     setAutoGenerate((prev) => {
-      const UpdatedPrice = FIlterOutF(prev, value, idx);
-      console.log(UpdatedPrice, "UpdatedPrice");
-      return UpdatedPrice;
+      const UpdatedPrice = FIlterOutF(prev, value);
+       return UpdatedPrice;
     });
     setBeforeFiltered((prev) => {
-      const UpdatedPrice = FIlterOutF(prev, value, idx);
+      const UpdatedPrice = FIlterOutF(prev, value);
       return UpdatedPrice;
     });
   };

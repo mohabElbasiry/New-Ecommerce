@@ -4,14 +4,16 @@ export const UpdateQualityImages = ({
   index,
   item,
 }) => {
-  console.log(item, "idxitemdassssssss");
-  const setFIleUploads = (e) => {
+  const setFIleUploads = (e,itemIndex) => {
     const files = e.target.files;
     const uploadedFiles = Object.values(files);
     // setImages((prev) => [...prev, ...uploadedFiles]);
     setAutoGenerate((prev) => {
+      
       return prev?.map((item, idx) => {
-        if (idx === index) {
+        if (item?.itemIndex === itemIndex) {
+
+          console.log(item,itemIndex,'itemIndex');
           return {
             ...item,
             image: [...(item?.image || []), ...uploadedFiles],
@@ -22,7 +24,7 @@ export const UpdateQualityImages = ({
     });
     setBeforeFiltered((prev) => {
       return prev?.map((item, idx) => {
-        if (idx === index) {
+        if (item?.itemIndex === itemIndex) {
           return {
             ...item,
             image: [...item?.image, ...uploadedFiles],
@@ -32,10 +34,10 @@ export const UpdateQualityImages = ({
       });
     });
   };
-  const deleteSpecificImage = (imageIndex) => {
+  const deleteSpecificImage = (imageIndex,itemIndex) => {
     setAutoGenerate((prev) => {
       return prev?.map((item, idx) => {
-        if (idx === index) {
+        if (item?.itemIndex === itemIndex) {
           return {
             ...item,
             image: item?.image?.filter((_, idx) => idx !== imageIndex),
@@ -46,7 +48,7 @@ export const UpdateQualityImages = ({
     });
     setBeforeFiltered((prev) => {
         return prev?.map((item, idx) => {
-          if (idx === index) {
+          if (item?.itemIndex === prev?.itemIndex) {
             return {
               ...item,
               image: item?.image?.filter((_, idx) => idx !== imageIndex),
@@ -62,7 +64,7 @@ export const UpdateQualityImages = ({
         type="file"
         className="opacity-0 absolute top-0 left-0 z-[3] w-full h-full"
         multiple
-        onChange={(e) => setFIleUploads(e)}
+        onChange={(e) => setFIleUploads(e,item?.itemIndex)}
       />
       <button>
         {item?.image?.length ? (
@@ -77,7 +79,7 @@ export const UpdateQualityImages = ({
                   />
                   <button
                     className="cursor-pointer z-[30]"
-                    onClick={() => deleteSpecificImage(idx)}
+                    onClick={() => deleteSpecificImage(idx,item?.itemIndex)}
                   >
                     x
                   </button>

@@ -26,12 +26,11 @@ export function generateQualities(prev, attributes) {
   }
 
   generateCombinations([], 0);
-  console.log(prev,'prevad')
-  const AdjustArray = qualities?.map((item, index) => {
+   const AdjustArray = qualities?.map((item, index) => {
     const Founded = prev?.find((item, idx) => idx === index);
-    console.log(Founded, "FoundedArray");
     if (Founded) {
       return {
+        ...item,
         values: item?.values,
         price: Founded?.price,
         quantity: Founded?.quantity,
@@ -39,6 +38,6 @@ export function generateQualities(prev, attributes) {
       };
     }
     return item;
-  });
+  })?.map((item,idx)=>({...item,itemIndex:idx}))
   return AdjustArray;
 }

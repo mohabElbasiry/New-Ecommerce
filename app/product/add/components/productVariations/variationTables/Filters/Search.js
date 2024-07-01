@@ -1,4 +1,5 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent"
+import { filterData } from "./function/FilterFunction";
 
 export const SearchInput=({setAutoGenerate,autoGenerate,filters})=>{
 
@@ -28,7 +29,7 @@ export const SearchInput=({setAutoGenerate,autoGenerate,filters})=>{
               );
               return Filtered;
             } else {
-              return generateQualities(prev,varitions);
+              return generateQualities(varitions);
             }
     
             // return FilteredOutByValuesAndKeys;

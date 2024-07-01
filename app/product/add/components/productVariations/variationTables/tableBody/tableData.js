@@ -47,6 +47,12 @@ export const TableData = ({
                 Avaliability
               </th>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                sku
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Barcode
+              </th>
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Edit
               </th>
             </tr>
@@ -55,8 +61,7 @@ export const TableData = ({
           <tbody className="divide-y divide-gray-200">
             {autoGenerate?.length
               ? autoGenerate?.map((item, idx) => {
-                  console.log(item, "itemimagesda");
-                  return (
+                   return (
                     <tr>
                       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                         <SelectedArrayCheckBox
@@ -89,6 +94,7 @@ export const TableData = ({
                           setAutoGenerate={setAutoGenerate}
                           setBeforeFiltered={setBeforeFiltered}
                           value={item?.price}
+                          itemValue={item}
                         />
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 text-gray-700">
@@ -100,6 +106,32 @@ export const TableData = ({
                           setAutoGenerate={setAutoGenerate}
                           setBeforeFiltered={setBeforeFiltered}
                           value={item?.quantity}
+                          itemValue={item}
+                        />
+                    
+                      </td>
+                      <td>
+                      <UpdateFeildActionFunction
+                          checkedElements={checkedElements}
+                          item
+                          idx={idx}
+                          property={"sku"}
+                          setAutoGenerate={setAutoGenerate}
+                          setBeforeFiltered={setBeforeFiltered}
+                          value={item?.sku}
+                          itemValue={item}
+                        />
+                      </td>
+                      <td>
+                      <UpdateFeildActionFunction
+                          checkedElements={checkedElements}
+                          item
+                          idx={idx}
+                          property={"Barcode"}
+                          setAutoGenerate={setAutoGenerate}
+                          setBeforeFiltered={setBeforeFiltered}
+                          value={item?.sku}
+                          itemValue={item}
                         />
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 sticky right-0   bg-white z-[3]  border-l ">

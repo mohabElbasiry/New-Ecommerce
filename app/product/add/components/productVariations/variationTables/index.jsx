@@ -7,11 +7,13 @@ import { SearchInput } from "./Filters/Search";
 import { FiltersKeys_values } from "./Filters/FiltersKeys_values";
 import { filterData } from "./Filters/function/FilterFunction";
 import { CustomDialoge } from "@/components/Modal";
+import { GroupByFunction } from "./Filters/GroupBy";
 
 const VariationTable = ({ varitions }) => {
   const [autoGenerate, setAutoGenerate] = useState([]);
   const [BeforeFiltered, setBeforeFiltered] = useState([]);
   const isAr = "ar";
+  const [order,setOrder] =useState({order:'',orderVariants:[]})
   const [filters, setFilters] = useState({
     filterByValues: [],
     setSearch: "",
@@ -21,7 +23,7 @@ const VariationTable = ({ varitions }) => {
       key_en: item?.option,
     };
   });
-  useEffect(() => {
+   useEffect(() => {
     if (localStorage?.getItem("saved")) {
       const items = JSON.parse(localStorage?.getItem("saved"));
       setAutoGenerate(items);
@@ -31,20 +33,26 @@ const VariationTable = ({ varitions }) => {
   useMemo(() => {
     if (varitions?.length) {
       setAutoGenerate((prev) => {
+
+        
         return generateQualities(prev, varitions);
       });
       setBeforeFiltered((prev) => {
+
+        
         localStorage.setItem(
           "saved",
           JSON.stringify(generateQualities(prev, varitions))
         );
         localStorage?.setItem("list", JSON.stringify(varitions));
+
+        
+
         return generateQualities(prev, varitions);
       });
     }
     setAutoGenerate((prev) => {
       if (filters?.filterByValues?.length) {
-        console.log(BeforeFiltered, "BeforeFilteredadssssssssssss");
         const Filtered = filterData(
           generateQualities(BeforeFiltered || [], varitions),
           filters?.filterByValues
@@ -60,22 +68,22 @@ const VariationTable = ({ varitions }) => {
   return (
     <div className="w-[100%] mt-3 bg-[#eeeeee7d] p-2 rounded-3 border shadow-md">
       <div className="flex justify-between items-center px-2">
-        <div className="GroupBy flex items-center  text-sm gap-3">
-          <p>Group by</p>
-          <InputWithLabelComponent
-            Input={false}
-            PlaceHolder="Group By"
-            inputCss="w-fit !p-1 shadow border border-[#ddd]  "
-            selectArray={["hello", "dsdsa", "dasdas"]}
-          />
-        </div>
+        {
+          console.log(varitions,'varitionssaddsadsa')
+        }
+        <GroupByFunction
+          varitions={varitions}
+          setAutoGenerate={setAutoGenerate}
+          setBeforeFiltered={setBeforeFiltered}
+          setOrder={setOrder}
+         />
         <div className="GroupBy flex items-center  text-sm gap-3">
           <p>Sort by</p>
           <InputWithLabelComponent
             Input={false}
             PlaceHolder="Group By"
             inputCss="w-fit !p-1 shadow border border-[#ddd]  "
-            selectArray={["hello", "dsdsa", "dasdas"]}
+            selectArray={varitions?.map((item) => item?.key_en)}
           />
         </div>
       </div>
@@ -93,10 +101,7 @@ const VariationTable = ({ varitions }) => {
         />
         <FiltersKeys_values setFilters={setFilters} varitions={varitions} />
       </div>
-      {console.log(
-        autoGenerate?.filter((item) => !item?.values.length),
-        "asdddddd"
-      )}
+
       <TableData
         autoGenerate={autoGenerate?.filter((item) => item?.values.length)}
         setAutoGenerate={setAutoGenerate}
