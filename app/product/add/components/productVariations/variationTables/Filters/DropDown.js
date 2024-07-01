@@ -18,7 +18,7 @@ export function DropdownMenuRadioGroupSelect({
   defaultSelected="",
   handleChange=()=>{},
 }) {
-  const [position, setPosition] =  useState("bottom");
+  const [position, setPosition] =  useState('');
 
   useEffect(() => {
     handleChange(position, defaultSelected);
