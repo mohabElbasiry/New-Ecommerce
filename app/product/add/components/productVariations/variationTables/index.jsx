@@ -9,11 +9,15 @@ import { filterData } from "./Filters/function/FilterFunction";
 import { CustomDialoge } from "@/components/Modal";
 import { GroupByFunction } from "./Filters/GroupBy";
 
-const VariationTable = ({ varitions }) => {
+const VariationTable = ({
+  varitions,
+  setSubmitedData = () => {},
+  submitedData = {},
+}) => {
   const [autoGenerate, setAutoGenerate] = useState([]);
   const [BeforeFiltered, setBeforeFiltered] = useState([]);
   const isAr = "ar";
-  const [order,setOrder] =useState({order:'',orderVariants:[]})
+  const [order, setOrder] = useState({ order: "", orderVariants: [] });
   const [filters, setFilters] = useState({
     filterByValues: [],
     setSearch: "",
@@ -23,30 +27,48 @@ const VariationTable = ({ varitions }) => {
       key_en: item?.option,
     };
   });
-   useEffect(() => {
+  useEffect(() => {
+    console.log(submitedData);
     if (localStorage?.getItem("saved")) {
       const items = JSON.parse(localStorage?.getItem("saved"));
-      setAutoGenerate(items);
+      let data =
+        typeof submitedData?.VariendData?.Data == "object" &&
+        Object.keys(submitedData?.VariendData?.Data)?.length
+          ? submitedData?.VariendData?.Data
+          : items;
+      setAutoGenerate(data);
       setBeforeFiltered(items);
     }
   }, []);
+
+  useEffect(() => {
+    setSubmitedData((prev) => {
+      localStorage?.setItem(
+        "submitedItem",
+        JSON.stringify({ SubmitedValues: BeforeFiltered })
+      );
+
+      return {
+        ...prev,
+        VariendData: {
+          ...prev.VariendData,
+          varitions,
+          Data: BeforeFiltered,
+        },
+      };
+    });
+  }, [BeforeFiltered, varitions]);
   useMemo(() => {
     if (varitions?.length) {
       setAutoGenerate((prev) => {
-
-        
         return generateQualities(prev, varitions);
       });
       setBeforeFiltered((prev) => {
-
-        
         localStorage.setItem(
           "saved",
           JSON.stringify(generateQualities(prev, varitions))
         );
         localStorage?.setItem("list", JSON.stringify(varitions));
-
-        
 
         return generateQualities(prev, varitions);
       });
@@ -68,20 +90,17 @@ const VariationTable = ({ varitions }) => {
   return (
     <div className="w-[100%] mt-3 bg-[#eeeeee7d] p-2 rounded-3 border shadow-md">
       <div className="flex justify-between items-center px-2">
-        {
-          console.log(varitions,'varitionssaddsadsa')
-        }
         <GroupByFunction
           varitions={varitions}
           setAutoGenerate={setAutoGenerate}
           setBeforeFiltered={setBeforeFiltered}
           setOrder={setOrder}
-         />
+        />
         <div className="GroupBy flex items-center  text-sm gap-3">
           <p>Sort by</p>
           <InputWithLabelComponent
             Input={false}
-            PlaceHolder="Group By"
+            PlaceHolder="sort by"
             inputCss="w-fit !p-1 shadow border border-[#ddd]  "
             selectArray={varitions?.map((item) => item?.key_en)}
           />

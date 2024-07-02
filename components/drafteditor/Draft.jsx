@@ -33,39 +33,39 @@ const DraftEditor = (props) => {
     const contentState = editorState.getCurrentContent();
     const contentRaw = convertToRaw(contentState);
     const html = draftToHtml(contentRaw);
-    props?.handleChange(html);
+    // props?.handleChange(html);
+    
+    props.setValue(props?.property, html);
   };
   return (
-   <div className="flex flex-col gap-2">
-    <p className="font-medium capitalize">
-        {props?.field}
-    </p>
-     <Editor
-      editorState={editorState}
-      onEditorStateChange={setEditorState}
-      wrapperClassName={`wrapper-class wrapper-class-white`}
-      editorClassName="editor-class"
-      onChange={convertToHtml}
-      value={props.value}
-      id={props?.id}
-      placeholder={props?.lang === "en" ? "Write here..." : "أكتب هنا..."}
-    //   toolbar={{
-    //     options: [
-    //       "inline",
-    //       "blockType",
-    //       "fontSize",
-    //       "list",
-    //       "textAlign",
-    //       "history",
-    //     ],
-    //     inline: { inDropdown: true },
-    //     list: { inDropdown: true },
-    //     textAlign: { inDropdown: true },
-    //     link: { inDropdown: true },
-    //     history: { inDropdown: true },
-    //   }}
-    ></Editor>
-   </div>
+    <div className="flex flex-col gap-2">
+      <p className="font-medium capitalize">{props?.field}</p>
+      <Editor
+        editorState={editorState}
+        onEditorStateChange={setEditorState}
+        wrapperClassName={`wrapper-class wrapper-class-white`}
+        editorClassName="editor-class"
+        onChange={convertToHtml}
+        value={props.value}
+        id={props?.id}
+        placeholder={props?.lang === "en" ? "Write here..." : "أكتب هنا..."}
+         //   toolbar={{
+        //     options: [
+        //       "inline",
+        //       "blockType",
+        //       "fontSize",
+        //       "list",
+        //       "textAlign",
+        //       "history",
+        //     ],
+        //     inline: { inDropdown: true },
+        //     list: { inDropdown: true },
+        //     textAlign: { inDropdown: true },
+        //     link: { inDropdown: true },
+        //     history: { inDropdown: true },
+        //   }}
+      ></Editor>
+    </div>
   );
 };
 

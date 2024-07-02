@@ -1,6 +1,6 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 
-export default function SubCategoriesSelect(params) {
+export default function SubCategoriesSelect({ register }) {
   return (
     <div className=" grid grid-cols-3 gap-2">
       <InputWithLabelComponent
@@ -9,6 +9,7 @@ export default function SubCategoriesSelect(params) {
         label="Parent Category "
         PlaceHolder="Add product name"
         inputCss="w-[100%]"
+        register={{ ...register("category") }}
       />
       {/* <hr className="w-[100px]  bg-black" /> */}
 

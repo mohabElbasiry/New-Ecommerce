@@ -48,10 +48,10 @@ export const FiltersKeys_values = ({ setFilters, varitions }) => {
     });
   };
   return (
-    <>
-      <p className="text-sm">Filter By</p>
+    <div >
+      <p className="text-sm my-2 flex  ">Filter By</p>
 
-      <div className="grid grid-cols-6 gap-3">
+      <div className="flex gap-3 mt-2">
         {varitions?.map((item) => {
           return (
             <DropdownMenuRadioGroupSelect
@@ -65,7 +65,7 @@ export const FiltersKeys_values = ({ setFilters, varitions }) => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 // <InputWithLabelComponent

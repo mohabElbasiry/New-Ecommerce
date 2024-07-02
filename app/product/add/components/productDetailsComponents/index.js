@@ -10,8 +10,8 @@ import Pricing from "./pricing";
 import Tags from "./tags";
 import { useState } from "react";
 import { ProductVariation } from "../productVariations";
- 
-export const ProductDetailsComponent = () => {
+
+export const ProductDetailsComponent = ({ submitedData, setSubmitedData }) => {
   const [nav, setNav] = useState("basic");
   // ['basic',Varations,Seo,Notifications]
   return (
@@ -22,13 +22,17 @@ export const ProductDetailsComponent = () => {
         {nav === "basic" && (
           <div className="container p-3 m-1 h-full w-[70%] shadow flex flex-col gap-3 ">
             {" "}
-            <BasicData /> <SubCategoriesSelect /> <Inventory /> <Pricing />{" "}
+            <BasicData submitedData={submitedData} />{" "}
+          
             <Tags />{" "}
           </div>
         )}
-    {
-      nav==="Varations"&&<ProductVariation/>
-    }
+        {nav === "Varations" && (
+          <ProductVariation
+            submitedData={submitedData}
+            setSubmitedData={setSubmitedData}
+          />
+        )}
         <div className="w-[38%] shadow p-2 flex flex-col gap-3">
           <p className="font-medium">Visablility</p>
 

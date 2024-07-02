@@ -4,7 +4,7 @@ import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
 
-export const ProductVariation = () => {
+export const ProductVariation = ({ setSubmitedData, submitedData }) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
 
@@ -15,7 +15,7 @@ export const ProductVariation = () => {
         setList(list);
       }
     }
-  },[]);
+  }, []);
 
   return (
     <>
@@ -136,7 +136,11 @@ export const ProductVariation = () => {
             Add Varient +
           </p>
         ) : null}
-        <VariationTable varitions={list} />
+        <VariationTable
+          varitions={list}
+          submitedData={submitedData}
+          setSubmitedData={setSubmitedData}
+        />
       </div>
     </>
   );

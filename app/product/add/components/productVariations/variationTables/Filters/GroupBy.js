@@ -49,7 +49,7 @@ export const GroupByFunction = ({
       <p>Group by</p>
       <DropdownMenuRadioGroupSelect
         list={varitions?.map((item) => item?.key_en)}
-        // defaultSelected={'Grou'}
+        defaultSelected={varitions?.[0]?.key_en}
         handleChange={ChangeTheOrder}
       />
       {/* <InputWithLabelComponent

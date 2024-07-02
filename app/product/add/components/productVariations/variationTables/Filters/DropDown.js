@@ -26,8 +26,8 @@ export function DropdownMenuRadioGroupSelect({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" >
-          {position == "" ? defaultSelected : position}
+        <Button   className="w-fit h-[25px] text-sm bg-[#eee] hover:bg-white text-black">
+          {position === "" ? defaultSelected : position}
 
           
         </Button>
@@ -42,7 +42,8 @@ export function DropdownMenuRadioGroupSelect({
 
           {list?.map((item) => {
             return (
-              <DropdownMenuRadioItem value={item}>{item}</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem key={item} 
+              value={item}>{item}</DropdownMenuRadioItem>
             );
           })}
         </DropdownMenuRadioGroup>

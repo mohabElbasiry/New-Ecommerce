@@ -1,6 +1,6 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 
-export default function  Pricing() {
+export default function  Pricing({register}) {
   return (
     <>
       {" "}
@@ -8,15 +8,19 @@ export default function  Pricing() {
       <div className="grid grid-cols-4 gap-2">
         <InputWithLabelComponent
           label="price"
-          PlaceHolder="Add product name"
+          PlaceHolder="Add product price"
           Input
           inputType="number"
+         register={{...register('price')}}
         />
         <InputWithLabelComponent
           label="Cost Per Item"
           PlaceHolder="Cost Per Item"
           Input
           inputType="number"
+           register={{...register('CosTPeRItem')}}
+
+
         />
         <InputWithLabelComponent
           label="Discount Price"

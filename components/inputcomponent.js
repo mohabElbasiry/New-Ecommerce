@@ -12,8 +12,10 @@ export const InputWithLabelComponent = ({
   isError = false,
   message = "",
   defaultSelected = "",
-   ...props
+  register,
+  ...props
 }) => {
+  console.log(props, "propsprops");
   return (
     <div className="flex flex-col items-start gap-2">
       <p className={` font-medium capitalize border-l  ${labelcss} `}>
@@ -33,13 +35,14 @@ export const InputWithLabelComponent = ({
           placeholder={PlaceHolder}
           type={inputType}
           required={isRequired}
+          {...register}
           autoComplete="off"
-         />
+        />
       ) : (
         <select
           name="HeadlineAct"
           id="HeadlineAct"
-           
+          {...register}
           {...props}
           className={`
           border border-[#ddd] w-full focus-none font-sem p-1
