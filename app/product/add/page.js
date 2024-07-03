@@ -2,7 +2,7 @@
 
 export default function AddProduct() {
   return (
-    <div className="bg-[#fafafa] h-[100vh] text-black flex flex-col  gap-1">
+    <div className="   ">
       <ProductAddMaim />
     </div>
   );

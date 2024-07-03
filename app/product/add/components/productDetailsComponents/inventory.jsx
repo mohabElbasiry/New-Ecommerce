@@ -12,11 +12,15 @@ export const Inventory = ({ register }) => {
           Input
           inputType="number"
           register={{ ...register("Quantity") }}
+
+          min={1}
+
         />
         <InputWithLabelComponent
           label="SKU(optional)"
           PlaceHolder="Add product name"
           Input
+          min={1}
         />
       </div>
     </>

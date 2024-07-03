@@ -37,6 +37,8 @@ export const InputWithLabelComponent = ({
           required={isRequired}
           {...register}
           autoComplete="off"
+          min={inputType==="number"?1:""}
+          defaultValue={inputType==="number"?1:""}
         />
       ) : (
         <select
@@ -50,7 +52,9 @@ export const InputWithLabelComponent = ({
        text-[#333]   appearance-none  
         py-2 px-3   leading-tight focus:outline-none
          focus:shadow-outline
-         focus:border-[#504a4a !bg-[#f9f9f9] ${inputCss}`}
+         focus:border-[#504a4a !bg-[#f9f9f9]
+            ${isError ? "border-red-400" : ""}
+         ${inputCss}`}
         >
           {" "}
           <option value={""}>

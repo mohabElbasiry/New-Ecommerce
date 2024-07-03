@@ -9,21 +9,13 @@ import { stateFromHTML } from "draft-js-import-html";
 
 const DraftEditor = (props) => {
   const _contentState = ContentState.createFromText("Sample content state");
-  /*   const raw = convertToRaw(_contentState); */ // RawDraftContentState JSON
-  //   const [contentState, setContentState] = useState(raw);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   useEffect(() => {
     if (props?.edit) {
       console.log(props?.value, "sadsadqeqe");
-      // const doc = new DOMParser().parseFromString(props?.value, "text/html");
-      // const textContent = doc.body.textContent;
-      // const contentState = ContentState.createFromText(textContent);
-      // const newEditorState = EditorState.createWithContent(contentState);
       const contentState = stateFromHTML(props?.value);
-
-      // Create EditorState with the converted content
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
     }
@@ -34,7 +26,7 @@ const DraftEditor = (props) => {
     const contentRaw = convertToRaw(contentState);
     const html = draftToHtml(contentRaw);
     // props?.handleChange(html);
-    
+
     props.setValue(props?.property, html);
   };
   return (
@@ -43,28 +35,18 @@ const DraftEditor = (props) => {
       <Editor
         editorState={editorState}
         onEditorStateChange={setEditorState}
-        wrapperClassName={`wrapper-class wrapper-class-white`}
-        editorClassName="editor-class"
+        wrapperClassName={`wrapper-class wrapper-class-white  ${
+          props?.error ? "error" : ""
+        }`}
+        editorClassName="editor-class "
         onChange={convertToHtml}
         value={props.value}
         id={props?.id}
         placeholder={props?.lang === "en" ? "Write here..." : "أكتب هنا..."}
-         //   toolbar={{
-        //     options: [
-        //       "inline",
-        //       "blockType",
-        //       "fontSize",
-        //       "list",
-        //       "textAlign",
-        //       "history",
-        //     ],
-        //     inline: { inDropdown: true },
-        //     list: { inDropdown: true },
-        //     textAlign: { inDropdown: true },
-        //     link: { inDropdown: true },
-        //     history: { inDropdown: true },
-        //   }}
       ></Editor>
+
+      {props?.error ? <p className="text-red-600 text-sm">{props?.message}</p> : null}
+      <p></p>
     </div>
   );
 };

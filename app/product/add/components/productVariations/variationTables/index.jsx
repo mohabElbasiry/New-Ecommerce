@@ -88,7 +88,7 @@ const VariationTable = ({
   }, [JSON.stringify(filters), JSON.stringify(varitions)]);
 
   return (
-    <div className="w-[100%] mt-3 bg-[#eeeeee7d] p-2 rounded-3 border shadow-md">
+    <div className="w-[100%] mt-3 bg-[#eeeeee7d]   rounded-xl  p-2 rounded-3 border shadow-md">
       <div className="flex justify-between items-center px-2">
         <GroupByFunction
           varitions={varitions}

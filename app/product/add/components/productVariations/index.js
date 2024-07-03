@@ -19,7 +19,7 @@ export const ProductVariation = ({ setSubmitedData, submitedData }) => {
 
   return (
     <>
-      <div className="w-[70%] ">
+      <div className="w-[100%] ">
         <p className="my-2 ">Add Varations</p>
         {list?.length ? (
           <div className="border w-[100%] pb-3 px-0 rounded-md shadow">

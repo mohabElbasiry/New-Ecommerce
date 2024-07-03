@@ -19,16 +19,18 @@ export const BasicData = ({ submitedData = {} }) => {
     resolver: yupResolver(BasicFormValidation("en")),
   });
   const onSubmit = (data) => {
-    console.log("objectdata", data);
-  };
-  console.log(errors,'errors');
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+   };
+   return (
+    <form onSubmit={handleSubmit(onSubmit)} className="gap-5
+    bg-white shadow-md rounded-lg p-3
+    flex flex-col">
       <InputWithLabelComponent
         Input
         label="product name in English"
         PlaceHolder="Add product name in English"
         register={{ ...register("title_en") }}
+        isError={errors?.title_en}
+          message={errors?.title_en?.message}
       />
       <InputWithLabelComponent
         Input
@@ -37,6 +39,10 @@ export const BasicData = ({ submitedData = {} }) => {
         register={{ ...register("title_ar") }}
         setValue={setValue}
         property={"description_en"}
+        isError={errors?.title_ar}
+        message={errors?.title_ar?.message}
+
+
       />
       <DraftEditor
         field="Product Description in English"
@@ -44,14 +50,22 @@ export const BasicData = ({ submitedData = {} }) => {
         register={{ ...register("description_en") }}
         setValue={setValue}
         property={"description_en"}
+        error={errors?.description_en}
+        message={errors?.description_en?.message}
+
+
       />
       <DraftEditor
         field="Product Description in Arabic"
         edit={false}
         setValue={setValue}
         property={"description_ar"}
+        error={errors?.description_ar}
+        message={errors?.description_ar?.message}
+
+
       />
-      <SubCategoriesSelect submitedData={submitedData} register={register} />{" "}
+      <SubCategoriesSelect submitedData={submitedData} register={register}  error={errors}/>{" "}
       <Inventory submitedData={submitedData} register={register} />{" "}
       <Pricing submitedData={submitedData} register={register} />
       <button type="submit">Save</button>

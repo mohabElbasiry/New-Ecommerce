@@ -2,7 +2,7 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 
 export default function Tags() {
   return (
-    <>
+    <div className="bg-white p-1 shadow-md rounded-sm">
       {" "}
       <p>Tags</p>
       <div className=" relative">
@@ -20,6 +20,6 @@ export default function Tags() {
           <button>x</button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
