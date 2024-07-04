@@ -42,7 +42,7 @@ export const UpdateFeildActionFunction = ({
         Input
         inputCss="w-fit   text-sm !px-1 shadow 
     p-2 text-center  border border-black   flex justify-center !p-0 
-     shadow bg-white max-w-[100px] !p-3 h-[30px]"
+     shadow bg-white max-w-[100px] !p-3 h-[30px] min-w-[100px] mx-2"
         inputType="number"
         value={value}
         onChange={(e) => {

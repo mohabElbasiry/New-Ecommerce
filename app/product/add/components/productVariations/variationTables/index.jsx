@@ -8,6 +8,8 @@ import { FiltersKeys_values } from "./Filters/FiltersKeys_values";
 import { filterData } from "./Filters/function/FilterFunction";
 import { CustomDialoge } from "@/components/Modal";
 import { GroupByFunction } from "./Filters/GroupBy";
+import { SortComponent } from "./Filters/sort";
+import { CollapseView } from "../collapseView";
 
 const VariationTable = ({
   varitions,
@@ -22,7 +24,7 @@ const VariationTable = ({
     filterByValues: [],
     setSearch: "",
   });
-  const updatedVaration = varitions?.map((item) => {
+   const updatedVaration = varitions?.map((item) => {
     return {
       key_en: item?.option,
     };
@@ -86,9 +88,11 @@ const VariationTable = ({
       // return FilteredOutByValuesAndKeys;
     });
   }, [JSON.stringify(filters), JSON.stringify(varitions)]);
-
   return (
-    <div className="w-[100%] mt-3 bg-[#eeeeee7d]   rounded-xl  p-2 rounded-3 border shadow-md">
+    <div
+      className="w-[100%] mt-3 bg-[#eeeeee7d]  
+     rounded-xl  p-2 rounded-3 border shadow-md"
+    >
       <div className="flex justify-between items-center px-2">
         <GroupByFunction
           varitions={varitions}
@@ -97,22 +101,14 @@ const VariationTable = ({
           setOrder={setOrder}
         />
         <div className="GroupBy flex items-center  text-sm gap-3">
-          <p>Sort by</p>
-          <InputWithLabelComponent
-            Input={false}
-            PlaceHolder="sort by"
-            inputCss="w-fit !p-1 shadow border border-[#ddd]  "
-            selectArray={varitions?.map((item) => item?.key_en)}
+          <SortComponent
+            setAutoGenerate={setAutoGenerate}
+            setBeforeFiltered={setBeforeFiltered}
+            autoGenerate={autoGenerate}
           />
         </div>
       </div>
       <div className="searchSortCOmponent">
-        {/* <InputWithLabelComponent
-          Input
-          inputCss="border border-[#333] !p-1 !px-2 !text-black "
-          PlaceHolder="search"
-          onChange={(e) => HandleEventSearch(e)}
-        /> */}
         <SearchInput
           setAutoGenerate={setAutoGenerate}
           autoGenerate={autoGenerate}
@@ -120,7 +116,8 @@ const VariationTable = ({
         />
         <FiltersKeys_values setFilters={setFilters} varitions={varitions} />
       </div>
-
+      {/* //render if only CollapseView */}
+ 
       <TableData
         autoGenerate={autoGenerate?.filter((item) => item?.values.length)}
         setAutoGenerate={setAutoGenerate}

@@ -21,7 +21,7 @@ export const ProductDetailsComponent = ({ submitedData, setSubmitedData }) => {
       <div className="flex gap-3 mt-3 ml-auto  ">
         {nav === "basic" && (
           <div
-            className="container p-3 m-1  w-[60%]
+            className="container p-3 m-1  w-[50%]
             overflow-auto
             flex flex-col gap-3 "
           >
@@ -75,7 +75,7 @@ export const ProductDetailsComponent = ({ submitedData, setSubmitedData }) => {
             setSubmitedData={setSubmitedData}
           />
         )} */}
-        <div className=" ">
+        <div className="w-[50%] ">
           <div className="w-full overflow-auto ">
             <ProductVariation
               submitedData={submitedData}

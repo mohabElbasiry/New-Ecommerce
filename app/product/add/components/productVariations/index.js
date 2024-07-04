@@ -3,11 +3,12 @@ import CreateVariation from "./createVariations";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
+import { CollapseView } from "./collapseView";
 
 export const ProductVariation = ({ setSubmitedData, submitedData }) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
-
+  const [view, setView] = useState("table");
   useEffect(() => {
     if (localStorage?.getItem("list")) {
       const list = JSON.parse(localStorage?.getItem("list"));
@@ -136,11 +137,43 @@ export const ProductVariation = ({ setSubmitedData, submitedData }) => {
             Add Varient +
           </p>
         ) : null}
-        <VariationTable
+
+        {/* <div
+          className="change view flex items-center justify-between border mt-1 
+        rounded-xl shadow-md p-1 "
+        >
+          Preference View
+          <div className="GroupedButton flex gap-4 ">
+            <img
+              src="/view/collapse.svg"
+              className="  p-2 cursor-pointer hover:bg-[#ddd] rounded-xl "
+              width={"40px"}
+              height={"40px"}
+              onClick={()=>setView("collapse")}
+            />
+            <img
+              src="/view/tableView.svg"
+              className="  p-2 cursor-pointer hover:bg-[#ddd] rounded-xl "
+              width={"45x"}
+              height={"45x"}
+              onClick={()=>setView("table")}
+
+            />
+          </div>
+        </div> */}
+
+        {view === "table" ? (
+          <VariationTable
+            varitions={list}
+            submitedData={submitedData}
+            setSubmitedData={setSubmitedData}
+          />
+        ) : (
+          <CollapseView 
           varitions={list}
-          submitedData={submitedData}
-          setSubmitedData={setSubmitedData}
-        />
+
+          />
+        )}
       </div>
     </>
   );

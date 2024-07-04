@@ -33,13 +33,15 @@ export const ProductAddMaim = () => {
   }, []);
   return (
     <>
-      <Headercomponent />
+      <Headercomponent >
       <div className="flex items-end justify-end   gap-2">
         <ProductDetailsComponent
           submitedData={submitedData}
           setSubmitedData={setSubmitedData}
         />
+
       </div>
+        </Headercomponent>
     </>
   );
 };
