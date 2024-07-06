@@ -11,9 +11,14 @@ import Tags from "./tags";
 import { useState } from "react";
 import { ProductVariation } from "../productVariations";
 
-export const ProductDetailsComponent = ({ submitedData, setSubmitedData }) => {
+export const ProductDetailsComponent = ({
+  submitedData,
+  setSubmitedData,
+  formData,
+}) => {
   const [nav, setNav] = useState("basic");
-  // ['basic',Varations,Seo,Notifications]
+
+  console.log(formData, "formData");
   return (
     <div className=" w-[80%]  justify-end gap-1 p-3 ml-auto]">
       {/* <ProductNav nav={nav} setNav={setNav} /> */}
@@ -54,8 +59,8 @@ export const ProductDetailsComponent = ({ submitedData, setSubmitedData }) => {
                   <Image
                     src={"/girl.jpg"}
                     className="w-[100px] 
-                     h-[100px] rounded-2xl overflow-hidden object-cover
-               object-top"
+                    h-[100px] rounded-2xl overflow-hidden object-cover
+                    object-top"
                     height={400}
                     width={400}
                   />
@@ -66,15 +71,11 @@ export const ProductDetailsComponent = ({ submitedData, setSubmitedData }) => {
                 </div>
               </div>
             </div>
-            <BasicData submitedData={submitedData} /> <Tags />{" "}
+            <BasicData submitedData={submitedData} formData={formData} />
+            <Tags />{" "}
           </div>
         )}
-        {/* {nav === "Varations" && (
-          <ProductVariation
-            submitedData={submitedData}
-            setSubmitedData={setSubmitedData}
-          />
-        )} */}
+
         <div className="w-[50%] ">
           <div className="w-full overflow-auto ">
             <ProductVariation

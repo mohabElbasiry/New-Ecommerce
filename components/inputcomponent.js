@@ -37,8 +37,10 @@ export const InputWithLabelComponent = ({
           required={isRequired}
           {...register}
           autoComplete="off"
-          min={inputType==="number"?1:""}
-          defaultValue={inputType==="number"?1:""}
+          min={inputType === "number" ? 0 : ""}
+          defaultValue={
+            inputType === "number" ? props?.defaultNumberValues || 1 : ""
+          }
         />
       ) : (
         <select

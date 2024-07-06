@@ -26,7 +26,7 @@ export function DropdownMenuRadioGroupSelect({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button   className="w-fit h-[25px] text-sm bg-[#eee] hover:bg-white text-black">
+        <Button   className="w-fit h-[25px] text-sm bg-[#eee] mb-2 hover:bg-white text-black">
           {position === "" ? defaultSelected : position}
 
           

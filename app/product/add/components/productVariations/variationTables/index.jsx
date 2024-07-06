@@ -24,7 +24,7 @@ const VariationTable = ({
     filterByValues: [],
     setSearch: "",
   });
-   const updatedVaration = varitions?.map((item) => {
+  const updatedVaration = varitions?.map((item) => {
     return {
       key_en: item?.option,
     };
@@ -60,7 +60,7 @@ const VariationTable = ({
       };
     });
   }, [BeforeFiltered, varitions]);
-  useMemo(() => {
+  useEffect(() => {
     if (varitions?.length) {
       setAutoGenerate((prev) => {
         return generateQualities(prev, varitions);
@@ -87,7 +87,7 @@ const VariationTable = ({
       }
       // return FilteredOutByValuesAndKeys;
     });
-  }, [JSON.stringify(filters), JSON.stringify(varitions)]);
+  }, [filters, varitions]);
   return (
     <div
       className="w-[100%] mt-3 bg-[#eeeeee7d]  
@@ -117,7 +117,7 @@ const VariationTable = ({
         <FiltersKeys_values setFilters={setFilters} varitions={varitions} />
       </div>
       {/* //render if only CollapseView */}
- 
+
       <TableData
         autoGenerate={autoGenerate?.filter((item) => item?.values.length)}
         setAutoGenerate={setAutoGenerate}

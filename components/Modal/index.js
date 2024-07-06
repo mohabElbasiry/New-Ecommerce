@@ -1,3 +1,4 @@
+import { BatchEdit } from "@/app/product/add/components/productVariations/variationTables/Update/updateFields.js/BulkEdit/BatchEdit";
 import { Dialog, Transition } from "@headlessui/react";
 
 export function CustomDialoge({
@@ -10,11 +11,14 @@ export function CustomDialoge({
     <Transition.Root show={open} as={"Fragment"}>
       <Dialog className="relative z-[991] " onClose={setOpen}>
         <Transition.Child as={"Fragment"}>
-          <div className="fixed inset-0 bg-black/50 bg-opacity-75 backdrop-blur-lg z-[991]  transition-opacity" />
+          <div className="fixed inset-0 bg-white/50
+             z-[991]
+            transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-[991] w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full items-end justify-center p-4
+           text-center sm:items-center sm:p-0">
             <Transition.Child
               as={"Fragment"}
               enter="ease-out duration-300"
@@ -26,9 +30,15 @@ export function CustomDialoge({
             >
               <Dialog.Panel
                 className="relative transform 
-            rounded-2xl backdrop-blur-3xl  text-left bg-[#DEDEDE80] space-y-5 p-4 text-white font-medium shadow-xl transition-all grid grid-cols-1  min-w-96 !w-full max-w-md z-[991] "
+            rounded-2xl  text-left  
+            space-y-5 px-4 text-white 
+            font-medium   transition-all grid grid-cols-1
+                !w-full   z-[991] "
               >
                 {children}
+
+
+                {/* <BatchEdit/> */}
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -37,3 +47,4 @@ export function CustomDialoge({
     </Transition.Root>
   );
 }
+ 

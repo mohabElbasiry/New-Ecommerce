@@ -6,9 +6,10 @@ export const MultibleFields = ({
   setAutoGenerate,
   property,
   setBeforeFiltered,
+  ...props
 }) => {
   const [Change, setChange] = useState(0);
-
+    console.log(checkedElements,'checkedElementsadsssssss');
   const handleSubmitFeilds = () => {
     const MultibleSelect = (prev) =>
       prev?.map((itemv, index) => {
@@ -33,16 +34,11 @@ export const MultibleFields = ({
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmitFeilds();
-      }}
-    >
+    <div className="flex justify-center items-center gap-2">
       <InputWithLabelComponent
-        defaultValue={0}
+        defaultValue={10}
         Input
-        name="Quantity"
+        name={property}
         onChange={(e) => {
           setChange(e?.target.value);
         }}
@@ -50,8 +46,20 @@ export const MultibleFields = ({
    p-2 text-center  border border-black   flex justify-center !p-0 
    shadow bg-white max-w-[100px] !p-3 h-[30px]"
         inputType="number"
+        {...props}
       />
-      <button type="submit">Change</button>
-    </form>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          handleSubmitFeilds();
+          props?.setOpen(false);
+        }}
+        type="button"
+        className="text-white mt-auto mb-2 flex bg-[#333] 
+        p-2 text-sm  rounded-md"
+      >
+        Change
+      </button>
+    </div>
   );
 };

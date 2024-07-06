@@ -1,6 +1,6 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { useState } from "react";
-import { BulkEdit } from "../Update/BulkEdit";
+import { BulkEdit } from "../Update/updateFields.js/BulkEdit/BulkEdit";
 import { SelectedArrayCheckBox } from "../Update/selectedArray";
 import { UpdateFeildActionFunction } from "../Update/updateFields.js";
 import { UpdateQualityImages } from "../Update/updateImages";
@@ -10,6 +10,9 @@ export const TableData = ({
   setAutoGenerate,
   setBeforeFiltered,
 }) => {
+  {
+    keys: [];
+  }
   const [checkedElements, setCheckedElements] = useState([]);
 
   return (
@@ -19,10 +22,13 @@ export const TableData = ({
           checkedElements={checkedElements}
           setAutoGenerate={setAutoGenerate}
           setBeforeFiltered={setBeforeFiltered}
+          autoGenerate={autoGenerate}
         />
 
-        <table className="min-w-full divide-y-2 
-         divide-gray-200 bg-white text-sm    ">
+        <table
+          className="min-w-full divide-y-2 
+         divide-gray-200 bg-white text-sm    "
+        >
           <thead className="text-left   ">
             <tr>
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900  ">
@@ -62,7 +68,8 @@ export const TableData = ({
           <tbody className="divide-y divide-gray-200">
             {autoGenerate?.length
               ? autoGenerate?.map((item, idx) => {
-                   return (
+                  console.log(item, "tableItemsda");
+                  return (
                     <tr>
                       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                         <SelectedArrayCheckBox
@@ -109,10 +116,9 @@ export const TableData = ({
                           value={item?.quantity}
                           itemValue={item}
                         />
-                    
                       </td>
                       <td>
-                      <UpdateFeildActionFunction
+                        <UpdateFeildActionFunction
                           checkedElements={checkedElements}
                           item
                           idx={idx}
@@ -124,7 +130,7 @@ export const TableData = ({
                         />
                       </td>
                       <td>
-                      <UpdateFeildActionFunction
+                        <UpdateFeildActionFunction
                           checkedElements={checkedElements}
                           item
                           idx={idx}

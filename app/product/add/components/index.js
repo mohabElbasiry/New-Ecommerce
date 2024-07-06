@@ -2,46 +2,45 @@
 import { useEffect, useState } from "react";
 import Headercomponent from "./headercomponent";
 import { ProductDetailsComponent } from "./productDetailsComponents";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { BasicFormValidation } from "./productDetailsComponents/BasicFormValidationSchema";
+import { ProductMainDefaultValue } from "../constants/DefaultProductMainValue";
 export const ProductAddMaim = () => {
   const [submitedData, setSubmitedData] = useState({
-    productvaritions: {
-      variants: [],
-      VarientValues: [],
-    },
-    productDetails: {
-      title_ar: "",
-      title_en: "",
-      description_ar: "",
-      description_en: "",
-      Stock: { repositry: {}, quantity: "", sku: "" },
-      price: { mainPrice: "", costPerItem: "", DiscountPrice: "" },
-    },
-    seo: { tags: [], title: "", description: "" },
-    setSubmitedData: () => {},
-    submitedData: {},
+    ...ProductMainDefaultValue
   });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(BasicFormValidation("en")),
+  });
+
   useEffect(() => {
     const SubmitedData = localStorage.getItem("submitedItem");
     if (submitedData) {
       const ParsingData = JSON.parse(SubmitedData);
       if (ParsingData?.SubmitedValues?.length) {
-        console.log(ParsingData, "ParsingData");
         setSubmitedData(ParsingData?.SubmitedValues);
       }
     }
   }, []);
   return (
     <>
-      <Headercomponent >
-      <div className="flex items-end justify-end   gap-2">
-        <ProductDetailsComponent
-          submitedData={submitedData}
-          setSubmitedData={setSubmitedData}
-        />
-
-      </div>
-        </Headercomponent>
+      <Headercomponent handleSubmit={handleSubmit}>
+        <div className="flex items-end justify-end   gap-2">
+          <ProductDetailsComponent
+            submitedData={submitedData}
+            setSubmitedData={setSubmitedData}
+            formData={{register, reset, setValue, errors}}
+          />
+        </div>
+      </Headercomponent>
     </>
   );
 };

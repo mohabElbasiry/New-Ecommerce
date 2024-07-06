@@ -5,10 +5,11 @@ import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
 import { CollapseView } from "./collapseView";
 
-export const ProductVariation = ({ setSubmitedData, submitedData }) => {
+export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
   const [view, setView] = useState("table");
+
   useEffect(() => {
     if (localStorage?.getItem("list")) {
       const list = JSON.parse(localStorage?.getItem("list"));
@@ -163,16 +164,9 @@ export const ProductVariation = ({ setSubmitedData, submitedData }) => {
         </div> */}
 
         {view === "table" ? (
-          <VariationTable
-            varitions={list}
-            submitedData={submitedData}
-            setSubmitedData={setSubmitedData}
-          />
+          <VariationTable varitions={list} setSubmitedData={setSubmitedData} />
         ) : (
-          <CollapseView 
-          varitions={list}
-
-          />
+          <CollapseView varitions={list} />
         )}
       </div>
     </>

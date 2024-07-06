@@ -9,6 +9,7 @@ export const SelectedArrayCheckBox = ({
         setCheckedElements((prev) => {
           if (e.target.checked) {
             const founded = prev?.find((item) => item === idx);
+            console.log(founded,prev,'foundedObject');
             if (founded !== undefined) {
               return prev?.filter((item) => item !== idx);
             } else {

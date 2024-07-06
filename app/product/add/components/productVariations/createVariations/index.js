@@ -155,64 +155,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
     }
   }, [list]);
   return (
-    <form
-      className="w-[100%]"
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log(currentValues, "handleSubmit");
-        if (
-          currentValues?.length === 1 &&
-          currentValues?.[0]?.value_ar?.trim() === "" &&
-          currentValues?.[0]?.value_en?.trim() === ""
-        ) {
-          setGeneralErrorMessage((prev) => ({
-            ...prev,
-            ErrorMessage: "please Fill This Form",
-            isError: true,
-          }));
-
-          return;
-        }
-        if (
-          currentValues?.length > 1 &&
-          currentValues
-            ?.filter((idx) => idx !== currentValues - 1)
-            .every(
-              (item) =>
-                item?.value_ar?.trim() === "" && item?.value_en?.trim() === ""
-            )
-        ) {
-          setGeneralErrorMessage((prev) => ({
-            ...prev,
-            ErrorMessage: "please Fill This Form",
-            isError: true,
-          }));
-        }
-
-        setGeneralErrorMessage((prev) => ({
-          ...prev,
-          ErrorMessage: "",
-          isError: false,
-        }));
-
-        setList((prev) => {
-          return prev?.map((item, idx) => {
-            if (idx === listIndex) {
-              return {
-                ...item,
-                key_en: currentOption?.option_en,
-                key_ar: currentOption?.option_ar,
-                values: currentValues?.filter(
-                  (item) => item?.value_ar !== "" && item?.value_en !== ""
-                ),
-                edit: false,
-              };
-            }
-            return item;
-          });
-        });
-      }}
-    >
+    <div>
       <div className="w-[100%] p-3">
         <div className="grid grid-cols-2 gap-1  ">
           <InputWithLabelComponent
@@ -239,7 +182,6 @@ export default function CreateVariation({ listIndex, setList, list }) {
           />
         </div>
         <p className="my-3">Option values</p>
-        {console.log(currentValues, "currentValues")}
         <Reorder.Group values={currentValues} onReorder={setCurrentValues}>
           {currentValues?.map((value, index) => (
             <div>
@@ -332,12 +274,69 @@ export default function CreateVariation({ listIndex, setList, list }) {
           Delete
         </button>
         <button
-          type="submit"
-          className="bg-[#fefefed] shadow text-black text-xs border border-[#33333370] rounded-lg px-3 p-1"
+          type="button"
+          className="bg-[#fefefed] shadow text-black text-xs border 
+          border-[#33333370] rounded-lg px-3 p-1"
+          onClick={(e) => {
+            e.preventDefault();
+            console.log(currentValues, "handleSubmit");
+            if (
+              currentValues?.length === 1 &&
+              currentValues?.[0]?.value_ar?.trim() === "" &&
+              currentValues?.[0]?.value_en?.trim() === ""
+            ) {
+              setGeneralErrorMessage((prev) => ({
+                ...prev,
+                ErrorMessage: "please Fill This Form",
+                isError: true,
+              }));
+
+              return;
+            }
+            if (
+              currentValues?.length > 1 &&
+              currentValues
+                ?.filter((idx) => idx !== currentValues - 1)
+                .every(
+                  (item) =>
+                    item?.value_ar?.trim() === "" &&
+                    item?.value_en?.trim() === ""
+                )
+            ) {
+              setGeneralErrorMessage((prev) => ({
+                ...prev,
+                ErrorMessage: "please Fill This Form",
+                isError: true,
+              }));
+            }
+
+            setGeneralErrorMessage((prev) => ({
+              ...prev,
+              ErrorMessage: "",
+              isError: false,
+            }));
+
+            setList((prev) => {
+              return prev?.map((item, idx) => {
+                if (idx === listIndex) {
+                  return {
+                    ...item,
+                    key_en: currentOption?.option_en,
+                    key_ar: currentOption?.option_ar,
+                    values: currentValues?.filter(
+                      (item) => item?.value_ar !== "" && item?.value_en !== ""
+                    ),
+                    edit: false,
+                  };
+                }
+                return item;
+              });
+            });
+          }}
         >
           Done
         </button>
       </div>
-    </form>
+    </div>
   );
 }

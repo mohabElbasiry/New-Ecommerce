@@ -10,9 +10,12 @@ export const UpdateFeildActionFunction = ({
   setBeforeFiltered,
   value,
   idx,
-  itemValue
+  itemValue,
+  defaultNumberValues=0,
+  setOpen=()=>{}
 }) => {
-  const FIlterOutF = (prev, value) => {
+  console.log(defaultNumberValues,'defaultNumberValues');
+   const FIlterOutF = (prev, value) => {
     return prev?.map((item, itemdx) => {
       if (item?.itemIndex === itemValue?.itemIndex) {
         return {
@@ -44,10 +47,12 @@ export const UpdateFeildActionFunction = ({
     p-2 text-center  border border-black   flex justify-center !p-0 
      shadow bg-white max-w-[100px] !p-3 h-[30px] min-w-[100px] mx-2"
         inputType="number"
-        value={value}
+        value={value||1}
         onChange={(e) => {
           handleChangeItem(e?.target.value, idx);
         }}
+        isRequired={false}
+        
       />
     );
   } else {
@@ -57,6 +62,16 @@ export const UpdateFeildActionFunction = ({
         property={property}
         setAutoGenerate={setAutoGenerate}
         setBeforeFiltered={setBeforeFiltered}
+        label={"edit "+" "+property}
+        labelcss={
+          'text-black  text-md'
+        }
+        inputCss={
+          '!w-[100%] !p-2  '
+          
+        }
+        setOpen={setOpen}
+        defaultNumberValues={defaultNumberValues}
       />
     );
   }
