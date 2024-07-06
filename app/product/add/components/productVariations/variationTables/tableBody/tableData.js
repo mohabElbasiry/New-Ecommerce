@@ -59,7 +59,7 @@ export const TableData = ({
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Barcode
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900   sticky right-0 z-10 bg-white">
                 Edit
               </th>
             </tr>
@@ -142,7 +142,9 @@ export const TableData = ({
                         />
                       </td>
                       <td className="whitespace-nowrap px-4 py-2 sticky right-0 font-medium text-gray-900   right-0   bg-white z-[3]  border-l ">
-                        <button className="p-3 border shadow h-[40px] flex items-center justify-center rounded-md text-sm">
+                        <button
+                         className="p-3 border shadow h-[40px] flex items-center
+                          justify-center rounded-md text-sm" type="button">
                           Edit
                         </button>
                       </td>

@@ -4,11 +4,13 @@ import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
 import { CollapseView } from "./collapseView";
-
+ 
 export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
   const [view, setView] = useState("table");
+ 
+
 
   useEffect(() => {
     if (localStorage?.getItem("list")) {

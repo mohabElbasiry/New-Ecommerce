@@ -5,8 +5,8 @@ import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 
 export const BasicData = ({ submitedData = {}, formData = {} }) => {
-  const { errors, register, reset, setValue } = formData;
-
+  const { errors, register, reset, setValue, getValues,setError,clearErrors } = formData;
+  console.log(getValues(), "errorsadsdasdas");
   return (
     <div
       className="gap-5
@@ -39,14 +39,20 @@ export const BasicData = ({ submitedData = {}, formData = {} }) => {
         property={"description_en"}
         error={errors?.description_en}
         message={errors?.description_en?.message}
+        setError={setError}
+        clearErrors={clearErrors}
       />
       <DraftEditor
         field="Product Description in Arabic"
         edit={false}
         setValue={setValue}
+        register={{ ...register("description_ar") }}
         property={"description_ar"}
         error={errors?.description_ar}
         message={errors?.description_ar?.message}
+        setError={setError}
+        clearErrors={clearErrors}
+
       />
       <SubCategoriesSelect
         submitedData={submitedData}

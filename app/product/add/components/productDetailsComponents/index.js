@@ -16,16 +16,12 @@ export const ProductDetailsComponent = ({
   setSubmitedData,
   formData,
 }) => {
-  const [nav, setNav] = useState("basic");
-
-  console.log(formData, "formData");
-  return (
+ 
+   return (
     <div className=" w-[80%]  justify-end gap-1 p-3 ml-auto]">
-      {/* <ProductNav nav={nav} setNav={setNav} /> */}
-
+ 
       <div className="flex gap-3 mt-3 ml-auto  ">
-        {nav === "basic" && (
-          <div
+           <div
             className="container p-3 m-1  w-[50%]
             overflow-auto
             flex flex-col gap-3 "
@@ -74,8 +70,7 @@ export const ProductDetailsComponent = ({
             <BasicData submitedData={submitedData} formData={formData} />
             <Tags />{" "}
           </div>
-        )}
-
+ 
         <div className="w-[50%] ">
           <div className="w-full overflow-auto ">
             <ProductVariation

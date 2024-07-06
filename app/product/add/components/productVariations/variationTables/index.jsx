@@ -24,13 +24,8 @@ const VariationTable = ({
     filterByValues: [],
     setSearch: "",
   });
-  const updatedVaration = varitions?.map((item) => {
-    return {
-      key_en: item?.option,
-    };
-  });
+ 
   useEffect(() => {
-    console.log(submitedData);
     if (localStorage?.getItem("saved")) {
       const items = JSON.parse(localStorage?.getItem("saved"));
       let data =
@@ -76,6 +71,7 @@ const VariationTable = ({
       });
     }
     setAutoGenerate((prev) => {
+      console.log(prev,'dassssssssssssssssetState')
       if (filters?.filterByValues?.length) {
         const Filtered = filterData(
           generateQualities(BeforeFiltered || [], varitions),
@@ -113,6 +109,9 @@ const VariationTable = ({
           setAutoGenerate={setAutoGenerate}
           autoGenerate={autoGenerate}
           filter={filters}
+          setBeforeFiltered={setBeforeFiltered}
+          varitions={varitions}
+
         />
         <FiltersKeys_values setFilters={setFilters} varitions={varitions} />
       </div>

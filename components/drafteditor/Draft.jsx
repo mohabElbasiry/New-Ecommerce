@@ -12,22 +12,32 @@ const DraftEditor = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
   useEffect(() => {
-    if (props?.edit) {
+    if (props.edit) {
       console.log(props?.value, "sadsadqeqe");
       const contentState = stateFromHTML(props?.value);
+
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
     }
   }, [props?.value]);
 
-  const convertToHtml = () => {
+  const convertToHtml = (isBluered = true) => {
     const contentState = editorState.getCurrentContent();
     const contentRaw = convertToRaw(contentState);
     const html = draftToHtml(contentRaw);
-    // props?.handleChange(html);
-
-    props.setValue(props?.property, html);
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const textContent = doc.body.textContent;
+    console.log(textContent, "textContent");
+    if (textContent.trim() === "") {
+      if (isBluered) {
+        props.setError(props?.property, "required");
+      }
+      return
+    }
+    props.clearErrors(props?.property, "required");
+    props.setValue(`${props?.property}`, html);
   };
   return (
     <div className="flex flex-col gap-2">
@@ -39,13 +49,17 @@ const DraftEditor = (props) => {
           props?.error ? "error" : ""
         }`}
         editorClassName="editor-class "
-        onChange={convertToHtml}
+        onChange={() => convertToHtml(false)}
         value={props.value}
         id={props?.id}
+        name={props.property}
+        onBlur={() => convertToHtml(true)}
         placeholder={props?.lang === "en" ? "Write here..." : "أكتب هنا..."}
       ></Editor>
 
-      {props?.error ? <p className="text-red-600 text-sm">{props?.message}</p> : null}
+      {props?.error ? (
+        <p className="text-red-600 text-sm">{props?.message}</p>
+      ) : null}
       <p></p>
     </div>
   );
