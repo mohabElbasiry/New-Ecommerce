@@ -13,7 +13,8 @@ export const InputWithLabelComponent = ({
   message = "",
   defaultSelected = "",
   register,
-  onChange=()=>{},
+  onChange = () => {},
+
   ...props
 }) => {
   console.log(props, "propsprops");
@@ -59,6 +60,7 @@ export const InputWithLabelComponent = ({
          focus:border-[#504a4a !bg-[#f9f9f9]
             ${isError ? "border-red-400" : ""}
          ${inputCss}`}
+         onChange={onChange}
         >
           {" "}
           <option value={""}>

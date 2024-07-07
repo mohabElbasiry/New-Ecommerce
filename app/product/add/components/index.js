@@ -8,7 +8,7 @@ import { BasicFormValidation } from "./productDetailsComponents/BasicFormValidat
 import { ProductMainDefaultValue } from "../constants/DefaultProductMainValue";
 export const ProductAddMaim = () => {
   const [submitedData, setSubmitedData] = useState({
-    ...ProductMainDefaultValue
+    ...ProductMainDefaultValue,
   });
 
   const {
@@ -16,6 +16,9 @@ export const ProductAddMaim = () => {
     handleSubmit,
     reset,
     setValue,
+    setError,
+    clearErrors,
+
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
@@ -37,7 +40,14 @@ export const ProductAddMaim = () => {
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}
-            formData={{register, reset, setValue, errors}}
+            formData={{
+              register,
+              reset,
+              setValue,
+              errors,
+              setError,
+              clearErrors,
+            }}
           />
         </div>
       </Headercomponent>

@@ -1,9 +1,8 @@
 import React from "react";
 
-export default function Headercomponent({ handleSubmit, children   }) {
- 
-   const SubmittingData = (data) => {
-    console.log(data, "sdubmittied Data");
+export default function Headercomponent({ handleSubmit, children,submittedData }) {
+  const SubmittingData = (data) => {
+    console.log(data,submittedData, "sdubmittied Dataffffffffffffffffffff");
   };
   return (
     <form onSubmit={handleSubmit(SubmittingData)}>

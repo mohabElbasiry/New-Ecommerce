@@ -13,10 +13,11 @@ export const BulkEdit = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("");
-  console.log(
-    DefaultValues("price", autoGenerate, checkedElements),
-    "asdddddddddddddddddd"
-  );
+console.log(DefaultValues(
+  "price",
+  autoGenerate,
+  checkedElements
+),'asdddddddddddddddddd');
   return (
     <>
       <CustomDialoge open={open} setOpen={setOpen}>
@@ -48,12 +49,15 @@ export const BulkEdit = ({
             )}
           />
         ) : null}
-        {action === "" ? <BatchEdit /> : null}
+        {action === "" ? (
+          <BatchEdit/>
+        ) : null}
       </CustomDialoge>
       <InputWithLabelComponent
         Input={false}
         inputCss="!w-[20%] ml-auto !p-1 mx-2 shadow   "
         PlaceHolder="Update"
+         
         selectArray={[
           "Edit Prices",
           "Edit/add images",

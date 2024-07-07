@@ -47,7 +47,7 @@ export const SortActionComponent = ({
       <div className="inline-flex items-center overflow-hidden rounded-md  p-3  ">
         <button
           onClick={() => setSort((prev) => ({ ...prev, open: !prev?.open }))}
-          className="flex items-center capitalize gap-2"
+          className="flex items-center capitalize gap-2" type="button"
         >
           {icon ? icon : label}
 

@@ -7,10 +7,9 @@ import Pricing from "./pricing";
 export const BasicData = ({
   submitedData = {},
   formData = {},
-  setSubmitedData = () => {},
+  setSubmitedData = {},
 }) => {
-  const { errors, register, reset, setValue } = formData;
-  const updateProductDetails = (e, setSubmitedData) => {
+  const UdateBasicInfo = (e, setSubmitedData) => {
     setSubmitedData((prev) => ({
       ...prev,
       productDetails: {
@@ -19,7 +18,16 @@ export const BasicData = ({
       },
     }));
   };
-
+  console.log(submitedData,'submitedDatasubmitedDatasubmitedData');
+  const {
+    errors,
+    register,
+    reset,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+  } = formData;
   return (
     <div
       className="gap-5
@@ -33,6 +41,10 @@ export const BasicData = ({
         register={{ ...register("title_en") }}
         isError={errors?.title_en}
         message={errors?.title_en?.message}
+        value={submitedData?.productDetails?.title_en}
+        onChange={(e) => {
+          UdateBasicInfo(e, setSubmitedData);
+        }}
       />
       <InputWithLabelComponent
         Input
@@ -42,11 +54,11 @@ export const BasicData = ({
         setValue={setValue}
         property={"description_en"}
         isError={errors?.title_ar}
-        onChange={(e) => {
-          console.log(e.target.name, "ddddnamename");
-          updateProductDetails(e, setSubmitedData);
-        }}
         message={errors?.title_ar?.message}
+        value={submitedData?.productDetails?.title_ar}
+        onChange={(e) => {
+          UdateBasicInfo(e, setSubmitedData);
+        }}
       />
       <DraftEditor
         field="Product Description in English"
@@ -56,14 +68,25 @@ export const BasicData = ({
         property={"description_en"}
         error={errors?.description_en}
         message={errors?.description_en?.message}
+        setError={setError}
+        clearErrors={clearErrors}
+        value={submitedData?.productDetails?.description_en}
+        onChange={UdateBasicInfo}
+        setSubmitedData={setSubmitedData}
       />
       <DraftEditor
         field="Product Description in Arabic"
         edit={false}
         setValue={setValue}
+        register={{ ...register("description_ar") }}
         property={"description_ar"}
         error={errors?.description_ar}
         message={errors?.description_ar?.message}
+        setError={setError}
+        clearErrors={clearErrors}
+        value={submitedData?.productDetails?.description_ar}
+        onChange={UdateBasicInfo}
+        setSubmitedData={setSubmitedData}
       />
       <SubCategoriesSelect
         submitedData={submitedData}

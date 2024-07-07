@@ -12,22 +12,47 @@ const DraftEditor = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const UdateBasicInfo = (property, value, setSubmitedData) => {
+    if (typeof setSubmitedData === "function") {
+      setSubmitedData((prev) => ({
+        ...prev,
+        productDetails: {
+          ...prev.productDetails,
+          [property]: value,
+        },
+      }));
+    }
+  };
   useEffect(() => {
-    if (props?.edit) {
+    if (props.values !== "") {
       console.log(props?.value, "sadsadqeqe");
       const contentState = stateFromHTML(props?.value);
+
       const newEditorState = EditorState.createWithContent(contentState);
       setEditorState(newEditorState);
     }
   }, [props?.value]);
 
-  const convertToHtml = () => {
+  const convertToHtml = (isBluered = true, e) => {
     const contentState = editorState.getCurrentContent();
     const contentRaw = convertToRaw(contentState);
     const html = draftToHtml(contentRaw);
-    // props?.handleChange(html);
-
-    props.setValue(props?.property, html);
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const textContent = doc.body.textContent;
+    console.log(textContent, "textContent");
+    if (textContent.trim() === "") {
+      if (isBluered) {
+        props.setError(props?.property, "required");
+      }
+      return;
+    }
+    props.clearErrors(props?.property, "required");
+    props.setValue(`${props?.property}`, html);
+    if (!isBluered) {
+      props.onChange(
+        UdateBasicInfo(props?.property, html, props.setSubmitedData)
+      );
+    }
   };
   return (
     <div className="flex flex-col gap-2">
@@ -39,13 +64,16 @@ const DraftEditor = (props) => {
           props?.error ? "error" : ""
         }`}
         editorClassName="editor-class "
-        onChange={convertToHtml}
-        value={props.value}
+        onChange={(e) => convertToHtml(false, e)}
         id={props?.id}
+        name={props.property}
+        onBlur={(e) => convertToHtml(true, e)}
         placeholder={props?.lang === "en" ? "Write here..." : "أكتب هنا..."}
       ></Editor>
 
-      {props?.error ? <p className="text-red-600 text-sm">{props?.message}</p> : null}
+      {props?.error ? (
+        <p className="text-red-600 text-sm">{props?.message}</p>
+      ) : null}
       <p></p>
     </div>
   );
