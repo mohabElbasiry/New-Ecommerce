@@ -26,7 +26,7 @@ export const BatchEdit = () => {
           inputCss="w-fit text-sm !px-1 shadow 
    border border-[#ddd]   flex justify-center  
    shadow bg-white  h-[30px] !rounded-[12px]
- !p-5  !shadow-none
+ !p-5  !shadow-none 
    "
           inputType="number"
         />

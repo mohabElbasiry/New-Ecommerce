@@ -4,8 +4,21 @@ import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 
-export const BasicData = ({ submitedData = {}, formData = {} }) => {
+export const BasicData = ({
+  submitedData = {},
+  formData = {},
+  setSubmitedData = () => {},
+}) => {
   const { errors, register, reset, setValue } = formData;
+  const updateProductDetails = (e, setSubmitedData) => {
+    setSubmitedData((prev) => ({
+      ...prev,
+      productDetails: {
+        ...prev.productDetails,
+        [e.target.name]: e.target.value,
+      },
+    }));
+  };
 
   return (
     <div
@@ -29,6 +42,10 @@ export const BasicData = ({ submitedData = {}, formData = {} }) => {
         setValue={setValue}
         property={"description_en"}
         isError={errors?.title_ar}
+        onChange={(e) => {
+          console.log(e.target.name, "ddddnamename");
+          updateProductDetails(e, setSubmitedData);
+        }}
         message={errors?.title_ar?.message}
       />
       <DraftEditor

@@ -14,8 +14,7 @@ export const UpdateFeildActionFunction = ({
   defaultNumberValues=0,
   setOpen=()=>{}
 }) => {
-  console.log(defaultNumberValues,'defaultNumberValues');
-   const FIlterOutF = (prev, value) => {
+    const FIlterOutF = (prev, value) => {
     return prev?.map((item, itemdx) => {
       if (item?.itemIndex === itemValue?.itemIndex) {
         return {

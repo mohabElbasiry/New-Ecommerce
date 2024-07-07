@@ -13,6 +13,7 @@ export const InputWithLabelComponent = ({
   message = "",
   defaultSelected = "",
   register,
+  onChange=()=>{},
   ...props
 }) => {
   console.log(props, "propsprops");
@@ -41,6 +42,7 @@ export const InputWithLabelComponent = ({
           defaultValue={
             inputType === "number" ? props?.defaultNumberValues || 1 : ""
           }
+          onChange={onChange}
         />
       ) : (
         <select

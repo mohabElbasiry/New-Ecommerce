@@ -18,8 +18,7 @@ export const ProductDetailsComponent = ({
 }) => {
   const [nav, setNav] = useState("basic");
 
-  console.log(formData, "formData");
-  return (
+   return (
     <div className=" w-[80%]  justify-end gap-1 p-3 ml-auto]">
       {/* <ProductNav nav={nav} setNav={setNav} /> */}
 
@@ -71,7 +70,7 @@ export const ProductDetailsComponent = ({
                 </div>
               </div>
             </div>
-            <BasicData submitedData={submitedData} formData={formData} />
+            <BasicData submitedData={submitedData} formData={formData}  setSubmitedData={setSubmitedData}/>
             <Tags />{" "}
           </div>
         )}
