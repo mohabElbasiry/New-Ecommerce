@@ -23,15 +23,14 @@ const DraftEditor = (props) => {
       }));
     }
   };
-  useEffect(() => {
-    if (props.values !== "") {
-      console.log(props?.value, "sadsadqeqe");
-      const contentState = stateFromHTML(props?.value);
+  // useEffect(() => {
+  //   if (props.values !== "") {
+  //     const contentState = stateFromHTML(props?.value);
 
-      const newEditorState = EditorState.createWithContent(contentState);
-      setEditorState(newEditorState);
-    }
-  }, [props?.value]);
+  //     const newEditorState = EditorState.createWithContent(contentState);
+  //     setEditorState(newEditorState);
+  //   }
+  // }, [props?.value]);
 
   const convertToHtml = (isBluered = true, e) => {
     const contentState = editorState.getCurrentContent();
@@ -39,8 +38,7 @@ const DraftEditor = (props) => {
     const html = draftToHtml(contentRaw);
     const doc = new DOMParser().parseFromString(html, "text/html");
     const textContent = doc.body.textContent;
-    console.log(textContent, "textContent");
-    if (textContent.trim() === "") {
+     if (textContent.trim() === "") {
       if (isBluered) {
         props.setError(props?.property, "required");
       }
@@ -48,12 +46,13 @@ const DraftEditor = (props) => {
     }
     props.clearErrors(props?.property, "required");
     props.setValue(`${props?.property}`, html);
-    if (!isBluered) {
+    if (!isBluered&&isSubmitting) {
       props.onChange(
         UdateBasicInfo(props?.property, html, props.setSubmitedData)
       );
     }
   };
+  
   return (
     <div className="flex flex-col gap-2">
       <p className="font-medium capitalize">{props?.field}</p>

@@ -47,6 +47,7 @@ export const ProductAddMaim = () => {
               errors,
               setError,
               clearErrors,
+              isSubmitting
             }}
           />
         </div>

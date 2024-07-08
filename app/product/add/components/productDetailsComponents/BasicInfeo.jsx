@@ -27,6 +27,7 @@ export const BasicData = ({
     getValues,
     setError,
     clearErrors,
+    isSubmitting
   } = formData;
   return (
     <div
@@ -73,6 +74,7 @@ export const BasicData = ({
         value={submitedData?.productDetails?.description_en}
         onChange={UdateBasicInfo}
         setSubmitedData={setSubmitedData}
+        isSubmitted={isSubmitting}
       />
       <DraftEditor
         field="Product Description in Arabic"
@@ -87,6 +89,7 @@ export const BasicData = ({
         value={submitedData?.productDetails?.description_ar}
         onChange={UdateBasicInfo}
         setSubmitedData={setSubmitedData}
+        isSubmitted={isSubmitting}
       />
       <SubCategoriesSelect
         submitedData={submitedData}
