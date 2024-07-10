@@ -141,10 +141,12 @@ export const TableData = ({
                           itemValue={item}
                         />
                       </td>
-                      <td className="whitespace-nowrap px-4 py-2 sticky right-0 font-medium text-gray-900   right-0   bg-white z-[3]  border-l ">
+                      <td className="whitespace-nowrap px-4 py-2 sticky   font-medium text-gray-900   right-0   bg-white z-[3]  border-l ">
                         <button
-                         className="p-3 border shadow h-[40px] flex items-center
-                          justify-center rounded-md text-sm" type="button">
+                          className="p-3 border shadow h-[40px] flex items-center
+                          justify-center rounded-md text-sm"
+                          type="button"
+                        >
                           Edit
                         </button>
                       </td>

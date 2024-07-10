@@ -10,6 +10,7 @@ import Pricing from "./pricing";
 import Tags from "./tags";
 import { useState } from "react";
 import { ProductVariation } from "../productVariations";
+import { ProductSettings } from "./productSettings";
 
 export const ProductDetailsComponent = ({
   submitedData,
@@ -27,19 +28,7 @@ export const ProductDetailsComponent = ({
           >
             {" "}
             <div className="w-[100%] shadow p-2 flex flex-col gap-3 ">
-              <p className="font-medium">Visablility</p>
-
-              <InputWithLabelComponent
-                Input={false}
-                selectArray={["hello", "dummy"]}
-                inputCss="w-[100%]"
-              />
-              <InputWithLabelComponent
-                label="Publish Date"
-                PlaceHolder="Add product name"
-                Input
-                inputType="date"
-              />
+            <ProductSettings/>
               <div className="main grid grid-cols-2 gap-1">
                 <Image
                   src={"/girl.jpg"}

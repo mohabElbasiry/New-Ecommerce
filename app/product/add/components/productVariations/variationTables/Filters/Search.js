@@ -40,8 +40,7 @@ export const SearchInput=({setAutoGenerate,autoGenerate,filters})=>{
     return(<>
      <InputWithLabelComponent
           Input
-          inputCss="border border-[#333] !p-2 !px-2 !text-black "
-          PlaceHolder="search"
+           PlaceHolder="search"
           onChange={(e) => HandleEventSearch(e)}
         />
     </>)

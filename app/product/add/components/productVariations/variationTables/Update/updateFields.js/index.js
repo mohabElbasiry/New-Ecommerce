@@ -14,8 +14,7 @@ export const UpdateFeildActionFunction = ({
   defaultNumberValues=0,
   setOpen=()=>{}
 }) => {
-  console.log(defaultNumberValues,'defaultNumberValues');
-   const FIlterOutF = (prev, value) => {
+    const FIlterOutF = (prev, value) => {
     return prev?.map((item, itemdx) => {
       if (item?.itemIndex === itemValue?.itemIndex) {
         return {
@@ -44,8 +43,8 @@ export const UpdateFeildActionFunction = ({
       <InputWithLabelComponent
         Input
         inputCss="w-fit   text-sm !px-1 shadow 
-    p-2 text-center  border border-black   flex justify-center !p-0 
-     shadow bg-white max-w-[100px] !p-3 h-[30px] min-w-[100px] mx-2"
+    p-2 text-center    flex justify-center !p-0 
+       bg-white max-w-[100px] !p-3 h-[30px] min-w-[100px] mx-2"
         inputType="number"
         value={value||1}
         onChange={(e) => {

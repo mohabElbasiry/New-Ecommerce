@@ -33,9 +33,10 @@ export const BasicData = ({
     <div
       className="gap-5
     bg-white shadow-md rounded-lg p-3
-    flex flex-col"
+    flex flex-col w-full"
     >
-      <InputWithLabelComponent
+     <div className="flex flex-col gap-2 w-full">
+     <InputWithLabelComponent
         Input
         label="product name in English"
         PlaceHolder="Add product name in English"
@@ -46,7 +47,7 @@ export const BasicData = ({
         onChange={(e) => {
           UdateBasicInfo(e, setSubmitedData);
         }}
-      />
+       />
       <InputWithLabelComponent
         Input
         label="product name in Arabic"
@@ -61,6 +62,7 @@ export const BasicData = ({
           UdateBasicInfo(e, setSubmitedData);
         }}
       />
+     </div>
       <DraftEditor
         field="Product Description in English"
         edit={false}
