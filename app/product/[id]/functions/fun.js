@@ -105,7 +105,7 @@ export const getUniqueColorsWithHexAndImages = (variants) => {
   return Array.from(colorMap.values());
 };
 
-export function generateQualities(prev, attributes) {
+export function generateQualities(prev, attributes,changeShapeData,callback) {
   const qualities = [];
 
   function generateCombinations(currentCombination, depth) {
@@ -149,25 +149,23 @@ export function generateQualities(prev, attributes) {
       return item;
     })
     .map((item, idx) => ({ ...item, itemIndex: idx }));
-
+    if(changeShapeData) return callback(AdjustArray,attributes);
   return AdjustArray;
 }
 
-export function shapeData(combinedTexts) {
+export function shapeData(combinedTexts,variants) {
   let data = [];
 
   variants[0].values.forEach((valueGroup, idx) => {
     let obj = {
       key: valueGroup.value_en,
-      value: [],
+      values: [],
       itemIndex: idx + 1,
       quantity: 0,
-      sku: "",
-      continue_selling: true,
-      price: 0,
-      compare_to_price: 0,
-      barcode: "",
-      images: [],
+   
+      min_price: 0,
+      max_price: 0,
+     
     };
 
     combinedTexts.forEach((valueItem, indx) => {
@@ -186,7 +184,7 @@ export function shapeData(combinedTexts) {
           // }
         });
 
-        obj.value.push({
+        obj.values.push({
           itemIndex: `${idx + 1}${indx + 1}`,
           val: str.trim(),
           quantity: valueItem.quantity,
@@ -200,7 +198,7 @@ export function shapeData(combinedTexts) {
       }
     });
     let qty = 0;
-    obj.value.map((value) => (qty += value.quantity));
+    obj.values.map((value) => (qty += value.quantity));
     obj.quantity = qty;
     data.push(obj);
   });
