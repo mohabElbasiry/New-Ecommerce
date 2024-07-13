@@ -159,6 +159,7 @@ export const BatchEdit = () => {
       </div>
       <div className="flex justify-end gap-1">
         <button
+          type="button"
           className="text-[#333] 
        p-2 bg-[#eee] !my-3 rounded-xl text-center
        justify-center 
@@ -168,6 +169,7 @@ export const BatchEdit = () => {
           Discard
         </button>
         <button
+          type="button"
           className="text-bwhite 
        p-2 bg-black !my-3 rounded-xl text-center
         justify-center 

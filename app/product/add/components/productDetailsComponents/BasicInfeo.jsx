@@ -63,6 +63,7 @@ export const BasicData = ({
         }}
       />
      </div>
+     
       <DraftEditor
         field="Product Description in English"
         edit={false}

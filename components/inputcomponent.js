@@ -47,9 +47,17 @@ export const InputWithLabelComponent = ({
             onChange={onChange}
           />
           {MoreInfo ? (
-            <div className="info mr-2 relative group cursor-pointer">
-              <img src="/icons8-info-24.png  " width={"25px"} height={"25px"} />
-              <div className="absolute w-[200px] right-[-10px] shadow text-sm rounded-lg bg-white p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
+            <div className="info mr-2 relative    ">
+              <img
+                src="/icons8-info-24.png   "
+                className="peer cursor-pointer"
+                width={"25px"}
+                height={"25px"}
+              />
+              <div
+                className="  absolute w-[200px]   right-[-10px] shadow text-sm rounded-lg bg-white 
+              p-3 opacity-0   peer-hover:opacity-100  transition-opacity duration-300 delay-150"
+              >
                 {MoreInfoText}
               </div>
             </div>

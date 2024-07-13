@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import CreateVariation from "./createVariations";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
 import { CollapseView } from "./collapseView";
  
-export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
+  const ProductVariation = ({ setSubmitedData, submitedData}) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
   const [view, setView] = useState("table");
  
 
-
+    console.log('rerender hassan');
   useEffect(() => {
     if (localStorage?.getItem("list")) {
       const list = JSON.parse(localStorage?.getItem("list"));
@@ -141,7 +141,7 @@ export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
           </p>
         ) : null}
 
-        {/* <div
+        <div
           className="change view flex items-center justify-between border mt-1 
         rounded-xl shadow-md p-1 "
         >
@@ -163,10 +163,11 @@ export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
 
             />
           </div>
-        </div> */}
+        </div>
 
         {view === "table" ? (
-          <VariationTable varitions={list} setSubmitedData={setSubmitedData} />
+          <VariationTable varitions={list} 
+          setSubmitedData={setSubmitedData} />
         ) : (
           <CollapseView varitions={list} />
         )}
@@ -174,3 +175,4 @@ export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
     </>
   );
 };
+export default memo(ProductVariation)

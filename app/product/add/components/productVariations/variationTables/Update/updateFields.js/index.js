@@ -12,7 +12,8 @@ export const UpdateFeildActionFunction = ({
   idx,
   itemValue,
   defaultNumberValues=0,
-  setOpen=()=>{}
+  setOpen=()=>{},
+  ...props
 }) => {
     const FIlterOutF = (prev, value) => {
     return prev?.map((item, itemdx) => {
@@ -51,7 +52,7 @@ export const UpdateFeildActionFunction = ({
           handleChangeItem(e?.target.value, idx);
         }}
         isRequired={false}
-        
+          {...props}
       />
     );
   } else {

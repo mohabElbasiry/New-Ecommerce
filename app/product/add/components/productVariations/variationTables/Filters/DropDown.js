@@ -1,6 +1,5 @@
 "use client";
 
- 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,11 +13,11 @@ import {
 import { useEffect, useState } from "react";
 
 export function DropdownMenuRadioGroupSelect({
-  list=[],
-  defaultSelected="",
-  handleChange=()=>{},
+  list = [],
+  defaultSelected = "",
+  handleChange = () => {},
 }) {
-  const [position, setPosition] =  useState('');
+  const [position, setPosition] = useState("");
 
   useEffect(() => {
     handleChange(position, defaultSelected);
@@ -26,10 +25,11 @@ export function DropdownMenuRadioGroupSelect({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button   className="w-fit h-[25px] text-sm bg-[#eee] mb-2 hover:bg-white text-black">
+        <Button
+          className="w-fit h-[25px] text-sm bg-[#eee] mb-2 hover:bg-white text-black"
+          type="button"
+        >
           {position === "" ? defaultSelected : position}
-
-          
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -42,8 +42,9 @@ export function DropdownMenuRadioGroupSelect({
 
           {list?.map((item) => {
             return (
-              <DropdownMenuRadioItem key={item} 
-              value={item}>{item}</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem key={item} value={item}>
+                {item}
+              </DropdownMenuRadioItem>
             );
           })}
         </DropdownMenuRadioGroup>
