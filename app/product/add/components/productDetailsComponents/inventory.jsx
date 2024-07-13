@@ -34,7 +34,7 @@ export const Inventory = ({ register }) => {
         />
         <InputWithLabelComponent
           labelcss="text-sm mb-1"
-          label="Barcode (ISBN, UPC, GTIN, etc.)"
+          label="Barcode"
           Input
           min={1}
           MoreInfo

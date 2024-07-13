@@ -19,21 +19,19 @@ export const InputWithLabelComponent = ({
 }) => {
   return (
     <div className="flex flex-col items-start gap-2 ">
-      <p className={` font-medium capitalize border-l  ${labelcss} `}>
+      <p className={` font-sans capitalize border-l  ${labelcss} `}>
         {label}
       </p>
       {Input ? (
-        <div className="flex items-center border   rounded-2xl  parent-div w-full ">
+        <div className="flex items-center border   rounded-md  overflow-hidden parent-div w-full ">
           {price ? <div className="pl-1 text-sm"> EGP</div> : null}
           <input
             className={`     w-full focus-none font-sem p-1
-           bg-transparent rounded-md 
+           bg-transparent   
           text-[#333]   appearance-none   
-           py-2 px-3   focus:outline-none     
+         px-3   focus:outline-none     
              border-s-0 rounded-s-none 
-            ${
-              isError ? "border-red-400" : ""
-            }     !shadow-none     ${inputCss} `}
+            ${isError ? "border-red-400" : ""}         ${inputCss} `}
             {...props}
             placeholder={price ? "--" : PlaceHolder}
             type={inputType}

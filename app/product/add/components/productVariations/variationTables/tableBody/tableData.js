@@ -17,7 +17,7 @@ export const TableData = ({
 
   return (
     <div className="max-h-[600px] max-w-[100%]  overflow-auto ">
-      <div className="rounded-lg border border-gray-200 relative">
+      <div className="rounded-lg   border-gray-200 relative">
         <BulkEdit
           checkedElements={checkedElements}
           setAutoGenerate={setAutoGenerate}
@@ -27,7 +27,7 @@ export const TableData = ({
 
         <table
           className="min-w-full divide-y-2 
-         divide-gray-200 bg-white text-sm    "
+         divide-gray-200 bg-[white] text-sm    "
         >
           <thead className="text-left   ">
             <tr>
@@ -59,9 +59,9 @@ export const TableData = ({
               <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 Barcode
               </th>
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900   sticky right-0 z-10 bg-white">
+              {/* <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900   sticky right-0 z-10 bg-white">
                 Edit
-              </th>
+              </th> */}
             </tr>
           </thead>
 
@@ -70,7 +70,7 @@ export const TableData = ({
               ? autoGenerate?.map((item, idx) => {
                   console.log(item, "tableItemsda");
                   return (
-                    <tr>
+                    <tr className="hover:bg-[#dddddd63] cursor-pointer p-3">
                       <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                         <SelectedArrayCheckBox
                           all={false}
@@ -141,7 +141,7 @@ export const TableData = ({
                           itemValue={item}
                         />
                       </td>
-                      <td className="whitespace-nowrap px-4 py-2 sticky   font-medium text-gray-900   right-0   bg-white z-[3]  border-l ">
+                      {/* <td className="whitespace-nowrap px-4 py-2 sticky   font-medium text-gray-900   right-0   bg-white z-[3]  border-l ">
                         <button
                           className="p-3 border shadow h-[40px] flex items-center
                           justify-center rounded-md text-sm"
@@ -149,7 +149,7 @@ export const TableData = ({
                         >
                           Edit
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
                   );
                 })

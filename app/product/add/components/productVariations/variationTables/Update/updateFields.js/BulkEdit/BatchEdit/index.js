@@ -88,7 +88,7 @@ export const BatchEdit = () => {
             setChange(e?.target.value);
           }}
           inputCss="w-fit text-sm !px-1 shadow 
-          -[#ddd]   flex justify-center  
+          bg-[#ddd]   flex justify-center  
        shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
      !p-5  !shadow-none
        "

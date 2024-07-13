@@ -7,10 +7,10 @@ import { BasicData } from "./BasicInfeo";
 import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
-import Tags from "./tags";
-import { useState } from "react";
+ import { useState } from "react";
 import ProductVariation from "../productVariations";
 import { ProductSettings } from "./productSettings";
+import Seo from "./tags";
 
 export const ProductDetailsComponent = ({
   submitedData,
@@ -18,7 +18,7 @@ export const ProductDetailsComponent = ({
   formData,
 }) => {
   return (
-    <div className=" w-[80%]  justify-end gap-1 p-3 ml-auto]">
+    <div className="    justify-end gap-1 p-3 ml-auto]">
       <div className="flex gap-3 mt-3 ml-auto  ">
         <div
           className="container p-3 m-1  w-[50%]
@@ -31,11 +31,11 @@ export const ProductDetailsComponent = ({
             formData={formData}
             setSubmitedData={setSubmitedData}
           />
-          <Tags />{" "}
+          <Seo />{" "}
         </div>
 
         <div className="w-[50%] ">
-          <div className="w-[100%] shadow p-2 flex flex-col gap-3 ">
+          <div className="w-[100%]   p-2 flex flex-col gap-3 ">
             <ProductSettings />
             <div className="main grid grid-cols-2 gap-1">
               <Image

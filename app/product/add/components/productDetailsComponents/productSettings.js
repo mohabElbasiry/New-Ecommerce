@@ -5,12 +5,13 @@ export const ProductSettings = () => {
 
   return (
     <>
-       <div className=" gap-3 flex justify-between w-full items-center mb-4">
+       <div className=" gap-3    mb-4">
        <InputWithLabelComponent
         Input={false}
-        selectArray={["hello", "dummy"]}
+        label="product status"
+        selectArray={["publish","draft"]}
          PlaceHolder="Add product name"
-        inputCss="w-full  "
+        inputCss=" !w-fit    text-sm  flex border-none items-center"
  
       />
      <InputTimePPicker/>

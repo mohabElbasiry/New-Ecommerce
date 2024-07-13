@@ -7,8 +7,8 @@ export const InputTimePPicker = () => {
   const [date, setDate] = useState(new Date());
 
   return (
-    <div className="flex items-center divcontainer  ">
-      <label className=" mr-1 text-sm text-nowrap" htmlFor="picker">Scheduale Time To Publish</label>
+    <div className="flex items-center divcontainer   ">
+      <label className=" mr-1 text-xs text-nowrap w-full h-full p-3" htmlFor="picker">Scheduale Time To Publish</label>
 
       <Flatpickr
       id="picker"
@@ -22,7 +22,7 @@ export const InputTimePPicker = () => {
           dateFormat: "Y-m-d H:i",
           animate: true,
         }}
-        style={{ width: "100%" }}
+        style={{ width: "100%",fontSize:'13px' }}
       />
     </div>
   );

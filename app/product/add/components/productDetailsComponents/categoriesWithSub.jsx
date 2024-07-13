@@ -22,13 +22,13 @@ export default function SubCategoriesSelect({ register,error }) {
        />
 
       {/* <hr className="w-[100px]  bg-black" /> */}
-      <InputWithLabelComponent
+      {/* <InputWithLabelComponent
         Input={false}
         selectArray={["hello", "dummy"]}
         label="Sub Category"
         PlaceHolder="Add product name"
         inputCss="w-[100%]"
-      />
+      /> */}
     </div>
   );
 }

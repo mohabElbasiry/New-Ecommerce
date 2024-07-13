@@ -32,14 +32,14 @@ export const SelectedArrayCheckBox = ({
           }
         }}
         checked={checkedElements?.length}
-        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3"
+        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3 "
       />
     );
   } else {
     return (
       <input
         type={"checkbox"}
-        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3"
+        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3 "
         onChange={(e) => CheckBox(e, idx)}
         checked={checkedElements?.some((item) => item === idx)}
       />
