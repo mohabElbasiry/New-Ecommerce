@@ -9,6 +9,61 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { getEditorDefaults } from '@pqina/pintura';
+
+import '@pqina/pintura/pintura.css';
+
+import { PinturaEditor } from "@pqina/react-pintura";
+
+// pintura
+import { pintura } from "@pqina/pintura/pintura.module.css";
+import { index as pinturaTheme } from "./index.module.css";
+
+import {
+  // editor
+  createDefaultImageReader,
+  createDefaultImageWriter,
+  createDefaultShapePreprocessor,
+
+  // plugins
+  setPlugins,
+  plugin_crop,
+  plugin_finetune,
+  plugin_finetune_defaults,
+  plugin_filter,
+  plugin_filter_defaults,
+  plugin_annotate,
+  markup_editor_defaults,
+} from "@pqina/pintura";
+
+import {
+  LocaleCore,
+  LocaleCrop,
+  LocaleFinetune,
+  LocaleFilter,
+  LocaleAnnotate,
+  LocaleMarkupEditor,
+} from "@pqina/pintura/locale/en_GB";
+
+setPlugins(plugin_crop, plugin_finetune, plugin_filter, plugin_annotate);
+
+const editorDefaults = {
+  utils: ["crop", "finetune", "filter", "annotate"],
+  imageReader: createDefaultImageReader(),
+  imageWriter: createDefaultImageWriter(),
+  shapePreprocessor: createDefaultShapePreprocessor(),
+  ...plugin_finetune_defaults,
+  ...plugin_filter_defaults,
+  ...markup_editor_defaults,
+  locale: {
+    ...LocaleCore,
+    ...LocaleCrop,
+    ...LocaleFinetune,
+    ...LocaleFilter,
+    ...LocaleAnnotate,
+    ...LocaleMarkupEditor,
+  },
+};
 
 export default function UploadFile() {
   const InputRef = useRef();
@@ -16,7 +71,7 @@ export default function UploadFile() {
   const [uploadFiles, setUploadFiles] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [UrlsAfterUpload, setUrlsAfterUpload] = useState([]);
-
+  const [result, setResult] = useState("");
   const handleFileChange = (event) => {
     
     const files = Array.from(event.target.files);
@@ -40,7 +95,10 @@ export default function UploadFile() {
   useEffect(() => {
     if (uploadFiles.length) handleUploadFile_2();
   }, [uploadFiles]);
+  const [inlineResult, setInlineResult] = useState();
 
+
+     
   function handleUploadFile() {
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
@@ -124,8 +182,19 @@ export default function UploadFile() {
             onChange={handleFileChange}
           />
         </label>
+        <div>
+      <h2>Example</h2>
+
+
+
+      {!!result.length && (
+        <p>
+          <img src={result} alt="" />
+        </p>
+      )}
+    </div>
       </div>
-      <div className="mt-4 grid-cols-6 grid  gap-4">
+      <div className="mt-4 grid-cols-1 grid  gap-4">
         
         {selectedFiles.map((file, index) => (
           <div className="" key={index}>
@@ -134,12 +203,17 @@ export default function UploadFile() {
               className="relative border rounded-2xl aspect-square  overflow-hidden p-2"
             >
               <input className="absolute top-2 left-3 z-50" type="checkbox" />
-              <Image
-                fill
-                src={URL.createObjectURL(file)}
-                alt={file.name}
-                className=" w-full object-contain object-center  "
-              />
+              <div style={{ height: "70vh" }}>
+        <PinturaEditor
+          {...editorDefaults}
+          className={`${pintura} ${pinturaTheme}`}
+          src={URL.createObjectURL(file)}
+          alt={file.name}
+          onLoad={(res) => console.log("load image", res)}
+          onProcess={({ dest }) => setResult(URL.createObjectURL(dest))}
+        />
+      </div>
+             
               <button
                 className="absolute top-2 right-5 cursor-pointer z-[30]"
                 onClick={() => deleteSpecificImage(idx, file?.itemIndex)}
