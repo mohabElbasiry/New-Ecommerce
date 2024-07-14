@@ -141,7 +141,7 @@ import { CollapseView } from "./collapseView";
           </p>
         ) : null}
 
-        {/* <div
+        <div
           className="change view flex items-center justify-between border mt-1 
         rounded-xl shadow-md p-1 "
         >
@@ -163,7 +163,7 @@ import { CollapseView } from "./collapseView";
 
             />
           </div>
-        </div> */}
+        </div>
 
         {view === "table" ? (
           <VariationTable varitions={list} 

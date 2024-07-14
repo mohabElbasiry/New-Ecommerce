@@ -63,6 +63,7 @@ export const UpdateQualityImages = ({
         className="opacity-0 absolute top-0 left-0 z-[3] w-full h-full"
         multiple
         onChange={(e) => setFIleUploads(e, item?.itemIndex)}
+        onClick={e=>e.stopPropagation()}
       />
       <button>
         {item?.image?.length ? (
@@ -78,7 +79,10 @@ export const UpdateQualityImages = ({
                   <button
                     type="button"
                     className="cursor-pointer z-[30]"
-                    onClick={() => deleteSpecificImage(idx, item?.itemIndex)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      return deleteSpecificImage(idx, item?.itemIndex);
+                    }}
                   >
                     x
                   </button>

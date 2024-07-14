@@ -5,8 +5,12 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  ChevronDown,
 } from "@/components/ui/accordion";
 import { UpdateFeildActionFunction } from "../variationTables/Update/updateFields.js";
+import { InputWithLabelComponent } from "@/components/inputcomponent.js";
+import { SelectedArrayCheckBox } from "../variationTables/Update/selectedArray.js";
+import { UpdateQualityImages } from "../variationTables/Update/updateImages.js";
 export const CollapseView = ({ varitions = [] }) => {
   const [data, setData] = useState([]);
   function generateQualities(prev, attributes) {
@@ -127,23 +131,123 @@ export const CollapseView = ({ varitions = [] }) => {
         {data?.map((item, idx) => {
           return (
             <AccordionItem key={item?.key} value={item?.key}>
-              <AccordionTrigger className="flex items-center w-full justify-between">
-                <p> {item?.key}</p>
+              <AccordionTrigger
+                className="flex 
+              items-center w-full justify-between
+              border-[#ddd] border-b"
+              >
+                <div className="flex items-center gap-3">
+                  <SelectedArrayCheckBox
+                    all={false}
+                    // setCheckedElements={setCheckedElements}
+                    idx={idx}
+                    // autoGenerate={autoGenerate}
+                    // checkedElements={checkedElements}
+                  />
+                  <UpdateQualityImages
+                    // setAutoGenerate={setAutoGenerate}
+                    // setBeforeFiltered={setBeforeFiltered}
+                    index={idx}
+                    item={item}
+                  />
+                </div>
+                <div>
+                  <p> {item?.key}</p>
+                  <p className="pl-5">
+                    {item?.value?.length}
+                    varients
+                  </p>
+                </div>
+                <div className="flex gap-1 items-center">
+                  <InputWithLabelComponent
+                    // label="compare To Price"
+                    PlaceHolder="Add product price"
+                    Input
+                    inputType="number"
+                    // register={{ ...register("price") }}
+                    price
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    inputCss="max-w-[150px] h-[35px]"
+                  />
 
-                <UpdateFeildActionFunction
-                 
-                  // checkedElements={checkedElements}
-                  item
-                  idx={idx}
-                  property={"quantity"}
-                  // setAutoGenerate={setAutoGenerate}
-                  // setBeforeFiltered={setBeforeFiltered}
-                  value={item?.quantity}
-                  itemValue={item}
-                />
+                  <UpdateFeildActionFunction
+                    // checkedElements={checkedElements}
+                    item
+                    idx={idx}
+                    property={"quantity"}
+                    // setAutoGenerate={setAutoGenerate}
+                    // setBeforeFiltered={setBeforeFiltered}
+                    inputCss={
+                      "max-w-[100px]  h-[35px] text-left p-2 !bg-[#eee]"
+                    }
+                    disabled
+                    value={item?.quantity}
+                    itemValue={item}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  />
+                </div>
               </AccordionTrigger>
-              {item?.value?.map((valueItem) => {
-                return <AccordionContent>{valueItem?.val}</AccordionContent>;
+              {item?.value?.map((valueItem, idx) => {
+                return (
+                  <AccordionContent>
+                    <div className="flex items-center justify-between pl-10  border-[#ddd] border-b">
+                      <div className="flex items-center gap-3   ">
+                        <SelectedArrayCheckBox
+                          all={false}
+                          // setCheckedElements={setCheckedElements}
+                          idx={idx}
+                          // autoGenerate={autoGenerate}
+                          // checkedElements={checkedElements}
+                        />
+                        <UpdateQualityImages
+                          // setAutoGenerate={setAutoGenerate}
+                          // setBeforeFiltered={setBeforeFiltered}
+                          index={idx}
+                          item={valueItem}
+                        />
+                      </div>
+                      <div>
+                        <p> {valueItem?.val}</p>
+                      </div>
+                      <div className="flex gap-1 items-center">
+                        <InputWithLabelComponent
+                          // label="compare To Price"
+                          PlaceHolder="Add product price"
+                          Input
+                          inputType="number"
+                          // register={{ ...register("price") }}
+                          price
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          inputCss="max-w-[150px] h-[35px]"
+                        />
+
+                        <UpdateFeildActionFunction
+                          // checkedElements={checkedElements}
+                          item
+                          idx={idx}
+                          property={"quantity"}
+                          // setAutoGenerate={setAutoGenerate}
+                          // setBeforeFiltered={setBeforeFiltered}
+                          inputCss={
+                            "max-w-[100px]  h-[35px] text-left p-2 !bg-[#eee]"
+                          }
+                          disabled
+                          value={valueItem?.quantity}
+                          itemValue={valueItem}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </AccordionContent>
+                );
               })}
             </AccordionItem>
           );
