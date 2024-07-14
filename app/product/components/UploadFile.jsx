@@ -9,16 +9,47 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-
+import { ReactPhotoEditor } from 'react-photo-editor'
+import 'react-photo-editor/dist/style.css'
 export default function UploadFile() {
   const InputRef = useRef();
   const InputUrlsRef = useRef();
   const [uploadFiles, setUploadFiles] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [UrlsAfterUpload, setUrlsAfterUpload] = useState([]);
+  const [file, setFile] = useState()
+  const [showModal, setShowModal] = useState(false)
+  // Show modal if file is selected
+  const showModalHandler = () => {
+    // if (file) {
+      setShowModal(true)
+    // }
+  }
+
+  // Hide modal
+  const hideModal = () => {
+    setShowModal(false)
+  }
+
+  // Save edited image
+  const handleSaveImage = (editedFile) => {
+
+    setSelectedFiles((prev) =>{
+      // console.log();
+      return  [...prev.map(file =>file.name===editedFile.name?editedFile:file)]
+    });
+    setFile(editedFile);
+  };
+
+  const setFileData = (file) => {
+    if (file ) {
+      setFile(file)
+    }
+  }
+
 
   const handleFileChange = (event) => {
-    
+   
     const files = Array.from(event.target.files);
     setUploadFiles(files);
     setSelectedFiles((prev) => [...files, ...prev]);
@@ -38,8 +69,10 @@ export default function UploadFile() {
   };
 
   useEffect(() => {
-    if (uploadFiles.length) handleUploadFile_2();
-  }, [uploadFiles]);
+    // if (uploadFiles.length)
+      //  handleUploadFile_2();
+if(file)showModalHandler()
+  }, [uploadFiles,file]);
 
   function handleUploadFile() {
     const fileInput = document.getElementById("fileInput");
@@ -125,6 +158,12 @@ export default function UploadFile() {
           />
         </label>
       </div>
+      <ReactPhotoEditor
+        open={showModal}
+        onClose={hideModal}
+        file={file}
+        onSaveImage={handleSaveImage}
+      />
       <div className="mt-4 grid-cols-6 grid  gap-4">
         
         {selectedFiles.map((file, index) => (
@@ -142,9 +181,10 @@ export default function UploadFile() {
               />
               <button
                 className="absolute top-2 right-5 cursor-pointer z-[30]"
-                onClick={() => deleteSpecificImage(idx, file?.itemIndex)}
+                onClick={() => { setFileData(file)
+               }}
               >
-                x
+               edit 
               </button>
             </div>
             <p className="mt-2 text-center text-sm">{file.name}</p>
@@ -172,7 +212,8 @@ export default function UploadFile() {
             </div>
             {/* <p className="mt-2 text-center text-sm">{file.name}</p> */}
           </div>
-        ))}
+        ))} 
+      
       </div>
     </>
   );
