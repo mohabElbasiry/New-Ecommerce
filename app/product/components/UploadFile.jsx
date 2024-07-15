@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ReactPhotoEditor } from 'react-photo-editor'
-import 'react-photo-editor/dist/style.css'
+import { ReactPhotoEditor } from "@/components/ReactPhotoEditor"; 
 export default function UploadFile() {
+  
   const InputRef = useRef();
   const InputUrlsRef = useRef();
   const [uploadFiles, setUploadFiles] = useState([]);
@@ -21,14 +21,15 @@ export default function UploadFile() {
   const [showModal, setShowModal] = useState(false)
   // Show modal if file is selected
   const showModalHandler = () => {
-    // if (file) {
+    if (file) {
       setShowModal(true)
-    // }
+    }
   }
 
   // Hide modal
   const hideModal = () => {
     setShowModal(false)
+    setFile()
   }
 
   // Save edited image
@@ -71,7 +72,8 @@ export default function UploadFile() {
   useEffect(() => {
     // if (uploadFiles.length)
       //  handleUploadFile_2();
-if(file)showModalHandler()
+// if(file)showModalHandler()
+  console.log("redender");
   }, [uploadFiles,file]);
 
   function handleUploadFile() {
@@ -163,6 +165,8 @@ if(file)showModalHandler()
         onClose={hideModal}
         file={file}
         onSaveImage={handleSaveImage}
+        selectedFiles={selectedFiles}
+        setFileData={setFileData}
       />
       <div className="mt-4 grid-cols-6 grid  gap-4">
         
@@ -172,7 +176,7 @@ if(file)showModalHandler()
               key={index}
               className="relative border rounded-2xl aspect-square  overflow-hidden p-2"
             >
-              <input className="absolute top-2 left-3 z-50" type="checkbox" />
+              <input className="absolute top-2 left-3 z-10" type="checkbox" />
               <Image
                 fill
                 src={URL.createObjectURL(file)}
@@ -182,6 +186,7 @@ if(file)showModalHandler()
               <button
                 className="absolute top-2 right-5 cursor-pointer z-[30]"
                 onClick={() => { setFileData(file)
+                showModalHandler()
                }}
               >
                edit 
