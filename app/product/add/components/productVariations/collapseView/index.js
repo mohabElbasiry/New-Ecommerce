@@ -1,14 +1,15 @@
 "use client";
-import { useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
- } from "@/components/ui/accordion";
-  import { shapeData } from "./functions/datashape.js";
+} from "@/components/ui/accordion";
+import { shapeData } from "./functions/datashape.js";
 import VarientKey from "./varientKey/index.js";
-import  VarientValues  from "./varientValues/index.js";
-export const CollapseView = ({ varitions = [] }) => {
+import VarientValues from "./varientValues/index.js";
+const CollapseView = ({ varitions = [] }) => {
+  console.log("render", varitions);
   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
@@ -60,6 +61,7 @@ export const CollapseView = ({ varitions = [] }) => {
 
     return AdjustArray;
   }
+  const [checkedArray, setChecked] = useState([]);
 
   useMemo(() => {
     const items = JSON.parse(localStorage?.getItem("saved"));
@@ -81,7 +83,7 @@ export const CollapseView = ({ varitions = [] }) => {
         BeforeFilterData: shapeData(combinedTexts),
       });
     }
-  }, [JSON.stringify(varitions)]);
+  }, [varitions]);
   const MinAndMax = (values) => {
     const price = values.map((value) => {
       return +value.price;
@@ -91,6 +93,10 @@ export const CollapseView = ({ varitions = [] }) => {
       min: Math.min(...price),
     };
   };
+  const callculateQUantity = (values) => {
+    return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
+  };
+ 
   return (
     <>
       <Accordion type="single" collapsible className="w-full">
@@ -100,16 +106,28 @@ export const CollapseView = ({ varitions = [] }) => {
               <VarientKey
                 setData={setData}
                 key={item?.key}
+                name={item?.key}
                 maxPrice={MinAndMax(item?.values)?.max}
                 minPrice={MinAndMax(item?.values)?.min}
-                TotalQuantity={item?.quantity}
+                TotalQuantity={callculateQUantity(item?.values)}
                 varientsNumbers={item?.values?.length}
                 itemIndex={item?.itemIndex}
+                setChecked={setChecked}
+                selectedArray={item?.values}
+                checkedArray={checkedArray}
               />
 
               {item?.values?.map((valueItem, idx) => {
                 return (
-                  <VarientValues itemValue={valueItem} parentIndex={item?.itemIndex}  idx={idx} setData={setData} />
+                  <VarientValues
+                    itemValue={valueItem}
+                    parentIndex={item?.itemIndex}
+                    idx={idx}
+                    setData={setData}
+                    checkedArray={checkedArray}
+                    setChecked={setChecked}
+                    parentname={item?.key}
+                  />
                 );
               })}
             </AccordionItem>
@@ -119,3 +137,4 @@ export const CollapseView = ({ varitions = [] }) => {
     </>
   );
 };
+export default memo(CollapseView);

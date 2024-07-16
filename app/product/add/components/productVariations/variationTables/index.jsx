@@ -9,7 +9,7 @@ import { filterData } from "./Filters/function/FilterFunction";
 import { CustomDialoge } from "@/components/Modal";
 import { GroupByFunction } from "./Filters/GroupBy";
 import { SortComponent } from "./Filters/sort";
-import { CollapseView } from "../collapseView";
+import  CollapseView  from "../collapseView";
 
 const VariationTable = ({
   varitions,

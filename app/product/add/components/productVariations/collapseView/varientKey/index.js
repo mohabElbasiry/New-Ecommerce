@@ -1,7 +1,8 @@
 import { TooltipF } from "@/components/ToolTipCostom";
 import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
-import { memo, useState } from "react";
-import {   updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
+import { memo, useMemo, useState } from "react";
+import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
+import { isEqual } from "lodash";
 
 const VarientKey = ({
   varientsNumbers = 0,
@@ -11,14 +12,14 @@ const VarientKey = ({
   TotalQuantity = 0,
   setData,
   itemIndex = -1,
+  selectedArray = [],
+  setChecked,
+  checkedArray=[],
+  name,
 }) => {
-  const [value, setValue] = useState({
-    default: +maxPrice,
-    AfterValue: "",
-  });
-
-  console.log('rerender');
-
+  const SelectedItems = useMemo(() => {
+    return selectedArray?.map((_, idx) => idx);
+  }, [selectedArray]);
   return (
     <AccordionTrigger
       className="flex 
@@ -28,13 +29,35 @@ const VarientKey = ({
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
-          onClick={(e) => {
-            e.stopPropagation();
+          name={name}
+          checked={
+            checkedArray?.length
+              ? checkedArray.find((item) => item?.key === name)
+                ? true
+                : false
+              : false
+          }
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            console.log(e.target.name);
+            if (checked) {
+              setChecked((prev = []) => {
+                return [...prev, { key: e.target.name, SelectedItems }];
+              });
+            } else {
+              setChecked((prev = []) => {
+                const deletedItem = prev?.filter(
+                  (item) => item?.key !== e.target.name
+                );
+                return deletedItem;
+              });
+            }
           }}
         />
       </div>
       <div>
-        <p> {key}</p>
+        <p> {name}</p>
         <p className="pl-5">
           {varientsNumbers}
           varients
@@ -43,7 +66,7 @@ const VarientKey = ({
       <div className="flex gap-1 items-center">
         <input
           type="number"
-          defaultValue={TotalQuantity}
+          value={TotalQuantity}
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -63,18 +86,21 @@ const VarientKey = ({
                   setData((prev) => {
                     return {
                       ...prev,
-                      Data: updatePropertyParent(prev?.Data, itemIndex, e.target.value),
+                      Data: updatePropertyParent(
+                        prev?.Data,
+                        itemIndex,
+                        e.target.value
+                      ),
                     };
                   });
                 }
                 return;
               }}
             />
-            
           </div>
         </TooltipF>
       </div>
     </AccordionTrigger>
   );
 };
-export default  memo(VarientKey)
+export default memo(VarientKey);

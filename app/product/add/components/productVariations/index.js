@@ -3,8 +3,8 @@ import CreateVariation from "./createVariations";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
-import { CollapseView } from "./collapseView";
-
+import CollapseView from "./collapseView";
+ 
 const ProductVariation = ({ setSubmitedData, submitedData }) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
