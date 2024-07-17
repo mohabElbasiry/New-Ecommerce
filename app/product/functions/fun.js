@@ -1,13 +1,12 @@
 const baseUrl ="http://localhost:3001/api/v1/"
 export const uploadingAssets = async (endpoint, uploadedFile) => {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjY3MDE4ODBkZjljOWRlMTFiOTVlN2QiLCJpYXQiOjE3MjA2MDEyMTQsImV4cCI6MTcyODM3NzIxNH0.xf-eqiVNwZbz38l9JMdscfG5ec9BoLHgJMyQA577WbI"
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYzYzdiYzg2MjI2MjU1M2JkYjYwNyIsImNyZWF0ZWRBdCI6MTcyMTEyMTkxNTkwNSwiaWF0IjoxNzIxMTIxOTE1LCJleHAiOjE3Mjg4OTc5MTV9.E4-W-T_Dyyyyh9kX7eaSn5QhUtxmy4ZmF3ZAeaRlFeo"
     const formData = new FormData();
-    formData.append("files", uploadedFile);
+    formData.append("file", uploadedFile);
     try {
       const response = await fetch(baseUrl + endpoint, {
         method: "POST",
         headers: {
-          // Cookie: `session=${session}; session.sig=${sessionSig}`,`
           Authorization: `Bearer ${token}`,
         },
   
@@ -17,7 +16,7 @@ export const uploadingAssets = async (endpoint, uploadedFile) => {
       return data;
     } catch (error) {
       console.log(error);
-      throw error;
+     
     }
   };
   export function getAverageColor(imageElement, ratio) {

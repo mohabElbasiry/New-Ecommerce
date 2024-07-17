@@ -8,12 +8,58 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor"; 
+async function fetchImage(url) {
+  try {
+      // Fetch the image from the URL
+      const response = await fetch(url);
+      
+      // Check if the fetch was successful
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      
+      // Convert the response to a Blob (binary large object)
+      const blob = await response.blob();
+      
+      // Create an object URL from the Blob
+      const objectURL = URL.createObjectURL(blob);
+      
+      // Create an Image element
+      const img = document.createElement('img');
+      img.src = objectURL;
+      
+      // Append the image to the body (or any other element)
+      document.body.appendChild(img);
+      
+      // If you need the binary data, you can use a FileReader to read the Blob
+      const reader = new FileReader();
+      reader.onload = function() {
+          const arrayBuffer = reader.result;
+          // Do something with the arrayBuffer, such as converting to base64
+          const base64String = btoa(
+              new Uint8Array(arrayBuffer)
+              .reduce((data, byte) => data + String.fromCharCode(byte), '')
+          );
+          console.log(base64String); // The base64 representation of the image
+      };
+      reader.readAsArrayBuffer(blob);
+  } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+  }
+}
+
+// URL of the image file
+const imageUrlCustom = 'https://imagecdn.prod.floward.com/web/Files/thumPro/47b4c4a4-1b9a-45d5-91bd-a1f5adebb96e.jpg?w=600&auto=format';
+
+// Fetch and display the image
+
+
 export default function UploadFile() {
-  
+  // fetchImage(imageUrlCustom);
   const InputRef = useRef();
   const InputUrlsRef = useRef();
+  const progressBar = useRef();
   const [uploadFiles, setUploadFiles] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [UrlsAfterUpload, setUrlsAfterUpload] = useState([]);
@@ -64,7 +110,7 @@ export default function UploadFile() {
     // setSelectedFiles((prev) => [...file, ...prev]);
   };
   const handleUploadFile_2 = async () => {
-    const urls = await uploadingAssets("upload/files", uploadFiles);
+    const urls = await uploadingAssets("upload/file", selectedFiles[0]);
     console.log("urls", urls);
     //  setUrlsAfterUpload(urls)
   };
@@ -77,28 +123,35 @@ export default function UploadFile() {
   }, [uploadFiles,file]);
 
   function handleUploadFile() {
-    const fileInput = document.getElementById("fileInput");
-    const file = fileInput.files[0];
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYzYzdiYzg2MjI2MjU1M2JkYjYwNyIsImNyZWF0ZWRBdCI6MTcyMTEyMTkxNTkwNSwiaWF0IjoxNzIxMTIxOTE1LCJleHAiOjE3Mjg4OTc5MTV9.E4-W-T_Dyyyyh9kX7eaSn5QhUtxmy4ZmF3ZAeaRlFeo";
+    const headers = `Bearer ${token}`;
+    const file = selectedFiles[0];
     const formData = new FormData();
     formData.append("file", file);
-
+  
     const xhr = new XMLHttpRequest();
-
+  
     xhr.upload.addEventListener("progress", function (e) {
       if (e.lengthComputable) {
         const percentComplete = (e.loaded / e.total) * 100;
-        const progressBar = document.getElementById("progressBar");
-        progressBar.style.width = percentComplete + "%";
-        progressBar.innerText = Math.round(percentComplete) + "%";
+        console.log("percentComplete", percentComplete);
+        // const progressBar = document.getElementById("progressBar");
+         progressBar.current.style.width = percentComplete + "%";
+        // progressBar.innerText = Math.round(percentComplete) + "%";
       }
     });
-
-    xhr.open("POST", "upload/files"); // Replace with your server's upload endpoint
+  
+    xhr.open("POST", "upload/file"); // Replace with your server's upload endpoint
+    xhr.setRequestHeader("Authorization", headers);
     xhr.send(formData);
   }
   return (
     <>
-      <div className="max-w-screen">
+      <div className="max-w-screen relative border ">
+      <div className="bg-gray-200 rounded-full h-2 absolute z-10 inset-x-0 top-1 left-0">
+            <div className="bg-blue-600 h-2 rounded-full" ref={progressBar} style={{width:"0%"}}></div>
+        </div>
+{selectedFiles.length? <Button type="button" className="absolute  z-50 right-5  top-5 !mx-auto" onClick={handleUploadFile}>Upload</Button>:null}
         <label className=" relative flex justify-center items-center flex-col gap-10 w-full  h-44 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
           <span className="flex justify-center items-center gap-5  bg-white ">
             <button
