@@ -25,7 +25,7 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
       <div className="w-[100%] ">
         <p className="my-2 ">Add Varations</p>
         {list?.length ? (
-          <div className="border w-[100%] pb-3 px-0 rounded-md shadow">
+          <div className="  w-[100%] pb-3 px-0 rounded-md   border">
             <Reorder.Group
               values={list}
               onReorder={setList}
@@ -140,9 +140,9 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
           </p>
         ) : null}
 
-        <div
-          className="change view flex items-center justify-between border mt-1 
-        rounded-xl shadow-md p-1 "
+        {/* <div
+          className="change view flex items-center justify-between  s mt-1 
+        rounded-xl  p-1 "
         >
           Preference View
           <div className="GroupedButton flex gap-4 ">
@@ -161,12 +161,13 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
               onClick={() => setView("table")}
             />
           </div>
-        </div>
+        </div> */}
 
-        {view === "table" ? (
-          <VariationTable varitions={list} setSubmitedData={setSubmitedData} />
-        ) : null}
-        {view !== "table" ? <CollapseView varitions={list} /> : null}
+{/* <VariationTable varitions={list} setSubmitedData={setSubmitedData} /> */}
+        {/* {view !== "table" ? (
+        ) : null} */}
+        {/* {view  == "table" ? <CollapseView varitions={list} /> : null} */}
+        <CollapseView varitions={list} /> 
       </div>
     </>
   );

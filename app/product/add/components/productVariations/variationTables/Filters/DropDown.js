@@ -23,10 +23,11 @@ export function DropdownMenuRadioGroupSelect({
     handleChange(position, defaultSelected);
   }, [position]);
   return (
-    <DropdownMenu>
+    <DropdownMenu id={'Grouped'}>
       <DropdownMenuTrigger asChild>
         <Button
-          className="w-fit h-[25px] text-sm bg-white mb-2 hover:bg-white text-black"
+          className="  h-[25px] text-sm  
+             hover:bg-white text-black  bg-[#eee] w-[100px]"
           type="button"
         >
           {position === "" ? defaultSelected : position}

@@ -5,7 +5,7 @@ export const ProductSettings = () => {
 
   return (
     <>
-       <div className=" gap-3    mb-4">
+       <div className=" gap-3   flex items-end justify-between  mb-4">
        <InputWithLabelComponent
         Input={false}
         label="product status"

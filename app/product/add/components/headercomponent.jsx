@@ -6,7 +6,7 @@ export default function Headercomponent({ handleSubmit, children,submittedData }
   };
   return (
     <form onSubmit={handleSubmit(SubmittingData)}>
-      <div className=" h-[50px] items-center flex justify-between  sticky top-0 bg-white   px-3 py-4  ">
+      <div className=" h-[50px] items-center flex justify-between  sticky top-0 bg-[#f4f7f6]  px-3 py-4  ">
         <h1 className=" font-semibold pl-3 capitalize">Add Product</h1>
         <div className="flex">
           <div className="icons flex  gap-5">

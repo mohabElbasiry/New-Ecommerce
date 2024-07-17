@@ -20,7 +20,10 @@ const VarientValues = ({
 }) => {
   return (
     <AccordionContent>
-      <div className="flex items-center justify-between pl-10  border-[#ddd] border-b">
+      <div
+        className="flex items-center justify-between pl-10
+        border-[#ddd] border-b"
+      >
         <div className="flex items-center gap-3   ">
           <input
             type="checkbox"
@@ -66,25 +69,29 @@ const VarientValues = ({
                   const itemkey = checkedArray.find(
                     (item) => item?.key === parentname
                   );
-                  console.log("object",itemkey);
+                  console.log("object", itemkey?.SelectedItems, itemkey);
 
                   if (itemkey && !itemkey?.SelectedItems.length) {
-
-                    console.log("object");
-
                     const FilterItemKeyPrev = prev?.filter(
                       (item) => item?.key !== parentname
                     );
 
                     return FilterItemKeyPrev;
                   } else {
+                    console.log("object", checkedArray);
+
                     console.log("object");
                     const FilterItemKeyPrev = prev?.map((item) => {
                       if (item?.key === parentname) {
+                        if (item?.SelectedItems.length === 1) {
+                          return [];
+                        }
                         return {
                           ...item,
                           SelectedItems: item?.SelectedItems.filter(
-                            (item) => item !== idx
+                            (item, _idx) => {
+                              return _idx !== idx;
+                            }
                           ),
                         };
                       }

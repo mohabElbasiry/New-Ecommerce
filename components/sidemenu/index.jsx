@@ -2,7 +2,7 @@ import './index.css'
 export const SideMenu = ({ children }) => {
   return (
     <div className="flex items-start justify-start ">
-      <div className="flex h-screen flex-col w-[30%] justify-between  bg-[#eeeeee36] sticky top-0">
+      <div className="flex h-screen flex-col w-[30%] justify-between  bg-[#f4f7f6] sticky top-0">
         <div className="px-4 py-6">
           <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
             Logo
