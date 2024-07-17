@@ -157,7 +157,7 @@ export const SideMenu = ({ children }) => {
         </div>
       </div>
 
-      <div className=' rounded-xl'>
+      <div className=' rounded-xl flex-1 '>
 
       {children}
       </div>
