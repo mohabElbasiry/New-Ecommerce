@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { variants } from "../data";
 export const handleSelectedOptionsStateObj = (options) => {
   let SelectedOptionsStateObj = {};
   options.map(
@@ -69,13 +70,12 @@ export const handleGetOptionAvailability = (
 };
 export const getUniqueColorsWithHexAndImages = (variants) => {
   const colorMap = new Map();
-const isHaveHux = variants.every((variant) =>variant?.color_hex?.length > 0);
-const isHaveImages=variants.every((variant) =>variant?.images?.length > 0) 
+  const isHaveHux = variants.every((variant) => variant?.color_hex?.length > 0);
+  const isHaveImages = variants.every((variant) => variant?.images?.length > 0);
   variants.forEach((variant) => {
     const color = variant.options.color;
     if (color) {
-      if (isHaveHux&&
-        isHaveImages) {
+      if (isHaveHux && isHaveImages) {
         if (!colorMap.has(color)) {
           colorMap.set(color, {
             color,
@@ -83,26 +83,19 @@ const isHaveImages=variants.every((variant) =>variant?.images?.length > 0)
             images: variant?.images,
           });
         }
-      } else if (
-      !isHaveHux&&
-        isHaveImages
-      ) {
+      } else if (!isHaveHux && isHaveImages) {
         if (!colorMap.has(color)) {
           colorMap.set(color, {
             color,
-           
+
             images: variant?.images,
           });
         }
-      }else if (
-        isHaveHux&&
-        !isHaveImages
-      ) {
+      } else if (isHaveHux && !isHaveImages) {
         if (!colorMap.has(color)) {
           colorMap.set(color, {
             color,
             hex: variant.color_hex,
-            
           });
         }
       }
@@ -112,38 +105,37 @@ const isHaveImages=variants.every((variant) =>variant?.images?.length > 0)
   return Array.from(colorMap.values());
 };
 
- 
+export function generateQualities(prev, attributes,changeShapeData,callback) {
+  const qualities = [];
 
-export function generateQualities(prev, attributes) {
-    const qualities = [];
-  
-    function generateCombinations(currentCombination, depth) {
-      if (depth === attributes.length) {
-        qualities.push({
-          values: currentCombination,
-          quantity: 1,
-          price: 0,
-          image: [],
-        });
-        return;
-      }
-  
-      attributes[depth].values.forEach((value) => {
-        const newCombination = currentCombination.slice();
-        newCombination.push({
-          key_en: attributes[depth].key_en,
-          key_ar: attributes[depth].key_ar,
-          value_en: value.value_en,
-          value_ar: value.value_ar,
-          color: value.color,
-        });
-        generateCombinations(newCombination, depth + 1);
+  function generateCombinations(currentCombination, depth) {
+    if (depth === attributes.length) {
+      qualities.push({
+        values: currentCombination,
+        quantity: 1,
+        price: 0,
+        image: [],
       });
+      return;
     }
-  
-    generateCombinations([], 0);
-    
-    const AdjustArray = qualities.map((item, index) => {
+
+    attributes[depth].values.forEach((value) => {
+      const newCombination = currentCombination.slice();
+      newCombination.push({
+        key_en: attributes[depth].key_en,
+        key_ar: attributes[depth].key_ar,
+        value_en: value.value_en,
+        value_ar: value.value_ar,
+        color: value.color,
+      });
+      generateCombinations(newCombination, depth + 1);
+    });
+  }
+
+  generateCombinations([], 0);
+
+  const AdjustArray = qualities
+    .map((item, index) => {
       const Founded = prev.find((item, idx) => idx === index);
       if (Founded) {
         return {
@@ -155,41 +147,61 @@ export function generateQualities(prev, attributes) {
         };
       }
       return item;
-    }).map((item, idx) => ({ ...item, itemIndex: idx }));
-    
-    return AdjustArray;
-  }
-  
+    })
+    .map((item, idx) => ({ ...item, itemIndex: idx }));
+    if(changeShapeData) return callback(AdjustArray,attributes);
+  return AdjustArray;
+}
 
+export function shapeData(combinedTexts,variants) {
+  let data = [];
 
-  export  function shapeData(combinedTexts) {
-    let data = [];
-  
-    variants[0].values.forEach((valueGroup,idx) => {
-      let obj = { key: valueGroup.value_en, value: [],itemIndex :idx+1 ,quantity:0};
-  
-      combinedTexts.forEach((valueItem,indx) => {
-        let check = valueItem.values.some(value => value.value_en === valueGroup.value_en);
-  
-        if (check) {
-          let str = "";
-  
-          valueItem.values.forEach((value) => {
-            if (value.value_en !== valueGroup.value_en) {
-              str += value.value_en + " ";
-            }
-          });
-  
-          obj.value.push({itemIndex :`${idx+1}${indx+1}`,val:str.trim(),quantity:valueItem.quantity});
-        }
-      });
-      let qty=0
-      obj.value.map((value) => qty +=value.quantity)
-      obj.quantity=qty
-      data.push(obj);
+  variants[0].values.forEach((valueGroup, idx) => {
+    let obj = {
+      key: valueGroup.value_en,
+      values: [],
+      itemIndex: idx + 1,
+      quantity: 0,
+   
+      min_price: 0,
+      max_price: 0,
+     
+    };
+
+    combinedTexts.forEach((valueItem, indx) => {
+      let check = valueItem.values.some(
+        (value) =>
+          value.value_en === valueGroup.value_en &&
+          value.key_en === variants[0].key_en
+      );
+
+      if (check) {
+        let str = "";
+
+        valueItem.values.forEach((value) => {
+          // if (value.value_en !== valueGroup.value_en) {
+          str += value.value_en + "/";
+          // }
+        });
+
+        obj.values.push({
+          itemIndex: `${idx + 1}${indx + 1}`,
+          val: str.trim(),
+          quantity: valueItem.quantity,
+          sku: "",
+          continue_selling: true,
+          price: 0,
+          compare_to_price: 0,
+          barcode: "",
+          images: [],
+        });
+      }
     });
-  
-    return data;
-  }
+    let qty = 0;
+    obj.values.map((value) => (qty += value.quantity));
+    obj.quantity = qty;
+    data.push(obj);
+  });
 
-
+  return data;
+}

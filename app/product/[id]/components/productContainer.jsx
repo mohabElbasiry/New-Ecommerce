@@ -51,6 +51,7 @@ console.log(uniqueColors);
             if(option.name=="Color"){
               return (
               <button
+              type="button"
                 key={value}
                 onClick={() => handleOptionChange(option.name, value)}
                 style={{ width:40,height:40,borderRadius:"99999px",
@@ -74,6 +75,8 @@ console.log(uniqueColors);
             }
             return (
               <button
+              type="button"
+
                 key={value}
                 onClick={() => handleOptionChange(option.name, value)}
                 style={{
@@ -98,6 +101,8 @@ console.log(uniqueColors);
       ))}
 
       <button
+                    type="button"
+
         onClick={() => console.log("Add to cart")}
         disabled={!selectedVariant || selectedVariant.inventory_quantity === 0}
         className="bg-primary py-5 px-16 m-5 disabled:bg-slate-400"

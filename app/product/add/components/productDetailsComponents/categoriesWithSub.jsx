@@ -8,8 +8,7 @@ export default function SubCategoriesSelect({ register,error }) {
         selectArray={["hello", "dummy"]}
         label="Parent Category "
         PlaceHolder="Add product name"
-        inputCss="w-[100%]"
-        register={{ ...register("category") }}
+         register={{ ...register("category") }}
         isError={error?.category}
         message={error?.category?.message}
       />
@@ -20,17 +19,16 @@ export default function SubCategoriesSelect({ register,error }) {
         selectArray={["hello", "dummy"]}
         label="Category"
         PlaceHolder="Add product name"
-        inputCss="w-[100%]"
-      />
+       />
 
       {/* <hr className="w-[100px]  bg-black" /> */}
-      <InputWithLabelComponent
+      {/* <InputWithLabelComponent
         Input={false}
         selectArray={["hello", "dummy"]}
         label="Sub Category"
         PlaceHolder="Add product name"
         inputCss="w-[100%]"
-      />
+      /> */}
     </div>
   );
 }

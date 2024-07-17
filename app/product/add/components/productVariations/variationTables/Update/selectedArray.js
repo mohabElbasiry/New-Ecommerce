@@ -3,23 +3,23 @@ export const SelectedArrayCheckBox = ({
   checkedElements = [],
   setCheckedElements = () => {},
   autoGenerate = [],
-  idx=-1
+  idx = -1,
 }) => {
-    const CheckBox = (e, idx) => {
-        setCheckedElements((prev) => {
-          if (e.target.checked) {
-            const founded = prev?.find((item) => item === idx);
-            console.log(founded,prev,'foundedObject');
-            if (founded !== undefined) {
-              return prev?.filter((item) => item !== idx);
-            } else {
-              return [...prev, idx];
-            }
-          } else {
-            return prev?.filter((item) => item !== idx);
-          }
-        });
-      };
+  const CheckBox = (e, idx) => {
+    setCheckedElements((prev) => {
+      if (e.target.checked) {
+        const founded = prev?.find((item) => item === idx);
+        console.log(founded, prev, "foundedObject");
+        if (founded !== undefined) {
+          return prev?.filter((item) => item !== idx);
+        } else {
+          return [...prev, idx];
+        }
+      } else {
+        return prev?.filter((item) => item !== idx);
+      }
+    });
+  };
   if (all) {
     return (
       <input
@@ -32,15 +32,19 @@ export const SelectedArrayCheckBox = ({
           }
         }}
         checked={checkedElements?.length}
-        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3"
+        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3 "
       />
     );
   } else {
     return (
       <input
         type={"checkbox"}
-        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3"
-        onChange={(e) => CheckBox(e, idx)}
+        className="!h-[25px] flex text-[25px] items-center w-[20px] p-3 "
+        onClick={(e) => e.stopPropagation()}
+        onChange={(e) => {
+          e.stopPropagation();
+          return CheckBox(e, idx);
+        }}
         checked={checkedElements?.some((item) => item === idx)}
       />
     );

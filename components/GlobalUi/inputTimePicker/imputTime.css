@@ -1,0 +1,43 @@
+.flatpickr-calendar.inline {
+  /* display: flex; */
+  position: relative;
+  top: 2px;
+  background: #33333303;
+  z-index: 100;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: #000;
+}
+
+.flatpickr-input[readonly] {
+  /* cursor: pointer;
+     width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding: 6px;
+    border-radius: 10px; */
+  outline: none;
+  width: fit-content !important;
+  background: none;
+
+  /* text-align: center; */
+}
+.divcontainer {
+  border-radius: 10px;
+  padding-right: 0px !important;
+  width: 100%;
+  justify-content: space-between;
+  /* border: 1px solid #ddd; */
+  background: #eeeeee26;
+  width: fit-content;
+}
+.flatpickr-input[readonly]:focus {
+  border: none;
+}
+.divcontainer:focus-within {
+  border-color: #14151662 !important;
+  border-width: 3px !important;
+}

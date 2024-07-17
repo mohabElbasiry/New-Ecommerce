@@ -27,17 +27,19 @@ export const BasicData = ({
     getValues,
     setError,
     clearErrors,
+    isSubmitting
   } = formData;
   return (
     <div
       className="gap-5
-    bg-white shadow-md rounded-lg p-3
-    flex flex-col"
+      rounded-lg p-3
+    flex flex-col w-full"
     >
-      <InputWithLabelComponent
+     <div className="flex flex-col gap-2 w-full">
+     <InputWithLabelComponent
         Input
-        label="product name in English"
-        PlaceHolder="Add product name in English"
+        label="product name "
+        PlaceHolder="Add product name "
         register={{ ...register("title_en") }}
         isError={errors?.title_en}
         message={errors?.title_en?.message}
@@ -45,8 +47,8 @@ export const BasicData = ({
         onChange={(e) => {
           UdateBasicInfo(e, setSubmitedData);
         }}
-      />
-      <InputWithLabelComponent
+       />
+      {/* <InputWithLabelComponent
         Input
         label="product name in Arabic"
         PlaceHolder="Add product name in Arabic"
@@ -59,9 +61,11 @@ export const BasicData = ({
         onChange={(e) => {
           UdateBasicInfo(e, setSubmitedData);
         }}
-      />
+      /> */}
+     </div>
+     
       <DraftEditor
-        field="Product Description in English"
+        field="Product Description "
         edit={false}
         register={{ ...register("description_en") }}
         setValue={setValue}
@@ -73,8 +77,9 @@ export const BasicData = ({
         value={submitedData?.productDetails?.description_en}
         onChange={UdateBasicInfo}
         setSubmitedData={setSubmitedData}
+        isSubmitted={isSubmitting}
       />
-      <DraftEditor
+      {/* <DraftEditor
         field="Product Description in Arabic"
         edit={false}
         setValue={setValue}
@@ -87,7 +92,8 @@ export const BasicData = ({
         value={submitedData?.productDetails?.description_ar}
         onChange={UdateBasicInfo}
         setSubmitedData={setSubmitedData}
-      />
+        isSubmitted={isSubmitting}
+      /> */}
       <SubCategoriesSelect
         submitedData={submitedData}
         register={register}

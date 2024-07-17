@@ -9,7 +9,7 @@ import { filterData } from "./Filters/function/FilterFunction";
 import { CustomDialoge } from "@/components/Modal";
 import { GroupByFunction } from "./Filters/GroupBy";
 import { SortComponent } from "./Filters/sort";
-import { CollapseView } from "../collapseView";
+import  CollapseView  from "../collapseView";
 
 const VariationTable = ({
   varitions,
@@ -86,8 +86,8 @@ const VariationTable = ({
   }, [filters, varitions]);
   return (
     <div
-      className="w-[100%] mt-3 bg-[#eeeeee7d]  
-     rounded-xl  p-2 rounded-3 border shadow-md"
+      className="w-[100%] mt-3    
+     rounded-sm  p-2   border "
     >
       <div className="flex justify-between items-center px-2">
         <GroupByFunction

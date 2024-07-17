@@ -1,3 +1,4 @@
+import { CheckboxD } from "@/components/GlobalUi/checkbox";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 
 export const Inventory = ({ register }) => {
@@ -5,23 +6,41 @@ export const Inventory = ({ register }) => {
     <>
       <p className="font-semibold">Inventory</p>
 
-      <div className="grid grid-cols-2 gap-2">
+      <CheckboxD
+        text={`Continue selling when out of stock `}
+        infoText="This will complete sales when available inventory reaches zero and below."
+      />
+      <CheckboxD text={`Track Quantity `} />
+
+      <div className="grid grid-cols-3 place-items-center gap-2">
         <InputWithLabelComponent
           label="Quantity"
-          PlaceHolder="Add product Quantity"
+          PlaceHolder=""
           Input
           inputType="number"
           register={{ ...register("Quantity") }}
-
-          min={1}
-
+          min={0}
         />
         <InputWithLabelComponent
           label="SKU(optional)"
-          PlaceHolder="Add product name"
+          PlaceHolder=""
           Input
           min={1}
+          MoreInfo
+          MoreInfoText="A SKU, which stands for Stock Keeping Unit, is a unique 
+          identifier for each of your products that makes it easier to track inventory.
+         .
+     ."
         />
+        <InputWithLabelComponent
+          labelcss="text-sm mb-1"
+          label="Barcode"
+          Input
+          min={1}
+          MoreInfo
+          MoreInfoText={`Barcode (ISBN, UPC, GTIN) - Barcodes are typically used by resellers. 
+           `}
+        />{" "}
       </div>
     </>
   );

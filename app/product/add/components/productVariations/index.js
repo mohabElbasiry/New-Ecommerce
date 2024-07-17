@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import CreateVariation from "./createVariations";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
-import { CollapseView } from "./collapseView";
+import CollapseView from "./collapseView";
  
-export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
+const ProductVariation = ({ setSubmitedData, submitedData }) => {
   const [list, setList] = useState([]);
   const dragControls = useDragControls();
   const [view, setView] = useState("table");
- 
 
-
+  console.log("rerender hassan");
   useEffect(() => {
     if (localStorage?.getItem("list")) {
       const list = JSON.parse(localStorage?.getItem("list"));
@@ -141,7 +140,7 @@ export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
           </p>
         ) : null}
 
-        {/* <div
+        <div
           className="change view flex items-center justify-between border mt-1 
         rounded-xl shadow-md p-1 "
         >
@@ -152,25 +151,24 @@ export const ProductVariation = ({ setSubmitedData, submitedDatam }) => {
               className="  p-2 cursor-pointer hover:bg-[#ddd] rounded-xl "
               width={"40px"}
               height={"40px"}
-              onClick={()=>setView("collapse")}
+              onClick={() => setView("collapse")}
             />
             <img
               src="/view/tableView.svg"
               className="  p-2 cursor-pointer hover:bg-[#ddd] rounded-xl "
               width={"45x"}
               height={"45x"}
-              onClick={()=>setView("table")}
-
+              onClick={() => setView("table")}
             />
           </div>
-        </div> */}
+        </div>
 
         {view === "table" ? (
           <VariationTable varitions={list} setSubmitedData={setSubmitedData} />
-        ) : (
-          <CollapseView varitions={list} />
-        )}
+        ) : null}
+        {view !== "table" ? <CollapseView varitions={list} /> : null}
       </div>
     </>
   );
 };
+export default memo(ProductVariation);

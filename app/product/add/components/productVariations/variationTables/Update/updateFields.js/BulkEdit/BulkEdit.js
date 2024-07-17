@@ -55,7 +55,7 @@ console.log(DefaultValues(
       </CustomDialoge>
       <InputWithLabelComponent
         Input={false}
-        inputCss="!w-[20%] ml-auto !p-1 mx-2 shadow   "
+        inputCss="!w-[20%] ml-auto !p-1 mx-2     "
         PlaceHolder="Update"
          
         selectArray={[

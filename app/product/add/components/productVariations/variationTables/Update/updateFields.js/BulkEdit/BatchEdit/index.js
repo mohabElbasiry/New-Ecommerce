@@ -24,10 +24,10 @@ export const BatchEdit = () => {
             setChange(e?.target.value);
           }}
           inputCss="w-fit text-sm !px-1 shadow 
-   border border-[#ddd]   flex justify-center  
-   shadow bg-white  h-[30px] !rounded-[12px]
- !p-5  !shadow-none
-   "
+          -[#ddd]   flex justify-center  
+       shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
+     !p-5  !shadow-none
+       "
           inputType="number"
         />
         <InputWithLabelComponent
@@ -40,10 +40,10 @@ export const BatchEdit = () => {
             setChange(e?.target.value);
           }}
           inputCss="w-fit text-sm !px-1 shadow 
-          border border-[#ddd]   flex justify-center  
-          shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
-        !p-5  !shadow-none
-          "
+          -[#ddd]   flex justify-center  
+       shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
+     !p-5  !shadow-none
+       "
           inputType="number"
         />
       </div>
@@ -58,10 +58,10 @@ export const BatchEdit = () => {
             setChange(e?.target.value);
           }}
           inputCss="w-fit text-sm !px-1 shadow 
-          border border-[#ddd]   flex justify-center  
-          shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
-        !p-5  !shadow-none
-          "
+          -[#ddd]   flex justify-center  
+       shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
+     !p-5  !shadow-none
+       "
           inputType="number"
         />
         <InputWithLabelComponent
@@ -73,10 +73,10 @@ export const BatchEdit = () => {
             setChange(e?.target.value);
           }}
           inputCss="w-fit text-sm !px-1 shadow 
-          border border-[#ddd]   flex justify-center  
-          shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
-        !p-5  !shadow-none
-          "
+          -[#ddd]   flex justify-center  
+       shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
+     !p-5  !shadow-none
+       "
           inputType="number"
         />
         <InputWithLabelComponent
@@ -88,10 +88,10 @@ export const BatchEdit = () => {
             setChange(e?.target.value);
           }}
           inputCss="w-fit text-sm !px-1 shadow 
-          border border-[#ddd]   flex justify-center  
-          shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
-        !p-5  !shadow-none
-          "
+          bg-[#ddd]   flex justify-center  
+       shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
+     !p-5  !shadow-none
+       "
           inputType="number"
         />
       </div>
@@ -109,7 +109,7 @@ export const BatchEdit = () => {
               setChange(e?.target.value);
             }}
             inputCss="w-fit text-sm !px-1 shadow 
-          border border-[#ddd]   flex justify-center  
+             -[#ddd]   flex justify-center  
           shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
         !p-5  !shadow-none
           "
@@ -125,7 +125,7 @@ export const BatchEdit = () => {
               setChange(e?.target.value);
             }}
             inputCss="w-fit text-sm !px-1 shadow 
-          border border-[#ddd]   flex justify-center  
+             -[#ddd]   flex justify-center  
           shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
         !p-5  !shadow-none
           "
@@ -159,6 +159,7 @@ export const BatchEdit = () => {
       </div>
       <div className="flex justify-end gap-1">
         <button
+          type="button"
           className="text-[#333] 
        p-2 bg-[#eee] !my-3 rounded-xl text-center
        justify-center 
@@ -168,6 +169,7 @@ export const BatchEdit = () => {
           Discard
         </button>
         <button
+          type="button"
           className="text-bwhite 
        p-2 bg-black !my-3 rounded-xl text-center
         justify-center 

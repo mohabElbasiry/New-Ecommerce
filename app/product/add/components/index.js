@@ -36,7 +36,7 @@ export const ProductAddMaim = () => {
   return (
     <>
       <Headercomponent handleSubmit={handleSubmit}>
-        <div className="flex items-end justify-end   gap-2">
+        <div className="flex items-end justify-end   gap-1">
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}
@@ -47,6 +47,7 @@ export const ProductAddMaim = () => {
               errors,
               setError,
               clearErrors,
+              isSubmitting
             }}
           />
         </div>

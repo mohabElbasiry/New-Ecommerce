@@ -248,6 +248,8 @@ export default function CreateVariation({ listIndex, setList, list }) {
                   {currentValues?.some((_, idx) => idx === index) &&
                   index !== currentValues?.length - 1 ? (
                     <button
+                    type="button"
+
                       onClick={() => HandleDelete(index)}
                       className="w-[25px]   right-3 top-[30%]"
                     >
