@@ -3,7 +3,6 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
-import TextEditor from "@/components/TextEditor";
 
 export const BasicData = ({
   submitedData = {},
@@ -65,7 +64,7 @@ export const BasicData = ({
       /> */}
      </div>
      
-      {/* <DraftEditor
+      <DraftEditor
         field="Product Description "
         edit={false}
         register={{ ...register("description_en") }}
@@ -79,9 +78,7 @@ export const BasicData = ({
         onChange={UdateBasicInfo}
         setSubmitedData={setSubmitedData}
         isSubmitted={isSubmitting}
-      /> */}
-    <h3>Product Description</h3>
-          <TextEditor content={submitedData?.productDetails?.description_en} setContent={UdateBasicInfo} /> 
+      />
       {/* <DraftEditor
         field="Product Description in Arabic"
         edit={false}
