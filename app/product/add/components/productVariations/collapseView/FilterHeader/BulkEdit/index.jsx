@@ -12,7 +12,7 @@ export const BulkEditView = ({
   const [action, setAction] = useState("");
  
   return (
-    <div className="flex w-full">
+    <div className="">
       <CustomDialoge open={open} setOpen={setOpen}>
         {action === "Edit Prices" ? (
           <UpdateFeildActionFunction

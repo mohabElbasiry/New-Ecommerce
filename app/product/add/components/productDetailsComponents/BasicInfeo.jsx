@@ -3,6 +3,7 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
+import Seo from "./tags";
 
 export const BasicData = ({
   submitedData = {},
@@ -35,7 +36,11 @@ export const BasicData = ({
       rounded-lg p-3
     flex flex-col w-full"
     >
-     <div className="flex flex-col gap-2 w-full">
+      <p className="title">
+        Product Description
+      </p>
+<div className="box p-2">
+<div className="flex flex-col gap-2 w-full">
      <InputWithLabelComponent
         Input
         label="product name "
@@ -98,9 +103,12 @@ export const BasicData = ({
         submitedData={submitedData}
         register={register}
         error={errors}
-      />{" "}
+      /> 
+</div>
       <Inventory submitedData={submitedData} register={register} />{" "}
       <Pricing submitedData={submitedData} register={register} />
+      <Seo />{" "}
+
     </div>
   );
 };

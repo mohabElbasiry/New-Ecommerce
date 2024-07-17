@@ -22,10 +22,11 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
 
   return (
     <>
-      <div className="w-[100%] ">
-        <p className="my-2 ">Add Varations</p>
+        <p className="my-2 title">Add Varations</p>
+
+      <div className="w-[100%]    ">
         {list?.length ? (
-          <div className="  w-[100%] pb-3 px-0 rounded-md   border">
+          <div className="  w-[100%] pb-1 px-0 rounded-md   border box mb-2">
             <Reorder.Group
               values={list}
               onReorder={setList}
@@ -167,8 +168,9 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
         {/* {view !== "table" ? (
         ) : null} */}
         {/* {view  == "table" ? <CollapseView varitions={list} /> : null} */}
-        <CollapseView varitions={list} /> 
       </div>
+      <CollapseView varitions={list} /> 
+
     </>
   );
 };

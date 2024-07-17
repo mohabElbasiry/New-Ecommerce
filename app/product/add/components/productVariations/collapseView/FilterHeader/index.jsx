@@ -4,13 +4,16 @@ import { GroupedView } from "./GroupByFunction";
 import { SortBy } from "./sortByView";
 import { FiltersKeys_values } from "./FilterByFUnction";
 import { BulkEditView } from "./BulkEdit";
+import { memo } from "react";
 
-export const FilterHeader = ({
+  const  FilterHeader= ({
   varitions = [],
   setChecked = () => {},
   checkedArray,
   data,
 }) => {
+  console.log('renderuseCallback')
+
   return (
     <>
       <input
@@ -30,8 +33,8 @@ export const FilterHeader = ({
       </div>
 
       {checkedArray?.[0]?.SelectedItems?.length ? (
-        <div className="batchedit flex items-center">
-        <div className="flex items-center gap-2 w-full  ">
+        <div className="batchedit flex items-center justify-end  w-full justify-between">
+        <div className="flex items-center gap-2  text-sm ">
         <input
         id="Selected"
             className="text-center
@@ -65,7 +68,11 @@ export const FilterHeader = ({
          Selected   {checkedArray?.flatMap(item=>item?.SelectedItems)?.length}
           </label>
         </div>
-<div className=" ">
+<div className="flex items-center gap-1 w-[]">
+
+  <button className="box text-sm p-1  ">
+    Bulk Edit
+  </button>
 <BulkEditView />
 
 </div>
@@ -108,3 +115,5 @@ export const FilterHeader = ({
     </>
   );
 };
+
+export default memo(FilterHeader)

@@ -9,13 +9,12 @@ import { shapeData } from "./functions/datashape.js";
 import VarientKey from "./varientKey/index.js";
 import VarientValues from "./varientValues/index.js";
 import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
-import { FilterHeader } from "./FilterHeader/index.jsx";
-const CollapseView = ({ varitions = [] }) => {
-
-
-
-  console.log("rendersdaaaaaaaaaa", varitions);
-
+import  FilterHeader  from "./FilterHeader/index.jsx";
+const CollapseView = ({
+  varitions = [],
+  varitionsValues = [],
+  setVaritionsValues,
+}) => {
   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
@@ -70,6 +69,8 @@ const CollapseView = ({ varitions = [] }) => {
   const [checkedArray, setChecked] = useState([]);
 
   useMemo(() => {
+    setChecked([]);
+
     const items = JSON.parse(localStorage?.getItem("saved"));
     if (varitions?.length) {
       if (items && items?.length) {
@@ -101,12 +102,16 @@ const CollapseView = ({ varitions = [] }) => {
       min: Math.min(...price),
     };
   };
-  const callculateQUantity = (values) => {
-    return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
-  };
+ 
+  const callculateQUantity = useCallback(
+    (values) => {
+      return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
+    },
+    [JSON.stringify(varitions)]
+  );
 
   return (
-    <div className="   bg-[#ffffff91] p-3">
+    <div className="   box p-3 ">
       <FilterHeader
         varitions={varitions}
         setChecked={setChecked}
