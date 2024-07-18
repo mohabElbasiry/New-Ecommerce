@@ -8,8 +8,13 @@ import {
 import { shapeData } from "./functions/datashape.js";
 import VarientKey from "./varientKey/index.js";
 import VarientValues from "./varientValues/index.js";
-const CollapseView = ({ varitions = [] }) => {
-  console.log("render", varitions);
+import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
+import  FilterHeader  from "./FilterHeader/index.jsx";
+const CollapseView = ({
+  varitions = [],
+  varitionsValues = [],
+  setVaritionsValues,
+}) => {
   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
@@ -64,24 +69,28 @@ const CollapseView = ({ varitions = [] }) => {
   const [checkedArray, setChecked] = useState([]);
 
   useMemo(() => {
-    const items = JSON.parse(localStorage?.getItem("saved"));
-    if (items && items?.length) {
-      const combinedTexts = generateQualities(items, varitions);
-      setData({
-        ...data,
-        Data: shapeData(combinedTexts, varitions),
-        BeforeFilterData: shapeData(combinedTexts, varitions),
-      });
-      return;
-    }
+    setChecked([]);
 
-    const combinedTexts = generateQualities([], varitions);
-    if (combinedTexts?.length) {
-      setData({
-        ...data,
-        Data: shapeData(combinedTexts),
-        BeforeFilterData: shapeData(combinedTexts),
-      });
+    const items = JSON.parse(localStorage?.getItem("saved"));
+    if (varitions?.length) {
+      if (items && items?.length) {
+        const combinedTexts = generateQualities(items, varitions);
+        setData({
+          ...data,
+          Data: shapeData(combinedTexts, varitions),
+          BeforeFilterData: shapeData(combinedTexts, varitions),
+        });
+        return;
+      }
+
+      const combinedTexts = generateQualities([], varitions);
+      if (combinedTexts?.length) {
+        setData({
+          ...data,
+          Data: shapeData(combinedTexts),
+          BeforeFilterData: shapeData(combinedTexts),
+        });
+      }
     }
   }, [varitions]);
   const MinAndMax = (values) => {
@@ -93,12 +102,22 @@ const CollapseView = ({ varitions = [] }) => {
       min: Math.min(...price),
     };
   };
-  const callculateQUantity = (values) => {
-    return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
-  };
  
+  const callculateQUantity = useCallback(
+    (values) => {
+      return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
+    },
+    [JSON.stringify(varitions)]
+  );
+
   return (
-    <>
+    <div className="   box p-3 ">
+      <FilterHeader
+        varitions={varitions}
+        setChecked={setChecked}
+        data={data?.Data}
+        checkedArray={checkedArray}
+      />
       <Accordion type="single" collapsible className="w-full">
         {data?.Data?.map((item, idx) => {
           return (
@@ -134,7 +153,7 @@ const CollapseView = ({ varitions = [] }) => {
           );
         })}
       </Accordion>
-    </>
+    </div>
   );
 };
 export default memo(CollapseView);

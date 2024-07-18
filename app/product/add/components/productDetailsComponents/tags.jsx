@@ -2,9 +2,11 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 
 export default function Seo() {
   return (
-    <div className=" p-1  rounded-sm flex flex-col gap-2">
+<>
+<p className="title">Seo </p>
+
+<div className=" rounded-sm flex flex-col gap-2 box p-3">
       {" "}
-      <p>Seo </p>
       <div className=" relative my-2">
         <InputWithLabelComponent
           PlaceHolder="Add Tag"
@@ -40,6 +42,6 @@ export default function Seo() {
       <textarea   id="TextArea" className="border p-1 rounded-sm outline-none" rows="4" cols="50" placeholder="write something">
       
       </textarea>
-    </div>
+    </div></>
   );
 }

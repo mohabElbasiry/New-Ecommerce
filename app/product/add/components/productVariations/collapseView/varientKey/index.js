@@ -24,7 +24,7 @@ const VarientKey = ({
     <AccordionTrigger
       className="flex 
       items-center w-full justify-between
-      border-[#ddd] border-b"
+      border-[#ddd] border-b text-sm"
     >
       <div className="flex items-center gap-3">
         <input
