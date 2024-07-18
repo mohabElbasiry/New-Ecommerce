@@ -1,4 +1,6 @@
 "use client"
+import { cn } from "@/lib/utils";
+import {   ChevronsLeft, ChevronsRight} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -30,11 +32,20 @@ const userData = {
     'https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80',
 };
  const SideMenu = ({  }) => {
-const [open, setOpen] = useState(false)
+const [open, setOpen] = useState(true)
+
+  const toggleMenu = () => {
+    setOpen((prev=>!prev))
+  }
   return (
-    <div className="flex h-screen flex-col w-80 border-r justify-between bg-[#f4f7f6] sticky top-0">
+    <div className={cn( open?"w-80":"w-20"   ,"transition-all duration-700    flex h-screen flex-col  border-r justify-between bg-[#ffffff] sticky top-0")}>
     <div className="px-4 py-6 relative">
-      <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
+    <button type="button" onClick={toggleMenu} className="absolute text-white top-1/4 -right-4 w-8 h-8 flex justify-center items-center  bg-gray-500 rounded-full">
+     {open? <ChevronsLeft />:<ChevronsRight />}
+
+ 
+    </button>
+      <span className="grid h-10 w-full place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
         Logo
       </span>
 
@@ -44,8 +55,8 @@ const [open, setOpen] = useState(false)
             {menuItem.subMenu ? (
               <details className="group [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span className="text-sm font-medium">{menuItem.title}</span>
-                  <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <div className="text-sm font-medium"><p className="truncate ...">{menuItem.title}</p></div>
+                  <div className="shrink-0 transition duration-300 group-open:-rotate-180">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
@@ -58,7 +69,7 @@ const [open, setOpen] = useState(false)
                         clipRule="evenodd"
                       />
                     </svg>
-                  </span>
+                  </div>
                 </summary>
                 <ul className="mt-2 space-y-1 px-4">
                   {menuItem.subMenu.map((subMenuItem, subIndex) => (
@@ -67,7 +78,7 @@ const [open, setOpen] = useState(false)
                         href={subMenuItem.href}
                         className="block menu_side rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                       >
-                        {subMenuItem.title}
+                       <p className="truncate ..."> {subMenuItem.title}</p>
                       </Link>
                     </li>
                   ))}
@@ -78,7 +89,7 @@ const [open, setOpen] = useState(false)
                 href={menuItem.href}
                 className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
-                {menuItem.title}
+               <p className="truncate ...">{menuItem.title}</p> 
               </Link>
             )}
           </li>
@@ -93,10 +104,10 @@ const [open, setOpen] = useState(false)
           src={userData.profileImage}
           className="size-10 rounded-full object-cover"
         />
-        <div>
+       <div className={cn(open?"w-auto opacity-100":" w-0 opacity-0 ","overflow-hidden transition-all duration-300" )}>
           <p className="text-xs">
             <strong className="block font-medium">{userData.name}</strong>
-            <span>{userData.email}</span>
+            <span> {userData.email}</span>
           </p>
         </div>
       </Link>
