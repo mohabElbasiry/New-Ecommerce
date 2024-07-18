@@ -3,11 +3,21 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { SketchPicker } from "react-color";
 import { handleError } from "./functions/setError";
 import { Reorder } from "framer-motion";
+import { produce } from "immer";
+import { generateQualities } from "../collapseView/functions/GenerateQualities";
 
-export default function CreateVariation({ listIndex, setList, list }) {
+export default function CreateVariation({
+  listIndex,
+  setList,
+  list,
+  data: { Data },
+}) {
+  console.log(Data, "adsssssssssssss");
   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
+    error: false,
+    ErrorMessage: "",
   });
   const [currentValues, setCurrentValues] = useState([
     {
@@ -26,6 +36,8 @@ export default function CreateVariation({ listIndex, setList, list }) {
     setCurrentOption({
       ...currentOption,
       [event?.target.name]: event?.target.value,
+      error: false,
+      ErrorMessage: "",
     });
   };
   const handleKeyDown = useCallback(
@@ -167,6 +179,8 @@ export default function CreateVariation({ listIndex, setList, list }) {
             placeholder="Enter option name"
             isRequired
             label="option in en"
+            isError={currentOption?.error}
+            message={currentOption?.ErrorMessage}
             PlaceHolder={`colors`}
           />
           <InputWithLabelComponent
@@ -248,8 +262,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                   {currentValues?.some((_, idx) => idx === index) &&
                   index !== currentValues?.length - 1 ? (
                     <button
-                    type="button"
-
+                      type="button"
                       onClick={() => HandleDelete(index)}
                       className="w-[25px]   right-3 top-[30%]"
                     >
@@ -269,7 +282,21 @@ export default function CreateVariation({ listIndex, setList, list }) {
         <button
           type="button"
           onClick={() => {
-            setList((prev) => prev?.filter((_, idx) => idx !== listIndex));
+            setList(
+              produce((draft) => {
+                draft.productvaritions.variants =
+                  draft?.productvaritions?.variants?.filter(
+                    (_, idx) => idx !== listIndex
+                  );
+                draft.productvaritions.varientsValue = generateQualities(
+                  Data?.flatMap((item) => item.values),
+                  draft?.productvaritions?.variants?.filter(
+                    (_, idx) => idx !== listIndex
+                  ),
+                  draft.productvaritions.variants || []
+                );
+              })
+            );
           }}
           className="bg-[#eee] shadow text-black text-xs   rounded-lg px-3 p-1"
         >
@@ -318,22 +345,34 @@ export default function CreateVariation({ listIndex, setList, list }) {
               isError: false,
             }));
 
-            setList((prev) => {
-              return prev?.map((item, idx) => {
-                if (idx === listIndex) {
-                  return {
-                    ...item,
-                    key_en: currentOption?.option_en,
-                    key_ar: currentOption?.option_ar,
-                    values: currentValues?.filter(
-                      (item) => item?.value_ar !== "" && item?.value_en !== ""
-                    ),
-                    edit: false,
-                  };
-                }
-                return item;
-              });
-            });
+            setList(
+              produce((draft) => {
+                const Updated = draft.productvaritions.variants.map(
+                  (item, idx) => {
+                    if (idx === listIndex) {
+                      return {
+                        ...item,
+                        key_en: currentOption?.option_en,
+                        key_ar: currentOption?.option_ar,
+                        values: currentValues?.filter(
+                          (item) =>
+                            item?.value_ar !== "" && item?.value_en !== ""
+                        ),
+                         edit: false,
+                      };
+                    }
+                    return item;
+                  }
+                );
+
+                draft.productvaritions.variants = Updated;
+
+                draft.productvaritions.VarientValues = generateQualities(
+                  Data?.flatMap((item) => item.values) || [],
+                  Updated
+                );
+              })
+            );
           }}
         >
           Done

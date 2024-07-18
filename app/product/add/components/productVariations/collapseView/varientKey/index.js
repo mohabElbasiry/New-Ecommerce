@@ -14,7 +14,7 @@ const VarientKey = ({
   itemIndex = -1,
   selectedArray = [],
   setChecked,
-  checkedArray=[],
+  checkedArray = [],
   name,
 }) => {
   const SelectedItems = useMemo(() => {
@@ -64,13 +64,6 @@ const VarientKey = ({
         </p>
       </div>
       <div className="flex gap-1 items-center">
-        <input
-          type="number"
-          value={TotalQuantity}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
         <TooltipF text={`This Will Apply To All ${varientsNumbers} Varients`}>
           <div className="border flex items-center pl-1 rounded-xl">
             <p>EGP</p>
@@ -92,13 +85,27 @@ const VarientKey = ({
                         e.target.value
                       ),
                     };
-                  });
+                  }); 
                 }
                 return;
               }}
             />
           </div>
         </TooltipF>
+        <TooltipF text={'Change Varients'}>
+
+        <input
+          type="number"
+          value={TotalQuantity}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          disabled
+          className="p-3 bg-[#eee] rounded-md py-2 text-center
+           max-w-[150px] mr-6"
+        />
+        </TooltipF>
+
       </div>
     </AccordionTrigger>
   );

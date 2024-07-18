@@ -16,6 +16,8 @@ export const ProductDetailsComponent = ({
   submitedData,
   setSubmitedData,
   formData,
+  data,
+  setData
 }) => {
   return (
     <div className="    justify-end gap-1 p-3 ml-auto]">
@@ -63,10 +65,16 @@ export const ProductDetailsComponent = ({
             </div>
           </div>
           <div className="w-full overflow-auto ">
+            {
+              console.log(submitedData)
+            }
             <ProductVariation
-              submitedData={submitedData?.VariendData}
-              setSubmitedData={setSubmitedData}
+              productVarients={submitedData?.productvaritions}
+              setVarients={setSubmitedData}
+              data={data}
+              setData={setData}
             />
+
           </div>
         </div>
       </div>

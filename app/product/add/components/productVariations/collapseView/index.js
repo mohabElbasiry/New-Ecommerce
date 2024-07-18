@@ -9,90 +9,27 @@ import { shapeData } from "./functions/datashape.js";
 import VarientKey from "./varientKey/index.js";
 import VarientValues from "./varientValues/index.js";
 import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
-import  FilterHeader  from "./FilterHeader/index.jsx";
+import FilterHeader from "./FilterHeader/index.jsx";
+import { generateQualities } from "./functions/GenerateQualities.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
-  setVaritionsValues,
+  setData,
+  data
 }) => {
-  const [data, setData] = useState({
-    Data: [],
-    BeforeFilterData: [],
-  });
-  function generateQualities(prev, attributes) {
-    const qualities = [];
 
-    function generateCombinations(currentCombination, depth) {
-      if (depth === attributes.length) {
-        qualities.push({
-          values: currentCombination,
-          quantity: 0,
-          price: 0,
-          image: [],
-        });
-        return;
-      }
-
-      attributes[depth].values.forEach((value) => {
-        const newCombination = currentCombination.slice();
-        newCombination.push({
-          key_en: attributes[depth].key_en,
-          key_ar: attributes[depth].key_ar,
-          value_en: value.value_en,
-          value_ar: value.value_ar,
-          color: value.color,
-        });
-        generateCombinations(newCombination, depth + 1);
-      });
-    }
-
-    generateCombinations([], 0);
-
-    const AdjustArray = qualities
-      .map((item, index) => {
-        const Founded = prev.find((item, idx) => idx === index);
-        if (Founded) {
-          return {
-            ...item,
-            values: item.values,
-            price: Founded.price,
-            quantity: Founded.quantity,
-            image: Founded?.image,
-          };
-        }
-        return item;
-      })
-      .map((item, idx) => ({ ...item, itemIndex: idx }));
-
-    return AdjustArray;
-  }
   const [checkedArray, setChecked] = useState([]);
 
   useMemo(() => {
-    setChecked([]);
-
-    const items = JSON.parse(localStorage?.getItem("saved"));
-    if (varitions?.length) {
-      if (items && items?.length) {
-        const combinedTexts = generateQualities(items, varitions);
-        setData({
-          ...data,
-          Data: shapeData(combinedTexts, varitions),
-          BeforeFilterData: shapeData(combinedTexts, varitions),
-        });
-        return;
-      }
-
-      const combinedTexts = generateQualities([], varitions);
-      if (combinedTexts?.length) {
-        setData({
-          ...data,
-          Data: shapeData(combinedTexts),
-          BeforeFilterData: shapeData(combinedTexts),
-        });
-      }
+    if (varitionsValues?.length&&varitions?.length) {
+ 
+      setData({
+        ...data,
+        Data: shapeData(varitionsValues, varitions),
+        BeforeFilterData: shapeData(varitionsValues, varitions),
+      });
     }
-  }, [varitions]);
+  }, [varitionsValues]);
   const MinAndMax = (values) => {
     const price = values.map((value) => {
       return +value.price;
@@ -102,7 +39,7 @@ const CollapseView = ({
       min: Math.min(...price),
     };
   };
- 
+
   const callculateQUantity = useCallback(
     (values) => {
       return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
@@ -120,6 +57,7 @@ const CollapseView = ({
       />
       <Accordion type="single" collapsible className="w-full">
         {data?.Data?.map((item, idx) => {
+          console.log(item, "das");
           return (
             <AccordionItem key={item?.key} value={item?.key}>
               <VarientKey
@@ -134,6 +72,7 @@ const CollapseView = ({
                 setChecked={setChecked}
                 selectedArray={item?.values}
                 checkedArray={checkedArray}
+                 parent={item?.parent}
               />
 
               {item?.values?.map((valueItem, idx) => {

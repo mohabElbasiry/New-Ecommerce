@@ -12,8 +12,7 @@ import { memo } from "react";
   checkedArray,
   data,
 }) => {
-  console.log('renderuseCallback')
-
+ 
   return (
     <>
       <input
@@ -79,12 +78,13 @@ import { memo } from "react";
         </div>
       ) : (
         <div className=" flex justify-between">
+           
           <input
             className="text-center
           w-[20px]
           flex justify-start"
             type="checkbox"
-            checked={checkedArray?.map((item) => item?.SelectedItems).length}
+            checked={checkedArray?.flatMap(item=>item)?.length?true:false}
             onChange={(e) => {
               setChecked((prev = []) => {
                 console.log(prev);
