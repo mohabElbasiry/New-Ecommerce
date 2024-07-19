@@ -102,10 +102,16 @@ export function generateQualities(prev, attributes) {
   }
   AdjustArray = qualities
     .map((item, index) => {
+      const founded = prev.find((item, idx) => idx === index);
+      console.log(founded,'foundedfoundedv')
       // Find the corresponding item in the prev array with the same values array
-      const founded = prev.find((itemv) =>
-        compareValuesArrays(item.values, itemv.values)
-      );
+      // const founded = prev.find((itemv) => {
+      //   return item.values.every(
+      //     (val, idx) => val.itemIndex === itemv.values[idx].itemIndex
+      //   );
+
+      //   compareValuesArrays(item.values, itemv.values);
+      // });
 
       // If a matching item is found, merge the properties
       if (founded) {

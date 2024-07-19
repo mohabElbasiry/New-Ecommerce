@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -11,22 +11,24 @@ import VarientValues from "./varientValues/index.js";
 import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
 import FilterHeader from "./FilterHeader/index.jsx";
 import { generateQualities } from "./functions/GenerateQualities.js";
+import { produce } from "immer";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
-  setData,
-  data
+  setData = () => {},
+  setVarients = () => {},
+  data = { Data: {}, BeforeFilterData: {} },
 }) => {
-
   const [checkedArray, setChecked] = useState([]);
 
-  useMemo(() => {
-    if (varitionsValues?.length&&varitions?.length) {
- 
-      setData({
-        ...data,
-        Data: shapeData(varitionsValues, varitions),
-        BeforeFilterData: shapeData(varitionsValues, varitions),
+  useEffect(() => {
+    if (varitions?.length) {
+      setData((prev) => {
+        return {
+          ...prev,
+          Data: varitionsValues,
+          BeforeFilterData: varitionsValues,
+        };
       });
     }
   }, [varitionsValues]);
@@ -46,7 +48,15 @@ const CollapseView = ({
     },
     [JSON.stringify(varitions)]
   );
-
+  useEffect(() => {
+    if (data?.Data?.length) {
+      setVarients(
+        produce((draft) => {
+          draft.productvaritions.referencevarients = data?.Data;
+        })
+      );
+    }
+  }, [data]);
   return (
     <div className="   box p-3 ">
       <FilterHeader
@@ -72,22 +82,26 @@ const CollapseView = ({
                 setChecked={setChecked}
                 selectedArray={item?.values}
                 checkedArray={checkedArray}
-                 parent={item?.parent}
+                parent={item?.parent}
               />
 
-              {item?.values?.map((valueItem, idx) => {
-                return (
-                  <VarientValues
-                    itemValue={valueItem}
-                    parentIndex={item?.itemIndex}
-                    idx={idx}
-                    setData={setData}
-                    checkedArray={checkedArray}
-                    setChecked={setChecked}
-                    parentname={item?.key}
-                  />
-                );
-              })}
+              {item?.values?.length >= 1 ? (
+                <>
+                  {item?.values?.map((valueItem, idx) => {
+                    return (
+                      <VarientValues
+                        itemValue={valueItem}
+                        parentIndex={item?.itemIndex}
+                        idx={idx}
+                        setData={setData}
+                        checkedArray={checkedArray}
+                        setChecked={setChecked}
+                        parentname={item?.key}
+                      />
+                    );
+                  })}
+                </>
+              ) : null}
             </AccordionItem>
           );
         })}

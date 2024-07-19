@@ -10,15 +10,18 @@ import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
 import CollapseView from "./collapseView";
 import { produce } from "immer";
+import { shapeData } from "./collapseView/functions/datashape";
+import { generateQualities } from "./collapseView/functions/GenerateQualities";
 
 const ProductVariation = ({
   setVarients = () => {},
   productVarients = {},
+  refrenceVarient = [],
   data = {
     Data: [],
     BeforeFilterData: [],
   },
-  setData=()=>{}
+  setData = () => {},
 }) => {
   const dragControls = useDragControls();
 
@@ -32,10 +35,27 @@ const ProductVariation = ({
   // }, []);
 
   const handleReorder = (newVariants) => {
-    console.log(newVariants);
     setVarients(
       produce((draft) => {
         draft.productvaritions.variants = newVariants;
+        console.log(
+          shapeData(
+            generateQualities(
+              refrenceVarient?.map((item) => item?.values),
+              newVariants || []
+            ),
+            newVariants || []
+          ),
+          refrenceVarient,
+          "dsaaaaaaaaaaaaaaaaaaaaaaaaaashapeData"
+        );
+        draft.productvaritions.varitionsValues = shapeData(
+          generateQualities(
+            refrenceVarient?.flatMap((item) => item?.values),
+            newVariants || []
+          ),
+          newVariants || []
+        );
       })
     );
   };
@@ -185,7 +205,7 @@ const ProductVariation = ({
       {console.log(productVarients, "productVarientsproductVarients")}
       <CollapseView
         varitions={productVarients?.variants?.filter((item) => !item?.edit)}
-        varitionsValues={productVarients?.VarientValues}
+        varitionsValues={productVarients?.varitionsValues}
         setVarients={setVarients}
         setData={setData}
         data={data}

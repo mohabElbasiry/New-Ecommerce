@@ -73,6 +73,7 @@ export const ProductDetailsComponent = ({
               setVarients={setSubmitedData}
               data={data}
               setData={setData}
+              refrenceVarient={submitedData?.productvaritions?.referencevarients}
             />
 
           </div>
