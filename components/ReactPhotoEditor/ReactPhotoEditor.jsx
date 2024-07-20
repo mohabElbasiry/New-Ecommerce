@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState} from "react";
+import { useCallback, useEffect, useRef, useState} from "react";
 import SlideImages from "./SlideImages";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
@@ -17,11 +17,13 @@ export const ReactPhotoEditor = ({
   open,
   onClose,
   selectedFiles,
-  setFileData,
+ 
 }) => {
+
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
+  const [PrimaryFile, setPrimaryFile] = useState(file);
   const [imageSrc, setImageSrc] = useState("");
   const [imageName, setImageName] = useState("");
   const [brightnessValue, setBrightnessValue] = useState(100);
@@ -72,20 +74,21 @@ export const ReactPhotoEditor = ({
   };
 
   useEffect(() => {
-    if (file) {
-      const fileSrc = URL.createObjectURL(file);
+    if (PrimaryFile) {
+      const fileSrc = URL.createObjectURL(PrimaryFile);
       setImageSrc(fileSrc);
-      setImageName(file.name);
+      setImageName(PrimaryFile.name);
       return () => {
         URL.revokeObjectURL(fileSrc);
       };
     }
-  }, [file, open]);
+  }, [file,PrimaryFile, open]);
 
   useEffect(() => {
     applyFilter();
+    
   }, [
-    file,
+    file,PrimaryFile,
     imageSrc,
     rotate,
     flipHorizontal,
@@ -115,51 +118,48 @@ export const ReactPhotoEditor = ({
     [completedCrop]
   );
 
+ 
   const applyFilter = () => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
-    const image = new Image();
-    image.src = imageSrc;
+  	const canvas = canvasRef.current;
+		const context = canvas?.getContext('2d');
+		const image = new Image();
+		image.src = imageSrc;
+		image.onload = () => {
+			if (canvas && context) {
+				const zoomedWidth = image.width * zoom;
+				const zoomedHeight = image.height * zoom;
+				const translateX = (image.width - zoomedWidth) / 2;
+				const translateY = (image.height - zoomedHeight) / 2;
+				canvas.width = image.width;
+				canvas.height = image.height;
+				context.filter = getFilterString();
+				context.save();
+				if (rotate) {
+					const centerX = canvas.width / 2;
+					const centerY = canvas.height / 2;
+					context.translate(centerX, centerY);
+					context.rotate((rotate * Math.PI) / 180);
+					context.translate(-centerX, -centerY);
+				}
+				if (flipHorizontal) {
+					context.translate(canvas.width, 0);
+					context.scale(-1, 1);
+				}
+				if (flipVertical) {
+					context.translate(0, canvas.height);
+					context.scale(1, -1);
+				}
+				context.translate(translateX, translateY);
 
-    image.onload = () => {
-      if (canvas && context) {
-        const zoomedWidth = image.width * zoom;
-        const zoomedHeight = image.height * zoom;
-        const translateX = (image.width - zoomedWidth) / 2;
-        const translateY = (image.height - zoomedHeight) / 2;
-        canvas.width = image.width;
-        canvas.height = image.height;
+				context.translate(offsetX, offsetY);
 
-        context.filter = getFilterString();
-        context.save();
-        context.clearRect(0, 0, canvas.width, canvas.height);
+				context.scale(zoom, zoom);
+				context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        context.translate(canvas.width / 2, canvas.height / 2);
-        if (rotate) {
-          const centerX = canvas.width / 2;
-          const centerY = canvas.height / 2;
-          context.translate(centerX, centerY);
-          context.rotate((rotate * Math.PI) / 180);
-          context.translate(-centerX, -centerY);
-        }
-        if (flipHorizontal) {
-          context.translate(canvas.width, 0);
-          context.scale(-1, 1);
-        }
-        if (flipVertical) {
-          context.translate(0, canvas.height);
-          context.scale(1, -1);
-        }
-        context.scale(zoom, zoom);
-        context.translate(-canvas.width / 2, -canvas.height / 2);
-
-        context.translate(offsetX / zoom, offsetY / zoom);
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        context.restore();
-      }
-    };
+				context.restore();
+			}
+    }
   };
-
   const getFilterString = () => {
     return `brightness(${brightnessValue}%) contrast(${contrastValue}%) grayscale(${grayscaleValue}%) saturate(${saturateValue}%)`;
   };
@@ -257,10 +257,10 @@ export const ReactPhotoEditor = ({
     if (!image || !previewCanvas || !completedCrop) {
       throw new Error("Crop canvas does not exist");
     }
-
+  
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-
+  
     const offscreen = new OffscreenCanvas(
       completedCrop.width * scaleX,
       completedCrop.height * scaleY
@@ -269,42 +269,40 @@ export const ReactPhotoEditor = ({
     if (!ctx) {
       throw new Error("No 2d context");
     }
-
+  
     ctx.drawImage(
-      previewCanvas,
-      0,
-      0,
-      previewCanvas.width,
-      previewCanvas.height,
+      image,
+      completedCrop.x * scaleX,
+      completedCrop.y * scaleY,
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY,
       0,
       0,
       offscreen.width,
       offscreen.height
     );
-
-    const blob = await offscreen.convertToBlob({
-      type: "image/png",
-    });
-
-    // Create a File object from Blob
-    const fileName = "cropped-image.png"; // Replace with your desired file name
+  
+    const blob = await offscreen.convertToBlob({ type: "image/png" });
+  
+    const fileName = "cropped-image.png";
     const file = new File([blob], fileName, { type: "image/png" });
-
-    setFileData(file);
+  
+    setPrimaryFile(file);
     if (blobUrlRef.current) {
       URL.revokeObjectURL(blobUrlRef.current);
     }
     blobUrlRef.current = URL.createObjectURL(file);
-    console.log("blobUrlRef.current", blobUrlRef.current);
+
   }
 
-  const saveImage = () => {
-    const canvas = canvasRef.current;
+  const saveImage = useCallback(() => {
+    const canvas =cropCustom&&completedCrop?previewCanvasRef.current: canvasRef.current
     if (canvas) {
       canvas.toBlob((blob) => {
+     
         if (blob) {
           const editedFile = new File([blob], imageName, { type: blob.type });
-          if (downloadOnSave) {
+          if (downloadOnSave) { 
             const objectUrl = URL.createObjectURL(blob);
             const linkElement = document.createElement("a");
             linkElement.download = `${imageName}`;
@@ -312,6 +310,7 @@ export const ReactPhotoEditor = ({
             linkElement.click();
             URL.revokeObjectURL(objectUrl);
           }
+        
           onSaveImage(editedFile);
           if (onClose) {
             onClose();
@@ -320,7 +319,7 @@ export const ReactPhotoEditor = ({
         resetImage();
       });
     }
-  };
+  },[previewCanvasRef.current, canvasRef.current,cropCustom,completedCrop]);
 
   const closeEditor = () => {
     resetImage();
@@ -351,7 +350,7 @@ export const ReactPhotoEditor = ({
                 >
                   Save
                 </button>
-                {!!completedCrop && (
+                {cropCustom&&completedCrop? (
                   <>
                     <div>
                       <canvas
@@ -366,9 +365,9 @@ export const ReactPhotoEditor = ({
                       />
                     </div>
                     <div></div>
-                    <button onClick={onDownloadCropClick}>corp</button>
+                    <button onClick={onDownloadCropClick}    className={modalHeaderButtonClasses}>corp</button>
                   </>
-                )}
+                ):null}
               </div>
 
               <div className="relative !flex  flex-wrap w-full lg:h-[75%] h-full p-5 gap-10">
@@ -379,8 +378,8 @@ export const ReactPhotoEditor = ({
                       onChange={(_, percentCrop) => setCrop(percentCrop)}
                       onComplete={(c) => setCompletedCrop(c)}
                       // aspect={1}
-                      minWidth={400}
-                      minHeight={100}
+                      // minWidth={400}
+                      // minHeight={100}
                       className={` relative max-w-full w-auto h-full  max-h-full  rounded-2xl border-4  aspect-square border-dashed  z-10`}
                       // circularCrop
                     >
@@ -404,8 +403,8 @@ export const ReactPhotoEditor = ({
                       onPointerUp={handlePointerUp}
                       onPointerLeave={handlePointerUp}
                       onWheel={handleWheel}
-                      width={1000}
-                      height={600}
+                      width={completedCrop?completedCrop.width:1000}
+                      height={completedCrop?completedCrop.height:600}
 
                       //   style={{ border: "1px solid black" }}
                     />
@@ -613,7 +612,7 @@ export const ReactPhotoEditor = ({
               </div>
               <SlideImages
                 selectedFiles={selectedFiles}
-                setFileData={setFileData}
+                setFileData={setPrimaryFile}
               />
             </div>
           </div>

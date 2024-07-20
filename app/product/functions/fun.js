@@ -1,24 +1,49 @@
 const baseUrl ="http://localhost:3001/api/v1/"
-export const uploadingAssets = async (endpoint, uploadedFile) => {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYzYzdiYzg2MjI2MjU1M2JkYjYwNyIsImNyZWF0ZWRBdCI6MTcyMTEyMTkxNTkwNSwiaWF0IjoxNzIxMTIxOTE1LCJleHAiOjE3Mjg4OTc5MTV9.E4-W-T_Dyyyyh9kX7eaSn5QhUtxmy4ZmF3ZAeaRlFeo"
-    const formData = new FormData();
-    formData.append("file", uploadedFile);
-    try {
-      const response = await fetch(baseUrl + endpoint, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-  
-        body: formData,
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.log(error);
-     
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYzYzdiYzg2MjI2MjU1M2JkYjYwNyIsImNyZWF0ZWRBdCI6MTcyMTEyMTkxNTkwNSwiaWF0IjoxNzIxMTIxOTE1LCJleHAiOjE3Mjg4OTc5MTV9.E4-W-T_Dyyyyh9kX7eaSn5QhUtxmy4ZmF3ZAeaRlFeo";
+
+
+export async function fetchImage(url) {
+  try {
+      const response = await fetch(url);
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      const blob = await response.blob();
+      const fileName = url.split('/').pop();
+      const file = new File([blob], fileName, { type: blob.type });
+      return file;
+  } catch (error) {
+      console.error('There was a problem with the fetch operation:', error);
+      return null;
+  }
+}
+
+
+
+export function UploadFile(selectedFiles,progressBarParent,progressBar) {
+ const headers = `Bearer ${token}`;
+  const file = selectedFiles[0];
+  const formData = new FormData();
+  formData.append("file", file);
+  progressBarParent.current.style.display = "block"; 
+  const xhr = new XMLHttpRequest();
+  xhr.upload.addEventListener("progress", function (e) {
+    if (e.lengthComputable) {
+      const percentComplete = (e.loaded / e.total) * 100;
+      console.log("percentComplete", percentComplete);
+      progressBar.current.style.width = percentComplete + "%";
+      if(percentComplete==100) setTimeout(() => {
+        progressBarParent.current.style.display = "none"; 
+      }, 2000);
     }
-  };
+  });
+
+  xhr.open("POST", baseUrl +"upload/file");
+  xhr.setRequestHeader("Authorization", headers);
+  xhr.send(formData);
+  
+}
+
   export function getAverageColor(imageElement, ratio) {
     const canvas = document.createElement("canvas")
 
@@ -64,25 +89,13 @@ export const uploadingAssets = async (endpoint, uploadedFile) => {
         B
     }
 }
-  // useEffect(()=>{
+ 
 
-  //   const image = document.querySelector("#i img")
-  // // const image_2 = document.querySelector("#i2 img")
-  
-  // if(image !==null ){
-  //   image.crossOrigin = "Anonymous";
-
-  //   image.onload = () => {
-  //     const { R, G, B } = getAverageColor(image, 4)
-  //     console.log(getAverageColor(image, 4))
-    
-  //       document.querySelector(".dasda").style.background  = `linear-gradient(to left, rgb(${R}, ${G},${B}), #fff)  `
-  //       // document.querySelector(".myof").style.background  = `linear-gradient(to left, rgb(${R}, ${G},${B}), #fff)  `
-  //       // document.querySelector("#i").style['box-shadow'] = `rgb(${R}, ${G},${B}) 0px 8px 24px;`
+  // useEffect(() => {
+  //   if(selectedFiles.length > 0) {
+  //     const image = document.querySelectorAll("img")?.[0]
+  //     if(image !==null )
+  //     console.log("getAverageColor",getAverageColor(image, 4))
+     
   //   }
-
-  
-  // }
-
-
-  // },[image])
+  // }, [selectedFiles]);
