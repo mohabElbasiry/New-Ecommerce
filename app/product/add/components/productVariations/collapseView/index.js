@@ -12,6 +12,9 @@ import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
 import FilterHeader from "./FilterHeader/index.jsx";
 import { generateQualities } from "./functions/GenerateQualities.js";
 import { produce } from "immer";
+import DrawerComponent from "@/components/GlobalUi/Drawer/index.jsx";
+import VariantDetails from "@/components/VariantDetails/index.jsx";
+import { dataVariants } from "@/app/product/[id]/data.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -39,7 +42,6 @@ const CollapseView = ({
         const dataItem = varitionsValues.find(
           (item) => item.key === selected.key
         );
-
         if (dataItem) {
           const matchedValues = selected.SelectedItems.map(
             (index) => dataItem.values[index]
@@ -48,11 +50,10 @@ const CollapseView = ({
         } else {
           return { key: selected.key, values: [] };
         }
-      });
+      }).filter(item=>item?.key&&item?.values?.length);
     }
   }, [checkedArray, varitionsValues, open]);
 
-  const similarItems = findSimilarItems;
    useEffect(() => {
     if (varitions?.length) {
       setData(
@@ -155,6 +156,9 @@ const CollapseView = ({
           );
         })}
       </Accordion>
+      <DrawerComponent open={open} setOpen={setOpen}>
+      <VariantDetails data={dataVariants.product.variants} similarItems={findSimilarItems} /> 
+      </DrawerComponent>
     </div>
   );
 };
