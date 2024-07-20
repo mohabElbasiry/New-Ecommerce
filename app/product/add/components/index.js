@@ -10,7 +10,11 @@ export const ProductAddMaim = () => {
   const [submitedData, setSubmitedData] = useState({
     ...ProductMainDefaultValue,
   });
-
+  const [data, setData] = useState({
+    Data: [],
+    BeforeFilterData: [],
+  });
+  console.log("rerender hassan", data);
   const {
     register,
     handleSubmit,
@@ -24,19 +28,22 @@ export const ProductAddMaim = () => {
     resolver: yupResolver(BasicFormValidation("en")),
   });
 
-  useEffect(() => {
-    const SubmitedData = localStorage.getItem("submitedItem");
-    if (submitedData) {
-      const ParsingData = JSON.parse(SubmitedData);
-      if (ParsingData?.SubmitedValues?.length) {
-        setSubmitedData(ParsingData?.SubmitedValues);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   const SubmitedData = localStorage.getItem("submitedItem");
+  //   if (submitedData) {
+  //     const ParsingData = JSON.parse(SubmitedData);
+  //     if (ParsingData?.SubmitedValues?.length) {
+  //       setSubmitedData(ParsingData?.SubmitedValues);
+  //     }
+  //   }
+  // }, []);
   return (
     <>
       <Headercomponent handleSubmit={handleSubmit}>
         <div className="flex items-end justify-end   gap-1">
+          {
+            console.log(submitedData,'submitedData123231321')
+          }
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}
@@ -49,6 +56,8 @@ export const ProductAddMaim = () => {
               clearErrors,
               isSubmitting
             }}
+            data={data}
+            setData={setData}
           />
         </div>
       </Headercomponent>

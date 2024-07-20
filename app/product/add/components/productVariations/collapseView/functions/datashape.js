@@ -3,8 +3,7 @@ export function shapeData(combinedTexts, variants) {
   let data = [];
 
   variants[0].values.forEach((valueGroup, idx) => {
-    console.log(valueGroup, "valueGroupvalueGroupvalueGroup");
-    let obj = {
+     let obj = {
       key: valueGroup.value_en,
       itemIndex: idx + 1,
       quantity: 0,
@@ -21,36 +20,41 @@ export function shapeData(combinedTexts, variants) {
       );
 
       if (check) {
+        valueItem.values.forEach((value) => {
+          str += value.value_en + "/";
+        });
 
-      valueItem.values.forEach((value) => {
-        str += value.value_en + "/";
-      });
+        obj.values.push({
+          itemIndex: `${idx + 1}${indx + 1}`,
+          val: str.trim(),
+          values:valueItem?.values||[],
+          quantity: +valueItem.quantity || 0,
+          sku: valueItem.sku || "",
+          continue_out_stock: valueItem?.continue_selling || false,
+          price: valueItem?.price || 0,
+          compare_to_price: valueItem?.compare_to_price || 0,
+          barcode: valueItem?.barcode || "",
+          image: valueItem?.image || [],
+          Compare_To_Price: valueItem?.Compare_To_Price || 0,
+          Cost_Per_Item: valueItem?.Cost_Per_Item || 0,
+          Profit: valueItem?.Profit || 0,
+          margin: valueItem?.margin || 0,
+          color: valueItem?.color || "",
+          Barcode: valueItem?.Barcode || "",
+          itemIndex:valueItem?.itemIndex
 
-      obj.values.push({
-        itemIndex: `${idx + 1}${indx + 1}`,
-        val: str.trim(),
-        quantity: +valueItem.quantity || 0,
-        sku: valueItem.sku || "",
-        continue_selling: valueItem?.continue_selling || false,
-        price: valueItem?.price || 0,
-        compare_to_price: valueItem?.compare_to_price || 0,
-        barcode: valueItem?.barcode || "",
-        image: valueItem?.image || [],
-      });
-    }
-    }
-  
-  );
+        });
+      }
+    });
     let qty = 0;
- 
+
     obj.values.reduce((acc, value) => {
       return (qty += +value.quantity);
     }, qty);
- 
-     obj.quantity = qty;
-     
+
+    obj.quantity = qty;
+
     data.push(obj);
-  }
-);
+  });
   return data;
 }

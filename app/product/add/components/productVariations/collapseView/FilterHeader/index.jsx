@@ -12,8 +12,7 @@ import { memo } from "react";
   checkedArray,
   data,
 }) => {
-  console.log('renderuseCallback')
-
+ 
   return (
     <>
       <input
@@ -70,7 +69,7 @@ import { memo } from "react";
         </div>
 <div className="flex items-center gap-1 w-[]">
 
-  <button className="box text-sm p-1  ">
+  <button className="box text-sm p-1  " type="button">
     Bulk Edit
   </button>
 <BulkEditView />
@@ -78,13 +77,14 @@ import { memo } from "react";
 </div>
         </div>
       ) : (
-        <div className=" flex justify-between">
+        <div className=" grid grid-cols-4 justify-between">
+           
           <input
             className="text-center
           w-[20px]
           flex justify-start"
             type="checkbox"
-            checked={checkedArray?.map((item) => item?.SelectedItems).length}
+            checked={checkedArray?.flatMap(item=>item)?.length?true:false}
             onChange={(e) => {
               setChecked((prev = []) => {
                 console.log(prev);
