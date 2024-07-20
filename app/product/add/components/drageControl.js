@@ -1,15 +1,29 @@
- 
- 
-export function ReorderIcon({ dragControls }) {
+export function ReorderIcon({ dragControls, onDragEnd }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 39 39"
       width="15"
       height="15"
-      onPointerDown={(event) => dragControls.start(event)}
+      onPointerDown={(event) => {
+        event.stopPropagation();
+        return dragControls.start(event);
+      }}
+      onDragEnd={(e)=>e.stopPropagation()}
       className="ml-2"
-      onClick={(e)=>{e.preventDefault(); return}}
+      // onMouseDown={(event) => {
+      //   event.stopPropagation();
+      //   return dragControls.start(event);
+      // }}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
     >
       <path
         d="M 5 0 C 7.761 0 10 2.239 10 5 C 10 7.761 7.761 10 5 10 C 2.239 10 0 7.761 0 5 C 0 2.239 2.239 0 5 0 Z"

@@ -3,15 +3,26 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { SketchPicker } from "react-color";
 import { handleError } from "./functions/setError";
 import { Reorder } from "framer-motion";
+import { produce } from "immer";
+import { generateQualities } from "../collapseView/functions/GenerateQualities";
+import { shapeData } from "../collapseView/functions/datashape";
 
-export default function CreateVariation({ listIndex, setList, list }) {
+export default function CreateVariation({
+  listIndex,
+  setList,
+  list,
+  data: { Data },
+}) {
+  console.log(list, "adsssssssssssss");
   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
+    error: false,
+    ErrorMessage: "",
   });
   const [currentValues, setCurrentValues] = useState([
     {
-      value_ar: "",
+      // value_ar: "",
       value_en: "",
       color: "",
     },
@@ -20,14 +31,32 @@ export default function CreateVariation({ listIndex, setList, list }) {
   const [GeneralErrorMessage, setGeneralErrorMessage] = useState({
     isError: false,
     ErrorMessage: "",
+    value: false,
   });
   const [error, setError] = useState([]);
-  const handleOptionChange = (event) => {
-    setCurrentOption({
-      ...currentOption,
-      [event?.target.name]: event?.target.value,
-    });
-  };
+  const handleOptionChange = useCallback(
+    (event) => {
+      if (currentOption.option_en.trim() !== "") {
+        setGeneralErrorMessage({});
+      }
+      setCurrentOption((prev) => {
+        const isOneOfOthers = list
+          ?.filter((option) => !option?.edit)
+          .find((option) => {
+            return option.key_en.trim() === event.target.value.trim();
+          });
+        return {
+          ...prev,
+          [event?.target.name]: event?.target.value,
+          error: isOneOfOthers ? true : false,
+          ErrorMessage: isOneOfOthers
+            ? "Please Enter different option name"
+            : "",
+        };
+      });
+    },
+    [list]
+  );
   const handleKeyDown = useCallback(
     (event, index, item) => {
       const itemFounded = currentValues?.find((_, idx) => idx === index);
@@ -68,15 +97,14 @@ export default function CreateVariation({ listIndex, setList, list }) {
   const handleValueChange = useCallback(
     (event, index, isAr = false) => {
       handleError(event, index, isAr, setError, currentValues, error);
-
       const newValues = [...currentValues];
 
       if (isAr) {
-        newValues[index] = {
-          ...newValues[index],
-          value_ar: event.target.value,
-          color: "",
-        };
+        // newValues[index] = {
+        //   ...newValues[index],
+        //   value_ar: event.target.value,
+        //   color: "",
+        // };
       } else {
         newValues[index] = {
           ...newValues[index],
@@ -131,8 +159,9 @@ export default function CreateVariation({ listIndex, setList, list }) {
 
   useEffect(() => {
     if (
-      currentValues[currentValues.length - 1]?.value_en?.trim() !== "" &&
-      currentValues[currentValues.length - 1]?.value_ar?.trim() !== ""
+      currentValues[currentValues.length - 1]?.value_en?.trim() !== ""
+      // &&
+      // currentValues[currentValues.length - 1]?.value_ar?.trim() !== ""
     ) {
       setCurrentValues([
         ...currentValues,
@@ -148,7 +177,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
   useEffect(() => {
     if (list?.length) {
       setCurrentOption((prev) => ({
-        option_ar: list[listIndex]?.key_ar,
+        // option_ar: list[listIndex]?.key_ar,
         option_en: list[listIndex]?.key_en,
       }));
       setCurrentValues(list[listIndex]?.values);
@@ -157,7 +186,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
   return (
     <div>
       <div className="w-[100%] p-3">
-        <div className="grid grid-cols-2 gap-1  ">
+        <div className="grid grid-cols-1 gap-1  ">
           <InputWithLabelComponent
             Input
             type="text"
@@ -166,10 +195,12 @@ export default function CreateVariation({ listIndex, setList, list }) {
             onChange={handleOptionChange}
             placeholder="Enter option name"
             isRequired
-            label="option in en"
+            label="option"
+            isError={currentOption?.error}
+            message={currentOption?.ErrorMessage}
             PlaceHolder={`colors`}
           />
-          <InputWithLabelComponent
+          {/* <InputWithLabelComponent
             Input
             type="text"
             value={currentOption?.option_ar}
@@ -179,7 +210,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
             isRequired
             label="option in ar"
             PlaceHolder={`الالوان`}
-          />
+          /> */}
         </div>
         <p className="my-3">Option values</p>
         <Reorder.Group values={currentValues} onReorder={setCurrentValues}>
@@ -193,12 +224,13 @@ export default function CreateVariation({ listIndex, setList, list }) {
                 <div className="flex gap-3 relative items-center">
                   <InputWithLabelComponent
                     Input
+                    inputCss="!w-[520px] p-2"
                     type="text"
                     name="value_en"
                     key={index}
                     value={value?.value_en}
                     onChange={(event) => handleValueChange(event, index, false)}
-                    PlaceHolder={`value in english`}
+                    PlaceHolder={`option values`}
                     isRequired={index !== currentValues?.length - 1}
                     onKeyDown={(e) => handleKeyDown(e, index, value)}
                     onBlur={(e) => handleBlur(e, index)}
@@ -210,7 +242,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                     }
                     Autocomplete="off"
                   />
-                  <InputWithLabelComponent
+                  {/* <InputWithLabelComponent
                     Input
                     type="text"
                     name="value_ar"
@@ -228,7 +260,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                       error?.find((item) => item?.index === index)?.ar?.Message
                     }
                     Autocomplete="off"
-                  />
+                  /> */}
                   <div
                     className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
                     onClick={() => {
@@ -240,7 +272,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                     }}
                   ></div>
 
-                  <div className="absolute top-0 right-[-250px]">
+                  <div className="absolute z-[10000] top-0 right-[0px]">
                     {color?.index === index && color?.open ? (
                       <SketchPicker />
                     ) : null}
@@ -248,8 +280,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                   {currentValues?.some((_, idx) => idx === index) &&
                   index !== currentValues?.length - 1 ? (
                     <button
-                    type="button"
-
+                      type="button"
                       onClick={() => HandleDelete(index)}
                       className="w-[25px]   right-3 top-[30%]"
                     >
@@ -269,7 +300,34 @@ export default function CreateVariation({ listIndex, setList, list }) {
         <button
           type="button"
           onClick={() => {
-            setList((prev) => prev?.filter((_, idx) => idx !== listIndex));
+            setList(
+              produce((draft) => {
+                const updatedVarient =
+                  draft?.productvaritions?.variants?.filter((_, idx) => {
+                    return idx !== listIndex;
+                  });
+                draft.productvaritions.variants = updatedVarient;
+
+                // draft.productvaritions.varitionsValues = generateQualities(
+                //   Data?.flatMap((item) => item.values),
+                //   draft?.productvaritions?.variants?.filter(
+                //     (_, idx) => idx !== listIndex
+                //   )
+                // );
+                const dataShape = generateQualities(
+                  Data?.flatMap((item) => item.values) || [],
+                  updatedVarient || []
+                );
+                if (updatedVarient?.length === 0) {
+                  draft.productvaritions.varitionsValues = [];
+                  return;
+                }
+                draft.productvaritions.varitionsValues = shapeData(
+                  dataShape,
+                  updatedVarient || []
+                );
+              })
+            );
           }}
           className="bg-[#eee] shadow text-black text-xs   rounded-lg px-3 p-1"
         >
@@ -281,7 +339,28 @@ export default function CreateVariation({ listIndex, setList, list }) {
           border-[#33333370] rounded-lg px-3 p-1"
           onClick={(e) => {
             e.preventDefault();
-            console.log(currentValues, "handleSubmit");
+
+            const isOneOfOthers = list
+              ?.filter((option) => !option?.edit)
+              .find((option) => {
+                return (
+                  option?.key_en?.trim() === currentOption?.option_en?.trim()
+                );
+              });
+
+            if (isOneOfOthers) {
+              return;
+            }
+            if (currentOption.option_en.trim() === "") {
+              setGeneralErrorMessage((prev) => ({
+                ...prev,
+                ErrorMessage: "please Fill This Form",
+                isError: true,
+                value: false,
+              }));
+              return;
+            }
+
             if (
               currentValues?.length === 1 &&
               currentValues?.[0]?.value_ar?.trim() === "" &&
@@ -291,6 +370,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                 ...prev,
                 ErrorMessage: "please Fill This Form",
                 isError: true,
+                value: true,
               }));
 
               return;
@@ -309,6 +389,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                 ...prev,
                 ErrorMessage: "please Fill This Form",
                 isError: true,
+                value: true,
               }));
             }
 
@@ -318,22 +399,42 @@ export default function CreateVariation({ listIndex, setList, list }) {
               isError: false,
             }));
 
-            setList((prev) => {
-              return prev?.map((item, idx) => {
-                if (idx === listIndex) {
-                  return {
-                    ...item,
-                    key_en: currentOption?.option_en,
-                    key_ar: currentOption?.option_ar,
-                    values: currentValues?.filter(
-                      (item) => item?.value_ar !== "" && item?.value_en !== ""
-                    ),
-                    edit: false,
-                  };
-                }
-                return item;
-              });
-            });
+            setList(
+              produce((draft) => {
+                const Updated = draft.productvaritions.variants.map(
+                  (item, idx) => {
+                    if (idx === listIndex) {
+                      return {
+                        ...item,
+                        key_en: currentOption?.option_en,
+                        key_ar: currentOption?.option_ar,
+                        values: currentValues?.filter(
+                          (item) =>
+                            // item?.value_ar !== "" &&
+                            item?.value_en !== ""
+                        ),
+                        edit: false,
+                      };
+                    }
+                    return item;
+                  }
+                );
+
+                draft.productvaritions.variants = Updated;
+                const dataShape = generateQualities(
+                  Data?.flatMap((item) => item.values) || [],
+                  Updated || []
+                );
+                draft.productvaritions.varitionsValues = shapeData(
+                  dataShape || [],
+                  Updated || []
+                );
+                draft.productvaritions.referencevarients = shapeData(
+                  dataShape || [],
+                  Updated || []
+                );
+              })
+            );
           }}
         >
           Done

@@ -16,6 +16,8 @@ export const ProductDetailsComponent = ({
   submitedData,
   setSubmitedData,
   formData,
+  data,
+  setData
 }) => {
   return (
     <div className="    justify-end gap-1 p-3 ml-auto]">
@@ -31,13 +33,12 @@ export const ProductDetailsComponent = ({
             formData={formData}
             setSubmitedData={setSubmitedData}
           />
-          <Seo />{" "}
         </div>
 
         <div className="w-[50%] ">
           <div className="w-[100%]   p-2 flex flex-col gap-3 ">
             <ProductSettings />
-            <div className="main grid grid-cols-2 gap-1">
+            <div className="main grid grid-cols-2 gap-1 box p-1">
               <Image
                 src={"/girl.jpg"}
                 className="w-[100%] h-[300px] object-cover object-top rounded-2xl"
@@ -64,10 +65,17 @@ export const ProductDetailsComponent = ({
             </div>
           </div>
           <div className="w-full overflow-auto ">
+            {
+              console.log(submitedData)
+            }
             <ProductVariation
-              submitedData={submitedData?.VariendData}
-              setSubmitedData={setSubmitedData}
+              productVarients={submitedData?.productvaritions}
+              setVarients={setSubmitedData}
+              data={data}
+              setData={setData}
+              refrenceVarient={submitedData?.productvaritions?.referencevarients}
             />
+
           </div>
         </div>
       </div>
