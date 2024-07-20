@@ -23,6 +23,14 @@ const CollapseView = ({
   const [collapsible, setCollapsible] = useState(false);
   const [data, setData] = useState({ data: [] });
   const [open, setOpen] = useState(false);
+  const [Filters,setFilters]=useState({
+    FilterValues:[],
+    GroupBy:'',
+    sortBy:{
+      sortMethod:'',
+      sortKey:''  
+    }
+  })
    const findSimilarItems = useMemo(() => {
     if (!open && !checkedArray?.length) {
       return [];
@@ -45,8 +53,7 @@ const CollapseView = ({
   }, [checkedArray, varitionsValues, open]);
 
   const similarItems = findSimilarItems;
-  console.log(similarItems, "similarItems");
-  useEffect(() => {
+   useEffect(() => {
     if (varitions?.length) {
       setData(
         produce((draft) => {
@@ -99,15 +106,9 @@ const CollapseView = ({
         checkedArray={checkedArray}
         varietnsValues={varitionsValues}
         setVarients={setVarients}
+        setFilters={setFilters}
       />
-      {/* <p
-        className="cursor-pointer"
-        onClick={() => setCollapsible(!collapsible)}
-      >
-        {" "}
-        collapsible
-      </p> */}
-
+ 
       <p onClick={() => setOpen(!open)}>open</p>
 
       <Accordion

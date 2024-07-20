@@ -1,8 +1,15 @@
+import { produce } from "immer";
 import { DropdownMenuRadioGroupSelect } from "../../../variationTables/Filters/DropDown";
 
-export const GroupedView = ({ varitions=[] }) => {
+export const GroupedView = ({ varitions=[] ,setFilters}) => {
     console.log(varitions,'varitions');
-  const ChangeTheOrder = () => {};
+  const ChangeTheOrder = (value) => {
+      setFilters(produce(draft=>{
+        draft.GroupBy=value
+
+      }))
+
+  };
   return (
     <div className="GroupBy flex items-center  text-sm border w-fit ps-1 rounded-xl ">
       <label id="Grouped" className=" mx-2">Group by</label>
