@@ -38,20 +38,9 @@ const ProductVariation = ({
     setVarients(
       produce((draft) => {
         draft.productvaritions.variants = newVariants;
-        console.log(
-          shapeData(
-            generateQualities(
-              refrenceVarient?.map((item) => item?.values),
-              newVariants || []
-            ),
-            newVariants || []
-          ),
-          refrenceVarient,
-          "dsaaaaaaaaaaaaaaaaaaaaaaaaaashapeData"
-        );
         draft.productvaritions.varitionsValues = shapeData(
           generateQualities(
-            refrenceVarient?.flatMap((item) => item?.values),
+            draft.productvaritions.varitionsValues?.flatMap((item) => item?.values),
             newVariants || []
           ),
           newVariants || []
@@ -63,7 +52,6 @@ const ProductVariation = ({
   return (
     <>
       <p className="my-2 title">Add Varations</p>
-
       <div className="w-[100%]    ">
         {productVarients?.variants?.length ? (
           <div className="  w-[100%] pb-1  rounded-md px-2 pt-1   border box mb-2">
@@ -72,12 +60,13 @@ const ProductVariation = ({
               axis="y"
               values={productVarients?.variants}
               onReorder={handleReorder}
+              dragListenser={false}
             >
               {productVarients?.variants?.map((item, idx) => {
                 return (
                   <Reorder.Item
                     onDragEnd={(e) => e.stopPropagation()}
-                    // dragListenser={false}
+                    dragListenser={false}
                     dragControls={dragControls}
                     value={item}
                     key={item?.key_en}
@@ -120,9 +109,9 @@ const ProductVariation = ({
                         }}
                       >
                         <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">
-                          {/* <div className="mt-3  p-2 flex flex-col gap-3 px-2 hover:bg-[#eee] cursor-pointer">
+                          <div className="mt-3  p-2 flex flex-col gap-3 px-2 hover:bg-[#eee] cursor-pointer">
                             <ReorderIcon dragControls={dragControls} />
-                          </div> */}
+                          </div>
                           <div className="   ">
                             <p>{item?.key_en}</p>
                             <ul className="w-[100%] flex gap-3 flex-wrap">
@@ -171,7 +160,6 @@ const ProductVariation = ({
             </p>
           </div>
         ) : null}
-        {console.log(productVarients?.variants, "dasssssssss")}
         {!productVarients?.variants?.length ? (
           <p
             className="cursor-pointer text-sm lowercase"
@@ -202,13 +190,13 @@ const ProductVariation = ({
           </p>
         ) : null}
       </div>
-      {console.log(productVarients, "productVarientsproductVarients")}
       <CollapseView
         varitions={productVarients?.variants?.filter((item) => !item?.edit)}
         varitionsValues={productVarients?.varitionsValues}
         setVarients={setVarients}
         setData={setData}
         data={data}
+        REfvariants={productVarients?.REfvariants}
       />
       {/* <VariationTable varitions={productVarients?.variants} 
           // setSubmitedData={setSubmitedData}

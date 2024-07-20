@@ -15,21 +15,44 @@ import { produce } from "immer";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
-  setData = () => {},
+  REfvariants = [],
+
   setVarients = () => {},
-  data = { Data: {}, BeforeFilterData: {} },
 }) => {
   const [checkedArray, setChecked] = useState([]);
+  const [collapsible, setCollapsible] = useState(false);
+  const [data, setData] = useState({ data: [] });
+  const [open, setOpen] = useState(false);
+   const findSimilarItems = useMemo(() => {
+    if (!open && !checkedArray?.length) {
+      return [];
+    } else {
+      return checkedArray.map((selected) => {
+        const dataItem = varitionsValues.find(
+          (item) => item.key === selected.key
+        );
 
+        if (dataItem) {
+          const matchedValues = selected.SelectedItems.map(
+            (index) => dataItem.values[index]
+          ).filter((value) => value !== undefined);
+          return { key: selected.key, values: matchedValues };
+        } else {
+          return { key: selected.key, values: [] };
+        }
+      });
+    }
+  }, [checkedArray, varitionsValues, open]);
+
+  const similarItems = findSimilarItems;
+  console.log(similarItems, "similarItems");
   useEffect(() => {
     if (varitions?.length) {
-      setData((prev) => {
-        return {
-          ...prev,
-          Data: varitionsValues,
-          BeforeFilterData: varitionsValues,
-        };
-      });
+      setData(
+        produce((draft) => {
+          draft.data = varitionsValues;
+        })
+      );
     }
   }, [varitionsValues]);
   const MinAndMax = (values) => {
@@ -46,32 +69,57 @@ const CollapseView = ({
     (values) => {
       return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
     },
-    [JSON.stringify(varitions)]
+    [varitionsValues]
   );
-  useEffect(() => {
-    if (data?.Data?.length) {
-      setVarients(
-        produce((draft) => {
-          draft.productvaritions.referencevarients = data?.Data;
-        })
-      );
-    }
-  }, [data]);
+  // useMemo(() => {
+  //   setVarients(
+  //     produce((draft) => {
+  //       draft.productvaritions.varitionsValues = varitionsValues.map((item) => {
+  //         const prices = item?.values.map((value) => parseFloat(value.price));
+  //         const quantity = item?.values?.reduce(
+  //           (acc, item) => (acc += +item?.quantity),
+  //           0
+  //         );
+  //         return {
+  //           ...item,
+  //           min_price: Math.min(...prices),
+  //           max_price: Math.max(...prices),
+  //           quantity,
+  //         };
+  //       });
+  //     })
+  //   );
+  // }, [varitionsValues]);
   return (
     <div className="   box p-3 ">
       <FilterHeader
-        varitions={varitions}
+        varitions={REfvariants}
         setChecked={setChecked}
-        data={data?.Data}
+        data={data?.data}
         checkedArray={checkedArray}
+        varietnsValues={varitionsValues}
+        setVarients={setVarients}
       />
-      <Accordion type="single" collapsible className="w-full">
-        {data?.Data?.map((item, idx) => {
-          console.log(item, "das");
+      {/* <p
+        className="cursor-pointer"
+        onClick={() => setCollapsible(!collapsible)}
+      >
+        {" "}
+        collapsible
+      </p> */}
+
+      <p onClick={() => setOpen(!open)}>open</p>
+
+      <Accordion
+        type="multiple"
+        collapsible
+        onValueChange={() => setCollapsible(!collapsible)}
+      >
+        {data?.data?.map((item, idx) => {
           return (
             <AccordionItem key={item?.key} value={item?.key}>
               <VarientKey
-                setData={setData}
+                setVarients={setVarients}
                 key={item?.key}
                 name={item?.key}
                 maxPrice={MinAndMax(item?.values)?.max}
@@ -93,10 +141,10 @@ const CollapseView = ({
                         itemValue={valueItem}
                         parentIndex={item?.itemIndex}
                         idx={idx}
-                        setData={setData}
                         checkedArray={checkedArray}
                         setChecked={setChecked}
                         parentname={item?.key}
+                        setVarients={setVarients}
                       />
                     );
                   })}

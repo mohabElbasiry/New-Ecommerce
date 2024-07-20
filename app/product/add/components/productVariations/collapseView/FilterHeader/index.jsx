@@ -69,7 +69,7 @@ import { memo } from "react";
         </div>
 <div className="flex items-center gap-1 w-[]">
 
-  <button className="box text-sm p-1  ">
+  <button className="box text-sm p-1  " type="button">
     Bulk Edit
   </button>
 <BulkEditView />
@@ -77,7 +77,7 @@ import { memo } from "react";
 </div>
         </div>
       ) : (
-        <div className=" flex justify-between">
+        <div className=" grid grid-cols-4 justify-between">
            
           <input
             className="text-center
