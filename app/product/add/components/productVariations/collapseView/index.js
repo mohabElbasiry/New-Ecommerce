@@ -15,6 +15,7 @@ import { produce } from "immer";
 import DrawerComponent from "@/components/GlobalUi/Drawer/index.jsx";
 import VariantDetails from "@/components/VariantDetails/index.jsx";
 import { dataVariants } from "@/app/product/[id]/data.js";
+import { reorderArray } from "./functions/reorderArray.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -22,47 +23,65 @@ const CollapseView = ({
 
   setVarients = () => {},
 }) => {
+  console.log("rerendertheState");
   const [checkedArray, setChecked] = useState([]);
   const [collapsible, setCollapsible] = useState(false);
   const [data, setData] = useState({ data: [] });
   const [open, setOpen] = useState(false);
-  const [Filters,setFilters]=useState({
-    FilterValues:[],
-    GroupBy:'',
-    sortBy:{
-      sortMethod:'',
-      sortKey:''  
-    }
-  })
-   const findSimilarItems = useMemo(() => {
+  const [Filters, setFilters] = useState({
+    FilterValues: [],
+    GroupBy: {
+      key: "",
+      reorderArray: [],
+    },
+    sortBy: {
+      sortMethod: "",
+      sortKey: "",
+    },
+  });
+  const findSimilarItems = useMemo(() => {
+    console.log(data,'dsaaaaaaaaaaaaaa')
     if (!open && !checkedArray?.length) {
       return [];
     } else {
-      return checkedArray.map((selected) => {
-        const dataItem = varitionsValues.find(
-          (item) => item.key === selected.key
-        );
-        if (dataItem) {
-          const matchedValues = selected.SelectedItems.map(
-            (index) => dataItem.values[index]
-          ).filter((value) => value !== undefined);
-          return { key: selected.key, values: matchedValues };
-        } else {
-          return { key: selected.key, values: [] };
-        }
-      }).filter(item=>item?.key&&item?.values?.length);
+      return checkedArray
+        .map((selected) => {
+          const dataItem = varitionsValues.find(
+            (item) => item.key === selected.key
+          );
+          if (dataItem) {
+            const matchedValues = selected.SelectedItems.map(
+              (index) => dataItem.values[index]
+            ).filter((value) => value !== undefined);
+            return { key: selected.key, values: matchedValues };
+          } else {
+            return { key: selected.key, values: [] };
+          }
+        })
+        .filter((item) => item?.key && item?.values?.length);
     }
   }, [checkedArray, varitionsValues, open]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (varitions?.length) {
       setData(
         produce((draft) => {
+          if (Filters?.GroupBy?.reorderArray?.length) {
+            draft.data = shapeData(
+              generateQualities(
+                varitionsValues?.flatMap((item) => item?.values),
+                reorderArray(varitions, Filters?.GroupBy?.key) || []
+              ),
+              reorderArray(varitions, Filters?.GroupBy?.key) || []
+            );
+            console.log(Filters?.GroupBy?.reorderArray, "adsdas");
+            return;
+          }
           draft.data = varitionsValues;
         })
       );
     }
-  }, [varitionsValues]);
+  }, [varitionsValues, Filters]);
   const MinAndMax = (values) => {
     const price = values.map((value) => {
       return +value.price;
@@ -109,7 +128,7 @@ const CollapseView = ({
         setVarients={setVarients}
         setFilters={setFilters}
       />
- 
+
       <p onClick={() => setOpen(!open)}>open</p>
 
       <Accordion
@@ -157,7 +176,10 @@ const CollapseView = ({
         })}
       </Accordion>
       <DrawerComponent open={open} setOpen={setOpen}>
-      <VariantDetails data={dataVariants.product.variants} similarItems={findSimilarItems} /> 
+        <VariantDetails
+          data={dataVariants.product.variants}
+          similarItems={findSimilarItems}
+        />
       </DrawerComponent>
     </div>
   );
