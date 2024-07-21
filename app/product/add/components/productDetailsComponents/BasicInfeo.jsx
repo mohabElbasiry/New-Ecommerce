@@ -86,7 +86,9 @@ export const BasicData = ({
         isSubmitted={isSubmitting}
       /> */}
     <h3>Product Description</h3>
-          <TextEditor content={submitedData?.productDetails?.description_en} setContent={UdateBasicInfo} /> 
+          <TextEditor content={submitedData?.productDetails?.description_en} setContent={(e) => {
+          UdateBasicInfo(e, setSubmitedData);
+        }} /> 
       {/* <DraftEditor
         field="Product Description in Arabic"
         edit={false}

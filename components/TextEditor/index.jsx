@@ -8,16 +8,17 @@ const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 export default function TextEditor({ content, setContent }) {
   const editor = useRef(null);
 
+
   // Custom configuration for Jodit editor
   const config = useMemo(
     () => ({
       // Customize toolbar buttons
       buttons: [
-        "paragraph","|", "bold", "italic", "underline","|", "align",  "link", "image","|", "indent", "outdent", "ol","ul",
+        "paragraph", "|", "bold", "italic", "underline", "|", "align", "link", "image", "|", "indent", "outdent", "ol", "ul"
       ],
       // Remove specific buttons
       removeButtons: [
-        "color", "font", "strikethrough", "eraser", "spellcheck", "speechRecognize", "table", "hr", "fullsize", "symbols", "ai-commands", "ai-assistant", "brush"
+         "font", "strikethrough", "eraser", "spellcheck", "speechRecognize", "table", "hr", "fullsize", "symbols", "ai-commands", "ai-assistant", "brush"
       ],
       // Custom image uploader configuration
       uploader: {
@@ -25,10 +26,13 @@ export default function TextEditor({ content, setContent }) {
         imagesExtensions: ["jpg", "png", "jpeg", "gif", "svg", "webp"]
       },
       // Disable unwanted plugins
-      disablePlugins: ["video", "file", "preview", "print"]
+      disablePlugins: ["video", "file", "preview", "print"],
+      // Add custom buttons
+      // extraButtons: [customButton]
     }),
     []
   );
+
 
   // Function to handle changes in the editor
   const handleChange = (value) => {
@@ -43,7 +47,7 @@ export default function TextEditor({ content, setContent }) {
         value={content}
         config={config}
         onChange={handleChange}
-        className="w-full h-full bg-white"
+        className="w-full h-full bg-white min-w-[300px]"
       />
       <style>{`.jodit-wysiwyg { height: 300px !important; }`}</style>
     </div>
