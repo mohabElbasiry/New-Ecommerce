@@ -25,15 +25,6 @@ const ProductVariation = ({
 }) => {
   const dragControls = useDragControls();
 
-  // useEffect(() => {
-  //   if (localStorage?.getItem("list")) {
-  //     const list = JSON.parse(localStorage?.getItem("list"));
-  //     if (list?.length) {
-  //       setList(list);
-  //     }
-  //   }
-  // }, []);
-
   const handleReorder = (newVariants) => {
     setVarients(
       produce((draft) => {

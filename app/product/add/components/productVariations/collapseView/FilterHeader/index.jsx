@@ -11,6 +11,7 @@ import { memo } from "react";
   setChecked = () => {},
   checkedArray,
   data,
+  setFilters
 }) => {
  
   return (
@@ -21,10 +22,10 @@ import { memo } from "react";
         placeholder="enter something to search"
       />
       <div className="header p-3 flex justify-between items-center">
-        <GroupedView varitions={varitions} />
+        <GroupedView varitions={varitions}  setFilters={setFilters}/>
 
         <div className="GroupBy flex items-center  text-sm gap-3">
-          <SortBy />
+          <SortBy  setFilters={setFilters}/>
         </div>
       </div>
       <div className="Filters mb-4">

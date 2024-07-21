@@ -1,10 +1,13 @@
 import { SortActionComponent } from "@/components/SortComponents/SortAction"
 
-export const SortBy=()=>{
+export const SortBy=({setFilters})=>{
 
 
 
-  const handleChange = () => {};
+  const handleChange = (v) => {
+    console.log(v);
+    
+  };
     return(<>
     
     <SortActionComponent 

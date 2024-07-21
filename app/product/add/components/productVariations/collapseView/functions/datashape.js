@@ -1,6 +1,5 @@
 export function shapeData(combinedTexts, variants) {
-  console.log(combinedTexts, variants, "dasdsaasdsadasdsdadas");
-  let data = [];
+   let data = [];
 
   variants[0].values.forEach((valueGroup, idx) => {
      let obj = {
@@ -27,7 +26,7 @@ export function shapeData(combinedTexts, variants) {
         obj.values.push({
           itemIndex: `${idx + 1}${indx + 1}`,
           val: str.trim(),
-          values:valueItem?.values||[],
+          options:valueItem?.values||[],
           quantity: +valueItem.quantity || 0,
           sku: valueItem.sku || "",
           continue_out_stock: valueItem?.continue_selling || false,

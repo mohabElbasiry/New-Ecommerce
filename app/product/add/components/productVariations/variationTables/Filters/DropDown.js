@@ -18,7 +18,7 @@ export function DropdownMenuRadioGroupSelect({
   handleChange = () => {},
 }) {
   const [position, setPosition] = useState("");
-
+  
   useEffect(() => {
     handleChange(position, defaultSelected);
   }, [position]);
@@ -37,9 +37,9 @@ export function DropdownMenuRadioGroupSelect({
         <DropdownMenuLabel>Filters</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value={""}>
+          {/* <DropdownMenuRadioItem value={""}>
             {defaultSelected}
-          </DropdownMenuRadioItem>
+          </DropdownMenuRadioItem> */}
 
           {list?.map((item) => {
             return (
