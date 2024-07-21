@@ -103,7 +103,7 @@ export default function DynamicTable({ data=defaultData }) {
                 ? Object?.values(data?.customColumn?.theFirst)?.map(
                     (CustomComponent, index) => {
                       return (
-                        <td
+                        <td key={index}
                           className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
                         >
                           <CustomComponent  />
@@ -156,7 +156,7 @@ export default function DynamicTable({ data=defaultData }) {
                 ? Object?.values(data?.customColumn?.theLast)?.map(
                     (CustomComponent, index) => {
                       return (
-                        <td
+                        <td key={index}
                           className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
                         >
                           <CustomComponent />
