@@ -1,5 +1,4 @@
 "use client";
-import { UpdateQualityImages } from "@/app/product/add/components/productVariations/variationTables/Update/updateImages";
 import { cn } from "@/lib/utils";
 import { produce } from "immer";
 import { Search } from "lucide-react";
@@ -12,6 +11,10 @@ export default function VariantDetails({ data, similarItems = [] }) {
 
 
   const  variantsData=   similarItems?.flatMap((variants) => variants?.values)
+
+  const [FilterVariants, setFilterVariants] = useState(
+    variantsData
+  );
   const [variantSelected, setVariantSelected] = useState(
     variantsData ? variantsData[0] : {}
   );
@@ -57,8 +60,12 @@ export default function VariantDetails({ data, similarItems = [] }) {
     [variantSelected?.price, variantSelected?.Cost_Per_Item]
   );
 
+const handleSearchFilterVariants=(e) => {
+  let val =e.target.value;
+  setFilterVariants(variantsData.filter(variant =>variant?.val?.includes(val) ))
 
-  
+}
+
   return (
     <div className="max-w-7xl mx-auto h-[80vh] overflow-y-auto ">
       <div className="my-10 px-2">{` <- ${variantSelected?.val} `}</div>
@@ -88,7 +95,7 @@ export default function VariantDetails({ data, similarItems = [] }) {
             <div className=" flex flex-col gap-4 p-5">
               <div className="relative">
                 <Search className="absolute left-2 top-1/2  -translate-y-1/2" />
-                <input className=" border pl-10 h-9 rounded-md " type="text" />
+                <input className=" border pl-10 h-9 rounded-md "  onChange={handleSearchFilterVariants} type="text" />
               </div>
 
               <div className="flex gap-2 items-center">
@@ -102,7 +109,7 @@ export default function VariantDetails({ data, similarItems = [] }) {
               </div>
             </div>
             <div className="py-5 flex flex-col gap-5  overflow-y-auto h-[calc(100vh-320px)]">
-              {variantsData.map((value) => (
+              {FilterVariants.map((value) => (
                 <div
                   className={cn(
                     variantSelected.val == value.val ? "bg-gray-100" : "",
