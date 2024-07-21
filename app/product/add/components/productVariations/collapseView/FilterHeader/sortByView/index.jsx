@@ -23,7 +23,7 @@ export const SortBy=({setFilters})=>{
                 label: "Varients Name",
               },
             ]}
-            handleValueChange={handleChange}
+            handleValueChange={handleChange.b}
           />
     </>)
 }

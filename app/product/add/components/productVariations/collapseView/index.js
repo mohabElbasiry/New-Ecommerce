@@ -16,6 +16,7 @@ import DrawerComponent from "@/components/GlobalUi/Drawer/index.jsx";
 import VariantDetails from "@/components/VariantDetails/index.jsx";
 import { dataVariants } from "@/app/product/[id]/data.js";
 import { reorderArray } from "./functions/reorderArray.js";
+import { applyFilters } from "./functions/ApplayFilters.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -39,8 +40,8 @@ const CollapseView = ({
       sortKey: "",
     },
   });
-  const findSimilarItems = useMemo(() => {
-    console.log(data,'dsaaaaaaaaaaaaaa')
+   const findSimilarItems = useMemo(() => {
+    console.log(Filters, " ");
     if (!open && !checkedArray?.length) {
       return [];
     } else {
@@ -61,27 +62,41 @@ const CollapseView = ({
         .filter((item) => item?.key && item?.values?.length);
     }
   }, [checkedArray, varitionsValues, open]);
+  useMemo(()=>{
+    console.log(REfvariants,'REfvariants');
+    setFilters(produce(draft=>{
+      draft.FilterValues=[];
 
-  useEffect(() => {
+    }))
+  },[REfvariants])
+  useMemo(() => {
     if (varitions?.length) {
+       
       setData(
         produce((draft) => {
+          let Editeddata = draft.data;
           if (Filters?.GroupBy?.reorderArray?.length) {
-            draft.data = shapeData(
+
+            Editeddata = shapeData(
               generateQualities(
                 varitionsValues?.flatMap((item) => item?.values),
                 reorderArray(varitions, Filters?.GroupBy?.key) || []
               ),
               reorderArray(varitions, Filters?.GroupBy?.key) || []
             );
-            console.log(Filters?.GroupBy?.reorderArray, "adsdas");
-            return;
+
+           }
+          if(Filters?.FilterValues?.length){
+            Editeddata= applyFilters(Editeddata , Filters);
+
           }
-          draft.data = varitionsValues;
+          console.log(Editeddata);
+          draft.data =Editeddata;
         })
       );
     }
   }, [varitionsValues, Filters]);
+
   const MinAndMax = (values) => {
     const price = values.map((value) => {
       return +value.price;
@@ -131,11 +146,7 @@ const CollapseView = ({
 
       <p onClick={() => setOpen(!open)}>open</p>
 
-      <Accordion
-        type="multiple"
-        collapsible
-        onValueChange={() => setCollapsible(!collapsible)}
-      >
+      <Accordion type="multiple" collapsible>
         {data?.data?.map((item, idx) => {
           return (
             <AccordionItem key={item?.key} value={item?.key}>
@@ -153,7 +164,7 @@ const CollapseView = ({
                 checkedArray={checkedArray}
                 parent={item?.parent}
               />
-
+              {console.log(item?.values, "item?.values")}
               {item?.values?.length >= 1 ? (
                 <>
                   {item?.values?.map((valueItem, idx) => {

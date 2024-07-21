@@ -27,6 +27,7 @@ export function shapeData(combinedTexts, variants) {
           itemIndex: `${idx + 1}${indx + 1}`,
           val: str.trim(),
           options:valueItem?.values||[],
+          values:valueItem?.values||[],
           quantity: +valueItem.quantity || 0,
           sku: valueItem.sku || "",
           continue_out_stock: valueItem?.continue_selling || false,

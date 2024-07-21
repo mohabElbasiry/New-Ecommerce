@@ -24,7 +24,6 @@ const ProductVariation = ({
   setData = () => {},
 }) => {
   const dragControls = useDragControls();
-
   const handleReorder = (newVariants) => {
     setVarients(
       produce((draft) => {
