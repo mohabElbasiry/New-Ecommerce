@@ -109,14 +109,14 @@ const handleSearchFilterVariants=(e) => {
               </div>
             </div>
             <div className="py-5 flex flex-col gap-5  overflow-y-auto h-[calc(100vh-320px)]">
-              {FilterVariants.map((value) => (
+              {FilterVariants?.map((value,index) => (
                 <div
                   className={cn(
-                    variantSelected.val == value.val ? "bg-gray-100" : "",
+                    variantSelected?.val == value?.val ? "bg-gray-100" : "",
                     "text-sm flex items-center gap-1 py-1.5 px-5 hover:bg-gray-100/80 cursor-pointer "
                   )}
                   onClick={() => setVariantSelected(value)}
-                  key={value.id}
+                  key={value?.id}
                 >
                   <Image
                     src={"/girl.jpg"}
@@ -135,13 +135,13 @@ const handleSearchFilterVariants=(e) => {
         <div className=" bg-white rounded-lg border-[0.5px] shadow p-5">
           <h3 className="font-medium ">Options</h3>
           <div className="flex gap-4 mt-5  flex-col">
-            {variantSelected?.values.map((item, index) => (
+            {variantSelected?.options?.map((item, index) => (
              <div className="flex gap-6 flex-wrap" key={index}> <div className="grid gap-2 flex-1" >
-                <h4>{item.key_en}</h4>
+                <h4>{item?.key_en}</h4>
                 <input
                   className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                   type="text"
-                  value={item.value_en}
+                  value={item?.value_en}
                   disabled
                 />
               </div>
@@ -157,57 +157,7 @@ const handleSearchFilterVariants=(e) => {
               </div>
             ))}
             <div className="flex">
-              {/* <div className="relative w-fit cursor-pointer">
-<input
-type="file"
-className="opacity-0 absolute top-0 left-0 z-[3] w-full h-full"
-multiple
-onChange={(e) => setFIleUploads(e, variantSelected?.itemIndex)}
-onClick={e=>e.stopPropagation()}
-/>
-<button>
-{variantSelected?.image?.length ? (
-<div className="flex gap-2">
-  {variantSelected?.image?.map((image, idx) => {
-    return (
-      <>
-        <img
-          className="W-[30px] h-[30px] cursor-pointer"
-          src={URL.createObjectURL(image)}
-          key={idx}
-        />
-        <button
-          type="button"
-          className="cursor-pointer z-[30]"
-          onClick={(e) => {
-            e.stopPropagation();
-            return deleteSpecificImage(idx, item?.itemIndex);
-          }}
-        >
-          x
-        </button>
-      </>
-    );
-  })}
-</div>
-) : (
-<img
-  className="W-[30px] h-[30px] cursor-pointer"
-  src={"/addImage.svg"}
-/>
-)}
-</button>
-</div> */}
-              {/* <div className=" flex  flex-col w-auto justify-center gap-3">
-        <Image
-          src={"/girl.jpg"}
-          alt=""
-          className="object-contain aspect-square object-top rounded-lg w-24  h-24  border"
-          height={120}
-          width={120}
-        />
-        <div className="text-center text-blue-500">Change</div>
-      </div> */}
+   
               <ChangeImgVariant />
             </div>
           </div>
@@ -228,8 +178,8 @@ onClick={e=>e.stopPropagation()}
                       })
                     )
                   }
-                  value={variantSelected.price}
-                  defaultValue={variantSelected.price}
+                  value={variantSelected?.price}
+                  defaultValue={variantSelected?.price}
                 />
               </div>
               <div className="grid gap-2 min-w-60 w-[30%]">
@@ -244,7 +194,7 @@ onClick={e=>e.stopPropagation()}
                       })
                     )
                   }
-                  value={variantSelected.compare_to_price}
+                  value={variantSelected?.compare_to_price}
                   defaultValue={"00.00"}
                 />
               </div>
