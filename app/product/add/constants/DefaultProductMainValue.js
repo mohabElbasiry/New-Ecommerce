@@ -1,7 +1,10 @@
 export const ProductMainDefaultValue = {
   productvaritions: {
     variants: [],
-    VarientValues: [],
+    varitionsValues: [],
+    setShapeData:[],
+    referencevarients:[],
+    REfvariants:[]
   },
   productDetails: {
     title_ar: "",

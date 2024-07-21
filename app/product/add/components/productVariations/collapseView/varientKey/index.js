@@ -3,6 +3,7 @@ import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
 import { memo, useMemo, useState } from "react";
 import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
 import { isEqual } from "lodash";
+import { produce } from "immer";
 
 const VarientKey = ({
   varientsNumbers = 0,
@@ -14,18 +15,15 @@ const VarientKey = ({
   itemIndex = -1,
   selectedArray = [],
   setChecked,
-  checkedArray=[],
+  checkedArray = [],
   name,
+  setVarients = () => {},
 }) => {
   const SelectedItems = useMemo(() => {
     return selectedArray?.map((_, idx) => idx);
   }, [selectedArray]);
   return (
-    <AccordionTrigger
-      className="flex 
-      items-center w-full justify-between
-      border-[#ddd] border-b"
-    >
+    <AccordionTrigger className="flex   items-center w-full justify-between  border-[#ddd] border-b text-sm">
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
@@ -40,7 +38,6 @@ const VarientKey = ({
           onClick={(e) => e.stopPropagation()}
           onChange={(e) => {
             const checked = e.target.checked;
-            console.log(e.target.name);
             if (checked) {
               setChecked((prev = []) => {
                 return [...prev, { key: e.target.name, SelectedItems }];
@@ -58,19 +55,11 @@ const VarientKey = ({
       </div>
       <div>
         <p> {name}</p>
-        <p className="pl-5">
-          {varientsNumbers}
-          varients
-        </p>
+        {varientsNumbers > 1 ? (
+          <p className="pl-5"> {varientsNumbers} varients </p>
+        ) : null}
       </div>
       <div className="flex gap-1 items-center">
-        <input
-          type="number"
-          value={TotalQuantity}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        />
         <TooltipF text={`This Will Apply To All ${varientsNumbers} Varients`}>
           <div className="border flex items-center pl-1 rounded-xl">
             <p>EGP</p>
@@ -80,24 +69,38 @@ const VarientKey = ({
               }}
               value={maxPrice}
               type="text"
-              className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
+              className="text-black max-w-[180px] 
+               h-[38px] rounded-xl p-3  
+              ml-1 outline-[#ddd]"
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
-                  setData((prev) => {
-                    return {
-                      ...prev,
-                      Data: updatePropertyParent(
-                        prev?.Data,
-                        itemIndex,
-                        e.target.value
-                      ),
-                    };
-                  });
+                  setVarients(
+                    produce((draft) => {
+                      draft.productvaritions.varitionsValues =
+                        updatePropertyParent(
+                          draft?.productvaritions.varitionsValues,
+                          itemIndex,
+                          e.target.value
+                        );
+                    })
+                  );
                 }
                 return;
               }}
             />
           </div>
+        </TooltipF>
+        <TooltipF text={"Change Varients"}>
+          <input
+            type="number"
+            value={TotalQuantity}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            disabled
+            className="p-3 bg-[#eee] rounded-md py-2 text-center
+           max-w-[150px] mr-6"
+          />
         </TooltipF>
       </div>
     </AccordionTrigger>

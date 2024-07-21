@@ -1,6 +1,6 @@
-import { InputWithLabelComponent } from "@/components/inputcomponent";
-import { DropdownMenuDemo, DropdownMenuRadioGroupSelect } from "./DropDown";
+import { DropdownMenuRadioGroupSelect } from "../../../variationTables/Filters/DropDown";
 
+ 
 export const FiltersKeys_values = ({ setFilters=()=>{}, varitions=[] }) => {
   const HandleChangeSelection = (e, key) => {
     console.log(e,key,'asdddddddddddd');

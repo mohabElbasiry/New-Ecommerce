@@ -1,64 +1,102 @@
 import { memo, useEffect, useState } from "react";
 import CreateVariation from "./createVariations";
-import { useMotionValue, Reorder, useDragControls } from "framer-motion";
+import {
+  useMotionValue,
+  Reorder,
+  useDragControls,
+  motion,
+} from "framer-motion";
 import { ReorderIcon } from "../drageControl";
 import VariationTable from "./variationTables";
 import CollapseView from "./collapseView";
- 
-const ProductVariation = ({ setSubmitedData, submitedData }) => {
-  const [list, setList] = useState([]);
-  const dragControls = useDragControls();
-  const [view, setView] = useState("table");
+import { produce } from "immer";
+import { shapeData } from "./collapseView/functions/datashape";
+import { generateQualities } from "./collapseView/functions/GenerateQualities";
 
-  console.log("rerender hassan");
-  useEffect(() => {
-    if (localStorage?.getItem("list")) {
-      const list = JSON.parse(localStorage?.getItem("list"));
-      if (list?.length) {
-        setList(list);
-      }
-    }
-  }, []);
+const ProductVariation = ({
+  setVarients = () => {},
+  productVarients = {},
+  refrenceVarient = [],
+  data = {
+    Data: [],
+    BeforeFilterData: [],
+  },
+  setData = () => {},
+}) => {
+  const dragControls = useDragControls();
+
+  const handleReorder = (newVariants) => {
+    setVarients(
+      produce((draft) => {
+        draft.productvaritions.variants = newVariants;
+        draft.productvaritions.varitionsValues = shapeData(
+          generateQualities(
+            draft.productvaritions.varitionsValues?.flatMap((item) => item?.values),
+            newVariants || []
+          ),
+          newVariants || []
+        );
+      })
+    );
+  };
 
   return (
     <>
-      <div className="w-[100%] ">
-        <p className="my-2 ">Add Varations</p>
-        {list?.length ? (
-          <div className="border w-[100%] pb-3 px-0 rounded-md shadow">
+      <p className="my-2 title">Add Varations</p>
+      <div className="w-[100%]    ">
+        {productVarients?.variants?.length ? (
+          <div className="  w-[100%] pb-1  rounded-md px-2 pt-1   border box mb-2">
             <Reorder.Group
-              values={list}
-              onReorder={setList}
-              as="ol"
+              onDragEnd={(e) => e.stopPropagation()}
               axis="y"
-              dragListener={false}
-              dragControls={dragControls}
+              values={productVarients?.variants}
+              onReorder={handleReorder}
+              dragListenser={false}
             >
-              {list?.map((item, idx) => {
+              {productVarients?.variants?.map((item, idx) => {
                 return (
-                  <Reorder.Item value={item} key={item?.key_ar + idx}>
+                  <Reorder.Item
+                    onDragEnd={(e) => e.stopPropagation()}
+                    dragListenser={false}
+                    dragControls={dragControls}
+                    value={item}
+                    key={item?.key_en}
+                    as={motion.div}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    whileDrag={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                    className="my-2"
+                  >
                     {item?.edit ? (
                       <CreateVariation
-                        setList={setList}
+                        setList={setVarients}
                         listIndex={idx}
-                        list={list}
+                        list={productVarients?.variants}
+                        data={data}
                       />
                     ) : (
                       <div
                         onClick={() => {
-                          setList((prev) => {
-                            return prev?.map((item, index) => {
-                              if (idx === index) {
-                                return {
-                                  ...item,
+                          setVarients(
+                            produce((draft) => {
+                              draft.productvaritions.variants =
+                                draft?.productvaritions.variants?.map(
+                                  (item, index) => {
+                                    if (idx === index) {
+                                      return {
+                                        ...item,
 
-                                  edit: true,
-                                };
-                              }
-                              return item;
-                            });
-                          });
-                          localStorage?.setItem("list", JSON.stringify(list));
+                                        edit: true,
+                                      };
+                                    }
+                                    return item;
+                                  }
+                                );
+                            })
+                          );
+                          // localStorage?.setItem("list", JSON.stringify(list));
                         }}
                       >
                         <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">
@@ -86,13 +124,45 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
             </Reorder.Group>
             <p
               className="cursor-pointer text-sm lowercase border-t p-2 px-2"
-              onClick={() =>
-                setList([
-                  ...list,
-                  {
+              onClick={() => {
+                setVarients(
+                  produce((draft) => {
+                    draft?.productvaritions?.variants?.push({
+                      isColor: "",
+
+                      key_en: "",
+                      key_ar: "",
+
+                      values: [
+                        {
+                          value_ar: "",
+                          value_en: "",
+                          color: "",
+                        },
+                      ],
+                      edit: true,
+                    });
+                  })
+                );
+              }}
+            >
+              {" "}
+              Add Another Varient +
+            </p>
+          </div>
+        ) : null}
+        {!productVarients?.variants?.length ? (
+          <p
+            className="cursor-pointer text-sm lowercase"
+            onClick={() => {
+              setVarients(
+                produce((draft) => {
+                  draft?.productvaritions?.variants?.push({
                     isColor: "",
-                    key_ar: "",
+
                     key_en: "",
+                    key_ar: "",
+
                     values: [
                       {
                         value_ar: "",
@@ -101,73 +171,27 @@ const ProductVariation = ({ setSubmitedData, submitedData }) => {
                       },
                     ],
                     edit: true,
-                  },
-                ])
-              }
-            >
-              {" "}
-              Add Another Varient +
-            </p>
-          </div>
-        ) : null}
-
-        {!list?.length ? (
-          <p
-            className="cursor-pointer text-sm lowercase"
-            onClick={() =>
-              setList([
-                ...list,
-                {
-                  isColor: "",
-
-                  key_en: "",
-                  key_ar: "",
-
-                  values: [
-                    {
-                      value_ar: "",
-                      value_en: "",
-                      color: "",
-                    },
-                  ],
-                  edit: true,
-                },
-              ])
-            }
+                  });
+                })
+              );
+            }}
           >
             {" "}
             Add Varient +
           </p>
         ) : null}
-
-        <div
-          className="change view flex items-center justify-between border mt-1 
-        rounded-xl shadow-md p-1 "
-        >
-          Preference View
-          <div className="GroupedButton flex gap-4 ">
-            <img
-              src="/view/collapse.svg"
-              className="  p-2 cursor-pointer hover:bg-[#ddd] rounded-xl "
-              width={"40px"}
-              height={"40px"}
-              onClick={() => setView("collapse")}
-            />
-            <img
-              src="/view/tableView.svg"
-              className="  p-2 cursor-pointer hover:bg-[#ddd] rounded-xl "
-              width={"45x"}
-              height={"45x"}
-              onClick={() => setView("table")}
-            />
-          </div>
-        </div>
-
-        {view === "table" ? (
-          <VariationTable varitions={list} setSubmitedData={setSubmitedData} />
-        ) : null}
-        {view !== "table" ? <CollapseView varitions={list} /> : null}
       </div>
+      <CollapseView
+        varitions={productVarients?.variants?.filter((item) => !item?.edit)}
+        varitionsValues={productVarients?.varitionsValues}
+        setVarients={setVarients}
+        setData={setData}
+        data={data}
+        REfvariants={productVarients?.REfvariants}
+      />
+      {/* <VariationTable varitions={productVarients?.variants} 
+          // setSubmitedData={setSubmitedData}
+           /> */}
     </>
   );
 };

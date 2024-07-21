@@ -1,5 +1,5 @@
 "use client";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -8,82 +8,80 @@ import {
 import { shapeData } from "./functions/datashape.js";
 import VarientKey from "./varientKey/index.js";
 import VarientValues from "./varientValues/index.js";
-const CollapseView = ({ varitions = [] }) => {
-  console.log("render", varitions);
-  const [data, setData] = useState({
-    Data: [],
-    BeforeFilterData: [],
-  });
-  function generateQualities(prev, attributes) {
-    const qualities = [];
+import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
+import FilterHeader from "./FilterHeader/index.jsx";
+import { generateQualities } from "./functions/GenerateQualities.js";
+import { produce } from "immer";
+import DrawerComponent from "@/components/GlobalUi/Drawer/index.jsx";
+import VariantDetails from "@/components/VariantDetails/index.jsx";
+import { dataVariants } from "@/app/product/[id]/data.js";
+import { reorderArray } from "./functions/reorderArray.js";
+const CollapseView = ({
+  varitions = [],
+  varitionsValues = [],
+  REfvariants = [],
 
-    function generateCombinations(currentCombination, depth) {
-      if (depth === attributes.length) {
-        qualities.push({
-          values: currentCombination,
-          quantity: 0,
-          price: 0,
-          image: [],
-        });
-        return;
-      }
-
-      attributes[depth].values.forEach((value) => {
-        const newCombination = currentCombination.slice();
-        newCombination.push({
-          key_en: attributes[depth].key_en,
-          key_ar: attributes[depth].key_ar,
-          value_en: value.value_en,
-          value_ar: value.value_ar,
-          color: value.color,
-        });
-        generateCombinations(newCombination, depth + 1);
-      });
-    }
-
-    generateCombinations([], 0);
-
-    const AdjustArray = qualities
-      .map((item, index) => {
-        const Founded = prev.find((item, idx) => idx === index);
-        if (Founded) {
-          return {
-            ...item,
-            values: item.values,
-            price: Founded.price,
-            quantity: Founded.quantity,
-            image: Founded?.image,
-          };
-        }
-        return item;
-      })
-      .map((item, idx) => ({ ...item, itemIndex: idx }));
-
-    return AdjustArray;
-  }
+  setVarients = () => {},
+}) => {
+  console.log("rerendertheState");
   const [checkedArray, setChecked] = useState([]);
-
-  useMemo(() => {
-    const items = JSON.parse(localStorage?.getItem("saved"));
-    if (items && items?.length) {
-      const combinedTexts = generateQualities(items, varitions);
-      setData({
-        ...data,
-        Data: shapeData(combinedTexts, varitions),
-        BeforeFilterData: shapeData(combinedTexts, varitions),
-      });
-      return;
+  const [collapsible, setCollapsible] = useState(false);
+  const [data, setData] = useState({ data: [] });
+  const [open, setOpen] = useState(false);
+  const [Filters, setFilters] = useState({
+    FilterValues: [],
+    GroupBy: {
+      key: "",
+      reorderArray: [],
+    },
+    sortBy: {
+      sortMethod: "",
+      sortKey: "",
+    },
+  });
+  const findSimilarItems = useMemo(() => {
+    console.log(data,'dsaaaaaaaaaaaaaa')
+    if (!open && !checkedArray?.length) {
+      return [];
+    } else {
+      return checkedArray
+        .map((selected) => {
+          const dataItem = varitionsValues.find(
+            (item) => item.key === selected.key
+          );
+          if (dataItem) {
+            const matchedValues = selected.SelectedItems.map(
+              (index) => dataItem.values[index]
+            ).filter((value) => value !== undefined);
+            return { key: selected.key, values: matchedValues };
+          } else {
+            return { key: selected.key, values: [] };
+          }
+        })
+        .filter((item) => item?.key && item?.values?.length);
     }
+  }, [checkedArray, varitionsValues, open]);
 
-    const combinedTexts = generateQualities([], varitions);
-    if (combinedTexts?.length) {
-      setData({
-        ...data,
-        Data: shapeData(combinedTexts),
-        BeforeFilterData: shapeData(combinedTexts),
-      });
+  useEffect(() => {
+    if (varitions?.length) {
+      setData(
+        produce((draft) => {
+          if (Filters?.GroupBy?.reorderArray?.length) {
+            draft.data = shapeData(
+              generateQualities(
+                varitionsValues?.flatMap((item) => item?.values),
+                reorderArray(varitions, Filters?.GroupBy?.key) || []
+              ),
+              reorderArray(varitions, Filters?.GroupBy?.key) || []
+            );
+            console.log(Filters?.GroupBy?.reorderArray, "adsdas");
+            return;
+          }
+          draft.data = varitionsValues;
+        })
+      );
     }
-  }, [varitions]);
+  }, [varitionsValues, Filters]);
   const MinAndMax = (values) => {
     const price = values.map((value) => {
       return +value.price;
@@ -93,18 +91,56 @@ const CollapseView = ({ varitions = [] }) => {
       min: Math.min(...price),
     };
   };
-  const callculateQUantity = (values) => {
-    return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
-  };
- 
+
+  const callculateQUantity = useCallback(
+    (values) => {
+      return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
+    },
+    [varitionsValues]
+  );
+  // useMemo(() => {
+  //   setVarients(
+  //     produce((draft) => {
+  //       draft.productvaritions.varitionsValues = varitionsValues.map((item) => {
+  //         const prices = item?.values.map((value) => parseFloat(value.price));
+  //         const quantity = item?.values?.reduce(
+  //           (acc, item) => (acc += +item?.quantity),
+  //           0
+  //         );
+  //         return {
+  //           ...item,
+  //           min_price: Math.min(...prices),
+  //           max_price: Math.max(...prices),
+  //           quantity,
+  //         };
+  //       });
+  //     })
+  //   );
+  // }, [varitionsValues]);
   return (
-    <>
-      <Accordion type="single" collapsible className="w-full">
-        {data?.Data?.map((item, idx) => {
+    <div className="   box p-3 ">
+      <FilterHeader
+        varitions={REfvariants}
+        setChecked={setChecked}
+        data={data?.data}
+        checkedArray={checkedArray}
+        varietnsValues={varitionsValues}
+        setVarients={setVarients}
+        setFilters={setFilters}
+      />
+
+      <p onClick={() => setOpen(!open)}>open</p>
+
+      <Accordion
+        type="multiple"
+        collapsible
+        onValueChange={() => setCollapsible(!collapsible)}
+      >
+        {data?.data?.map((item, idx) => {
           return (
             <AccordionItem key={item?.key} value={item?.key}>
               <VarientKey
-                setData={setData}
+                setVarients={setVarients}
                 key={item?.key}
                 name={item?.key}
                 maxPrice={MinAndMax(item?.values)?.max}
@@ -115,26 +151,37 @@ const CollapseView = ({ varitions = [] }) => {
                 setChecked={setChecked}
                 selectedArray={item?.values}
                 checkedArray={checkedArray}
+                parent={item?.parent}
               />
 
-              {item?.values?.map((valueItem, idx) => {
-                return (
-                  <VarientValues
-                    itemValue={valueItem}
-                    parentIndex={item?.itemIndex}
-                    idx={idx}
-                    setData={setData}
-                    checkedArray={checkedArray}
-                    setChecked={setChecked}
-                    parentname={item?.key}
-                  />
-                );
-              })}
+              {item?.values?.length >= 1 ? (
+                <>
+                  {item?.values?.map((valueItem, idx) => {
+                    return (
+                      <VarientValues
+                        itemValue={valueItem}
+                        parentIndex={item?.itemIndex}
+                        idx={idx}
+                        checkedArray={checkedArray}
+                        setChecked={setChecked}
+                        parentname={item?.key}
+                        setVarients={setVarients}
+                      />
+                    );
+                  })}
+                </>
+              ) : null}
             </AccordionItem>
           );
         })}
       </Accordion>
-    </>
+      <DrawerComponent open={open} setOpen={setOpen}>
+        <VariantDetails
+          data={dataVariants.product.variants}
+          similarItems={findSimilarItems}
+        />
+      </DrawerComponent>
+    </div>
   );
 };
 export default memo(CollapseView);
