@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import ChangeImgVariant from "./ChangeImgVariant";
 
 export default function VariantDetails({ data, similarItems = [] }) {
-  console.log(similarItems, "findSimilarItems");
+
 
 
   const  variantsData=   similarItems?.flatMap((variants) => variants?.values)
@@ -57,6 +57,8 @@ export default function VariantDetails({ data, similarItems = [] }) {
     [variantSelected?.price, variantSelected?.Cost_Per_Item]
   );
 
+
+  
   return (
     <div className="max-w-7xl mx-auto h-[80vh] overflow-y-auto ">
       <div className="my-10 px-2">{` <- ${variantSelected?.val} `}</div>
@@ -127,7 +129,7 @@ export default function VariantDetails({ data, similarItems = [] }) {
           <h3 className="font-medium ">Options</h3>
           <div className="flex gap-4 mt-5  flex-col">
             {variantSelected?.values.map((item, index) => (
-              <div className="grid gap-2" key={index}>
+             <div className="flex gap-6 flex-wrap" key={index}> <div className="grid gap-2 flex-1" >
                 <h4>{item.key_en}</h4>
                 <input
                   className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
@@ -135,6 +137,16 @@ export default function VariantDetails({ data, similarItems = [] }) {
                   value={item.value_en}
                   disabled
                 />
+              </div>
+              {/* <div className="grid gap-2 flex-1" >
+                <h4>{item?.key_ar}</h4>
+                <input
+                  className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
+                  type="text"
+                  value={item?.value_ar}
+                  disabled
+                />
+              </div> */}
               </div>
             ))}
             <div className="flex">
