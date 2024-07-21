@@ -3,7 +3,8 @@ export const ProductMainDefaultValue = {
     variants: [],
     varitionsValues: [],
     setShapeData:[],
-    referencevarients:[]
+    referencevarients:[],
+    REfvariants:[]
   },
   productDetails: {
     title_ar: "",

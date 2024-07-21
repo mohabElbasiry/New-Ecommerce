@@ -64,7 +64,7 @@ export default function CreateVariation({
         event.keyCode === 8 &&
         event.target.value === "" &&
         itemFounded &&
-        itemFounded?.value_ar === "" &&
+        // itemFounded?.value_ar === "" &&
         itemFounded?.value_en === ""
       ) {
         if (index === 0) {
@@ -156,7 +156,25 @@ export default function CreateVariation({
       }
     }
   };
+  useEffect(() => {
+    if (document && open) {
+      const searchIcon = document.getElementById("action-component");
 
+      const handleCloseOutside = (e) => {
+        if (!searchIcon?.contains(e.target)) {
+          opencolor((prev) => ({ ...prev, open: false }));
+        }
+      };
+      const handlePress = (e) => {
+        if (e.keyCode === 27) {
+          opencolor((prev) => ({ ...prev, open: false }));
+        }
+      };
+      document.addEventListener("keydown", handlePress);
+      document.addEventListener("click", handleCloseOutside);
+      return () => document.removeEventListener("click", handleCloseOutside);
+    }
+  }, [color]);
   useEffect(() => {
     if (
       currentValues[currentValues.length - 1]?.value_en?.trim() !== ""
@@ -264,11 +282,19 @@ export default function CreateVariation({
                   <div
                     className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
                     onClick={() => {
-                      opencolor({
-                        ...color,
-                        index: index,
-                        open: !color?.open,
-                      });
+                      if (index === color?.index&&color?.open) {
+                        opencolor({
+                          ...color,
+                          index: index,
+                          open: false,
+                        });
+                      } else {
+                        opencolor({
+                          ...color,
+                          index: index,
+                          open: true,
+                        });
+                      }
                     }}
                   ></div>
 
@@ -307,6 +333,7 @@ export default function CreateVariation({
                     return idx !== listIndex;
                   });
                 draft.productvaritions.variants = updatedVarient;
+                draft.productvaritions.REfvariants = updatedVarient;
 
                 // draft.productvaritions.varitionsValues = generateQualities(
                 //   Data?.flatMap((item) => item.values),
@@ -315,7 +342,9 @@ export default function CreateVariation({
                 //   )
                 // );
                 const dataShape = generateQualities(
-                  Data?.flatMap((item) => item.values) || [],
+                  draft.productvaritions.varitionsValues?.flatMap(
+                    (item) => item.values
+                  ) || [],
                   updatedVarient || []
                 );
                 if (updatedVarient?.length === 0) {
@@ -347,10 +376,12 @@ export default function CreateVariation({
                   option?.key_en?.trim() === currentOption?.option_en?.trim()
                 );
               });
+            console.log("object", isOneOfOthers);
 
             if (isOneOfOthers) {
               return;
             }
+
             if (currentOption.option_en.trim() === "") {
               setGeneralErrorMessage((prev) => ({
                 ...prev,
@@ -398,7 +429,6 @@ export default function CreateVariation({
               ErrorMessage: "",
               isError: false,
             }));
-
             setList(
               produce((draft) => {
                 const Updated = draft.productvaritions.variants.map(
@@ -421,15 +451,14 @@ export default function CreateVariation({
                 );
 
                 draft.productvaritions.variants = Updated;
+                draft.productvaritions.REfvariants = Updated;
                 const dataShape = generateQualities(
-                  Data?.flatMap((item) => item.values) || [],
+                  draft.productvaritions.varitionsValues?.flatMap(
+                    (item) => item.values
+                  ) || [],
                   Updated || []
                 );
                 draft.productvaritions.varitionsValues = shapeData(
-                  dataShape || [],
-                  Updated || []
-                );
-                draft.productvaritions.referencevarients = shapeData(
                   dataShape || [],
                   Updated || []
                 );

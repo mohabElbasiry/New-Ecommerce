@@ -92,7 +92,7 @@ export const SortActionComponent = ({
                     className=" text-lg  text-[#333]"
                   >
                     {menuItem?.label}
-                  </Label>
+                  </Label> 2 wadsed sa
                 </div>
               );
             })}

@@ -11,6 +11,7 @@ import { memo } from "react";
   setChecked = () => {},
   checkedArray,
   data,
+  setFilters
 }) => {
  
   return (
@@ -21,10 +22,10 @@ import { memo } from "react";
         placeholder="enter something to search"
       />
       <div className="header p-3 flex justify-between items-center">
-        <GroupedView varitions={varitions} />
+        <GroupedView varitions={varitions}  setFilters={setFilters}/>
 
         <div className="GroupBy flex items-center  text-sm gap-3">
-          <SortBy />
+          <SortBy  setFilters={setFilters}/>
         </div>
       </div>
       <div className="Filters mb-4">
@@ -69,7 +70,7 @@ import { memo } from "react";
         </div>
 <div className="flex items-center gap-1 w-[]">
 
-  <button className="box text-sm p-1  ">
+  <button className="box text-sm p-1  " type="button">
     Bulk Edit
   </button>
 <BulkEditView />
@@ -77,7 +78,7 @@ import { memo } from "react";
 </div>
         </div>
       ) : (
-        <div className=" flex justify-between">
+        <div className=" grid grid-cols-4 justify-between">
            
           <input
             className="text-center
