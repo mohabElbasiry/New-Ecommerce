@@ -11,6 +11,7 @@ import Pricing from "./pricing";
 import ProductVariation from "../productVariations";
 import { ProductSettings } from "./productSettings";
 import Seo from "./tags";
+import UploadFile from "@/app/product/components/UploadFile";
 
 export const ProductDetailsComponent = ({
   submitedData,
@@ -38,7 +39,7 @@ export const ProductDetailsComponent = ({
         <div className="w-[50%] ">
           <div className="w-[100%]   p-2 flex flex-col gap-3 ">
             <ProductSettings />
-            <div className="main grid grid-cols-2 gap-1 box p-1">
+            {/* <div className="main grid grid-cols-2 gap-1 box p-1">
               <Image
                 src={"/girl.jpg"}
                 className="w-[100%] h-[300px] object-cover object-top rounded-2xl"
@@ -62,7 +63,9 @@ export const ProductDetailsComponent = ({
                   <img className="w-[30px]" src="/upload-svgrepo-com.svg" />
                 </div>
               </div>
-            </div>
+            </div> */}
+
+               <UploadFile />
           </div>
           <div className="w-full overflow-auto ">
             {
