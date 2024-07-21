@@ -33,7 +33,7 @@ const ProductContainer = ({ product = {} }) => {
   useSetFieldSearchParams(selectedOptions, selectedVariant);
 
   const uniqueColors = getUniqueColorsWithHexAndImages(product.variants);
-console.log(uniqueColors);
+// console.log(uniqueColors);
   return (
     <div>
       <h1>{product.title}</h1>
