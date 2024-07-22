@@ -364,7 +364,7 @@ export default function CreateVariation({
         </button>
         <button
           type="button"
-          className="bg-[#fefefed] shadow text-black text-xs border 
+          className="bg-[#fefefed] shadow text-black text-xs border  done-variant
           border-[#33333370] rounded-lg px-3 p-1"
           onClick={(e) => {
             e.preventDefault();
