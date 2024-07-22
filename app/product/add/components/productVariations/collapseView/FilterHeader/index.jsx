@@ -5,6 +5,7 @@ import { SortBy } from "./sortByView";
 import { FiltersKeys_values } from "./FilterByFUnction";
 import { BulkEditView } from "./BulkEdit";
 import { memo } from "react";
+import { produce } from "immer";
 
 const FilterHeader = ({
   varitions = [],
@@ -12,6 +13,7 @@ const FilterHeader = ({
   checkedArray,
   data,
   setFilters,
+  Filters
 }) => {
   return (
     <>
@@ -19,6 +21,7 @@ const FilterHeader = ({
         className="p-2 w-full border border-[#ddd] rounded-xl"
         type="text"
         placeholder="enter something to search"
+        onChange={e=>setFilters(produce(draft=>{draft.search=e.target.value}))}
       />
       <div className="header p-3 flex justify-between items-center">
         <GroupedView varitions={varitions} setFilters={setFilters} />
@@ -28,11 +31,11 @@ const FilterHeader = ({
         </div>
       </div>
       <div className="Filters mb-4">
-        <FiltersKeys_values varitions={varitions} setFilters={setFilters} />
+        <FiltersKeys_values varitions={varitions} setFilters={setFilters} FilterValues={Filters?.FilterValues} / >
       </div>
 
       {checkedArray?.[0]?.SelectedItems?.length ? (
-        <div className="batchedit flex items-center justify-end  w-full justify-between">
+        <div className="batchedit flex items-center   w-full justify-between">
           <div className="flex items-center gap-2  text-sm ">
             <input
               id="Selected"

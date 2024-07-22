@@ -30,6 +30,8 @@ const CollapseView = ({
   const [data, setData] = useState({ data: [] });
   const [open, setOpen] = useState(false);
   const [Filters, setFilters] = useState({
+    search: "",
+
     FilterValues: [],
     GroupBy: {
       key: "",
@@ -41,7 +43,6 @@ const CollapseView = ({
     },
   });
    const findSimilarItems = useMemo(() => {
-    console.log(Filters, " ");
     if (!open && !checkedArray?.length) {
       return [];
     } else {
@@ -62,21 +63,58 @@ const CollapseView = ({
         .filter((item) => item?.key && item?.values?.length);
     }
   }, [checkedArray, varitionsValues, open]);
-  useMemo(()=>{
-    console.log(REfvariants,'REfvariants');
-    setFilters(produce(draft=>{
-      draft.FilterValues=[];
+  useMemo(() => {
 
-    }))
-  },[REfvariants])
+    setFilters(
+      produce((draft) => {
+        draft.FilterValues = [];
+        draft.GroupBy.key = REfvariants[0]?.key_en;
+      })
+    );
+  }, [REfvariants]);
+  function sortItemsByQuantity(items, order = "asc", property) {
+    let Sorteditems = [];
+    if (order === "asc") {
+      Sorteditems = items.map((item) => {
+        const values = item?.values.sort((a, b) => {
+          return +a[property] - +b[property];
+        });
+        return {
+          ...item,
+          values,
+        };
+      });
+    } else if (order === "desc") {
+      Sorteditems = items?.map((item) => {
+        const values = item?.values?.sort(
+          (a, b) => +b[property] - +a[property]
+        );
+        return {
+          ...item,
+          values,
+        };
+      });
+    } else {
+      Sorteditems = items.map((item) => {
+        item.values.sort((a, b) => {
+          if (order === "asc") {
+            return a[property] > b[property] ? 1 : -1;
+          } else if (order === "desc") {
+            return a[property] < b[property] ? 1 : -1;
+          }
+        });
+        return item;
+      });
+    }
+
+    return [...Sorteditems];
+  }
   useMemo(() => {
     if (varitions?.length) {
-       
       setData(
         produce((draft) => {
           let Editeddata = draft.data;
-          if (Filters?.GroupBy?.reorderArray?.length) {
-
+          if (Filters?.GroupBy?.key !== "") {
             Editeddata = shapeData(
               generateQualities(
                 varitionsValues?.flatMap((item) => item?.values),
@@ -84,14 +122,33 @@ const CollapseView = ({
               ),
               reorderArray(varitions, Filters?.GroupBy?.key) || []
             );
-
-           }
-          if(Filters?.FilterValues?.length){
-            Editeddata= applyFilters(Editeddata , Filters);
-
           }
-          console.log(Editeddata);
-          draft.data =Editeddata;
+          if (Filters?.FilterValues?.length) {
+            Editeddata = applyFilters(Editeddata, Filters);
+          }
+          if (Filters?.search !== "") {
+            Editeddata = Editeddata?.map((item) => {
+              const values = item?.values?.filter((item) => {
+                return item?.options?.some(
+                  (itemO) =>
+                    itemO?.val?.includes(Filters?.search) ||
+                    itemO?.key_en?.includes(Filters?.search) ||
+                    itemO?.value_en?.includes(Filters?.search)
+                );
+              });
+
+              return { ...item, values };
+            }).filter((item) => item?.values?.length);
+          }
+          if (Filters?.sortBy?.sortKey !== "") {
+            Editeddata = sortItemsByQuantity(
+              Editeddata,
+              Filters?.sortBy?.sortMethod,
+              Filters?.sortBy?.sortKey
+            );
+          }
+
+          draft.data = Editeddata;
         })
       );
     }
@@ -142,6 +199,7 @@ const CollapseView = ({
         varietnsValues={varitionsValues}
         setVarients={setVarients}
         setFilters={setFilters}
+        Filters={Filters}
       />
 
       <p onClick={() => setOpen(!open)}>open</p>

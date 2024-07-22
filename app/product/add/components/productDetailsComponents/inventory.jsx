@@ -1,12 +1,17 @@
 import { CheckboxD } from "@/components/GlobalUi/checkbox";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
+import SubCategoriesSelect from "./categoriesWithSub";
 
-export const Inventory = ({ register }) => {
+export const Inventory = ({ register ,submitedData,errors}) => {
   return (
     <>
       <p className="title">Inventory</p>
       <div className="box p-3  flex gap-3 flex-col">
-
+      <SubCategoriesSelect
+        submitedData={submitedData}
+        register={register}
+        error={errors}
+      /> 
 <CheckboxD
   text={`Continue selling when out of stock `}
   infoText="This will complete sales when available inventory reaches zero and below."

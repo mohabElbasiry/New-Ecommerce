@@ -376,8 +376,7 @@ export default function CreateVariation({
                   option?.key_en?.trim() === currentOption?.option_en?.trim()
                 );
               });
-            console.log("object", isOneOfOthers);
-
+ 
             if (isOneOfOthers) {
               return;
             }

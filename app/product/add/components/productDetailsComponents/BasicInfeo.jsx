@@ -99,13 +99,9 @@ export const BasicData = ({
         setSubmitedData={setSubmitedData}
         isSubmitted={isSubmitting}
       /> */}
-      <SubCategoriesSelect
-        submitedData={submitedData}
-        register={register}
-        error={errors}
-      /> 
+   
 </div>
-      <Inventory submitedData={submitedData} register={register} />{" "}
+      <Inventory errors={errors} submitedData={submitedData} register={register} />{" "}
       <Pricing submitedData={submitedData} register={register} />
       <Seo />{" "}
 
