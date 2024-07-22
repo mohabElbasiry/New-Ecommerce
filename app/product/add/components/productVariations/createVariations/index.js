@@ -204,7 +204,7 @@ export default function CreateVariation({
   return (
     <div>
       <div className="w-[100%] p-3">
-        <div className="grid grid-cols-1 gap-1  ">
+        <div className="grid grid-cols-1 gap-1  add-name-variant">
           <InputWithLabelComponent
             Input
             type="text"
@@ -239,7 +239,7 @@ export default function CreateVariation({
                 key={value}
                 className="flex gap-2  w-[100%] flex-col "
               >
-                <div className="flex gap-3 relative items-center">
+                <div className="flex gap-3 relative items-center add-values-variant">
                   <InputWithLabelComponent
                     Input
                     inputCss="!w-[520px] p-2"

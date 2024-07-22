@@ -42,7 +42,7 @@ const ProductVariation = ({
 
   return (
     <>
-      <p className="my-2 title">Add Varations</p>
+      <p className="my-2 title ">Add Varations</p>
       <div className="w-[100%]    ">
         {productVarients?.variants?.length ? (
           <div className="  w-[100%] pb-1  rounded-md px-2 pt-1   border box mb-2">
@@ -153,7 +153,7 @@ const ProductVariation = ({
         ) : null}
         {!productVarients?.variants?.length ? (
           <p
-            className="cursor-pointer text-sm lowercase"
+            className="cursor-pointer text-sm lowercase "
             onClick={() => {
               setVarients(
                 produce((draft) => {
@@ -177,7 +177,7 @@ const ProductVariation = ({
             }}
           >
             {" "}
-            Add Varient +
+            <span className="add-product-variant w-auto"> Add Varient +</span>
           </p>
         ) : null}
       </div>

@@ -21,7 +21,7 @@ export const ProductDetailsComponent = ({
   setData
 }) => {
   return (
-    <div className="    justify-end gap-1 p-3 ml-auto]">
+    <div className="    justify-end gap-1 p-3 ml-auto ">
       <div className="flex gap-3 mt-3 ml-auto  ">
         <div
           className="container p-3 m-1  w-[50%]
