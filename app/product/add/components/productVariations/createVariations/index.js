@@ -6,6 +6,7 @@ import { Reorder } from "framer-motion";
 import { produce } from "immer";
 import { generateQualities } from "../collapseView/functions/GenerateQualities";
 import { shapeData } from "../collapseView/functions/datashape";
+import { ReorderIcon } from "../../drageControl";
 
 export default function CreateVariation({
   listIndex,
@@ -237,6 +238,7 @@ export default function CreateVariation({
               <Reorder.Item
                 value={value}
                 key={value}
+                dragListener={false}
                 className="flex gap-2  w-[100%] flex-col "
               >
                 <div className="flex gap-3 relative items-center">
@@ -314,6 +316,8 @@ export default function CreateVariation({
                     </button>
                   ) : null}
                 </div>
+                <ReorderIcon   />
+
               </Reorder.Item>
             </div>
           ))}

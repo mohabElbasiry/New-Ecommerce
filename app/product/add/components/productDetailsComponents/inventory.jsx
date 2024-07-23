@@ -1,13 +1,14 @@
 import { CheckboxD } from "@/components/GlobalUi/checkbox";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import SubCategoriesSelect from "./categoriesWithSub";
+import SubCategoriesSelect_2 from "./AllCategoriesWithSub_2";
 
 export const Inventory = ({ register ,submitedData,errors}) => {
   return (
     <>
       <p className="title">Inventory</p>
       <div className="box p-3  flex gap-3 flex-col">
-      <SubCategoriesSelect
+      <SubCategoriesSelect_2
         submitedData={submitedData}
         register={register}
         error={errors}

@@ -30,7 +30,9 @@ const ProductVariation = ({
         draft.productvaritions.variants = newVariants;
         draft.productvaritions.varitionsValues = shapeData(
           generateQualities(
-            draft.productvaritions.varitionsValues?.flatMap((item) => item?.values),
+            draft.productvaritions.varitionsValues?.flatMap(
+              (item) => item?.values
+            ),
             newVariants || []
           ),
           newVariants || []
@@ -46,27 +48,29 @@ const ProductVariation = ({
         {productVarients?.variants?.length ? (
           <div className="  w-[100%] pb-1  rounded-md px-2 pt-1   border box mb-2">
             <Reorder.Group
-              onDragEnd={(e) => e.stopPropagation()}
+              // onDragEnd={(e) => e.stopPropagation()}
               axis="y"
               values={productVarients?.variants}
               onReorder={handleReorder}
-              dragListenser={false}
+              // onDragExit={(e) => e.stopPropagation()}
+              // onDragOver={(e) => e.stopPropagation()}
+              // onDragOverCapture={(e) => e.stopPropagation()}
             >
               {productVarients?.variants?.map((item, idx) => {
                 return (
                   <Reorder.Item
                     onDragEnd={(e) => e.stopPropagation()}
-                    dragListenser={false}
-                    dragControls={dragControls}
                     value={item}
                     key={item?.key_en}
                     as={motion.div}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    whileDrag={{ scale: 1.1 }}
-                    transition={{ duration: 0.2 }}
-                    className="my-2"
+                    exit={{ opacity: 1 }}
+                    whileDrag={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="my-3"
+                    dragListener={false}
+                    dragControls={dragControls}
                   >
                     {item?.edit ? (
                       <CreateVariation
@@ -99,10 +103,10 @@ const ProductVariation = ({
                         }}
                       >
                         <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">
-                          <div className="mt-3  p-2 flex flex-col gap-3 px-2 hover:bg-[#eee] cursor-pointer">
-                            <ReorderIcon dragControls={dragControls} />
+                          <div className="mt-3  p-2 flex flex-col gap-3 px-2 hover:bg-[#eee]   ">
+                            <ReorderIcon dragControls={dragControls}/>
                           </div>
-                          <div className="   ">
+                          <div className="">
                             <p>{item?.key_en}</p>
                             <ul className="w-[100%] flex gap-3 flex-wrap">
                               {item?.values?.map((CurrentValueitem) => {
