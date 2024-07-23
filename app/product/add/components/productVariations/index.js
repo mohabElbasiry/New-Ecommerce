@@ -43,7 +43,7 @@ const ProductVariation = ({
   return (
     <>
       <p className="my-2 title ">Add Varations</p>
-      <div className="w-[100%]    ">
+      <div className="w-[100%]  product-variant  ">
         {productVarients?.variants?.length ? (
           <div className="  w-[100%] pb-1  rounded-md px-2 pt-1   border box mb-2">
             <Reorder.Group

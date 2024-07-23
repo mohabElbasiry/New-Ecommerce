@@ -15,8 +15,14 @@ import Joyride, {
 } from "react-joyride";
 import { Button } from "@/components/ui/button";
 import { produce } from "immer";
-import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
+import { generateQualities } from "./productVariations/collapseView/functions/GenerateQualities";
+import { shapeData } from "./productVariations/collapseView/functions/datashape";
 const stepsVariant = [
   {
     target: ".add-product-variant",
@@ -26,7 +32,7 @@ const stepsVariant = [
     content: <h2>will create Variant </h2>,
 
     placement: "center",
-    target: ".add-product-variant",
+    target: ".my-other-step",
   },
   {
     target: ".add-name-variant",
@@ -34,110 +40,128 @@ const stepsVariant = [
   },
   {
     target: ".add-values-variant",
-    content: "enter here to add name variant",
-  }, {
+    content: "enter here to add values variant",
+  },
+  {
     target: ".done-variant",
     content: "click here to create the first variant",
+  }, {
+    content: "now create variant done ",
+    target: ".product-variant",
   },
-
-]
+];
 const stepsUploadFile = [
   {
     target: ".my-other-step",
     content: "This another awesome feature!",
   },
-
 ];
-// {
-//   target: ".my-other-step",
-//   content: "This another awesome feature!",
-// },
-// {
-//   target: '.my-first-step',
-//   content: 'This is my awesome feature!',
-// },
-// {
-//   target: '.my-other-step',
-//   content: 'This another awesome feature!',
-// },
+
 export const ProductAddMaim = () => {
   const [submitedData, setSubmitedData] = useState({
     ...ProductMainDefaultValue,
   });
-  console.log(submitedData,'submitedDatasubmitedData')
+
   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
   });
   const [{ run, steps }, setState] = useState({
     run: false,
-    steps: stepsVariant
+    steps: stepsVariant,
   });
   const [stepIndex, setStepIndex] = useState(0);
 
-  const handleJoyrideCallback = useCallback((data) => {
-    const { action, index, origin, status, type } = data;
-    console.log(data, EVENTS, ACTIONS, ORIGIN);
-    if (action === ACTIONS.CLOSE && origin === ORIGIN.KEYBOARD) {
-      // do something
-    }
-    if (index == 1) {
-      console.log('object')
-      setSubmitedData(
-        produce((draft) => {
-          if(draft?.productvaritions?.variants?.length>=1){return}else{
-            draft?.productvaritions?.variants?.push({
-              isColor: "",
-  
-              key_en: "colors",
-              key_ar: "colors",
-              isTest:true,
-              values: [
-                {
-                  value_ar: "red",
-                  value_en: "red",
-                  color: "",
-                },
-                {
-                  value_ar: "blue",
-                  value_en: "blue",
-                  color: "",
-                },
-              ],
-              edit: true,
-            })
-          }
+  const handleJoyrideCallback = useCallback(
+    (data) => {
+      const { action, index, origin, status, type } = data;
+      console.log(data, EVENTS, ACTIONS, ORIGIN);
+      if (action === ACTIONS.CLOSE && origin === ORIGIN.KEYBOARD) {
+        // do something
+      }
+      if (index == 1) {
+        console.log("object");
+        setSubmitedData(
+          produce((draft) => {
+            if (draft?.productvaritions?.variants?.length >= 1) {
+              return;
+            } else {
+              draft?.productvaritions?.variants?.push({
+                isColor: "",
 
-         
-      
-        })
-      );
+                key_en: "colors",
+                key_ar: "colors",
+                isTest: true,
+                values: [
+                  {
+                    value_ar: "red",
+                    value_en: "red",
+                    color: "",
+                  },
+                  {
+                    value_ar: "blue",
+                    value_en: "blue",
+                    color: "",
+                  },
+                ],
+                edit: true,
+              });
+            }
+          })
+        );
+      } else if (index == 5) {
+        setSubmitedData(
+          produce((draft) => {
+            const Updated = draft.productvaritions.variants?.map(item=>({...item,edit:false}));
+            console.log(Updated, "UpdatedUpdated");
+            draft.productvaritions.variants = Updated;
+            draft.productvaritions.REfvariants = Updated;
+            const dataShape = generateQualities(
+              draft.productvaritions.varitionsValues?.flatMap(
+                (item) => item.values
+              ) || [],
+              Updated || []
+            );
+            draft.productvaritions.varitionsValues = shapeData(
+              dataShape || [],
+              Updated || []
+            );
+          })
+        );
+      }
 
-    }else if (index == 5){
+      if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+        // Update state to advance the tour
+        // setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1));
+      } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+        // You need to set our running state to false, so we can restart if we click start again.
+        setSubmitedData(
+          produce((draft) => {
+            const Updated = draft.productvaritions.variants?.filter(item=>(!item.isTest));
+            console.log(Updated, "UpdatedUpdated");
+            draft.productvaritions.variants = Updated;
+            draft.productvaritions.REfvariants = Updated;
+            
+            draft.productvaritions.varitionsValues = Updated
+          })
+        );
+        setState({
+          run: false,
+          steps: stepsVariant,
+        });
+      }
 
-    }
-
-    if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
-      // Update state to advance the tour
-      // setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1));
-    } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-      // You need to set our running state to false, so we can restart if we click start again.
-     
-      setState({
-        run: false,
-        steps:stepsVariant
-      });
-    }
-
-    console.groupCollapsed(type);
-    //eslint-disable-line no-console
-    console.groupEnd();
-  },[submitedData.productvaritions?.variants])
+      console.groupCollapsed(type);
+      //eslint-disable-line no-console
+      console.groupEnd();
+    },
+    [submitedData.productvaritions?.variants]
+  );
 
   const handleClickStart = (value) => {
     setState({
       run: true,
-      steps:value
+      steps: value,
     });
   };
   console.log("rerender hassan", data);
@@ -200,15 +224,25 @@ export const ProductAddMaim = () => {
           />
         </div>
       </Headercomponent>
-      <DropdownMenu >
-  <DropdownMenuTrigger className="rounded-full fixed bottom-10 right-10"><Button className="rounded-full ">?</Button></DropdownMenuTrigger>
-  <DropdownMenuContent className="w-32 shadow  border  mx-5 bg-white "
-  >
-
-    <DropdownMenuItem className="cursor-pointer" onClick={()=>handleClickStart(stepsVariant)}>Variant</DropdownMenuItem>
-    <DropdownMenuItem className="cursor-pointer" onClick={()=>handleClickStart(stepsUploadFile)}>upload file</DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="rounded-full fixed bottom-10 right-10">
+          <Button className="rounded-full ">?</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-32 shadow  border  mx-5 bg-white ">
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => handleClickStart(stepsVariant)}
+          >
+            Variant
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => handleClickStart(stepsUploadFile)}
+          >
+            upload file
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/*  */}
     </>
