@@ -19,7 +19,9 @@ export const BasicData = ({
       },
     }));
   };
-  console.log(submitedData,'submitedDatasubmitedDatasubmitedData');
+
+  
+ 
   const {
     errors,
     register,
@@ -30,6 +32,9 @@ export const BasicData = ({
     clearErrors,
     isSubmitting
   } = formData;
+
+  console.log(submitedData);
+ 
   return (
     <div
       className="gap-5
@@ -102,7 +107,7 @@ export const BasicData = ({
    
 </div>
       <Inventory errors={errors} submitedData={submitedData} register={register} />{" "}
-      <Pricing submitedData={submitedData} register={register} />
+      <Pricing submitedData={submitedData} setSubmitedData={setSubmitedData}/>
       <Seo />{" "}
 
     </div>

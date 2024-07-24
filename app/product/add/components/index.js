@@ -20,6 +20,7 @@ export const ProductAddMaim = () => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     setError,
     clearErrors,
 
@@ -51,6 +52,7 @@ export const ProductAddMaim = () => {
               register,
               reset,
               setValue,
+              getValues,
               errors,
               setError,
               clearErrors,
