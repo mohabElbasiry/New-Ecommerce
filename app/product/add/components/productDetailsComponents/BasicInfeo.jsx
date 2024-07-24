@@ -4,6 +4,7 @@ import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 import Seo from "./tags";
+import ShippingInfo from "./ShippingInfo";
 
 export const BasicData = ({
   submitedData = {},
@@ -108,6 +109,7 @@ export const BasicData = ({
 </div>
       <Inventory errors={errors} submitedData={submitedData} register={register} />{" "}
       <Pricing submitedData={submitedData} setSubmitedData={setSubmitedData}/>
+      <ShippingInfo submitedData={submitedData} setSubmitedData={setSubmitedData} /> 
       <Seo />{" "}
 
     </div>
