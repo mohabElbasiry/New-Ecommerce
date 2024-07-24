@@ -6,6 +6,7 @@ import { FiltersKeys_values } from "./FilterByFUnction";
 import { BulkEditView } from "./BulkEdit";
 import { memo } from "react";
 import { produce } from "immer";
+import { BulkEditButton } from "./BulkEdit/BUlkeditButton";
 
 const FilterHeader = ({
   varitions = [],
@@ -13,16 +14,12 @@ const FilterHeader = ({
   checkedArray,
   data,
   setFilters,
-  Filters
+  Filters,
+  varietnsValues=[],
+  setVarients=()=>{}
 }) => {
   return (
     <>
-      <input
-        className="p-2 w-full border border-[#ddd] rounded-xl"
-        type="text"
-        placeholder="enter something to search"
-        onChange={e=>setFilters(produce(draft=>{draft.search=e.target.value}))}
-      />
       <div className="header p-3 flex justify-between items-center">
         <GroupedView varitions={varitions} setFilters={setFilters} />
 
@@ -31,7 +28,23 @@ const FilterHeader = ({
         </div>
       </div>
       <div className="Filters mb-4">
-        <FiltersKeys_values varitions={varitions} setFilters={setFilters} FilterValues={Filters?.FilterValues} / >
+        <input
+          className="p-1 w-full border border-[#ddd] rounded-md"
+          type="text"
+          placeholder="enter something to search"
+          onChange={(e) =>
+            setFilters(
+              produce((draft) => {
+                draft.search = e.target.value;
+              })
+            )
+          }
+        />
+        <FiltersKeys_values
+          varitions={varitions}
+          setFilters={setFilters}
+          FilterValues={Filters?.FilterValues}
+        />
       </div>
 
       {checkedArray?.[0]?.SelectedItems?.length ? (
@@ -46,8 +59,7 @@ const FilterHeader = ({
               checked={checkedArray?.map((item) => item?.SelectedItems).length}
               onChange={(e) => {
                 setChecked((prev = []) => {
-                  console.log(prev);
-                  const Allitems = data?.map((item) => {
+                   const Allitems = data?.map((item) => {
                     return {
                       key: item?.key,
                       SelectedItems: item?.values?.map((i, _idx) => _idx),
@@ -72,10 +84,8 @@ const FilterHeader = ({
             </label>
           </div>
           <div className="flex items-center gap-1 w-[]">
-            <button className="box text-sm p-1  " type="button">
-              Bulk Edit
-            </button>
-            <BulkEditView />
+            <BulkEditView  checkedArray={checkedArray} variants={varitions} 
+       varitionsValues={varietnsValues} setVarients={setVarients} />
           </div>
         </div>
       ) : (

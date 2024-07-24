@@ -12,10 +12,8 @@ export default function CreateVariation({
   listIndex,
   setList,
   list,
-  data: { Data },
-}) {
-  console.log(list, "adsssssssssssss");
-  const [currentOption, setCurrentOption] = useState({
+ }) {
+   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
     error: false,

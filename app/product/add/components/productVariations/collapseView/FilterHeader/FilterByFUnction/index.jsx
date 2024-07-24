@@ -47,7 +47,7 @@ export const FiltersKeys_values = ({
       {console.log(FilterValues, "FilterValuesFilterValues")}
       <div className="flex gap-3 mt-2">
         {varitions?.map((item) => {
-          return (
+          return (  
             <DropdownMenuRadioGroupSelect
               list={item?.values?.map((iv) => {
                 return iv?.value_en;
@@ -62,10 +62,10 @@ export const FiltersKeys_values = ({
         <div className="flex gap-3 items-center ml-1   m-2 p-1">
           {FilterValues?.map((item) => {
             return (
-              <div className="p-1 rounded h-[25px] flex items-center justify-between overflow-hidden pe-0 gap-3  
-               uppercase border border-[#000000a2] my-2 w-fit">
+              <div className="p-1 rounded h-[20px] flex items-center justify-between overflow-hidden pe-0 gap-3   !text-[12px]  bg-[#eee]
+               uppercase border border-[#ddd] my-2 w-fit">
                 {item?.value}
-                <button type="button" className="bg-[#000000a2] text-white p-2" onClick={()=>{
+                <button type="button" className="bg-[#eee] text-[#333] p-1 " onClick={()=>{
                   setFilters(produce(draft=>{
                     draft.FilterValues=    draft.FilterValues.filter(itemF=>item?.key!==itemF?.key)
                   }))
@@ -73,6 +73,15 @@ export const FiltersKeys_values = ({
               </div>
             );
           })}
+            <div className="p-1 rounded h-[20px] flex items-center justify-between overflow-hidden pe-0 gap-3   !text-[12px]  bg-[#eee]
+               uppercase border border-[#ddd] my-2 w-fit">
+                clear All
+                <button type="button" className="bg-[#eee] text-[#333] p-1 " onClick={()=>{
+                  setFilters(produce(draft=>{
+                    draft.FilterValues= []
+                  }))
+                }}>x</button>
+              </div>
         </div>
       ) : null}
     </div>
