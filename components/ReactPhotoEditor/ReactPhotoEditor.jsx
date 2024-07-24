@@ -335,7 +335,7 @@ export const ReactPhotoEditor = ({
             data-testid="photo-editor-main"
             className=" justify-center items-center flex overflow-auto fixed inset-0 z-50"
           >
-            <div className="relative overflow-auto rounded-lg shadow-lg lg:w-[70%] w-[90%] bg-white  p-5 h-full dark:bg-[#202020]">
+            <div className="relative overflow-auto rounded-lg shadow-lg  w-[100%] bg-white  p-5 h-full dark:bg-[#202020]">
               <div className="flex justify-end p-2 rounded-t">
                 <button
                   className={modalHeaderButtonClasses}

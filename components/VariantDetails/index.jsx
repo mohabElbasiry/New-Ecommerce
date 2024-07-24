@@ -16,8 +16,41 @@ export default function VariantDetails({ data, similarItems = [] }) {
     variantsData
   );
   const [variantSelected, setVariantSelected] = useState(
-    variantsData ? variantsData[0] : {}
+    variantsData ? variantsData[0] : {
+      "itemIndex": 0,
+      "val": "",
+      "options": [
+          {
+              "key_en": "",
+              "value_en": "",
+              "value_ar": "",
+              "color": ""
+          }
+      ],
+      "values": [
+          {
+              "key_en": "",
+              "value_en": "",
+              "value_ar": "",
+              "color": ""
+          }
+      ],
+      "quantity": 0,
+      "sku": "",
+      "continue_out_stock": false,
+      "price": "0",
+      "compare_to_price": 0,
+      "barcode": "",
+      "image": [],
+      "Compare_To_Price": 0,
+      "Cost_Per_Item": "0",
+      "Profit": "0",
+      "margin": "0",
+      "color": "",
+      "Barcode": ""
+  }
   );
+ 
   useEffect(() => {
     variantsData.length? setVariantSelected(variantsData ? variantsData[0] : {}):null;
   }, []);
@@ -47,7 +80,7 @@ export default function VariantDetails({ data, similarItems = [] }) {
       // calculate profit and margin
 
       let price = variantSelected?.price;
-      let Profit = +price - +val;
+      let Profit = +price - +val ;
       let Margin = +(+Profit / +price) * 100;
 
       setVariantSelected(
