@@ -1,3 +1,5 @@
+import { produce } from "immer";
+
 const baseUrl ="http://localhost:3001/api/v1/"
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTYzYzdiYzg2MjI2MjU1M2JkYjYwNyIsImNyZWF0ZWRBdCI6MTcyMTEyMTkxNTkwNSwiaWF0IjoxNzIxMTIxOTE1LCJleHAiOjE3Mjg4OTc5MTV9.E4-W-T_Dyyyyh9kX7eaSn5QhUtxmy4ZmF3ZAeaRlFeo";
 
@@ -20,7 +22,8 @@ export async function fetchImage(url) {
 
 
 
-export function UploadFile(selectedFiles,progressBarParent,progressBar) {
+export function UploadFileToApi(selectedFiles,progressBarParent,progressBar,setUrlsFiles) {
+  
  const headers = `Bearer ${token}`;
   const file = selectedFiles[0];
   const formData = new FormData();
@@ -37,10 +40,21 @@ export function UploadFile(selectedFiles,progressBarParent,progressBar) {
       }, 2000);
     }
   });
-
+  xhr.addEventListener("load", function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      let response=JSON.parse(xhr.response);
+      setUrlsFiles(produce((prev)=>{
+        prev.push(response?.fileUrl)
+      }))
+      // Handle the response here (e.g., parse the response JSON and update the UI)
+    } else {
+      console.error("Error uploading file:", xhr.statusText);
+    }
+  });
   xhr.open("POST", baseUrl +"upload/file");
   xhr.setRequestHeader("Authorization", headers);
   xhr.send(formData);
+
   
 }
 
