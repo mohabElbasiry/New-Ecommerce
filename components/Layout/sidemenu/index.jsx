@@ -1,26 +1,26 @@
 "use client"
 import { cn } from "@/lib/utils";
-import {   ChevronsLeft, ChevronsRight} from "lucide-react";
+import {   ChevronsLeft, ChevronsRight,User} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
 const menuData = [
-  { title: 'General', href: '#' },
+  { title: 'General', href: '#',Icon:<User size={24}  /> },
   {
     title: 'Teams',
     subMenu: [
-      { title: 'Banned Users', href: '#' },
-      { title: 'Calendar', href: '#' },
-    ],
+      { title: 'Banned Users', href: '#',Icon:<User size={24}  /> },
+      { title: 'Calendar', href: '#',Icon:<User size={24}  /> },
+    ],Icon:<User size={24}  />
   },
-  { title: 'Billing', href: '#' },
-  { title: 'Invoices', href: '#' },
+  { title: 'Billing', href: '#',Icon:<User size={24}  /> },
+  { title: 'Invoices', href: '#' ,Icon:<User size={24}  />},
   {
-    title: 'Account',
+    title: 'Account',Icon:<User size={24}  />,
     subMenu: [
-      { title: 'Details', href: '#' },
-      { title: 'Security', href: '#' },
-      { title: 'Logout', href: '#' },
+      { title: 'Details', href: '#' ,Icon:<User size={24}  />},
+      { title: 'Security', href: '#',Icon:<User size={24}  /> },
+      { title: 'Logout', href: '#' ,Icon:<User size={24}  />},
     ],
   },
 ];
@@ -39,7 +39,7 @@ const [open, setOpen] = useState(true)
   }
   return (
     <div className={cn( open?"w-80":"w-20"   ,"transition-all duration-700    flex h-screen flex-col  border-r justify-between bg-[#ffffff] sticky top-0")}>
-    <div className="px-4 py-6 relative">
+    <div className=" py-6 relative">
     <button type="button" onClick={toggleMenu} className="absolute text-white top-1/4 -right-4 w-8 h-8 flex justify-center items-center  bg-gray-500 rounded-full">
      {open? <ChevronsLeft />:<ChevronsRight />}
 
@@ -53,9 +53,9 @@ const [open, setOpen] = useState(true)
         {menuData.map((menuItem, index) => (
           <li key={index}>
             {menuItem.subMenu ? (
-              <details className="group [&_summary::-webkit-details-marker]:hidden">
+              <details className="group [&_summary::-webkit-details-marker]:hidden transition-all duration-700">
                 <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <div className="text-sm font-medium"><p className="truncate ...">{menuItem.title}</p></div>
+                  <div className="text-sm font-medium flex items-center gap-2 "><div className="w-10 h-10 bg-gray-700 rounded-full flex justify-center items-center text-white"> {menuItem.Icon}</div> <p  className={cn( open?"block":"hidden"   ,"transition-all duration-700 delay-1000   truncate ...")} >{menuItem.title}</p></div>
                   <div className="shrink-0 transition duration-300 group-open:-rotate-180">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +76,9 @@ const [open, setOpen] = useState(true)
                     <li key={subIndex}>
                       <Link
                         href={subMenuItem.href}
-                        className="block menu_side rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        className="flex gap-2 items-center menu_side rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                       >
-                       <p className="truncate ..."> {subMenuItem.title}</p>
+                     <div className="w-10 h-10 bg-gray-700 rounded-full flex justify-center items-center text-white"> {menuItem.Icon}</div>  <p  className={cn( open?"block":"hidden"   ,"transition-all duration-700 delay-1000   truncate ...")}> {subMenuItem.title}</p>
                       </Link>
                     </li>
                   ))}
@@ -87,9 +87,9 @@ const [open, setOpen] = useState(true)
             ) : (
               <Link
                 href={menuItem.href}
-                className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                className="flex gap-2 items-center  rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
               >
-               <p className="truncate ...">{menuItem.title}</p> 
+             <div className="w-10 h-10 bg-gray-700 rounded-full flex justify-center items-center text-white"> {menuItem.Icon}</div> <p  className={cn( open?"block":"hidden"   ,"transition-all duration-700 delay-1000   truncate ...")}>{menuItem.title}</p> 
               </Link>
             )}
           </li>

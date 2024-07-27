@@ -6,15 +6,14 @@ import { Reorder } from "framer-motion";
 import { produce } from "immer";
 import { generateQualities } from "../collapseView/functions/GenerateQualities";
 import { shapeData } from "../collapseView/functions/datashape";
+import { ReorderIcon } from "../../drageControl";
 
 export default function CreateVariation({
   listIndex,
   setList,
   list,
-  data: { Data },
-}) {
-  console.log(list, "adsssssssssssss");
-  const [currentOption, setCurrentOption] = useState({
+ }) {
+   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
     error: false,
@@ -237,6 +236,7 @@ export default function CreateVariation({
               <Reorder.Item
                 value={value}
                 key={value}
+                dragListener={false}
                 className="flex gap-2  w-[100%] flex-col "
               >
                 <div className="flex gap-3 relative items-center">
@@ -314,6 +314,8 @@ export default function CreateVariation({
                     </button>
                   ) : null}
                 </div>
+                <ReorderIcon   />
+
               </Reorder.Item>
             </div>
           ))}
@@ -376,8 +378,7 @@ export default function CreateVariation({
                   option?.key_en?.trim() === currentOption?.option_en?.trim()
                 );
               });
-            console.log("object", isOneOfOthers);
-
+ 
             if (isOneOfOthers) {
               return;
             }
