@@ -7,7 +7,13 @@ export const VariationItem=({productVarients=[],setVarients=()=>{},item ={},idx=
 
     const dragControls = useDragControls();
 
-
+    const handleReorder = (images) => {
+      setSubmitedData(
+        produce((draft) => {
+          draft.images = images;
+        })
+      );
+    };
     return(<>
       <Reorder.Item
             // onDragEnd={(e) => e.stopPropagation()}

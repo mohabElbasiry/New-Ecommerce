@@ -6,6 +6,7 @@ import Pricing from "./pricing";
 import Seo from "./tags";
 import ShippingInfo from "./ShippingInfo";
 import TextEditor from "@/components/TextEditor";
+import { produce } from "immer";
 export const BasicData = ({
   submitedData = {},
   formData = {},
@@ -21,7 +22,12 @@ export const BasicData = ({
     }));
   };
 
-  
+  const updateDetails  = (e) => {
+    setSubmitedData(produce((prev) => {
+      prev.description = e
+    }))
+  };
+
  
   const {
     errors,
@@ -91,9 +97,7 @@ export const BasicData = ({
         isSubmitted={isSubmitting}
       /> */}
     <h3>Product Description</h3>
-          <TextEditor content={submitedData?.productDetails?.description_en} setContent={(e) => {
-          UdateBasicInfo(e, setSubmitedData);
-        }} /> 
+          <TextEditor content={submitedData?.productDetails?.description_en} setContent={updateDetails } /> 
       {/* <DraftEditor
         field="Product Description in Arabic"
         edit={false}
