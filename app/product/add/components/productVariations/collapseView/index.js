@@ -45,9 +45,11 @@ const CollapseView = ({
     setFilters(
       produce((draft) => {
         draft.FilterValues = [];
-        draft.GroupBy.key = REfvariants[0]?.key_en;
+        draft.GroupBy.key =
+          REfvariants?.length > 1 ? REfvariants[0]?.key_en : "";
       })
     );
+    setChecked([])
   }, [REfvariants]);
   function sortItemsByQuantity(items, order = "asc", property) {
     let Sorteditems = [];
@@ -90,8 +92,9 @@ const CollapseView = ({
     if (varitionsValues?.length) {
       setData(
         produce((draft) => {
-          let Editeddata = draft.data;
+          let Editeddata = varitionsValues;
           if (Filters?.GroupBy?.key !== "") {
+            console.log(Filters?.GroupBy?.key, "dasssssssssssse");
             Editeddata = shapeData(
               generateQualities(
                 varitionsValues?.flatMap((item) => item?.values),
@@ -99,6 +102,8 @@ const CollapseView = ({
               ),
               reorderArray(varitions, Filters?.GroupBy?.key) || []
             );
+
+            console.log("Executed");
           }
           if (Filters?.FilterValues?.length) {
             Editeddata = applyFilters(Editeddata, Filters);

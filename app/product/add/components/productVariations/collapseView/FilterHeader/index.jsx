@@ -7,6 +7,7 @@ import { BulkEditView } from "./BulkEdit";
 import { memo } from "react";
 import { produce } from "immer";
 import { BulkEditButton } from "./BulkEdit/BUlkeditButton";
+import { CheckedComponent } from "./checkedElements/incex";
 
 const FilterHeader = ({
   varitions = [],
@@ -15,14 +16,17 @@ const FilterHeader = ({
   data,
   setFilters,
   Filters,
-  varietnsValues=[],
-  setVarients=()=>{}
+  varietnsValues = [],
+  setVarients = () => {},
 }) => {
   return (
     <>
       <div className="header p-3 flex justify-between items-center">
-        <GroupedView varitions={varitions} setFilters={setFilters} />
-
+        {varitions?.length > 1 ? (
+          <GroupedView varitions={varitions} setFilters={setFilters} />
+        ) : (
+          <div></div>
+        )}
         <div className="GroupBy flex items-center  text-sm gap-3">
           <SortBy setFilters={setFilters} />
         </div>
@@ -50,42 +54,46 @@ const FilterHeader = ({
       {checkedArray?.[0]?.SelectedItems?.length ? (
         <div className="batchedit flex items-center   w-full justify-between">
           <div className="flex items-center gap-2  text-sm ">
-            <input
+            {/* <input
               id="Selected"
               className="text-center
           w-[30px]
           flex justify-start"
               type="checkbox"
               checked={checkedArray?.map((item) => item?.SelectedItems).length}
+            /> */}
+
+            <CheckedComponent
+              checkedArray={checkedArray}
+              functionToExecute={(checkedArray) =>
+                checkedArray?.map((item) => item?.SelectedItems).length
+                  ? true
+                  : false
+              }
               onChange={(e) => {
                 setChecked((prev = []) => {
-                   const Allitems = data?.map((item) => {
+                  return data?.map((item) => {
                     return {
                       key: item?.key,
                       SelectedItems: item?.values?.map((i, _idx) => _idx),
                     };
                   });
-                  const isEqualIndex =
-                    Allitems?.map((item) => item?.SelectedItems).length ===
-                    prev?.map((item) => item.SelectedItems).length;
-                  if (e.target.checked) {
-                    if (!isEqualIndex) {
-                      return Allitems;
-                    }
-                  } else {
-                    return [];
-                  }
                 });
               }}
             />
+
             <label id="Selected">
               Selected{" "}
               {checkedArray?.flatMap((item) => item?.SelectedItems)?.length}
             </label>
           </div>
           <div className="flex items-center gap-1 w-[]">
-            <BulkEditView  checkedArray={checkedArray} variants={varitions} 
-       varitionsValues={varietnsValues} setVarients={setVarients} />
+            <BulkEditView
+              checkedArray={checkedArray}
+              variants={varitions}
+              varitionsValues={varietnsValues}
+              setVarients={setVarients}
+            />
           </div>
         </div>
       ) : (

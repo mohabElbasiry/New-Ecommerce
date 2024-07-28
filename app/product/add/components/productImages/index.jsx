@@ -4,6 +4,7 @@ import UploadFilesModal from "./UploadFilesModal";
 import { produce } from "immer";
 import { cn } from "@/lib/utils";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragableImagesBox } from "./dragableImages";
 
 export default function ProductImages({ submitedData, setSubmitedData }) {
   const HandleSubmit = (images) => {
@@ -13,7 +14,7 @@ export default function ProductImages({ submitedData, setSubmitedData }) {
         if (!prev.images) {
           prev.images = [];
         }
-        images.forEach((image) => {
+        images.forEach((image) => { 
           if (!prev.images.some((existingImage) => existingImage === image)) {
             prev.images.push(image);
           }
@@ -52,41 +53,8 @@ export default function ProductImages({ submitedData, setSubmitedData }) {
 
   return (
     <div className="">
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef} className={cn(submitedData?.images?.length?"grid-cols-4  grid-rows-4 " : " "  , "grid gap-5 box p-5")}>
-              {submitedData?.images?.length?   submitedData?.images?.map((item, index) => (
-                <Draggable key={item} draggableId={item} index={index}>
-                  {(provided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      className={cn(
-                        index === 0 ? "col-span-2 row-span-2" : "h-[100px] w-[100px]",
-                        "relative object-contain object-top rounded-2xl border aspect-square"
-                      )}
-                    >
-                      <img
-                        src={"https://you-in.online:3002/uploads/"+item}
-                        alt={item ? item : "/girl.jpg"}
-                        className="border aspect-square rounded-2xl object-contain object-center"
-                        sizes="400"
-                        fill
-                      />
-                      {/* {item} */}
-                    </div>
-                  )}
-                </Draggable>
-              )):null}
-              {provided.placeholder}
-              <UploadFilesModal handleSubmit={HandleSubmit} />
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      
+
+      <DragableImagesBox/>
     </div>
   );
 }
