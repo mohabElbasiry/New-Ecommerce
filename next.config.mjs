@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.you-in.online",
         pathname: "**",
+      },{
+        protocol: "https",
+        hostname: "letsenhance.io",
+        pathname: "**",
       },
     ],
   },
