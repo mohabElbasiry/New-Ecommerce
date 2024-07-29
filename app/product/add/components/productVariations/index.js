@@ -65,7 +65,7 @@ const ProductVariation = ({
           ) : null}
           {!productVarients?.variants?.length ? (
             <p
-              className="cursor-pointer text-sm lowercase p-3 rounded-lg shadow bg-[#fff]"
+              className="cursor-pointer add-product-variant text-sm lowercase p-3 rounded-lg shadow bg-[#fff]"
               onClick={() => {
                 setVarients(
                   produce((draft) => {
