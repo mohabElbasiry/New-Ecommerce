@@ -1,26 +1,14 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import {  useState } from "react";
 import Headercomponent from "./headercomponent";
 import { ProductDetailsComponent } from "./productDetailsComponents";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BasicFormValidation } from "./productDetailsComponents/BasicFormValidationSchema";
 import { ProductMainDefaultValue } from "../constants/DefaultProductMainValue";
-import Joyride, {
-  ACTIONS,
-  EVENTS,
-  ORIGIN,
-  STATUS,
-  CallBackProps,
-} from "react-joyride";
-import { Button } from "@/components/ui/button";
+
 import { produce } from "immer";
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
+
 import { generateQualities } from "./productVariations/collapseView/functions/GenerateQualities";
 import { shapeData } from "./productVariations/collapseView/functions/datashape";
 import TourGuide from "@/components/GlobalUi/TourGuide";
@@ -197,7 +185,7 @@ export const ProductAddMaim = () => {
       </Headercomponent>
     
 
-      {/*  */}
+      
     </>
   );
 };
