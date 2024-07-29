@@ -38,10 +38,10 @@ const defaultDataSteps = [
         }
       
     },
-   FunctionLastSteps: ({ key }) => {
-      if (key === "step.key") {
+   FunctionLastSteps: () => {
+   
         ("do something in last step");
-      }
+      
     },
   },
   {

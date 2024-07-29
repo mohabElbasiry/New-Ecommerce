@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MultiSelect from "./Select";
 const defaultData = {
   Keys: ["Key1", "Key2", "Key3"],
@@ -14,17 +14,21 @@ const defaultData = {
     Key_You_want_change_this_name: () => <span>name header for Key</span>,
   },
   customColumn: {
-    theFirst: {
-      differentKeyInFirst: ({ item }) => (
-        <>{item ? item : "different Value In First"}</>
-      ),
-    },
+    theFirst: [
+      {
+        name: "different Key In First",
+        key: "differentKeyInFirst",
+        value: ({ item }) => <>{item ? item : "different Value In First"}</>,
+      },
+    ],
     Key: ({ item }) => <>{item ? item : "custom Column for species key"}</>,
-    theLast: {
-      differentKeyInLast: ({ item }) => (
-        <>{item ? item : "different Value In Last"}</>
-      ),
-    },
+    theLast: [
+      {
+        name: "different Key In Last",
+        key: "differentKeyInLast",
+        value: ({ item }) => <>{item ? item : "different Value In Last"}</>,
+      },
+    ],
   },
   customRow: ({ itemRow }) => (
     <>
@@ -35,13 +39,51 @@ const defaultData = {
   ),
 };
 export default function DynamicTable({ data = defaultData }) {
-  const [selectedItems, setSelectedItems] = useState(data.Keys);
+  const ItemsFirst =
+    data?.customColumn?.theFirst?.length > 0
+      ? data?.customColumn?.theFirst?.map((ItemFirst) => ItemFirst.key)
+      : [];
+  const ItemsLast =
+    data?.customColumn?.theLast?.length > 0
+      ? data?.customColumn?.theLast?.map((ItemLast) => ItemLast.key)
+      : [];
+  const [selectedItems, setSelectedItems] = useState([
+    ...ItemsFirst,
+    ...data?.Keys,
+    ...ItemsLast,
+  ]);
+
+  const [selectedItemsValues, setSelectedItemsValues] = useState(
+    data.values.map((ItemValue) => {
+      const filteredItemValue = {};
+      Object.keys(ItemValue).forEach((ItemVal) => {
+        if (selectedItems.includes(ItemVal)) {
+          filteredItemValue[ItemVal] = ItemValue[ItemVal];
+        }
+      });
+      return filteredItemValue;
+    })
+  );
+
+  useEffect(() => {
+    setSelectedItemsValues(
+      data.values.map((ItemValue) => {
+        const filteredItemValue = {};
+        Object.keys(ItemValue).forEach((ItemVal) => {
+          if (selectedItems.includes(ItemVal)) {
+            filteredItemValue[ItemVal] = ItemValue[ItemVal];
+          }
+        });
+        return filteredItemValue;
+      })
+    );
+  }, [selectedItems, data.values]);
 
   return (
     <div className="py-5 bg-white m-5">
       <div className="p-5">
         <MultiSelect
-          values={data.Keys}
+          values={[...ItemsFirst, ...data.Keys, ...ItemsLast]}
           selectedItems={selectedItems}
           setSelectedItems={setSelectedItems}
         />
@@ -54,62 +96,72 @@ export default function DynamicTable({ data = defaultData }) {
                 #
               </th>
               {data?.customColumn?.theFirst &&
-              Object?.keys(data?.customColumn?.theFirst)?.length > 0
-                ? Object?.keys(data?.customColumn?.theFirst)?.map(
-                    (key, index) => (
+              data?.customColumn?.theFirst?.length > 0
+                ? data?.customColumn?.theFirst
+                    ?.filter((ItemFirst) =>
+                      selectedItems.includes(ItemFirst?.key)
+                    )
+                    ?.map((ItemFirst, index) => (
                       <th
-                        key={key + index}
+                        key={ItemFirst.key + index}
                         className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
                       >
-                        {key}
+                        {ItemFirst.name}
                       </th>
-                    )
-                  )
+                    ))
                 : null}
               {selectedItems?.length
-                ? selectedItems?.map((key) => {
-                    if (data?.customHeader?.[key]) {
-                      let CustomComponent = data?.customHeader?.[key];
+                ? selectedItems
+                    ?.filter(
+                      (KeySelect) =>
+                        !ItemsFirst?.includes(KeySelect) &&
+                        !ItemsLast?.includes(KeySelect)
+                    )
+                    ?.map((key) => {
+                      if (data?.customHeader?.[key]) {
+                        let CustomComponent = data?.customHeader?.[key];
+                        return (
+                          <th
+                            key={key}
+                            className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
+                          >
+                            <CustomComponent key={key} />
+                          </th>
+                        );
+                      }
                       return (
                         <th
                           key={key}
                           className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
                         >
-                          <CustomComponent key={key} />
+                          {key}
                         </th>
                       );
-                    }
-                    return (
-                      <th
-                        key={key}
-                        className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
-                      >
-                        {key}
-                      </th>
-                    );
-                  })
+                    })
                 : null}
               {data?.customColumn?.theLast &&
-              Object?.keys(data?.customColumn?.theLast)?.length > 0
-                ? Object?.keys(data?.customColumn?.theLast)?.map(
-                    (key, index) => (
+              data?.customColumn?.theLast?.length > 0
+                ? data?.customColumn?.theLast
+                    ?.filter((ItemLast) =>
+                      selectedItems.includes(ItemLast?.key)
+                    )
+                    ?.map((ItemLast, index) => (
                       <th
-                        key={key + index}
+                        key={ItemLast?.key + index}
                         className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
                       >
-                        {key}
+                        {ItemLast?.name}
                       </th>
-                    )
-                  )
+                    ))
                 : null}
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-200">
             {selectedItems.length
-              ? data?.values?.map((item, idx) => (
+              ? selectedItemsValues?.map((item, idx) => (
                   <tr
-                    key={ selectedItems.length +idx}
+                    key={selectedItems.length + idx}
                     className="bg-transparent h-32"
                   >
                     <td
@@ -120,22 +172,24 @@ export default function DynamicTable({ data = defaultData }) {
                       </div>
                     </td>
                     {data?.customColumn?.theFirst &&
-                    Object?.values(data?.customColumn?.theFirst)?.length > 0
-                      ? Object?.values(data?.customColumn?.theFirst)?.map(
-                          (CustomComponent, index) => (
+                    data?.customColumn?.theFirst?.length > 0
+                      ? data?.customColumn?.theFirst
+                          ?.filter((ItemFirst) =>
+                            selectedItems.includes(ItemFirst?.key)
+                          )
+                          ?.map((CustomComponent, index) => (
                             <td
                               key={`first-${idx}-${index}`}
                               className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
                             >
-                              <CustomComponent  />
+                              <CustomComponent.value />
                             </td>
-                          )
-                        )
+                          ))
                       : null}
                     {data?.customRow ? (
                       <data.customRow itemRow={item} />
                     ) : (
-                      selectedItems.map((key, index) => {
+                      selectedItems?.map((key, index) => {
                         if (key && item[key]) {
                           if (data?.customColumn?.[key]) {
                             let CustomComponent = data.customColumn[key];
@@ -168,17 +222,19 @@ export default function DynamicTable({ data = defaultData }) {
                       })
                     )}
                     {data?.customColumn?.theLast &&
-                    Object?.values(data?.customColumn?.theLast)?.length > 0
-                      ? Object?.values(data?.customColumn?.theLast)?.map(
-                          (CustomComponent, index) => (
+                    data?.customColumn?.theLast?.length > 0
+                      ? data?.customColumn?.theLast
+                          ?.filter((ItemLast) =>
+                            selectedItems.includes(ItemLast?.key)
+                          )
+                          ?.map((CustomComponent, index) => (
                             <td
                               key={`last-${idx}-${index}`}
                               className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
                             >
-                              <CustomComponent />
+                              <CustomComponent.value />
                             </td>
-                          )
-                        )
+                          ))
                       : null}
                   </tr>
                 ))
