@@ -73,7 +73,7 @@ export default function UploadFile({setUrlsFiles}) {
 
   return (
     <>
-      <div className="max-w-screen relative  ">
+      <div className="max-w-screen relative my-other-step ">
         <div
           className="bg-gray-200 rounded-full h-2 absolute z-10 inset-x-0 top-1 left-0  hidden"
           ref={progressBarParent}
