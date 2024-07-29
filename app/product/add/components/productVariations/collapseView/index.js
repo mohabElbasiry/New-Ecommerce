@@ -94,8 +94,7 @@ const CollapseView = ({
         produce((draft) => {
           let Editeddata = varitionsValues;
           if (Filters?.GroupBy?.key !== "") {
-            console.log(Filters?.GroupBy?.key, "dasssssssssssse");
-            Editeddata = shapeData(
+             Editeddata = shapeData(
               generateQualities(
                 varitionsValues?.flatMap((item) => item?.values),
                 reorderArray(varitions, Filters?.GroupBy?.key) || []

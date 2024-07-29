@@ -6,25 +6,28 @@ import { UpdateFeildActionFunction } from "../../../variationTables/Update/updat
 import { BatchEdit } from "../../../variationTables/Update/updateFields.js/BulkEdit/BatchEdit/index.js";
 
 import { BulkEditButton } from "./BUlkeditButton/index.jsx";
-import { Actions } from "./Action/index.js";
+import  Actions  from "./Action/index.js";
 
 export const BulkEditView = ({
   checkedArray = [],
   variants = [],
   varitionsValues = [],
   setVarients = () => {},
+  data=[]
 }) => {
-
   return (
     <div className="flex gap-3">
-         <BulkEditButton
+      <BulkEditButton
         checkedArray={checkedArray}
         varitions={variants}
         varitionsValues={varitionsValues}
         setVariens={setVarients}
       />
-    <Actions checkedArray={checkedArray} setVarients={setVarients}/>
-   
+      <Actions
+        checkedArray={checkedArray}
+        varitionsValues={data}
+        setVarients={setVarients}
+      />
     </div>
   );
 };

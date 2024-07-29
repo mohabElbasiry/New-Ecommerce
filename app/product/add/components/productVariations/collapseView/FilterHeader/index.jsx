@@ -4,7 +4,7 @@ import { GroupedView } from "./GroupByFunction";
 import { SortBy } from "./sortByView";
 import { FiltersKeys_values } from "./FilterByFUnction";
 import { BulkEditView } from "./BulkEdit";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { produce } from "immer";
 import { BulkEditButton } from "./BulkEdit/BUlkeditButton";
 import { CheckedComponent } from "./checkedElements/incex";
@@ -19,6 +19,9 @@ const FilterHeader = ({
   varietnsValues = [],
   setVarients = () => {},
 }) => {
+  useEffect(() => {
+    setChecked([]);
+  }, [Filters]);
   return (
     <>
       <div className="header p-3 flex justify-between items-center">
@@ -50,7 +53,6 @@ const FilterHeader = ({
           FilterValues={Filters?.FilterValues}
         />
       </div>
-
       {checkedArray?.[0]?.SelectedItems?.length ? (
         <div className="batchedit flex items-center   w-full justify-between">
           <div className="flex items-center gap-2  text-sm ">
@@ -93,6 +95,7 @@ const FilterHeader = ({
               variants={varitions}
               varitionsValues={varietnsValues}
               setVarients={setVarients}
+              data={data}
             />
           </div>
         </div>

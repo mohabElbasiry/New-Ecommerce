@@ -2,8 +2,7 @@ import { produce } from "immer";
 import { DropdownMenuRadioGroupSelect } from "../../../variationTables/Filters/DropDown";
 
 export const GroupedView = ({ varitions = [], setFilters }) => {
-  console.log(varitions, "varitions");
-  const reorderArray = (array, key) => {
+   const reorderArray = (array, key) => {
     // Find the index of the object with the specified key
     const index = array.findIndex((item) => item.key_en === key);
     if (index !== -1) {

@@ -5,7 +5,8 @@ export const BulkEditArray = [
     disabled: false,
     css: "text-[#333]",
     updateType: "modal",
-    isNumber:true
+    isNumber: true,
+    type: "single",
   },
   {
     name: "Edit Quantities",
@@ -13,14 +14,16 @@ export const BulkEditArray = [
     css: "text-[#333]",
     updateType: "modal",
     property: "quantity",
-    isNumber:true
+    isNumber: true,
+    type: "single",
   },
   {
-    name: "Edit Sku",
+    name: "Edit Skus",
     disabled: false,
     css: "text-[#333]",
     updateType: "modal",
     property: "sku",
+    type: "multible",
   },
   {
     name: "Edit barcodes",
@@ -28,6 +31,7 @@ export const BulkEditArray = [
     css: "text-[#333]",
     updateType: "modal",
     property: "barcode",
+    type: "multible",
   },
   {
     name: "Edit Hs Codes",
@@ -35,6 +39,7 @@ export const BulkEditArray = [
     css: "text-[#333]",
     updateType: "modal",
     property: "hscode",
+    type: "multible",
   },
   {
     name: "Edit weight",
@@ -42,6 +47,7 @@ export const BulkEditArray = [
     css: "text-[#333]",
     updateType: "modal",
     property: "weight",
+    type: "single",
   },
   {
     name: "Add Images",
@@ -49,6 +55,7 @@ export const BulkEditArray = [
     disabled: false,
     css: "text-[#333]",
     updateType: "modal",
+    type: "single",
   },
   {
     name: "Remove Images",
@@ -63,13 +70,23 @@ export const BulkEditArray = [
     disabled: false,
     css: "text-[#333]",
     updateType: "delete",
+    type: "single",
   },
   {
     name: "continue Selling when out of stock",
     disabled: false,
     css: "text-[#333]",
     property: "continue_out_stock",
-
     updateType: "singleAction",
+    type: "single",
+  },
+  {
+    name: "stop Selling When Out Of Stock",
+    disabled: true,
+    css: "text-[#333]",
+    property: "continue_out_stock",
+    updateType: "singleAction",
+    value:true,
+    type: "single",
   },
 ];

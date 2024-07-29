@@ -38,31 +38,7 @@ const List = [
     order: 6,
     id: "@das",
   },
-  // {
-  //   name: "garbo_2_1_1_1024x1024@2x.webp-1719226962713.webp",
-  //   order: 7,
-  //   id: "@das",
-  // },
-//   {
-//     name: "garbo_2_1_1_1024x1024@2x.webp-1719226962713.webp",
-//     order: 8,
-//     id: "@das",
-//   },
-//   {
-//     name: "garbo_2_1_1_1024x1024@2x.webp-1719226962713.webp",
-//     order: 9,
-//     id: "@das",
-//   },
-//   {
-//     name: "garbo_2_1_1_1024x1024@2x.webp-1719226962713.webp",
-//     order: 10,
-//     id: "@das",
-//   },
-//   {
-//     name: "garbo_2_1_1_1024x1024@2x.webp-1719226962713.webp",
-//     order: 11,
-//     id: "@das",
-//   },
+ 
 ];
 
 export const DragableImagesBox = ({ images }) => {
@@ -71,7 +47,9 @@ export const DragableImagesBox = ({ images }) => {
     return list.slice().sort((first, second) => first.order - second.order);
   }
   const sortList = () => {
-    setSortedList(sortListArr(sortedList).map((item,idx)=>({...item,idx})));
+    setSortedList(
+      sortListArr(sortedList).map((item, idx) => ({ ...item, idx }))
+    );
   };
   const reorderList = (sourceIndex, destinationIndex) => {
     const list = sortedList;
@@ -105,9 +83,8 @@ export const DragableImagesBox = ({ images }) => {
       2;
     sortList();
   };
-  {
-    console.log(sortedList, "sortedList");
-  }
+  
+   
   return (
     <>
       <div className="App">
@@ -116,11 +93,17 @@ export const DragableImagesBox = ({ images }) => {
           direction="horizontal"
           maxItems={4}
           className="dragable"
-          render={(item,idx) => {
-            console.log( item,idx,'asdddddddddddddddddd')
+          render={(item, idx) => {
             return (
-              <div >
-                <img className={`border m-1  overflow-hidden object-cover  ${item?.idx==0?'w-[250px]   h-[130px]':'  w-[100px] h-[120px]' }`} src={`${item?.name}`} />
+              <div>
+                <img
+                  className={`border m-1  overflow-hidden object-cover  ${
+                    item?.idx == 0
+                      ? "w-[250px]   h-[130px]"
+                      : "  w-[100px] h-[120px]"
+                  }`}
+                  src={`${item?.name}`}
+                />
               </div>
             );
           }}

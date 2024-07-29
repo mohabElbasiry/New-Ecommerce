@@ -8,15 +8,86 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { produce } from "immer";
-import { useState } from "react";
-const defaultValues = {
-  isOpen: false,
-  action: "",
-  property: "",
-  isNumber: false,
-  value: "",
-};
-export const Actions = ({ checkedArray = [], setVarients = () => {} }) => {
+import { memo, useEffect, useState } from "react";
+import MultibleValues from "./multibleValuesEdit";
+import { defaultValues } from "./defaultValues";
+import { SinglePropertyValue } from "./SinglePropertyValue.js";
+
+const Actions = ({
+  checkedArray = [],
+  varitionsValues = [],
+  setVarients = () => {},
+}) => {
+  const [BulkArray, setBulkArray] = useState(BulkEditArray);
+  console.log(varitionsValues, "varitionsValuesdsaaaaaaaaaaaaaaaaaaaa");
+  useEffect(() => {
+    if (varitionsValues?.length && checkedArray?.length) {
+      const checkedMap = new Map(checkedArray.map((item) => [item.key, item]));
+      varitionsValues.forEach((item) => {
+        const checkedItem = checkedMap.get(item?.key);
+        if (checkedItem) {
+          item?.values.forEach((itemv, idx) => {
+            if (checkedItem?.SelectedItems?.includes(idx)) {
+              if (itemv.continue_out_stock) {
+                setBulkArray((prev) => {
+                  return prev.map((item) => {
+                    if (item?.name === "stop Selling When Out Of Stock") {
+                      return {
+                        ...item,
+                        disabled: false,
+                        value: false,
+                      };
+                    }
+                    return item;
+                  });
+                });
+              } else {
+                setBulkArray((prev) => {
+                  return prev.map((item) => {
+                    if (item?.name === "stop Selling When Out Of Stock") {
+                      return {
+                        ...item,
+                        disabled: true,
+                        value: true,
+                      };
+                    }
+                    return item;
+                  });
+                });
+              }
+
+              if (itemv?.image.length) {
+                setBulkArray((prev) => {
+                  return prev.map((item) => {
+                    if (item?.name === "Remove Images") {
+                      return {
+                        ...item,
+                        disabled: false,
+                      };
+                    }
+                    return item;
+                  });
+                });
+              } else {
+                setBulkArray((prev) => {
+                  return prev.map((item) => {
+                    if (item?.name === "Remove Images") {
+                      return {
+                        ...item,
+                        disabled: true,
+                      };
+                    }
+                    return item;
+                  });
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+  }, [varitionsValues, checkedArray]);
+
   const [openModal, setOpenModal] = useState(defaultValues);
   const [action, setAction] = useState("");
   const SetPropertyValues = (property, value) => {
@@ -25,36 +96,58 @@ export const Actions = ({ checkedArray = [], setVarients = () => {} }) => {
         const checkedMap = new Map(
           checkedArray.map((item) => [item.key, item])
         );
-        const updatedDraft=draft.productvaritions.varitionsValues.map((item) => {
-          const checkedItem = checkedMap.get(item?.key);
-          if (checkedItem) {
-            const values = item?.values?.map((itemv, idx) => {
-              if (checkedItem?.SelectedItems?.includes(idx)) {
-                return {
-                  ...itemv,
-                  [property]: value,
-                };
-              }
-              return itemv;
+        const updatedDraft = draft.productvaritions.varitionsValues.map(
+          (item) => {
+            const checkedItem = checkedMap.get(item?.key);
+            if (checkedItem) {
+              const values = item?.values?.map((itemv, idx) => {
+                if (checkedItem?.SelectedItems?.includes(idx)) {
+                  return {
+                    ...itemv,
+                    [property]: value,
+                  };
+                }
+                return itemv;
+              });
+              return {
+                ...item,
+                values,
+              };
+            }
+            return item;
+          }
+        );
+        draft.productvaritions.varitionsValues = updatedDraft;
+      })
+    );
+  };
+
+  const HandleAction = (
+    action,
+    actionType,
+    property,
+    isNumber = false,
+    type = "single",
+    value = true
+  ) => {
+    if (actionType === "modal") {
+      const checkedMap = new Map(checkedArray.map((item) => [item.key, item]));
+      const SelectedVarient = varitionsValues
+        ?.map((item) => {
+          const GettingItem = checkedMap.get(item?.key);
+          if (GettingItem) {
+            const values = item?.values?.filter((itemv, idx) => {
+              return GettingItem?.SelectedItems?.includes(idx);
             });
             return {
               ...item,
               values,
             };
+          } else {
+            return null;
           }
-          return item;
-        });
-        console.log(updatedDraft,'updatedDraft');
-        draft.productvaritions.varitionsValues =updatedDraft;
-    }) 
-  
-  );
-
-          
-  
-  };
-  const HandleAction = (action, actionType, property, isNumber = false) => {
-    if (actionType === "modal") {
+        })
+        .filter(Boolean);
       setOpenModal(
         produce((draft) => {
           draft.isOpen = true;
@@ -63,87 +156,79 @@ export const Actions = ({ checkedArray = [], setVarients = () => {} }) => {
           if (isNumber) {
             draft.isNumber = true;
           }
+          draft.selectedVarients = type !== "single" ? SelectedVarient : [];
         })
       );
     }
     if (actionType === "delete") {
+      if (action === "Delete Varients") {
+        console.log("object");
+        setVarients(
+          produce((draft) => {
+            const checkedMap = new Map(
+              checkedArray.map((item) => [item.key, item])
+            );
+
+            console.log(draft.productvaritions.varitionsValues);
+            const UpdateDeleteVarient =
+              draft.productvaritions.varitionsValues.map((item) => {
+                const Checked = checkedMap.get(item?.key);
+                if (Checked) {
+                  const values = item?.values?.map((itemv, idx) => {
+                    const value = Checked?.SelectedItems?.includes(idx);
+                     if (value) {
+                      return {
+                        ...itemv,
+                        deleted: true,
+                      };
+                    }
+
+                    return {...itemv,'hello':'hello'};
+                  });
+
+                  return {
+                    ...item,
+                    values,
+                  };
+                }
+                return item;
+              });
+              console.log(UpdateDeleteVarient,'UpdateDeleteVarient')
+              draft.productvaritions.varitionsValues = UpdateDeleteVarient;
+          })
+        );
+      }
     }
 
     if (actionType === "singleAction") {
+      console.log(property, "property");
+      SetPropertyValues(property, value);
     }
   };
 
   return (
     <>
-      {" "}
-      <CustomDialoge
-        open={openModal?.isOpen}
-        setOpen={() =>
-          setOpenModal(
-            produce((draft) => {
-              draft.isOpen = !draft?.isOpen;
-            })
-          )
-        }
-      >
-        <div className="gap-1 border rounded-md  bg-[#fff] shadow">
-          <p className="text-black p-3">{openModal?.action}</p>
-
-          <div className=" p-2">
-            <input
-              placeholder={openModal?.action}
-              className="border rounded-md p-2 w-[600px] text-black"
-              value={openModal?.value}
-              onChange={(e) => {
-                console.log(openModal?.isNumber, "openModal?.isNumber");
-                setOpenModal(
-                  produce((draft) => {
-                    draft.value = e.target.value;
-                  })
-                );
-                // if (openModal?.isNumber) {
-                //   if (isNaN(e?.target?.value)) {
-
-                //   }
-                // }
-              }}
-            />
-          </div>
-          <div className="flex gap-1 items-center justify-end mx-2">
-            <button
-              onClick={() =>
-                setOpenModal(
-                  produce((draft) => {
-                    draft.isOpen = false;
-                  })
-                )
-              }
-              type="button"
-              className="text-[#333] 
-       p-2 bg-[#eee] !my-3 rounded-md  text-center
-       justify-center 
-        px-2 h-[30px] flex 
-        items-center  "
-            >
-              Discard
-            </button>
-            <button
-              type="button"
-              className="text-bwhite 
-       p-2 bg-black !my-3 rounded-md  text-center
-        justify-center 
-        px-2 h-[30px] flex 
-        items-center  text-white "
-              onClick={() => {
-                SetPropertyValues(openModal?.property, openModal?.value);
-                setOpenModal(defaultValues);
-              }}
-            >
-              save
-            </button>
-          </div>
-        </div>
-      </CustomDialoge>
+      {console.log(varitionsValues, "dasasasasasasasasasasasasasasasasasas")}{" "}
+      {openModal?.selectedVarients?.length ? (
+        <MultibleValues
+          action={openModal?.action}
+          SelectedArray={openModal?.selectedVarients?.flatMap(
+            (item) => item?.values
+          )}
+          open={openModal?.isOpen}
+          property={openModal?.property}
+          setOpenModal={setOpenModal}
+          value={openModal?.value}
+          setVarients={setVarients}
+        />
+      ) : (
+        <SinglePropertyValue
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          setVarients={setVarients}
+          checkedArray={checkedArray}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" className="p-1 h-[30px] shadow">
@@ -156,7 +241,7 @@ export const Actions = ({ checkedArray = [], setVarients = () => {} }) => {
             console.log(e, "dassssssssss");
           }}
         >
-          {BulkEditArray.map((item) => {
+          {BulkArray.map((item) => {
             return (
               <DropdownMenuItem
                 key={item?.name}
@@ -167,7 +252,9 @@ export const Actions = ({ checkedArray = [], setVarients = () => {} }) => {
                     item?.name,
                     item?.updateType,
                     item?.property,
-                    item?.isNumber
+                    item?.isNumber,
+                    item?.type,
+                    item?.value
                   );
                 }}
               >
@@ -181,3 +268,5 @@ export const Actions = ({ checkedArray = [], setVarients = () => {} }) => {
     </>
   );
 };
+
+export default memo(Actions);
