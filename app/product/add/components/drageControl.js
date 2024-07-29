@@ -1,4 +1,8 @@
-export function ReorderIcon({ dragControls, onDragEnd }) {
+ 
+
+
+export function ReorderIcon({  dragControls, onDragEnd }) {
+ 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,14 +14,14 @@ export function ReorderIcon({ dragControls, onDragEnd }) {
         return dragControls.start(event);
       }}
       onDragEnd={(e)=>e.stopPropagation()}
-      className="ml-2"
+      className="ml-2 cursor-grab"
       // onMouseDown={(event) => {
       //   event.stopPropagation();
       //   return dragControls.start(event);
       // }}
       onClick={(e) => {
         e.stopPropagation();
-      }}
+      }} 
 
       style={{
         display: "flex",

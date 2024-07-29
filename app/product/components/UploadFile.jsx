@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   Popover,
@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
-import { fetchImage } from "../functions/fun";
+import { fetchImage, UploadFileToApi } from "../functions/fun";
 import { PopoverClose } from "@radix-ui/react-popover";
 
-export default function UploadFile() {
+export default function UploadFile({setUrlsFiles}) {
   const InputRef = useRef();
   const InputUrlsRef = useRef();
   const progressBar = useRef();
@@ -62,8 +62,14 @@ export default function UploadFile() {
     }
   };
 
-  const handleUploadFile = () =>
-    UploadFile(selectedFiles, progressBarParent, progressBar);
+
+  const handleUploadFile = () =>UploadFileToApi(selectedFiles, progressBarParent, progressBar,setUrlsFiles);
+
+  useEffect(() => {
+    console.log("fdsafdsafdsafdsaf");
+    selectedFiles.length? handleUploadFile():null;
+  }, [selectedFiles])
+  
 
   return (
     <>
@@ -78,7 +84,7 @@ export default function UploadFile() {
             style={{ width: "0%" }}
           ></div>
         </div>
-        {selectedFiles.length ? (
+        {/* {selectedFiles.length ? (
           <Button
             type="button"
             className="absolute  z-50 right-5  top-5 !mx-auto"
@@ -86,7 +92,7 @@ export default function UploadFile() {
           >
             Upload
           </Button>
-        ) : null}
+        ) : null} */}
         <label className=" relative flex justify-center items-center flex-col gap-10 w-full  h-44 px-4 shadow-md transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
           <span className="flex justify-center items-center gap-5  bg-white ">
             <button
@@ -150,6 +156,7 @@ export default function UploadFile() {
             type="file"
             name="file_upload"
             ref={InputRef}
+            accept="image/*,video/*"
             multiple
             className="opacity-0 absolute top-0 left-0 z-[3] w-full h-full cursor-pointer "
             onChange={handleFileChange}
@@ -164,34 +171,7 @@ export default function UploadFile() {
         selectedFiles={selectedFiles}
         setFileData={setFileData}
       />
-      <div className="mt-4 grid-cols-6 grid  gap-4">
-        {selectedFiles.map((file, index) => (
-          <div className="" key={index}>
-            <div
-              key={index}
-              className="relative border rounded-2xl aspect-square  overflow-hidden p-2"
-            >
-              <input className="absolute top-2 left-3 z-10" type="checkbox" />
-              <Image
-                fill
-                src={URL.createObjectURL(file)}
-                alt={file.name}
-                className=" w-full object-contain object-center  "
-              />
-              <button
-                className="absolute top-2 right-5 cursor-pointer z-[30]"
-                onClick={() => {
-                  setFileData(file);
-                  showModalHandler();
-                }}
-              >
-                edit
-              </button>
-            </div>
-            <p className="mt-2 text-center text-sm">{file.name}</p>
-          </div>
-        ))}
-      </div>
+     
     </>
   );
 }

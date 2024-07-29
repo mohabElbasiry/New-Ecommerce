@@ -57,7 +57,7 @@ export function generateQualities(prev, attributes) {
         image: [],
         continue_out_stock: false,
         price: 0,
-        Compare_To_Price: 0,
+        compare_to_price: 0,
         Cost_Per_Item: 0,
         Profit: 0,
         margin: 0,
@@ -65,7 +65,8 @@ export function generateQualities(prev, attributes) {
         sku: 0,
         continue_out_stock: false,
         color: "",
-        Barcode: "",
+        barcode: "",
+        weight:""
       });
       return;
     }
@@ -119,7 +120,7 @@ export function generateQualities(prev, attributes) {
           ...item,
           continue_out_stock: founded.continue_out_stock || false,
           price: founded.price,
-          Compare_To_Price: founded.Compare_To_Price || 0,
+          compare_to_price: founded.compare_to_price || 0,
           Cost_Per_Item: founded.Cost_Per_Item || 0,
           Profit: founded.Profit || 0,
           margin: founded.margin || 0,
@@ -127,8 +128,9 @@ export function generateQualities(prev, attributes) {
           image: founded.image || [],
           sku: founded.sku || 0,
           color: founded.color || "",
-          Barcode: founded.Barcode || "",
-          itemIndex: index,
+          barcode: founded.barcode || "",
+          weight: index,
+          itemIndex:  founded.barcode||"",
         };
       }
       return item;

@@ -2,14 +2,12 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { DropdownMenuDemo, DropdownMenuRadioGroupSelect } from "./DropDown";
 
 export const FiltersKeys_values = ({ setFilters=()=>{}, varitions=[] }) => {
-  const HandleChangeSelection = (e, key) => {
-    console.log(e,key,'asdddddddddddd');
-    setFilters((prev = []) => {
+  const HandleChangeSelection = (e, key) => {    setFilters((prev = []) => {
       const FoundedItem = prev?.filterByValues?.find((item) => {
         return item?.key === key;
       });
 
-      if (FoundedItem) {
+      if (FoundedItem) { 
         if (e === "") {
           const FilteredItem = prev?.filterByValues?.filter(
             (item) => item?.key !== key

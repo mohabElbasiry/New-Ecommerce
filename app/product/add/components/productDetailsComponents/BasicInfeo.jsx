@@ -4,7 +4,9 @@ import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 import Seo from "./tags";
-
+import ShippingInfo from "./ShippingInfo";
+import TextEditor from "@/components/TextEditor";
+import { produce } from "immer";
 export const BasicData = ({
   submitedData = {},
   formData = {},
@@ -19,7 +21,14 @@ export const BasicData = ({
       },
     }));
   };
-  console.log(submitedData,'submitedDatasubmitedDatasubmitedData');
+
+  const updateDetails  = (e) => {
+    setSubmitedData(produce((prev) => {
+      prev.description = e
+    }))
+  };
+
+ 
   const {
     errors,
     register,
@@ -30,6 +39,9 @@ export const BasicData = ({
     clearErrors,
     isSubmitting
   } = formData;
+
+  console.log(submitedData);
+ 
   return (
     <div
       className="gap-5
@@ -69,7 +81,7 @@ export const BasicData = ({
       /> */}
      </div>
      
-      <DraftEditor
+      {/* <DraftEditor
         field="Product Description "
         edit={false}
         register={{ ...register("description_en") }}
@@ -83,7 +95,9 @@ export const BasicData = ({
         onChange={UdateBasicInfo}
         setSubmitedData={setSubmitedData}
         isSubmitted={isSubmitting}
-      />
+      /> */}
+    <h3>Product Description</h3>
+          <TextEditor content={submitedData?.productDetails?.description_en} setContent={updateDetails } /> 
       {/* <DraftEditor
         field="Product Description in Arabic"
         edit={false}
@@ -99,14 +113,11 @@ export const BasicData = ({
         setSubmitedData={setSubmitedData}
         isSubmitted={isSubmitting}
       /> */}
-      <SubCategoriesSelect
-        submitedData={submitedData}
-        register={register}
-        error={errors}
-      /> 
+   
 </div>
-      <Inventory submitedData={submitedData} register={register} />{" "}
-      <Pricing submitedData={submitedData} register={register} />
+      <Inventory errors={errors} submitedData={submitedData} register={register} />{" "}
+      <Pricing submitedData={submitedData} setSubmitedData={setSubmitedData}/>
+      <ShippingInfo submitedData={submitedData} setSubmitedData={setSubmitedData} /> 
       <Seo />{" "}
 
     </div>

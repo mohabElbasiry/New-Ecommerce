@@ -1,6 +1,6 @@
 import { TooltipF } from "@/components/ToolTipCostom";
 import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
-import { memo, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
 import { isEqual } from "lodash";
 import { produce } from "immer";
@@ -11,7 +11,6 @@ const VarientKey = ({
   minPrice = 0,
   maxPrice = 0,
   TotalQuantity = 0,
-  setData,
   itemIndex = -1,
   selectedArray = [],
   setChecked,
@@ -22,19 +21,33 @@ const VarientKey = ({
   const SelectedItems = useMemo(() => {
     return selectedArray?.map((_, idx) => idx);
   }, [selectedArray]);
+  const memoizedCheckedArray = useMemo(() => checkedArray, [checkedArray]);
+
+  const checked = useCallback(
+    (name) => {
+      console.log('executed')
+      const checkedElements = new Map();
+      if (checkedArray?.length) {
+        checkedArray?.forEach((item) => {
+          checkedElements.set(item?.key, item);
+        });
+        const checked = checkedElements.get(name);
+        if (checked) {
+          return true;
+        }
+        return false;
+      }
+      return false;
+    },
+    [memoizedCheckedArray]
+  );
   return (
     <AccordionTrigger className="flex   items-center w-full justify-between  border-[#ddd] border-b text-sm">
       <div className="flex items-center gap-3">
         <input
           type="checkbox"
           name={name}
-          checked={
-            checkedArray?.length
-              ? checkedArray.find((item) => item?.key === name)
-                ? true
-                : false
-              : false
-          }
+          checked={checked(name)}
           onClick={(e) => e.stopPropagation()}
           onChange={(e) => {
             const checked = e.target.checked;
@@ -76,6 +89,13 @@ const VarientKey = ({
                 if (!isNaN(e?.target?.value)) {
                   setVarients(
                     produce((draft) => {
+                      console.log(
+                        updatePropertyParent(
+                          draft?.productvaritions.varitionsValues,
+                          itemIndex,
+                          e.target.value
+                        )
+                      );
                       draft.productvaritions.varitionsValues =
                         updatePropertyParent(
                           draft?.productvaritions.varitionsValues,
@@ -97,7 +117,7 @@ const VarientKey = ({
             onClick={(e) => {
               e.stopPropagation();
             }}
-            disabled
+            // disabled
             className="p-3 bg-[#eee] rounded-md py-2 text-center
            max-w-[150px] mr-6"
           />

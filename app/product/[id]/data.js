@@ -7,7 +7,7 @@ export const data = {
     "Price",
     "InventoryQuantity",
     "Color",
-    ,
+   
     "Size",
     "Length",
     "Images",

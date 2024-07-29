@@ -16,6 +16,7 @@ import DrawerComponent from "@/components/GlobalUi/Drawer/index.jsx";
 import VariantDetails from "@/components/VariantDetails/index.jsx";
 import { dataVariants } from "@/app/product/[id]/data.js";
 import { reorderArray } from "./functions/reorderArray.js";
+import { applyFilters } from "./functions/ApplayFilters.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -23,12 +24,12 @@ const CollapseView = ({
 
   setVarients = () => {},
 }) => {
-  console.log("rerendertheState");
   const [checkedArray, setChecked] = useState([]);
-  const [collapsible, setCollapsible] = useState(false);
   const [data, setData] = useState({ data: [] });
-  const [open, setOpen] = useState(false);
+
   const [Filters, setFilters] = useState({
+    search: "",
+
     FilterValues: [],
     GroupBy: {
       key: "",
@@ -39,49 +40,108 @@ const CollapseView = ({
       sortKey: "",
     },
   });
-  const findSimilarItems = useMemo(() => {
-    console.log(data,'dsaaaaaaaaaaaaaa')
-    if (!open && !checkedArray?.length) {
-      return [];
-    } else {
-      return checkedArray
-        .map((selected) => {
-          const dataItem = varitionsValues.find(
-            (item) => item.key === selected.key
-          );
-          if (dataItem) {
-            const matchedValues = selected.SelectedItems.map(
-              (index) => dataItem.values[index]
-            ).filter((value) => value !== undefined);
-            return { key: selected.key, values: matchedValues };
-          } else {
-            return { key: selected.key, values: [] };
-          }
-        })
-        .filter((item) => item?.key && item?.values?.length);
-    }
-  }, [checkedArray, varitionsValues, open]);
 
-  useEffect(() => {
-    if (varitions?.length) {
+  useMemo(() => {
+    setFilters(
+      produce((draft) => {
+        draft.FilterValues = [];
+        draft.GroupBy.key =
+          REfvariants?.length > 1 ? REfvariants[0]?.key_en : "";
+      })
+    );
+    setChecked([])
+  }, [REfvariants]);
+  function sortItemsByQuantity(items, order = "asc", property) {
+    let Sorteditems = [];
+    if (order === "asc") {
+      Sorteditems = items.map((item) => {
+        const values = item?.values.sort((a, b) => {
+          return +a[property] - +b[property];
+        });
+        return {
+          ...item,
+          values,
+        };
+      });
+    } else if (order === "desc") {
+      Sorteditems = items?.map((item) => {
+        const values = item?.values?.sort(
+          (a, b) => +b[property] - +a[property]
+        );
+        return {
+          ...item,
+          values,
+        };
+      });
+    } else {
+      Sorteditems = items.map((item) => {
+        item.values.sort((a, b) => {
+          if (order === "asc") {
+            return a[property] > b[property] ? 1 : -1;
+          } else if (order === "desc") {
+            return a[property] < b[property] ? 1 : -1;
+          }
+        });
+        return item;
+      });
+    }
+
+    return [...Sorteditems];
+  }
+  useMemo(() => {
+    if (varitionsValues?.length) {
       setData(
         produce((draft) => {
-          if (Filters?.GroupBy?.reorderArray?.length) {
-            draft.data = shapeData(
+          let Editeddata = varitionsValues;
+          if (Filters?.GroupBy?.key !== "") {
+            console.log(Filters?.GroupBy?.key, "dasssssssssssse");
+            Editeddata = shapeData(
               generateQualities(
                 varitionsValues?.flatMap((item) => item?.values),
                 reorderArray(varitions, Filters?.GroupBy?.key) || []
               ),
               reorderArray(varitions, Filters?.GroupBy?.key) || []
             );
-            console.log(Filters?.GroupBy?.reorderArray, "adsdas");
-            return;
+
+            console.log("Executed");
           }
-          draft.data = varitionsValues;
+          if (Filters?.FilterValues?.length) {
+            Editeddata = applyFilters(Editeddata, Filters);
+          }
+          if (Filters?.search !== "") {
+            Editeddata = Editeddata?.map((item) => {
+              const values = item?.values?.filter((item) => {
+                return item?.options?.some(
+                  (itemO) =>
+                    itemO?.val?.includes(Filters?.search) ||
+                    itemO?.key_en?.includes(Filters?.search) ||
+                    itemO?.value_en?.includes(Filters?.search)
+                );
+              });
+
+              return { ...item, values };
+            }).filter((item) => item?.values?.length);
+          }
+          if (Filters?.sortBy?.sortKey !== "") {
+            Editeddata = sortItemsByQuantity(
+              Editeddata,
+              Filters?.sortBy?.sortMethod,
+              Filters?.sortBy?.sortKey
+            );
+          }
+
+          draft.data = Editeddata;
+        })
+      );
+    } else {
+      setData(
+        produce((draft) => {
+          draft.data = [];
         })
       );
     }
   }, [varitionsValues, Filters]);
+
   const MinAndMax = (values) => {
     const price = values.map((value) => {
       return +value.price;
@@ -98,27 +158,9 @@ const CollapseView = ({
     },
     [varitionsValues]
   );
-  // useMemo(() => {
-  //   setVarients(
-  //     produce((draft) => {
-  //       draft.productvaritions.varitionsValues = varitionsValues.map((item) => {
-  //         const prices = item?.values.map((value) => parseFloat(value.price));
-  //         const quantity = item?.values?.reduce(
-  //           (acc, item) => (acc += +item?.quantity),
-  //           0
-  //         );
-  //         return {
-  //           ...item,
-  //           min_price: Math.min(...prices),
-  //           max_price: Math.max(...prices),
-  //           quantity,
-  //         };
-  //       });
-  //     })
-  //   );
-  // }, [varitionsValues]);
+
   return (
-    <div className="   box p-3 ">
+    <div className="     p-3 ">
       <FilterHeader
         varitions={REfvariants}
         setChecked={setChecked}
@@ -127,15 +169,10 @@ const CollapseView = ({
         varietnsValues={varitionsValues}
         setVarients={setVarients}
         setFilters={setFilters}
+        Filters={Filters}
       />
 
-      <p onClick={() => setOpen(!open)}>open</p>
-
-      <Accordion
-        type="multiple"
-        collapsible
-        onValueChange={() => setCollapsible(!collapsible)}
-      >
+      <Accordion type="multiple" collapsible>
         {data?.data?.map((item, idx) => {
           return (
             <AccordionItem key={item?.key} value={item?.key}>
@@ -153,7 +190,6 @@ const CollapseView = ({
                 checkedArray={checkedArray}
                 parent={item?.parent}
               />
-
               {item?.values?.length >= 1 ? (
                 <>
                   {item?.values?.map((valueItem, idx) => {
@@ -175,12 +211,6 @@ const CollapseView = ({
           );
         })}
       </Accordion>
-      <DrawerComponent open={open} setOpen={setOpen}>
-        <VariantDetails
-          data={dataVariants.product.variants}
-          similarItems={findSimilarItems}
-        />
-      </DrawerComponent>
     </div>
   );
 };
