@@ -315,19 +315,27 @@ export const data = {
   ],
   customHeader: { InventoryQuantity: () => <span>Inventory Quantity</span> },
   customColumn: {
-    theFirst: {
-      nameOrKey_1: ({ item }) => <div>{item ? item : "nameOrKey_1"}</div>,
-      nameOrKey_2: ({ item }) => <div>{item ? item : "nameOrKey_12"}</div>,
-    },
+    theFirst: [
+      {name: 'name Or Key_1',
+        key:"nameOrKeyFirst_1",
+        value: ({ item }) => <div>{item ? item : "nameOrKey_1"}</div>,},
+      {name: 'name Or Key_2',
+        key:"nameOrKeyFirst_2",
+        value: ({ item }) => <div>{item ? item : "nameOrKey_12"}</div>},
+    ],
     Images: ({ item }) => (
       <div className="w-full flex justify-center">
         <Image src={`/logo.png`} alt={item} width={50} height={50} />
       </div>
     ),
-    theLast: {
-      nameOrKey_1: ({ item }) => <div>{item ? item : "nameOrKey_1"}</div>,
-      nameOrKey_2: ({ item }) => <div>{item ? item : "nameOrKey_12"}</div>,
-    },
+    theLast:  [
+      {name: 'name Or Key_1',
+        key:"nameOrKeyLast_1",
+        value: ({ item }) => <div>{item ? item : "nameOrKey_1"}</div>,},
+      {name: 'name Or Key_2',
+        key:"nameOrKeyLast_2",
+        value: ({ item }) => <div>{item ? item : "nameOrKey_12"}</div>},
+    ],
   },
   customRow: ({ itemRow }) =>
     typeof itemRow === "object" && Object.values(itemRow)?.length > 0
