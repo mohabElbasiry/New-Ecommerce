@@ -40,7 +40,9 @@ export function shapeData(combinedTexts, variants) {
           margin: valueItem?.margin || 0,
           color: valueItem?.color || "",
           itemIndex: valueItem?.itemIndex,
-          weight: valueItem?.weight||''
+          weight: valueItem?.weight||'',
+          deleted: valueItem.deleted || false,
+
         });
       }
     });

@@ -189,7 +189,7 @@ const CollapseView = ({
                 checkedArray={checkedArray}
                 parent={item?.parent}
               />
-              {item?.values?.length >= 1 ? (
+              {item?.values?.length >  1 ? (
                 <>
                   {item?.values?.map((valueItem, idx) => {
                     return (
