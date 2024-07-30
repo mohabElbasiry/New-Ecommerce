@@ -1,8 +1,5 @@
 import { AccordionContent } from "@/components/ui/accordion";
-import { SelectedArrayCheckBox } from "../../variationTables/Update/selectedArray";
 import { UpdateQualityImages } from "../../variationTables/Update/updateImages";
-import { InputWithLabelComponent } from "@/components/inputcomponent";
-import { UpdateFeildActionFunction } from "../../variationTables/Update/updateFields.js";
 import { TooltipF } from "@/components/ToolTipCostom";
 import {
   createIndexMap,
@@ -10,6 +7,7 @@ import {
 } from "../functions/updatePropertyBasedOnChild";
 import { memo, useCallback } from "react";
 import { produce } from "immer";
+import { DeletedVarient } from "./DeletedVarient";
 const VarientValues = ({
   itemValue = {},
   idx = -1,
@@ -20,6 +18,7 @@ const VarientValues = ({
   parentname,
   setVarients = () => {},
 }) => {
+  console.log("rerender", "asdddddddddddddddddd");
   const checked = (() => {
     const checkedItem = checkedArray?.length
       ? checkedArray?.find((item) => item?.key === parentname)
@@ -91,106 +90,117 @@ const VarientValues = ({
   );
   return (
     <>
-      {itemValue?.values?.length > 1 ? (
+      {itemValue?.values?.length >= 1 ? (
         <AccordionContent key={itemValue?.itemIndex}>
-          <div
-            className={`flex items-center justify-between pl-3 py-3 
+          {itemValue?.deleted ? (
+            <>
+              <DeletedVarient
+                valueItem={itemValue}
+                setVarients={setVarients}
+                idx={itemValue?.itemIndex}
+                parentname={parentname}
+              />
+            </>
+          ) : (
+            <div
+              className={`flex items-center justify-between pl-3 py-3 
         border-[#ddd]  mt-1 ${
           checked ? "bg-[#eeeeee9d]" : "bg-[white]"
         } rounded-xl `}
-          >
-            <div className="flex items-center gap-3  ">
-              <input
-                type="checkbox"
-                checked={checked}
-                onChange={HandleChange}
-              />
-              <UpdateQualityImages
-                // setAutoGenerate={setAutoGenerate}
-                // setBeforeFiltered={setBeforeFiltered}
-                index={idx}
-                item={itemValue}
-              />
-            </div>
-            <div>
-              <p> {itemValue?.val}</p>
-            </div>
-            <div className="flex gap-1 items-center  mx-2 ">
-              <TooltipF text={`Change price`}>
-                <div className="border flex items-center text-sm pl-1 rounded-xl">
-                  <p>EGP</p>
-                  <input
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                    value={itemValue?.price}
-                    type="text"
-                    className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
-                    onChange={(e) => {
-                      if (!isNaN(e?.target?.value)) {
-                        setVarients(
-                          produce((draft) => {
-                            const indexMap = createIndexMap(
-                              draft.productvaritions.varitionsValues
-                            );
-                            const updatedPrice = updatePropertyChild(
-                              draft.productvaritions.varitionsValues,
-                              parentIndex,
-                              itemValue?.itemIndex,
-                              "price",
-                              e.target.value,
-                              indexMap
-                            );
-                            draft.productvaritions.varitionsValues =
-                              updatedPrice;
-                          })
-                        );
-                      }
-                      return;
-                    }}
-                  />
-                </div>
-              </TooltipF>
+            >
+              <div className="flex items-center gap-3  ">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={HandleChange}
+                />
+                <UpdateQualityImages
+                  // setAutoGenerate={setAutoGenerate}
+                  // setBeforeFiltered={setBeforeFiltered}
+                  index={idx}
+                  item={itemValue}
+                />
+              </div>
+              <div>
+                <p> {itemValue?.val}</p>
+              </div>
+              <div className="flex gap-1 items-center  mx-2 ">
+                <TooltipF text={`Change price`}>
+                  <div className="border flex items-center text-sm pl-1 rounded-xl">
+                    <p>EGP</p>
+                    <input
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      value={itemValue?.price}
+                      type="text"
+                      className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
+                      onChange={(e) => {
+                        if (!isNaN(e?.target?.value)) {
+                          setVarients(
+                            produce((draft) => {
+                              const indexMap = createIndexMap(
+                                draft.productvaritions.varitionsValues
+                              );
+                              const updatedPrice = updatePropertyChild(
+                                draft.productvaritions.varitionsValues,
+                                parentIndex,
+                                itemValue?.itemIndex,
+                                "price",
+                                e.target.value,
+                                indexMap
+                              );
+                              draft.productvaritions.varitionsValues =
+                                updatedPrice;
+                            })
+                          );
+                        }
+                        return;
+                      }}
+                    />
+                  </div>
+                </TooltipF>
 
-              <TooltipF text={`Change Quantity`}>
-                <div className="border flex items-center pl-1 rounded-xl">
-                  <input
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                    value={itemValue?.quantity}
-                    type="text"
-                    className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
-                    onChange={(e) => {
-                      if (!isNaN(e?.target?.value)) {
-                        setVarients(
-                          produce((draft) => {
-                            const indexMap = createIndexMap(
-                              draft.productvaritions.varitionsValues
-                            );
-                            const updatedPrice = updatePropertyChild(
-                              draft.productvaritions.varitionsValues,
-                              parentIndex,
-                              itemValue?.itemIndex,
-                              "quantity",
-                              e.target.value,
-                              indexMap
-                            );
-                            draft.productvaritions.varitionsValues =
-                              updatedPrice;
-                          })
-                        );
-                      }
-                      return;
-                    }}
-                  />
-                </div>
-              </TooltipF>
+                <TooltipF text={`Change Quantity`}>
+                  <div className="border flex items-center pl-1 rounded-xl">
+                    <input
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      value={itemValue?.quantity}
+                      type="text"
+                      className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
+                      onChange={(e) => {
+                        if (!isNaN(e?.target?.value)) {
+                          setVarients(
+                            produce((draft) => {
+                              const indexMap = createIndexMap(
+                                draft.productvaritions.varitionsValues
+                              );
+                              const updatedPrice = updatePropertyChild(
+                                draft.productvaritions.varitionsValues,
+                                parentIndex,
+                                itemValue?.itemIndex,
+                                "quantity",
+                                e.target.value,
+                                indexMap
+                              );
+                              draft.productvaritions.varitionsValues =
+                                updatedPrice;
+                            })
+                          );
+                        }
+                        return;
+                      }}
+                    />
+                  </div>
+                </TooltipF>
+              </div>
             </div>
-          </div>
+          )}
         </AccordionContent>
       ) : null}
     </>
   );
 };
-export default memo(VarientValues);
+export default VarientValues;

@@ -19,7 +19,6 @@ const Actions = ({
   setVarients = () => {},
 }) => {
   const [BulkArray, setBulkArray] = useState(BulkEditArray);
-  console.log(varitionsValues, "varitionsValuesdsaaaaaaaaaaaaaaaaaaaa");
   useEffect(() => {
     if (varitionsValues?.length && checkedArray?.length) {
       const checkedMap = new Map(checkedArray.map((item) => [item.key, item]));
@@ -161,6 +160,15 @@ const Actions = ({
       );
     }
     if (actionType === "delete") {
+      // if (item?.values?.length === 1) {
+      //   const values = item?.values?.map((itemv, idx) => {
+      //     const value = Checked?.SelectedItems?.includes(idx);
+      //     if(value){
+
+      //     }
+
+      //   });
+      // }
       if (action === "Delete Varients") {
         console.log("object");
         setVarients(
@@ -168,33 +176,67 @@ const Actions = ({
             const checkedMap = new Map(
               checkedArray.map((item) => [item.key, item])
             );
-
-            console.log(draft.productvaritions.varitionsValues);
-            const UpdateDeleteVarient =
-              draft.productvaritions.varitionsValues.map((item) => {
+            draft.productvaritions.varitionsValues.forEach(
+              (item, itemIndex) => {
                 const Checked = checkedMap.get(item?.key);
                 if (Checked) {
-                  const values = item?.values?.map((itemv, idx) => {
+                  item.values.forEach((itemv, idx) => {
                     const value = Checked?.SelectedItems?.includes(idx);
-                     if (value) {
-                      return {
+                    if (value) {
+                      item.values[idx] = {
                         ...itemv,
                         deleted: true,
                       };
+
+                      if (item.values?.length === 1) {
+                        console.log(item.values[idx], "adsssssssssss");
+
+                        draft.productvaritions.variants =
+                          draft.productvaritions.variants.filter(
+                            (itemvarient) => {
+                              
+                              return itemvarient;
+                              return item.values[idx]?.options?.every(
+                                (itemF) => {
+                                  itemF?.value_en !== itemvarient?.value_en;
+                                }
+                              );
+
+                              // return item?.key_en!== item.values[idx]?.values?.[0]?.key_en
+                            }
+                          );
+                      }
                     }
-
-                    return {...itemv,'hello':'hello'};
                   });
-
-                  return {
-                    ...item,
-                    values,
-                  };
                 }
-                return item;
-              });
-              console.log(UpdateDeleteVarient,'UpdateDeleteVarient')
-              draft.productvaritions.varitionsValues = UpdateDeleteVarient;
+              }
+            );
+
+            //   const UpdateDeleteVarient =
+            //     draft.productvaritions.varitionsValues.map((item) => {
+            //       const Checked = checkedMap.get(item?.key);
+            //       if (Checked) {
+            //         const values = item?.values?.map((itemv, idx) => {
+            //           const value = Checked?.SelectedItems?.includes(idx);
+            //           if (value) {
+            //             return {
+            //               ...itemv,
+            //               deleted: true,
+            //             };
+            //           }
+
+            //           return itemv;
+            //         });
+
+            //         return {
+            //           ...item,
+            //           values,
+            //         };
+            //       }
+            //       return item;
+            //     });
+            //   console.log(UpdateDeleteVarient, "UpdateDeleteVarient");
+            //   // draft.productvaritions.varitionsValues = UpdateDeleteVarient;
           })
         );
       }
@@ -205,10 +247,9 @@ const Actions = ({
       SetPropertyValues(property, value);
     }
   };
-
+  console.log(varitionsValues, "varitionsValuesMohab");
   return (
     <>
-      {console.log(varitionsValues, "dasasasasasasasasasasasasasasasasasas")}{" "}
       {openModal?.selectedVarients?.length ? (
         <MultibleValues
           action={openModal?.action}
