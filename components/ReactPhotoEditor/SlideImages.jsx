@@ -3,7 +3,7 @@ import React, { memo } from "react";
 
 function SlideImages({ selectedFiles, setFileData }) {
   return (
-    <div className="mt-4 flex gap-4 bg-[#fafafa] shadow border p-5 rounded-lg">
+    <div className="mt-4 flex gap-4 bg-[#fafafa] shadow border p-5 rounded-lg overflow-x-auto">
       {selectedFiles.map((file, index) => (
         <div className="" key={index}>
           <div
