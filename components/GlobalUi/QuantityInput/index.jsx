@@ -18,7 +18,7 @@ const QuantityInput = ({ initialQuantity = 1, onQuantityChange }) => {
   };
 
   return (
-    <div className="flex items-center border rounded  shadow h-10 p-0.5  max-w-[90%] ">
+    <div className="flex items-center border rounded  shadow h-10 p-0.5  !w-auto "   style={{ maxWidth: 'min(calc(100% - 50px), 10rem'}}>
       <button
         className="p-2 text-gray-600 hover:bg-gray-200 focus:outline-none w-6"
         onClick={handleDecrement}
@@ -28,9 +28,10 @@ const QuantityInput = ({ initialQuantity = 1, onQuantityChange }) => {
       </button>
       <input
         type="number"
-        className="flex-1 h-full w-auto text-center border-l border-r focus:outline-none !max-w-[calc(100%-50px)] "
+        className="flex-1 h-full w-auto text-center border-l border-r focus:outline-none"
         value={quantity}
         readOnly
+        style={{ maxWidth: 'min(calc(100% - 50px), 8rem'}}
         aria-label="Quantity"
       />
       <button

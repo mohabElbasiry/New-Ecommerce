@@ -8,7 +8,7 @@ export default function SliderProducts() {
     opts={{
       align: "start",
     }}
-    className="w-full "
+    className="w-[35rem]"
   >
     <CarouselContent>
       {Array.from({ length: 5 }).map((_, index) => (

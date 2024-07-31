@@ -7,7 +7,7 @@ import QuantityInput from "@/components/GlobalUi/QuantityInput";
 import Actions from "./components/Actions";
 import SliderProducts from "./components/SliderProducts";
 
-export default function EditProductPage({ searchParams }) {
+export default function ProductDetailsPage({ searchParams }) {
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantityChange = (newQuantity) => {
@@ -15,12 +15,12 @@ export default function EditProductPage({ searchParams }) {
   };
 
   return (
-    <div className="bg-white shadow w-full sm:w-3/4 lg:w-1/2 mx-auto p-4 grid gap-6 rounded-md">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="sm:col-span-2">
+    <div className="bg-white shadow   max-w-2xl mx-auto p-4 grid gap-6 rounded-md">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="md:col-span-2">
           <ImagesComponent />
         </div>
-        <div className="flex flex-col py-8 gap-5 sm:col-span-1 relative">
+        <div className="grid py-8 gap-5 md:col-span-1 relative">
           <div>
             <h2>
               <strong>{"product name"}</strong>
@@ -33,12 +33,13 @@ export default function EditProductPage({ searchParams }) {
             product={dataVariants.product}
             searchParams={searchParams}
           />
-          <div className="w-full relative grid">
+          <div className="flex">
             <QuantityInput
               initialQuantity={quantity}
               onQuantityChange={handleQuantityChange}
             />
           </div>
+
           <div className="flex flex-col gap-5">
             <s>00.00 SAR</s>
             <strong>00.00 SAR</strong>
@@ -67,7 +68,7 @@ export default function EditProductPage({ searchParams }) {
         <h1 className="text-2xl text-center font-semibold">
           customer also bought
         </h1>
-        <div className="flex max-w-2xl">
+        <div className="flex justify-center items-center">
           <SliderProducts />
         </div>
       </div>
