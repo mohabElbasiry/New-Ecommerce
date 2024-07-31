@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import ProductContainer from "./components/productContainer";
-import DynamicTable from "./components/DynamicTable";
+import DynamicTable from "../../../components/GlobalUi/DynamicTable";
 import { data, dataVariants, variants } from "./data";
 import { generateQualities, shapeData } from "./functions/fun";
 
