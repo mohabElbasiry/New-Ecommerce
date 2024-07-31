@@ -1,6 +1,8 @@
 // export function generateQualities(prev, attributes,changeShapeData,callback) {
 //     const qualities = [];
 
+import { uid } from "uid";
+
 //     function generateCombinations(currentCombination, depth) {
 //       if (depth === attributes.length) {
 //         qualities.push({
@@ -46,6 +48,8 @@
 //     return AdjustArray;
 //   }
 export function generateQualities(prev, attributes) {
+  console.log(prev,'prevprevprevprevprevprev');
+
   const qualities = [];
 
   function generateCombinations(currentCombination, depth) {
@@ -73,6 +77,7 @@ export function generateQualities(prev, attributes) {
     }
 
     attributes[depth].values.forEach((value) => {
+      console.log(value,'valuevaluevaluevaluevaluevaluevaluevaluevalue');
       const newCombination = currentCombination.slice();
       newCombination.push({
         key_en: attributes[depth].key_en,
@@ -80,6 +85,7 @@ export function generateQualities(prev, attributes) {
         value_en: value.value_en,
         value_ar: value.value_ar,
         color: value.color,
+        id:value.id||uid()
       });
       generateCombinations(newCombination, depth + 1);
     });

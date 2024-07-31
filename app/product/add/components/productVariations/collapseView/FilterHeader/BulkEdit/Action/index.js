@@ -17,7 +17,11 @@ const Actions = ({
   checkedArray = [],
   varitionsValues = [],
   setVarients = () => {},
+  variants,
 }) => {
+  console.log(varitionsValues, "varitionsValues");
+  const [openModal, setOpenModal] = useState(defaultValues);
+
   const [BulkArray, setBulkArray] = useState(BulkEditArray);
   useEffect(() => {
     if (varitionsValues?.length && checkedArray?.length) {
@@ -84,10 +88,10 @@ const Actions = ({
           });
         }
       });
+      console.log(varitionsValues, "varitionsValuesvaritionsValues");
     }
   }, [varitionsValues, checkedArray]);
 
-  const [openModal, setOpenModal] = useState(defaultValues);
   const [action, setAction] = useState("");
   const SetPropertyValues = (property, value) => {
     setVarients(
@@ -170,73 +174,111 @@ const Actions = ({
       //   });
       // }
       if (action === "Delete Varients") {
-        console.log("object");
+        // if(openModal?.action==="delete"){
+        //   setVarients(
+        //     produce((draft) => {
+        //       const activeVariantsMap = new Map();
+        //       varitionsValues.forEach((item) => {
+        //         item.values.forEach((variant) => {
+        //           if (!variant.deleted) {
+        //             variant.values.forEach((v) => {
+        //               if (!activeVariantsMap.has(v.key_en)) {
+        //                 activeVariantsMap.set(v.key_en, new Set());
+        //               }
+        //               activeVariantsMap.get(v.key_en).add(v.value_en);
+        //             });
+        //           }
+        //         });
+        //       });
+        //       const updatedOptions = variants
+        //         .map((option) => {
+        //           const activeValues =
+        //             activeVariantsMap.get(option.key_en) || new Set();
+        //           return {
+        //             ...option,
+        //             values: option.values.filter((value) =>
+        //               activeValues.has(value.value_en)
+        //             ),
+        //           };
+        //         })
+        //         .filter((item) => item?.values.length);
+
+        //       console.log(updatedOptions, "updatedOptions");
+        //       draft.productvaritions.variants = updatedOptions;
+        //       // draft.productvaritions.REfvariants = updatedOptions;
+        //     })
+        //   );
+        // }
         setVarients(
           produce((draft) => {
             const checkedMap = new Map(
               checkedArray.map((item) => [item.key, item])
             );
-            draft.productvaritions.varitionsValues.forEach(
-              (item, itemIndex) => {
-                const Checked = checkedMap.get(item?.key);
-                if (Checked) {
-                  item.values.forEach((itemv, idx) => {
-                    const value = Checked?.SelectedItems?.includes(idx);
-                    if (value) {
-                      item.values[idx] = {
-                        ...itemv,
-                        deleted: true,
-                      };
 
-                      if (item.values?.length === 1) {
-                        console.log(item.values[idx], "adsssssssssss");
-
-                        draft.productvaritions.variants =
-                          draft.productvaritions.variants.filter(
-                            (itemvarient) => {
-                              
-                              return itemvarient;
-                              return item.values[idx]?.options?.every(
-                                (itemF) => {
-                                  itemF?.value_en !== itemvarient?.value_en;
-                                }
-                              );
-
-                              // return item?.key_en!== item.values[idx]?.values?.[0]?.key_en
-                            }
-                          );
+            const updatedValuesAfterDelete =
+              draft.productvaritions.varitionsValues
+                .map((item) => {
+                  const Checked = checkedMap.get(item?.key);
+                  if (Checked) {
+                    const values = item?.values?.map((itemv, idx) => {
+                      const value = Checked?.SelectedItems?.includes(idx);
+                      if (value) {
+                        return {
+                          ...itemv,
+                          deleted: true,
+                        };
                       }
+
+                      return itemv;
+                    });
+
+                    return {
+                      ...item,
+                      values,
+                    };
+                  }
+                  return item;
+                })
+                .filter((item) => {
+                  if (item?.values?.length === 1) {
+                    return item?.values.some((item) => !item?.deleted);
+                  }
+
+                  return !item.values.every((variant) => variant.deleted);
+                });
+            draft.productvaritions.varitionsValues = updatedValuesAfterDelete;
+
+            const activeVariantsMap = new Map();
+
+            // Populate the activeVariantsMap with non-deleted variants
+            updatedValuesAfterDelete.forEach((item) => {
+              item.values.forEach((variant) => {
+                if (!variant.deleted) {
+                  variant.values.forEach((v) => {
+                    if (!activeVariantsMap.has(v.key_en)) {
+                      activeVariantsMap.set(v.key_en, new Set());
                     }
+                    activeVariantsMap.get(v.key_en).add(v.value_en);
                   });
                 }
-              }
-            );
+              });
+            });
 
-            //   const UpdateDeleteVarient =
-            //     draft.productvaritions.varitionsValues.map((item) => {
-            //       const Checked = checkedMap.get(item?.key);
-            //       if (Checked) {
-            //         const values = item?.values?.map((itemv, idx) => {
-            //           const value = Checked?.SelectedItems?.includes(idx);
-            //           if (value) {
-            //             return {
-            //               ...itemv,
-            //               deleted: true,
-            //             };
-            //           }
+            const updatedOptions = draft.productvaritions.variants
+              .map((option) => {
+                const activeValues =
+                  activeVariantsMap.get(option.key_en) || new Set();
+                return {
+                  ...option,
+                  values: option.values.filter((value) =>
+                    activeValues.has(value.value_en)
+                  ),
+                };
+              })
+              .filter((item) => item?.values.length);
 
-            //           return itemv;
-            //         });
-
-            //         return {
-            //           ...item,
-            //           values,
-            //         };
-            //       }
-            //       return item;
-            //     });
-            //   console.log(UpdateDeleteVarient, "UpdateDeleteVarient");
-            //   // draft.productvaritions.varitionsValues = UpdateDeleteVarient;
+            draft.productvaritions.variants = updatedOptions;
+            draft.productvaritions.REfvariants = updatedOptions;
           })
         );
       }
@@ -247,7 +289,24 @@ const Actions = ({
       SetPropertyValues(property, value);
     }
   };
-  console.log(varitionsValues, "varitionsValuesMohab");
+
+  // varients
+
+  // Function to mark a variant as deleted
+  // const deleteVariant = (variantIndex) => {
+  //   const updatedVariants = variants.map((variant) => {
+  //     if (variant.itemIndex === variantIndex) {
+  //       return { ...variant, deleted: true };
+  //     }
+  //     return variant;
+  //   });
+
+  //   setVariants(updatedVariants);
+  // };
+
+  // Dynamically update options based on current variants
+
+  // varients
   return (
     <>
       {openModal?.selectedVarients?.length ? (

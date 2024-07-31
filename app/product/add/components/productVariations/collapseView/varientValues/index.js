@@ -18,8 +18,7 @@ const VarientValues = ({
   parentname,
   setVarients = () => {},
 }) => {
-  console.log("rerender", "asdddddddddddddddddd");
-  const checked = (() => {
+   const checked = (() => {
     const checkedItem = checkedArray?.length
       ? checkedArray?.find((item) => item?.key === parentname)
       : null;
@@ -92,6 +91,9 @@ const VarientValues = ({
     <>
       {itemValue?.values?.length >= 1 ? (
         <AccordionContent key={itemValue?.itemIndex}>
+          {
+            console.log(itemValue?.deleted,itemValue ,'itemValue?.deleted ')
+          }
           {itemValue?.deleted ? (
             <>
               <DeletedVarient

@@ -1,9 +1,12 @@
+import { uid } from "uid";
+
 export function shapeData(combinedTexts, variants) {
   let data = [];
 
   variants[0].values.forEach((valueGroup, idx) => {
     let obj = {
       key: valueGroup.value_en,
+      id:valueGroup.id||uid(),
       itemIndex: idx + 1,
       quantity: 0,
       min_price: 0,
@@ -24,6 +27,7 @@ export function shapeData(combinedTexts, variants) {
         });
 
         obj.values.push({
+          ...valueItem,
           itemIndex: `${idx + 1}${indx + 1}`,
           val: str.trim(),
           options: valueItem?.values || [],
@@ -42,6 +46,8 @@ export function shapeData(combinedTexts, variants) {
           itemIndex: valueItem?.itemIndex,
           weight: valueItem?.weight||'',
           deleted: valueItem.deleted || false,
+          id:valueItem.id || uid(),
+
 
         });
       }

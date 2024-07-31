@@ -27,6 +27,7 @@ export const BulkEditView = ({
         checkedArray={checkedArray}
         varitionsValues={data}
         setVarients={setVarients}
+        variants={variants}
       />
     </div>
   );

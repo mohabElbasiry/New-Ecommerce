@@ -2,11 +2,11 @@ import { AccordionContent } from "@/components/ui/accordion";
 import { produce } from "immer";
 
 export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
-  console.log("objectdssasssssssssss", parentname, setVarients);
-  const Undo = () => {
+  console.log('object');
+   const Undo = () => {
     setVarients(
       produce((draft) => {
-        draft.productvaritions.varitionsValues =
+        const updatedValuesAfterDelete =
           draft.productvaritions.varitionsValues.map((item) => {
             if (item?.key === parentname) {
               const values = item?.values.map((itemv) => {
@@ -23,6 +23,36 @@ export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
             }
             return item;
           });
+        draft.productvaritions.varitionsValues = updatedValuesAfterDelete;
+        const activeVariantsMap = new Map();
+        updatedValuesAfterDelete.forEach((item) => {
+          item.values.forEach((variant) => {
+            if (!variant.deleted) {
+              variant.values.forEach((v) => {
+                if (!activeVariantsMap.has(v.key_en)) {
+                  activeVariantsMap.set(v.key_en, new Set());
+                }
+                activeVariantsMap.get(v.key_en).add(v.value_en);
+              });
+            }
+          });
+        });
+
+        const updatedOptions = draft.productvaritions.variants
+          .map((option) => {
+            const activeValues =
+              activeVariantsMap.get(option.key_en) || new Set();
+            return {
+              ...option,
+              values: option.values.filter((value) =>
+                activeValues.has(value.value_en)
+              ),
+            };
+          })
+          .filter((item) => item?.values.length);
+
+        draft.productvaritions.variants = updatedOptions;
+        draft.productvaritions.REfvariants = updatedOptions;
       })
     );
   };

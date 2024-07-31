@@ -24,6 +24,7 @@ const CollapseView = ({
 
   setVarients = () => {},
 }) => {
+  console.log(varitionsValues,'varitionsvaritionsValues');
   const [checkedArray, setChecked] = useState([]);
   const [data, setData] = useState({ data: [] });
 
