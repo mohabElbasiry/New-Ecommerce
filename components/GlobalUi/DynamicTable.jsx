@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import MultiSelect from "./Select";
+import MultiSelect from "../../app/product/[id]/components/Select";
 const defaultData = {
   Keys: ["Key1", "Key2", "Key3"],
 
@@ -37,6 +37,7 @@ const defaultData = {
       <td>return custom component for Row </td>
     </>
   ),
+  enableSelect:true,
 };
 export default function DynamicTable({ data = defaultData }) {
   const ItemsFirst =
@@ -92,9 +93,9 @@ export default function DynamicTable({ data = defaultData }) {
         <table className="w-full text-sm text-left table-auto">
           <thead className="ltr:text-left rtl:text-right bg-[#E3EEEF] h-[70px]">
             <tr className="ltr:text-left rtl:text-right">
-              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+              {data?.enableSelect?<th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 #
-              </th>
+              </th>:null}
               {data?.customColumn?.theFirst &&
               data?.customColumn?.theFirst?.length > 0
                 ? data?.customColumn?.theFirst
@@ -164,13 +165,13 @@ export default function DynamicTable({ data = defaultData }) {
                     key={selectedItems.length + idx}
                     className="bg-transparent h-32"
                   >
-                    <td
+                    {data?.enableSelect?<td
                       className={`whitespace-nowrap px-4 py-2 text-gray-700 bg-transparent`}
                     >
                       <div className="flex text-primary gap-2 xs:w-full items-center">
                         <input className="accent-primary" type="checkbox" />
                       </div>
-                    </td>
+                    </td>:null}
                     {data?.customColumn?.theFirst &&
                     data?.customColumn?.theFirst?.length > 0
                       ? data?.customColumn?.theFirst

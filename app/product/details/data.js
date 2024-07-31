@@ -336,7 +336,7 @@ export const data = {
         key:"nameOrKeyLast_2",
         value: ({ item }) => <div>{item ? item : "nameOrKey_12"}</div>},
     ],
-  },enableSelect:true,
+  },
   customRow: ({ itemRow }) =>
     typeof itemRow === "object" && Object.values(itemRow)?.length > 0
       ? Object.entries(itemRow).map(([key, value], index) => {
@@ -817,10 +817,10 @@ export const dataVariants = {
       },
     ],
     options: [
-      {
-        name: "Color",
-        values: ["Black", "Antik Pink", "Coral"],
-      },
+      // {
+      //   name: "Color",
+      //   values: ["Black", "Antik Pink", "Coral"],
+      // },
       {
         name: "Size",
         values: ["14 - 16 Inches", "18 - 20 Inches", "22 - 24 Inches"],

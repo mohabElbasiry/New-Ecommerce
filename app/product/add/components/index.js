@@ -164,7 +164,7 @@ export const ProductAddMaim = () => {
 
       <Headercomponent handleSubmit={handleSubmit}>
         <div className="flex items-end justify-end   gap-1">
-          {console.log(submitedData, "submitedData123231321")}
+          
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}

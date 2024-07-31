@@ -23,7 +23,6 @@ export const ProductDetailsComponent = ({
   data,
   setData,
 }) => {
-
   return (
     <div className="    justify-end gap-1 p-3 ml-auto ">
       <div className="flex gap-3 mt-3 ml-auto  ">
@@ -43,9 +42,10 @@ export const ProductDetailsComponent = ({
         <div className="w-[50%] ">
           <div className="w-[100%]   p-2 flex flex-col gap-3 ">
             <ProductSettings />
-        <ProductImages submitedData={submitedData}
-         
-            setSubmitedData={setSubmitedData}/>
+            <ProductImages
+              submitedData={submitedData}
+              setSubmitedData={setSubmitedData}
+            />
           </div>
           <div className="w-full overflow-auto ">
             <ProductVariation
