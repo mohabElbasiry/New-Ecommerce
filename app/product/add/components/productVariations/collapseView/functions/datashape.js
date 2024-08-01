@@ -6,7 +6,6 @@ export function shapeData(combinedTexts, variants) {
   variants[0].values.forEach((valueGroup, idx) => {
     let obj = {
       key: valueGroup.value_en,
-      id:valueGroup.id||uid(),
       itemIndex: idx + 1,
       quantity: 0,
       min_price: 0,
@@ -25,30 +24,11 @@ export function shapeData(combinedTexts, variants) {
         valueItem.values.forEach((value) => {
           str += value.value_en + "/";
         });
-
+        console.log(valueItem.id, "valueItem");
         obj.values.push({
           ...valueItem,
           itemIndex: `${idx + 1}${indx + 1}`,
           val: str.trim(),
-          options: valueItem?.values || [],
-          values: valueItem?.values || [],
-          quantity: +valueItem.quantity || 0,
-          sku: valueItem.sku || "",
-          continue_out_stock: valueItem?.continue_selling || false,
-          price: valueItem?.price || 0,
-          compare_to_price: valueItem?.compare_to_price || 0,
-          barcode: valueItem?.barcode || "",
-          image: valueItem?.image || [],
-           Cost_Per_Item: valueItem?.Cost_Per_Item || 0,
-          Profit: valueItem?.Profit || 0,
-          margin: valueItem?.margin || 0,
-          color: valueItem?.color || "",
-          itemIndex: valueItem?.itemIndex,
-          weight: valueItem?.weight||'',
-          deleted: valueItem.deleted || false,
-          id:valueItem.id || uid(),
-
-
         });
       }
     });
@@ -62,5 +42,8 @@ export function shapeData(combinedTexts, variants) {
 
     data.push(obj);
   });
+
+  console.log(data, "combinedTexts");
+
   return data;
 }

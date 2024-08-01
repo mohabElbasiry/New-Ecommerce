@@ -7,13 +7,10 @@ import { produce } from "immer";
 import { generateQualities } from "../collapseView/functions/GenerateQualities";
 import { shapeData } from "../collapseView/functions/datashape";
 import { ReorderIcon } from "../../drageControl";
+import { uid } from "uid";
 
-export default function CreateVariation({
-  listIndex,
-  setList,
-  list,
- }) {
-   const [currentOption, setCurrentOption] = useState({
+export default function CreateVariation({ listIndex, setList, list }) {
+  const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
     error: false,
@@ -24,6 +21,7 @@ export default function CreateVariation({
       // value_ar: "",
       value_en: "",
       color: "",
+      id: uid(),
     },
   ]);
   const [color, opencolor] = useState({ index: -1, open: false });
@@ -186,6 +184,7 @@ export default function CreateVariation({
           value_ar: "",
           value_en: "",
           color: "",
+          id: uid(),
         },
       ]);
     }
@@ -282,7 +281,7 @@ export default function CreateVariation({
                   <div
                     className={`border w-[30px] h-[30px] my-auto rounded-full border-[#333]`}
                     onClick={() => {
-                      if (index === color?.index&&color?.open) {
+                      if (index === color?.index && color?.open) {
                         opencolor({
                           ...color,
                           index: index,
@@ -314,8 +313,7 @@ export default function CreateVariation({
                     </button>
                   ) : null}
                 </div>
-                <ReorderIcon   />
-
+                <ReorderIcon />
               </Reorder.Item>
             </div>
           ))}
@@ -378,7 +376,7 @@ export default function CreateVariation({
                   option?.key_en?.trim() === currentOption?.option_en?.trim()
                 );
               });
- 
+
             if (isOneOfOthers) {
               return;
             }

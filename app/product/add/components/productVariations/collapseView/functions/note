@@ -18,15 +18,8 @@ export function generateQualities(prev, attributes) {
     if (depth === attributes.length) {
       // Check if the combination already exists in `prev`
       const existingQuality = prev.find((quality) => {
-        console.log(
-          quality.values.some((item) =>
-            currentCombination.some((itemc) => itemc.id === item.id)
-          ),
-          "qualityquality"
-        );
-
-        return quality.values.some((item) =>
-          currentCombination.some((itemc) => itemc.id === item.id)
+        return (
+          JSON.stringify(quality.values) === JSON.stringify(currentCombination)
         );
       });
       console.log(existingQuality, "existingQualityexistingQuality");
@@ -56,7 +49,6 @@ export function generateQualities(prev, attributes) {
 
     // Continue generating combinations
     attributes[depth].values.forEach((value) => {
-      console.log(value, "valuevaluevalue");
       const newCombination = currentCombination.slice();
       newCombination.push({
         key_en: attributes[depth].key_en,
@@ -64,7 +56,6 @@ export function generateQualities(prev, attributes) {
         value_en: value.value_en,
         value_ar: value.value_ar,
         color: value.color,
-        id: value.id || uid(),
       });
       generateCombinations(newCombination, depth + 1);
     });
