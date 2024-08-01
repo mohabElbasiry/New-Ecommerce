@@ -12,6 +12,8 @@ import { memo, useEffect, useState } from "react";
 import MultibleValues from "./multibleValuesEdit";
 import { defaultValues } from "./defaultValues";
 import { SinglePropertyValue } from "./SinglePropertyValue.js";
+import { shapeData } from "../../../functions/datashape";
+import { generateQualities } from "../../../functions/GenerateQualities";
 
 const Actions = ({
   checkedArray = [],
@@ -210,47 +212,42 @@ const Actions = ({
         //   );
         // }
         setVarients(
-          produce((draft) => {
+          produce((draft, ...rest) => {
+            console.log(rest, "restrestrest");
             const checkedMap = new Map(
               checkedArray.map((item) => [item.key, item])
             );
-
-            const updatedValuesAfterDelete =
-              draft.productvaritions.varitionsValues
-                .map((item) => {
-                  const Checked = checkedMap.get(item?.key);
-                  if (Checked) {
-                    const values = item?.values?.map((itemv, idx) => {
-                      const value = Checked?.SelectedItems?.includes(idx);
-                      if (value) {
-                        return {
-                          ...itemv,
-                          deleted: true,
-                        };
-                      }
-
-                      return itemv;
-                    });
-
-                    return {
-                      ...item,
-                      values,
-                    };
-                  }
-                  return item;
-                })
-                .filter((item) => {
-                  if (item?.values?.length === 1) {
-                    return item?.values.some((item) => !item?.deleted);
-                  }
-
-                  return !item.values.every((variant) => variant.deleted);
-                });
-            draft.productvaritions.varitionsValues = updatedValuesAfterDelete;
-
             const activeVariantsMap = new Map();
 
             // Populate the activeVariantsMap with non-deleted variants
+
+            const updatedValuesAfterDelete =
+              draft.productvaritions.varitionsValues.map((item) => {
+                const Checked = checkedMap.get(item?.key);
+                console.log(Checked, " Checked?.SelectedItems");
+                if (Checked) {
+                  const values = item?.values?.map((itemv, idx) => {
+                    const value = Checked?.SelectedItems.includes(idx);
+
+                    if (value) {
+                      return {
+                        ...itemv,
+                        deleted: true,
+                      };
+                    }
+
+                    return itemv;
+                  });
+
+                  return {
+                    ...item,
+                    values,
+                  };
+                }
+                return item;
+              });
+
+          
             updatedValuesAfterDelete.forEach((item) => {
               item.values.forEach((variant) => {
                 if (!variant.deleted) {
@@ -263,7 +260,7 @@ const Actions = ({
                 }
               });
             });
-
+            console.log(updatedValuesAfterDelete, "updatedValuesAfterDelete");
             const updatedOptions = draft.productvaritions.variants
               .map((option) => {
                 const activeValues =
@@ -276,9 +273,37 @@ const Actions = ({
                 };
               })
               .filter((item) => item?.values.length);
-
+            function filterData(data, updatedOptions) {
+              return data.filter((item) =>
+                item.values.every((value) =>
+                  updatedOptions.some(
+                    (option) =>
+                      option.key_en === value.key_en &&
+                      option.values.some(
+                        (val) => val.value_en === value.value_en
+                      )
+                  )
+                )
+              );
+            }
             draft.productvaritions.variants = updatedOptions;
             draft.productvaritions.REfvariants = updatedOptions;
+            draft.productvaritions.varitionsValues =
+              updatedValuesAfterDelete.map((item) => {
+                console.log(
+                  filterData(item?.values, updatedOptions),
+                  "dsadasdsaupdatedOptions"
+                );
+                return {
+                  ...item,
+                  values: filterData(item?.values, updatedOptions),
+                };
+              });
+
+            console.log(
+              draft.productvaritions.varitionsValues,
+              "adsssss132321321321"
+            );
           })
         );
       }
@@ -290,23 +315,7 @@ const Actions = ({
     }
   };
 
-  // varients
-
-  // Function to mark a variant as deleted
-  // const deleteVariant = (variantIndex) => {
-  //   const updatedVariants = variants.map((variant) => {
-  //     if (variant.itemIndex === variantIndex) {
-  //       return { ...variant, deleted: true };
-  //     }
-  //     return variant;
-  //   });
-
-  //   setVariants(updatedVariants);
-  // };
-
-  // Dynamically update options based on current variants
-
-  // varients
+ 
   return (
     <>
       {openModal?.selectedVarients?.length ? (

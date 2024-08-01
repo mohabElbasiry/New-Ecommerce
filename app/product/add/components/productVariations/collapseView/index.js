@@ -94,6 +94,8 @@ const CollapseView = ({
       setData(
         produce((draft) => {
           let Editeddata = varitionsValues;
+
+          console.log(varitionsValues,'varitionsValuesvaritionsValuesvaritionsValues');
           if (Filters?.GroupBy?.key !== "") {
              Editeddata = shapeData(
               generateQualities(
@@ -190,7 +192,7 @@ const CollapseView = ({
                 checkedArray={checkedArray}
                 parent={item?.parent}
               />
-              {item?.values?.length >  1 ? (
+              {item?.values?.length >  0 ? (
                 <>
                   {item?.values?.map((valueItem, idx) => {
                     return (

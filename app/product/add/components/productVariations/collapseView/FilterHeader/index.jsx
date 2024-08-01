@@ -111,7 +111,6 @@ const FilterHeader = ({
             }
             onChange={(e) => {
               setChecked((prev = []) => {
-                console.log(prev);
                 const Allitems = data?.map((item) => {
                   return {
                     key: item?.key,

@@ -66,7 +66,8 @@ export function generateQualities(prev, attributes) {
         continue_out_stock: false,
         color: "",
         barcode: "",
-        weight:""
+        weight:"",
+        deleted:false
       });
       return;
     }
@@ -104,7 +105,7 @@ export function generateQualities(prev, attributes) {
   AdjustArray = qualities
     .map((item, index) => {
       const founded = prev.find((item, idx) => idx === index);
-      console.log(founded,'foundedfoundedv')
+      console.log(founded,'ounded.deletedounded.deleted');
       // Find the corresponding item in the prev array with the same values array
       // const founded = prev.find((itemv) => {
       //   return item.values.every(
@@ -130,13 +131,13 @@ export function generateQualities(prev, attributes) {
           color: founded.color || "",
           barcode: founded.barcode || "",
           weight: index,
-          itemIndex:  founded.barcode||"",
+          itemIndex:  founded.itemIndex||"",
+          deleted:  founded.deleted||"",
         };
       }
       return item;
     })
     .map((item, idx) => ({ ...item, itemIndex: idx }));
 
-  console.log(AdjustArray, "AdjustArrayAdjustArray");
-  return AdjustArray;
+   return AdjustArray;
 }
