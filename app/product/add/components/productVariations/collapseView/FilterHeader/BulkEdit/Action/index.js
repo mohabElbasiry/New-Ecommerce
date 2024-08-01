@@ -247,7 +247,6 @@ const Actions = ({
                 return item;
               });
 
-          
             updatedValuesAfterDelete.forEach((item) => {
               item.values.forEach((variant) => {
                 if (!variant.deleted) {
@@ -288,22 +287,20 @@ const Actions = ({
             }
             draft.productvaritions.variants = updatedOptions;
             draft.productvaritions.REfvariants = updatedOptions;
-            draft.productvaritions.varitionsValues =
-              updatedValuesAfterDelete.map((item) => {
-                console.log(
-                  filterData(item?.values, updatedOptions),
-                  "dsadasdsaupdatedOptions"
-                );
+            draft.productvaritions.varitionsValues = updatedValuesAfterDelete
+              .map((item) => {
                 return {
                   ...item,
                   values: filterData(item?.values, updatedOptions),
                 };
-              });
+              })
+              .filter((item) => {
+                if (!item.values.length) {
+                  return item.deleted ===false;
+                }
 
-            console.log(
-              draft.productvaritions.varitionsValues,
-              "adsssss132321321321"
-            );
+                return item;
+              });
           })
         );
       }
@@ -315,7 +312,6 @@ const Actions = ({
     }
   };
 
- 
   return (
     <>
       {openModal?.selectedVarients?.length ? (
