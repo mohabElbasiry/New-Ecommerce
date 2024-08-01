@@ -1,0 +1,11 @@
+.tree ul {
+  width: 90%;
+  margin: 10px auto 0;
+}
+.tree li {
+  text-align: center;
+  border: 1px solid #ddd;
+  min-width: 300px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
