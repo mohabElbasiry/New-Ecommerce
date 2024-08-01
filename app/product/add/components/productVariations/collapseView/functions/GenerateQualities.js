@@ -1,62 +1,77 @@
-import { uid } from "uid";
+// export function generateQualities(prev, attributes,changeShapeData,callback) {
+//     const qualities = [];
 
-const compareValuesArrays = (arr1, arr2) => {
-  if (arr1.length !== arr2.length) return false;
-  for (let i = 0; i < arr1.length; i++) {
-    for (const key in arr1[i]) {
-      if (arr1[i][key] !== arr2[i][key]) {
-        return false;
-      }
-    }
-  }
-  return true;
-};
+//     function generateCombinations(currentCombination, depth) {
+//       if (depth === attributes.length) {
+//         qualities.push({
+//           values: currentCombination,
+//           quantity: 1,
+//           price: 0,
+//           image: [],
+//         });
+//         return;
+//       }
+
+//       attributes[depth].values.forEach((value) => {
+//         const newCombination = currentCombination.slice();
+//         newCombination.push({
+//           key_en: attributes[depth].key_en,
+//           key_ar: attributes[depth].key_ar,
+//           value_en: value.value_en,
+//           value_ar: value.value_ar,
+//           color: value.color,
+//         });
+//         generateCombinations(newCombination, depth + 1);
+//       });
+//     }
+
+//     generateCombinations([], 0);
+
+//     const AdjustArray = qualities
+//       .map((item, index) => {
+//         const Founded = prev.find((item, idx) => idx === index);
+//         if (Founded) {
+//           return {
+//             ...item,
+//             values: item.values,
+//             price: Founded.price,
+//             quantity: Founded.quantity,
+//             image: Founded?.image,
+//           };
+//         }
+//         return item;
+//       })
+//       .map((item, idx) => ({ ...item, itemIndex: idx }));
+//       if(changeShapeData) return callback(AdjustArray,attributes);
+//     return AdjustArray;
+//   }
 export function generateQualities(prev, attributes) {
-  const qualities = []; // Start with the existing data
+  const qualities = [];
 
   function generateCombinations(currentCombination, depth) {
     if (depth === attributes.length) {
-      // Check if the combination already exists in `prev`
-      const existingQuality = prev.find((quality) => {
-        console.log(
-          quality.values.some((item) =>
-            currentCombination.some((itemc) => itemc.id === item.id)
-          ),
-          "qualityquality"
-        );
-
-        return quality.values.some((item) =>
-          currentCombination.some((itemc) => itemc.id === item.id)
-        );
+      qualities.push({
+        values: currentCombination,
+        quantity: 0,
+        price: 0,
+        image: [],
+        continue_out_stock: false,
+        price: 0,
+        compare_to_price: 0,
+        Cost_Per_Item: 0,
+        Profit: 0,
+        margin: 0,
+        quantity: 0,
+        sku: 0,
+        continue_out_stock: false,
+        color: "",
+        barcode: "",
+        weight:""
       });
-      console.log(existingQuality, "existingQualityexistingQuality");
-      if (existingQuality) {
-        qualities.push(existingQuality);
-      } else {
-        qualities.push({
-          values: currentCombination,
-          quantity: 0,
-          price: 0,
-          image: [],
-          continue_out_stock: false,
-          compare_to_price: 0,
-          Cost_Per_Item: 0,
-          Profit: 0,
-          margin: 0,
-          sku: 0,
-          color: "",
-          barcode: "",
-          weight: "",
-          deleted: false,
-          id: uid(), // Generate a new ID only for new combinations
-        });
-      }
       return;
     }
 
-    // Continue generating combinations
     attributes[depth].values.forEach((value) => {
-      console.log(value, "valuevaluevalue");
       const newCombination = currentCombination.slice();
       newCombination.push({
         key_en: attributes[depth].key_en,
@@ -64,14 +79,23 @@ export function generateQualities(prev, attributes) {
         value_en: value.value_en,
         value_ar: value.value_ar,
         color: value.color,
-        id: value.id || uid(),
       });
       generateCombinations(newCombination, depth + 1);
     });
   }
 
-  generateCombinations([], 0); // Start with an empty combination
-
+  generateCombinations([], 0);
+  const compareValuesArrays = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) return false;
+    for (let i = 0; i < arr1.length; i++) {
+      for (const key in arr1[i]) {
+        if (arr1[i][key] !== arr2[i][key]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
   let AdjustArray = [];
   if (attributes?.length === 0) {
     AdjustArray = [];
@@ -79,8 +103,18 @@ export function generateQualities(prev, attributes) {
   }
   AdjustArray = qualities
     .map((item, index) => {
-      const founded = prev.find((itemg, idx) => itemg.id === item.id);
-      console.log(founded, "foundedfoundedfounded");
+      const founded = prev.find((item, idx) => idx === index);
+      console.log(founded,'foundedfoundedv')
+      // Find the corresponding item in the prev array with the same values array
+      // const founded = prev.find((itemv) => {
+      //   return item.values.every(
+      //     (val, idx) => val.itemIndex === itemv.values[idx].itemIndex
+      //   );
+
+      //   compareValuesArrays(item.values, itemv.values);
+      // });
+
+      // If a matching item is found, merge the properties
       if (founded) {
         return {
           ...item,
@@ -96,8 +130,7 @@ export function generateQualities(prev, attributes) {
           color: founded.color || "",
           barcode: founded.barcode || "",
           weight: index,
-          itemIndex: founded.barcode || "",
-          deleted: founded.deleted || false,
+          itemIndex:  founded.barcode||"",
         };
       }
       return item;
