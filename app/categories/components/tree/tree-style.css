@@ -1,11 +1,22 @@
 .tree ul {
-  width: 90%;
-  margin: 10px auto 0;
+  width: 95%;
+  margin: 10px 0;
 }
 .tree li {
   text-align: center;
-  border: 1px solid #ddd;
-  min-width: 300px;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 20px;
+}
+
+.tree li.has-children {
+  position: relative;
+}
+.tree li.has-children:after {
+  width: 1px;
+  height: 90%;
+  content: "";
+  background-color: black;
+  position: absolute;
+  top: 12.5px;
+  left: 0;
 }

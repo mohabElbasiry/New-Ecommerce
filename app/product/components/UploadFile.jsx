@@ -12,7 +12,7 @@ import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
 import { fetchImage, UploadFileToApi } from "../functions/fun";
 import { PopoverClose } from "@radix-ui/react-popover";
 
-export default function UploadFile({setUrlsFiles}) {
+export default function UploadFile({ setUrlsFiles }) {
   const InputRef = useRef();
   const InputUrlsRef = useRef();
   const progressBar = useRef();
@@ -62,18 +62,22 @@ export default function UploadFile({setUrlsFiles}) {
     }
   };
 
-
-  const handleUploadFile = () =>UploadFileToApi(selectedFiles, progressBarParent, progressBar,setUrlsFiles);
+  const handleUploadFile = () =>
+    UploadFileToApi(
+      selectedFiles,
+      progressBarParent,
+      progressBar,
+      setUrlsFiles
+    );
 
   useEffect(() => {
     console.log("fdsafdsafdsafdsaf");
-    selectedFiles.length? handleUploadFile():null;
-  }, [selectedFiles])
-  
+    selectedFiles.length ? handleUploadFile() : null;
+  }, [selectedFiles]);
 
   return (
     <>
-      <div className="max-w-screen relative my-other-step ">
+      <div className="max-w-screen relative my-other-step p-4 ">
         <div
           className="bg-gray-200 rounded-full h-2 absolute z-10 inset-x-0 top-1 left-0  hidden"
           ref={progressBarParent}
@@ -93,19 +97,19 @@ export default function UploadFile({setUrlsFiles}) {
             Upload
           </Button>
         ) : null} */}
-        <label className=" relative flex justify-center items-center flex-col gap-10 w-full  h-44 px-4 shadow-md transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
-          <span className="flex justify-center items-center gap-5  bg-white ">
+        <label className=" relative flex justify-center items-center flex-col gap-6 w-full  h-44 px-4  transition bg-white border-2  border-dashed border-black rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+          <span className="flex justify-center items-center gap-3">
             <button
               type="button"
-              className="z-50 bg-white  p-2 px-4 shadow border rounded-xl"
+              className="z-50 bg-white shadow-2xl  p-2 px-4 text-sm text-gray-600 border rounded-xl"
               onClick={() => InputRef.current.click()}
             >
               Add media
             </button>
             <Popover className="z-50">
               <PopoverTrigger className="z-50" asChild>
-                <Button className="z-50" variant="ghost">
-                  URL from Add
+                <Button className="z-50 text-gray-600" variant="ghost">
+                  Add from URL
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-80">
@@ -129,7 +133,7 @@ export default function UploadFile({setUrlsFiles}) {
                       />
                     </div>
                   </div>
-                  <div className="flex gap-5  items-center ">
+                  <div className="flex gap-5 items-center">
                     {" "}
                     <Button
                       className="flex-1 p-4 px-2"
@@ -149,7 +153,7 @@ export default function UploadFile({setUrlsFiles}) {
               </PopoverContent>
             </Popover>
           </span>
-          <span className="flex items-center space-x-2">
+          <span className="flex items-center space-x-2 text-gray-400 text-sm">
             Drag and drop images, videos, and files
           </span>
           <input
@@ -171,7 +175,6 @@ export default function UploadFile({setUrlsFiles}) {
         selectedFiles={selectedFiles}
         setFileData={setFileData}
       />
-     
     </>
   );
 }

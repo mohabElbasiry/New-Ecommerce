@@ -11,14 +11,14 @@ export function CustomDialoge({
     <Transition.Root show={open} as={"Fragment"}>
       <Dialog className="relative z-[991] " onClose={setOpen}>
         <Transition.Child as={"Fragment"}>
-          <div className="fixed inset-0 bg-white/50
-             z-[991]
-            transition-opacity" />
+          <div className="fixed inset-0 bg-white/50  z-[991] transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-[991] w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4
-           text-center sm:items-center sm:p-0">
+          <div
+            className="flex min-h-full items-end justify-center p-4
+           text-center sm:items-center sm:p-0"
+          >
             <Transition.Child
               as={"Fragment"}
               enter="ease-out duration-300"
@@ -37,7 +37,6 @@ export function CustomDialoge({
               >
                 {children}
 
-
                 {/* <BatchEdit/> */}
               </Dialog.Panel>
             </Transition.Child>
@@ -47,4 +46,3 @@ export function CustomDialoge({
     </Transition.Root>
   );
 }
- 

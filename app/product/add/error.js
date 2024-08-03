@@ -1,4 +1,4 @@
 "use client";
-export  default function Error() {
-  return <>Error</>;
+export default function Error({ error }) {
+  return <>Error: {error.message}</>;
 }

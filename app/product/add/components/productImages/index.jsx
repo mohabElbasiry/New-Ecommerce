@@ -1,12 +1,12 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import UploadFilesModal from "./UploadFilesModal";
 import { produce } from "immer";
 import { cn } from "@/lib/utils";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { DragableImagesBox } from "./dragableImages";
 
-export default function ProductImages({ submitedData, setSubmitedData }) {
+ function ProductImages({ images, setSubmitedData }) {
   const HandleSubmit = (images) => {
     console.log(images);
     setSubmitedData(
@@ -53,8 +53,8 @@ export default function ProductImages({ submitedData, setSubmitedData }) {
 
   return (
     <div className="">
-
-      <DragableImagesBox/>
+      <DragableImagesBox images={images} setSubmitedData={setSubmitedData}/>
     </div>
   );
 }
+export default memo(ProductImages)

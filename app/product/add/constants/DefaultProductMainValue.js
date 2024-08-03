@@ -11,6 +11,7 @@ export const ProductMainDefaultValue = {
     title_en: "",
     description_ar: "",
     description_en: "",
+    images:[],
     Stock: { repositry: {}, quantity: "", sku: "" },
     price: { mainPrice: "", costPerItem: "", DiscountPrice: "" },
   },

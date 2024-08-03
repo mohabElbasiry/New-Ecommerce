@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Model({
   open,
@@ -9,6 +9,7 @@ export default function Model({
   selectedItem,
 }) {
   const [text, setText] = useState("");
+  const inputRef = useRef(null);
   useEffect(() => {
     const handleClickoutside = (e) => {
       const modelBody = document.querySelector(".model-body");
@@ -23,21 +24,25 @@ export default function Model({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (open && selectedItem?.updatedId) {
-      editElementToTree(text);
+    if (!text || text.trim() === "") {
+      inputRef.current.focus();
     } else {
-      typeof selectedItem === "string"
-        ? addNewElementToTree({
-            id: Math.floor(1000000 + Math.random() * 1000000),
-            title: text,
-          })
-        : addElementToTree({
-            id: Math.floor(1000000 + Math.random() * 1000000),
-            title: text,
-          });
+      if (open && selectedItem?.updatedId) {
+        editElementToTree(text);
+      } else {
+        typeof selectedItem === "string"
+          ? addNewElementToTree({
+              id: Math.floor(1000000 + Math.random() * 1000000),
+              title: text,
+            })
+          : addElementToTree({
+              id: Math.floor(1000000 + Math.random() * 1000000),
+              title: text,
+            });
+      }
+      setText("");
+      setOpen(false);
     }
-    setText("");
-    setOpen(false);
   };
   useEffect(() => {
     if (open && selectedItem?.updatedId) {
@@ -67,6 +72,7 @@ export default function Model({
             </label>
 
             <input
+              ref={inputRef}
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Name of item"
@@ -77,7 +83,7 @@ export default function Model({
         <div className="flex items-center gap-4 ">
           <button
             type="submit"
-            className="bg-[green] text-white py-3 rounded-lg\ px-4 mt-6"
+            className="bg-[green] text-white py-3 rounded-lg\ px-4 mt-6 focus:scale-[0.9] transition-transform"
           >
             Submit
           </button>
@@ -87,7 +93,7 @@ export default function Model({
               setOpen(false);
               setText("");
             }}
-            className="bg-[orangered] text-white py-3 rounded-lg\ px-4 mt-6"
+            className="bg-[orangered] text-white py-3 rounded-lg\ px-4 mt-6 focus:scale-[0.9] transition-transform"
           >
             Close
           </button>

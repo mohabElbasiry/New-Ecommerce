@@ -43,8 +43,8 @@ export const ProductDetailsComponent = ({
           <div className="w-[100%]   p-2 flex flex-col gap-3 ">
             <ProductSettings />
             <ProductImages
-              submitedData={submitedData}
               setSubmitedData={setSubmitedData}
+              images={submitedData.productDetails.images}
             />
           </div>
           <div className="w-full overflow-auto ">

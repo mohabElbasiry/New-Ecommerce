@@ -10,11 +10,18 @@ export default function TreeItem({
   deleteElementFromTree,
 }) {
   return (
-    <li key={item.id}>
-      <div className="relative !py-3 border">
+    <li
+      key={item.id}
+      className={`${item.children?.length ? "has-children" : ""}`}
+    >
+      <div
+        className={`!py-3 border-0 px-3 bg-gray-300 rounded-2xl !flex !items-center justify-between  ${
+          item?.children?.length ? "" : ""
+        } `}
+      >
         <span>{item.title}</span>
         <div
-          className={`absolute !bg-transparent !-top-3 !left-0 h-4 !border-0 !w-full !flex !items-center !justify-start !gap-2 z-10`}
+          className={` !bg-transparent  h-4 !border !w-auto !flex !items-center !justify-start !gap-2 z-10`}
         >
           <button
             onClick={() => {

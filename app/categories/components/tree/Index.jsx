@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import TreeItem from "./TreeItem";
 import "./tree-style.css";
 import { treeData } from "../../constants/treeItemsData";
 import Model from "./Model";
+import { treeRendering } from "./treeRendering";
 
 export default function Tree() {
   const [treeItems, setTreeItems] = useState(treeData);
@@ -108,7 +108,7 @@ export default function Tree() {
   console.log("get =>>> ", treeItems);
   console.log("find =>>> ", findItemOfTree(1076382));
   return (
-    <div className="tree relative">
+    <div className="tree relative px-4 w-1/2">
       <div className="flex justify-end items-center h-60 w-[90%] mx-auto">
         <button
           onClick={() => {
@@ -143,28 +143,3 @@ export default function Tree() {
     </div>
   );
 }
-const treeRendering = (
-  treeData,
-  setTreeItems,
-  open,
-  setOpen,
-  setSelectedItem,
-  deleteElementFromTree
-) => {
-  return (
-    <ul>
-      {treeData.map((item) => (
-        <TreeItem
-          key={item.id}
-          item={item}
-          treeRendering={treeRendering}
-          setTreeItems={setTreeItems}
-          open={open}
-          setOpen={setOpen}
-          setSelectedItem={setSelectedItem}
-          deleteElementFromTree={deleteElementFromTree}
-        />
-      ))}
-    </ul>
-  );
-};

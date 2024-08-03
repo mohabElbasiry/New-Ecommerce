@@ -1,4 +1,4 @@
- import { ProductAddMaim } from "./components";
+import { ProductAddMaim } from "./components";
 
 export default function AddProduct() {
   return (
