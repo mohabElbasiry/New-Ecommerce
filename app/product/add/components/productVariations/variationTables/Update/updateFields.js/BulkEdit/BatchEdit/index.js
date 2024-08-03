@@ -67,7 +67,7 @@ export const BatchEdit = () => {
         <InputWithLabelComponent
           defaultValue={10}
           Input
-          label="Profit"
+          label="profit"
           name={"property"}
           onChange={(e) => {
             setChange(e?.target.value);

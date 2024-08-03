@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
 import { fetchImage, UploadFileToApi } from "../functions/fun";
 import { PopoverClose } from "@radix-ui/react-popover";
+import UploadFileFromUrlModal from "./uploadFileFromUrlModal";
 
-export default function UploadFile({ setUrlsFiles }) {
+export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
   const InputRef = useRef();
   const InputUrlsRef = useRef();
   const progressBar = useRef();
@@ -67,7 +68,8 @@ export default function UploadFile({ setUrlsFiles }) {
       selectedFiles,
       progressBarParent,
       progressBar,
-      setUrlsFiles
+      setUrlsFiles,
+      setUrlsFilesSelected
     );
 
   useEffect(() => {
@@ -104,7 +106,7 @@ export default function UploadFile({ setUrlsFiles }) {
               className="z-50 bg-white shadow-2xl  p-2 px-4 text-sm text-gray-600 border rounded-xl"
               onClick={() => InputRef.current.click()}
             >
-              Add media
+              Add Media
             </button>
             <Popover className="z-50">
               <PopoverTrigger className="z-50" asChild>
@@ -118,9 +120,7 @@ export default function UploadFile({ setUrlsFiles }) {
                     <h3 className="font-medium leading-none">
                       Add media from URL
                     </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Image, or Vimeo URL
-                    </p>
+                    <UploadFileFromUrlModal />
                   </div>
                   <div className="grid gap-2">
                     <div className="grid grid-cols-1 items-center gap-4">

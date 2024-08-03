@@ -45,23 +45,25 @@ export const applyFilters = (
   };
   const filteredData = (dataFilteredData, criteria) => {
     if (!criteria?.length) return dataFilteredData;
+
     return dataFilteredData
       .map((item) => {
         const values = item.values.filter((itemv) => {
-          return criteria?.every((itemc) =>
-            itemv?.options?.some((itemo) => itemo?.value_en === itemc?.value)
-          );
+          return criteria?.every((itemc) => {
+            return itemv?.options?.some((itemo) => {
+              return itemo?.value_en === itemc?.value;
+            });
+          });
         });
 
         return {
           ...item,
           values,
         };
-      }).filter(item=>{
-
-        return item?.values?.length
       })
-      
+      .filter((item) => {
+        return item?.values?.length;
+      });
   };
   const filtersToApply = [
     filterVarientsByValuesAndkey(FilterValues),
@@ -69,11 +71,8 @@ export const applyFilters = (
     //   filterByInStock(inStock),
     //   filterBySearchQuery(searchQuery)
   ];
-  console.log(
-    filteredData(dataFilteredData, FilterValues),
-    "dsawqeqwewqweqewq"
-  );
 
+  console.log(dataFilteredData, FilterValues, "adsssssssssssssssssssssssssss");
   return filteredData(dataFilteredData, FilterValues);
   //   return dataFilteredData.filter((item) =>
   //     filtersToApply.every((filterFn) => filterFn(item))

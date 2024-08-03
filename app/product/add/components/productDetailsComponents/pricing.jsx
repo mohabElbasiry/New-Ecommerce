@@ -24,12 +24,12 @@ export default function Pricing({setSubmitedData,submitedData }) {
       // calculate profit and margin
 
       let price = submitedData?.price;
-      let Profit = +price - +val ;
-      let Margin = +(+Profit / (+price||0)) * 100;
+      let profit = +price - +val ;
+      let Margin = +(+profit / (+price||0)) * 100;
 
       setSubmitedData(
         produce((draft) => {
-          draft.Profit = val ? Profit?.toFixed() : ``;
+          draft.profit = val ? profit?.toFixed() : ``;
           draft.margin = val ? Margin?.toFixed() : ``;
         })
       );
@@ -99,20 +99,20 @@ export default function Pricing({setSubmitedData,submitedData }) {
                 />
               </div>
               <div className="grid gap-2 min-w-52 w-[30%]">
-                <h4 className="text-gray-500">Profit</h4>
+                <h4 className="text-gray-500">profit</h4>
                 <input
                   className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                   type="text"
                   disabled
                   
                   value={
-                    submitedData?.Profit
-                      ? `${submitedData?.Profit}`
+                    submitedData?.profit
+                      ? `${submitedData?.profit}`
                       : "00.00"
                   }
                   defaultValue={
-                    submitedData?.Profit
-                      ? `${submitedData?.Profit}`
+                    submitedData?.profit
+                      ? `${submitedData?.profit}`
                       : "00.00"
                   }
                 />

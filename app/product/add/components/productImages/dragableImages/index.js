@@ -91,9 +91,11 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
           }}
           onDragEnd={reorderList}
         />
-
-        {/* <UploadFile sModal  handleSubmit={HandleSubmit} /> */}
-        <UploadFilesModal />
+        <UploadFilesModal
+          buttonContext={
+            <img className="w-[30px]" src="/upload-svgrepo-com.svg" />
+          }
+        />
       </div>
     </>
   );

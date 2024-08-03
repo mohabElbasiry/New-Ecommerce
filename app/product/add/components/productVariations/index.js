@@ -24,7 +24,7 @@ const ProductVariation = ({
   },
   setData = () => {},
 }) => {
-    console.log(productVarients,'productVarientsproductVarientsproductVarients')
+    console.log(productVarients.varitionsValues ,'productVarientsproductVarientsproductVarients');
   return (
     <>
       <p className="my-2 title">Add Varations</p>

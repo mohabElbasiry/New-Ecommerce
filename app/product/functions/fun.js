@@ -24,12 +24,14 @@ export function UploadFileToApi(
   selectedFiles,
   progressBarParent,
   progressBar,
-  setUrlsFiles
+  setUrlsFiles,
+  setUrlsFilesSelected
 ) {
   const headers = `Bearer ${token}`;
   const file = selectedFiles[0];
   const formData = new FormData();
   formData.append("file", file);
+  console.log("My FormData FROMEBNTRIE here::", Object.fromEntries(formData));
   progressBarParent.current.style.display = "block";
   const xhr = new XMLHttpRequest();
   xhr.upload.addEventListener("progress", function (e) {
@@ -46,9 +48,15 @@ export function UploadFileToApi(
   xhr.addEventListener("load", function () {
     if (xhr.status >= 200 && xhr.status < 300) {
       let response = JSON.parse(xhr.response);
+      console.log("response?.fileUrl", response);
       setUrlsFiles(
         produce((prev) => {
-          prev.push(response?.fileUrl);
+          prev.unshift(response);
+        })
+      );
+      setUrlsFilesSelected(
+        produce((prev) => {
+          prev.unshift(response);
         })
       );
       // Handle the response here (e.g., parse the response JSON and update the UI)

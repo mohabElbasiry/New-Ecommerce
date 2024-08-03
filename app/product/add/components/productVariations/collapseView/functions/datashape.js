@@ -4,6 +4,7 @@ export function shapeData(combinedTexts, variants) {
   let data = [];
 
   variants[0].values.forEach((valueGroup, idx) => {
+    console.log(valueGroup, "valueGroupvalueGroup ");
     let obj = {
       key: valueGroup.value_en,
       itemIndex: idx + 1,
@@ -19,16 +20,17 @@ export function shapeData(combinedTexts, variants) {
           value.value_en === valueGroup.value_en &&
           value.key_en === variants[0].key_en
       );
+      console.log(valueItem, "valueItem");
 
       if (check) {
         valueItem.values.forEach((value) => {
           str += value.value_en + "/";
         });
-        console.log(valueItem.id, "valueItem");
         obj.values.push({
           ...valueItem,
           itemIndex: `${idx + 1}${indx + 1}`,
           val: str.trim(),
+          options: valueItem?.values,
         });
       }
     });
@@ -43,7 +45,7 @@ export function shapeData(combinedTexts, variants) {
     data.push(obj);
   });
 
-  console.log(data, "combinedTexts");
-
-  return data;
+  return data.map((item) => {
+    return { ...item, valuesL: item.values.flatMap((item) => item?.values)?.length };
+  });
 }

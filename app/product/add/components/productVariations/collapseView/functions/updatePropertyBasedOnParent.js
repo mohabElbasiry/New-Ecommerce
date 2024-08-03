@@ -1,4 +1,4 @@
-export function updatePropertyParent(data, itemIndex, newPrice) {
+export function updatePropertyParent(data, itemIndex, newPrice,property) {
     return data.map((item) => {
       console.log(item,'dassssssssssssss');
       if (item.itemIndex === itemIndex) {
@@ -6,7 +6,7 @@ export function updatePropertyParent(data, itemIndex, newPrice) {
           ...item,
           values: item.values.map((value) => ({
             ...value,
-            price: newPrice,
+            [property]: newPrice,
           })),
         };
       }

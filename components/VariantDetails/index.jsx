@@ -44,7 +44,7 @@ export default function VariantDetails({ data, similarItems = [] }) {
       "image": [],
       "Compare_To_Price": 0,
       "Cost_Per_Item": "0",
-      "Profit": "0",
+      "profit": "0",
       "margin": "0",
       "color": "",
       "Barcode": ""
@@ -80,12 +80,12 @@ export default function VariantDetails({ data, similarItems = [] }) {
       // calculate profit and margin
 
       let price = variantSelected?.price;
-      let Profit = +price - +val ;
-      let Margin = +(+Profit / +price) * 100;
+      let profit = +price - +val ;
+      let Margin = +(+profit / +price) * 100;
 
       setVariantSelected(
         produce((draft) => {
-          draft.Profit = val ? Profit?.toFixed() : ``;
+          draft.profit = val ? profit?.toFixed() : ``;
           draft.margin = val ? Margin?.toFixed() : ``;
         })
       );
@@ -250,19 +250,19 @@ const handleSearchFilterVariants=(e) => {
                 />
               </div>
               <div className="grid gap-2 min-w-60 w-[30%]">
-                <h4 className="text-gray-500">Profit</h4>
+                <h4 className="text-gray-500">profit</h4>
                 <input
                   className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                   type="text"
                   disabled
                   value={
-                    variantSelected?.Profit
-                      ? `${variantSelected?.Profit}`
+                    variantSelected?.profit
+                      ? `${variantSelected?.profit}`
                       : "00.00"
                   }
                   defaultValue={
-                    variantSelected?.Profit
-                      ? `${variantSelected?.Profit}`
+                    variantSelected?.profit
+                      ? `${variantSelected?.profit}`
                       : "00.00"
                   }
                 />
