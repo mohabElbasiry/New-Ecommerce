@@ -52,6 +52,7 @@ export function generateQualities(prev, attributes) {
     if (depth === attributes.length) {
       qualities.push({
         values: currentCombination,
+        options: currentCombination,
         quantity: 0,
         price: 0,
         image: [],
@@ -59,15 +60,15 @@ export function generateQualities(prev, attributes) {
         price: 0,
         compare_to_price: 0,
         Cost_Per_Item: 0,
-        Profit: 0,
+        profit: 0,
         margin: 0,
         quantity: 0,
-        sku: 0,
-        continue_out_stock: false,
+        sku: "",
         color: "",
         barcode: "",
-        weight:"",
-        deleted:false
+        weight: "",
+        deleted: false,
+        trackQuantity: false,
       });
       return;
     }
@@ -105,7 +106,7 @@ export function generateQualities(prev, attributes) {
   AdjustArray = qualities
     .map((item, index) => {
       const founded = prev.find((item, idx) => idx === index);
-      console.log(founded,'ounded.deletedounded.deleted');
+      console.log(founded, "ounded.deletedounded.deleted");
       // Find the corresponding item in the prev array with the same values array
       // const founded = prev.find((itemv) => {
       //   return item.values.every(
@@ -123,7 +124,7 @@ export function generateQualities(prev, attributes) {
           price: founded.price,
           compare_to_price: founded.compare_to_price || 0,
           Cost_Per_Item: founded.Cost_Per_Item || 0,
-          Profit: founded.Profit || 0,
+          profit: founded.profit || 0,
           margin: founded.margin || 0,
           quantity: founded.quantity || 0,
           image: founded.image || [],
@@ -131,13 +132,14 @@ export function generateQualities(prev, attributes) {
           color: founded.color || "",
           barcode: founded.barcode || "",
           weight: index,
-          itemIndex:  founded.itemIndex||"",
-          deleted:  founded.deleted||"",
+          itemIndex: founded.itemIndex || "",
+          deleted: founded.deleted || "",
+          trackQuantity: founded.trackQuantity || false,
         };
       }
       return item;
     })
     .map((item, idx) => ({ ...item, itemIndex: idx }));
 
-   return AdjustArray;
+  return AdjustArray;
 }

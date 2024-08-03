@@ -23,8 +23,7 @@ export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
               });
 
 
-              console.log(values,'valuesvalues');
-              return { ...item, values };
+               return { ...item, values };
             }
             return item;
           });

@@ -117,15 +117,19 @@ const FilterHeader = ({
                     SelectedItems: item?.values?.map((i, _idx) => _idx),
                   };
                 });
+
                 const isEqualIndex =
-                  Allitems?.map((item) => item?.SelectedItems).length ===
-                  prev?.map((item) => item.SelectedItems).length;
+                  Allitems?.flatMap((item) => item?.SelectedItems).length ===
+                  data?.flatMap((item) => item?.values?.map((i, _idx) => _idx))
+                    .length;
+
                 if (e.target.checked) {
                   if (!isEqualIndex) {
                     return Allitems;
                   }
-                } else {
-                  return [];
+                }
+                if (!e.target.checked ) {
+                  return Allitems;
                 }
               });
             }}

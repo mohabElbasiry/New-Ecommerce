@@ -17,6 +17,8 @@ import VariantDetails from "@/components/VariantDetails/index.jsx";
 import { dataVariants } from "@/app/product/[id]/data.js";
 import { reorderArray } from "./functions/reorderArray.js";
 import { applyFilters } from "./functions/ApplayFilters.js";
+import { CustomDialoge } from "@/components/Modal/index.js";
+import { EditMoreThanOneValues } from "./editMoreThanOnevalue/index.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -24,7 +26,6 @@ const CollapseView = ({
 
   setVarients = () => {},
 }) => {
-  console.log(varitionsValues,'varitionsvaritionsValues');
   const [checkedArray, setChecked] = useState([]);
   const [data, setData] = useState({ data: [] });
 
@@ -41,7 +42,10 @@ const CollapseView = ({
       sortKey: "",
     },
   });
-
+  const [editvalue, setEditValue] = useState({
+    value: {},
+    open: false,
+  });
   useMemo(() => {
     setFilters(
       produce((draft) => {
@@ -50,7 +54,7 @@ const CollapseView = ({
           REfvariants?.length > 1 ? REfvariants[0]?.key_en : "";
       })
     );
-    setChecked([])
+    setChecked([]);
   }, [REfvariants]);
   function sortItemsByQuantity(items, order = "asc", property) {
     let Sorteditems = [];
@@ -95,9 +99,8 @@ const CollapseView = ({
         produce((draft) => {
           let Editeddata = varitionsValues;
 
-          console.log(varitionsValues,'varitionsValuesvaritionsValuesvaritionsValues');
           if (Filters?.GroupBy?.key !== "") {
-             Editeddata = shapeData(
+            Editeddata = shapeData(
               generateQualities(
                 varitionsValues?.flatMap((item) => item?.values),
                 reorderArray(varitions, Filters?.GroupBy?.key) || []
@@ -155,7 +158,20 @@ const CollapseView = ({
   };
 
   const callculateQUantity = useCallback(
-    (values) => {
+    (values, key) => {
+      setVarients(
+        produce((draft) => {
+          draft.productvaritions.varitionsValues.forEach((element) => {
+            if (element.key === key) {
+              console.log(element, "elementelement");
+              element.quantity = element?.values?.reduce(
+                (acc, item) => (acc += +item?.quantity),
+                0
+              );
+            }
+          });
+        })
+      );
       return values?.reduce((acc, item) => (acc += +item?.quantity), 0);
     },
     [varitionsValues]
@@ -173,7 +189,23 @@ const CollapseView = ({
         setFilters={setFilters}
         Filters={Filters}
       />
+      <CustomDialoge
+        open={editvalue.open}
+        setOpen={() => {
+          setEditValue(
+            produce((draft) => {
+              draft.open = !draft.open;
+            })
+          );
+        }}
+      >
+        <EditMoreThanOneValues
+          value={editvalue.value}
+          setVarients={setVarients}
+          setEditValue={setEditValue}
 
+        />
+      </CustomDialoge>
       <Accordion type="multiple" collapsible>
         {data?.data?.map((item, idx) => {
           return (
@@ -184,31 +216,32 @@ const CollapseView = ({
                 name={item?.key}
                 maxPrice={MinAndMax(item?.values)?.max}
                 minPrice={MinAndMax(item?.values)?.min}
-                TotalQuantity={callculateQUantity(item?.values)}
+                TotalQuantity={callculateQUantity(item?.values, item?.key)}
                 varientsNumbers={item?.values?.length}
                 itemIndex={item?.itemIndex}
                 setChecked={setChecked}
                 selectedArray={item?.values}
                 checkedArray={checkedArray}
                 parent={item?.parent}
+                item={item}
               />
-              {item?.values?.length >  0 ? (
-                <>
-                  {item?.values?.map((valueItem, idx) => {
-                    return (
-                      <VarientValues
-                        itemValue={valueItem}
-                        parentIndex={item?.itemIndex}
-                        idx={idx}
-                        checkedArray={checkedArray}
-                        setChecked={setChecked}
-                        parentname={item?.key}
-                        setVarients={setVarients}
-                      />
-                    );
-                  })}
-                </>
-              ) : null}
+              <>
+                {item?.values?.map((valueItem, idx) => {
+                  return (
+                    <VarientValues
+                      setEditValue={setEditValue}
+                      itemValue={valueItem}
+                      parentIndex={item?.itemIndex}
+                      idx={idx}
+                      checkedArray={checkedArray}
+                      setChecked={setChecked}
+                      parentname={item?.key}
+                      setVarients={setVarients}
+                      
+                    />
+                  );
+                })}
+              </>
             </AccordionItem>
           );
         })}
