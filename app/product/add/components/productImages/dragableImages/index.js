@@ -66,37 +66,34 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
     // );
   };
 
-  const setImages = () => {};
   return (
-    <>
-      <div className="App">
-        <ListManager
-          items={sortedList}
-          direction="horizontal"
-          maxItems={4}
-          className="dragable"
-          render={(item) => {
-            return (
-              <div>
-                <img
-                  className={`border m-1  overflow-hidden object-cover  ${
-                    item?.idx == 0
-                      ? "w-[250px]   h-[130px]"
-                      : "  w-[100px] h-[120px]"
-                  }`}
-                  src={`${item?.name}`}
-                />
-              </div>
-            );
-          }}
-          onDragEnd={reorderList}
-        />
-        <UploadFilesModal
-          buttonContext={
-            <img className="w-[30px]" src="/upload-svgrepo-com.svg" />
-          }
-        />
-      </div>
-    </>
+    <div className="App">
+      <ListManager
+        items={sortedList}
+        direction="horizontal"
+        maxItems={4}
+        className="dragable"
+        render={(item, idx) => {
+          return (
+            <div>
+              <img
+                className={`border m-1  overflow-hidden object-cover  ${
+                  item?.idx == 0
+                    ? "w-[250px]   h-[130px]"
+                    : "  w-[100px] h-[120px]"
+                }`}
+                src={`${item?.name}`}
+              />
+            </div>
+          );
+        }}
+        onDragEnd={reorderList}
+      />
+      <UploadFilesModal
+        buttonContext={
+          <img className="w-[30px]" src="/upload-svgrepo-com.svg" />
+        }
+      />
+    </div>
   );
 };
