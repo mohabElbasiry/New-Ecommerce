@@ -11,8 +11,8 @@ import { generateQualities } from "./productVariations/collapseView/functions/Ge
 import { shapeData } from "./productVariations/collapseView/functions/datashape";
 import TourGuide from "@/components/GlobalUi/TourGuide";
 // import { List } from "./productImages/dragableImages";
-
-   const List = [
+import { useSignals } from "@preact/signals-react/runtime";
+const List = [
   {
     name: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxljCiU3pRUXpw-39aklTNk7BDV3G9Dn7ocw&s",
     order: 0,
@@ -51,11 +51,12 @@ import TourGuide from "@/components/GlobalUi/TourGuide";
   },
 ];
 
+
 export const ProductAddMaim = () => {
+  useSignals()
   const [submitedData, setSubmitedData] = useState({
     ...ProductMainDefaultValue,
   });
-
   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],

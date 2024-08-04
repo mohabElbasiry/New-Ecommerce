@@ -1,4 +1,4 @@
 "use client";
 export default function Error({ error }) {
-  return <>Error: {error.message}</>;
+  return <p className="text-[red]" >Error: {error.message}</p>;
 }

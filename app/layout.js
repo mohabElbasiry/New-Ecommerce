@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import CustomLayout from "@/components/Layout";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,11 +11,30 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  console.log("render RootLayout");
+
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Toaster
+          position="bottom-center"
+          reverseOrder={false}
+          toastOptions={toastOptions}
+          
+        />
         <CustomLayout>{children}</CustomLayout>
       </body>
     </html>
   );
 }
+
+const toastOptions = {
+  
+  style: {
+    background: "black",
+    color: "white",
+    borderRadius: "20px",
+    success: {},
+    error: {},
+  },
+};
