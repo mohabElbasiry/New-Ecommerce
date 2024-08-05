@@ -2,45 +2,37 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { produce } from "immer";
 import { useCallback, useEffect, useRef } from "react";
 
-export default function Pricing({
-  setSubmitedData,
-  price,
-  compare_to_price,
-  profit,
-  margin,
-  Cost_Per_Item,
-}) {
+export default function Pricing({ setSubmitedData, pricingData }) {
   const debounceRef = useRef(null);
-
   useEffect(() => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
     debounceRef.current = setTimeout(() => {
-      handleCalcProfitMargin(Cost_Per_Item);
+      handleCalcProfitMargin(pricingData?.Cost_Per_Item);
     }, 1200);
 
     return () => {
       clearTimeout(debounceRef.current);
     };
-  }, [Cost_Per_Item, price]);
+  }, [pricingData.Cost_Per_Item, pricingData.price]);
 
   const handleCalcProfitMargin = useCallback(
     (val) => {
       // calculate profit and margin
 
-      let price =0;
-      let profit = +price - +val;
+      let price = pricingData.price;
+      let profit = +pricingData.price - +val;
       let Margin = +(+profit / (+price || 0)) * 100;
 
       setSubmitedData(
         produce((draft) => {
-          draft.profit = val ? profit?.toFixed() : ``;
-          draft.margin = val ? Margin?.toFixed() : ``;
+          draft.pricing.profit = val ? profit?.toFixed() : ``;
+          draft.pricing.margin = val ? Margin?.toFixed() : ``;
         })
       );
     },
-    [price, Cost_Per_Item]
+    [pricingData.price, pricingData.Cost_Per_Item]
   );
 
   return (
@@ -58,12 +50,12 @@ export default function Pricing({
                 onChange={(e) =>
                   setSubmitedData(
                     produce((draft) => {
-                      draft.price = e.target.value;
+                      draft.pricing.price = e.target.value;
                     })
                   )
                 }
-                value={price}
-                defaultValue={price}
+                value={pricingData.price}
+                defaultValue={pricingData.price}
               />
             </div>
             <div className="grid gap-2 min-w-52 w-[30%]">
@@ -74,12 +66,12 @@ export default function Pricing({
                 onChange={(e) =>
                   setSubmitedData(
                     produce((draft) => {
-                      draft.compare_to_price = e.target.value;
+                      draft.pricing.compare_to_price = e.target.value;
                     })
                   )
                 }
-                value={compare_to_price}
-                defaultValue={"00.00"}
+                value={pricingData.compare_to_price}
+                defaultValue={pricingData.compare_to_price}
               />
             </div>
           </div>
@@ -89,14 +81,15 @@ export default function Pricing({
               <input
                 className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                 type="text"
+                value={pricingData?.Cost_Per_Item}
                 onChange={(e) =>
                   setSubmitedData(
                     produce((draft) => {
-                      draft.Cost_Per_Item = e.target.value;
+                      draft.pricing.Cost_Per_Item = e.target.value;
                     })
                   )
                 }
-                defaultValue={Cost_Per_Item || 0}
+                defaultValue={pricingData?.Cost_Per_Item || 0}
               />
             </div>
             <div className="grid gap-2 min-w-52 w-[30%]">
@@ -105,11 +98,9 @@ export default function Pricing({
                 className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                 type="text"
                 disabled
-                value={
-                  profit ? `${profit}` : "00.00"
-                }
+                value={pricingData.profit ? `${pricingData?.profit}` : "00.00"}
                 defaultValue={
-                  profit ? `${profit}` : "00.00"
+                  pricingData.profit ? `${pricingData?.profit}` : "00.00"
                 }
               />
             </div>
@@ -120,10 +111,10 @@ export default function Pricing({
                 type="text"
                 disabled
                 value={
-                  margin ? `${margin} %` : "00.00"
+                  pricingData.margin ? `${pricingData?.margin} %` : "00.00"
                 }
                 defaultValue={
-                 margin ? `${margin} %` : "00.00"
+                  pricingData.margin ? `${pricingData?.margin} %` : "00.00"
                 }
               />
             </div>

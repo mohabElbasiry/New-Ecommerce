@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
+import { produce } from "immer";
 
 // Using dynamic import of Jodit component as it can't render on server side
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-export default function TextEditor({ content, setContent }) {
+export default function TextEditor({ content, setContent, setSubmitedData }) {
   const editor = useRef(null);
-
 
   // Custom configuration for Jodit editor
   const config = useMemo(
@@ -15,18 +15,17 @@ export default function TextEditor({ content, setContent }) {
       // Customize toolbar buttons
       // buttons: [
       //   "paragraph", "bold", "italic", "underline",
-      
-        
+
       // ],
       // Remove specific buttons
-  //     removeButtons: [
-  //       "spellcheck", "speechRecognize", "table", "hr", 
-  // "ai-assistant", "brush"
-  //     ],
+      //     removeButtons: [
+      //       "spellcheck", "speechRecognize", "table", "hr",
+      // "ai-assistant", "brush"
+      //     ],
       // Custom image uploader configuration
       uploader: {
         insertImageAsBase64URI: true,
-        imagesExtensions: ["jpg", "png", "jpeg", "gif", "svg", "webp"]
+        imagesExtensions: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
       },
       // Disable unwanted plugins
       disablePlugins: ["video", "file", "preview", "print"],
@@ -36,10 +35,15 @@ export default function TextEditor({ content, setContent }) {
     []
   );
 
-
   // Function to handle changes in the editor
   const handleChange = (value) => {
+    console.log("value sad  hdjsad::: ", value);
     setContent(value);
+    setSubmitedData(
+      produce((draft) => {
+        draft.productDetails.description_en = value;
+      })
+    );
   };
 
   return (

@@ -1,5 +1,4 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
-import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 import Seo from "./tags";
 import ShippingInfo from "./ShippingInfo";
@@ -7,21 +6,28 @@ import TextEditor from "@/components/TextEditor";
 import { produce } from "immer";
 import { memo } from "react";
 import { isEqual } from "lodash";
-const BasicData = (
-  {
-    submitedData = {},
-    formData = {},
-    setSubmitedData = ()=>{},
-  }
-) => {
-   const UdateBasicInfo = (e, setSubmitedData) => {
-    setSubmitedData((prev) => ({
-      ...prev,
-      productDetails: {
-        ...prev.productDetails,
-        [e.target.name]: e.target.value,
-      },
-    }));
+const BasicData = ({
+  submitedData = {},
+  formData = {},
+  setSubmitedData = () => {},
+  pricingData = {},
+  shippingData = {},
+  seoData = {},
+}) => {
+  const UdateBasicInfo = (e, setSubmitedData) => {
+    // setSubmitedData((prev) => ({
+    //   ...prev,
+    //   productDetails: {
+    //     ...prev.productDetails,
+    //     [e.target.name]: e.target.value,
+    //   },
+    // }));
+    const { value, name } = e.target;
+    setSubmitedData(
+      produce((draft) => {
+        draft.productDetails[name] = value;
+      })
+    );
   };
 
   const updateDetails = (e) => {
@@ -32,8 +38,7 @@ const BasicData = (
     );
   };
 
-  const { errors={}, register={} } = formData;
-
+  const { errors = {}, register = {} } = formData;
   return (
     <div
       className="gap-5
@@ -55,6 +60,7 @@ const BasicData = (
               UdateBasicInfo(e, setSubmitedData);
             }}
           />
+
           {/* <InputWithLabelComponent
         Input
         label="product name in Arabic"
@@ -75,6 +81,7 @@ const BasicData = (
         <TextEditor
           content={submitedData?.description_en}
           setContent={updateDetails}
+          setSubmitedData={setSubmitedData}
         />
       </div>
       {/* <Inventory
@@ -82,12 +89,12 @@ const BasicData = (
         submitedData={submitedData}
         register={register}
       />{" "} */}
-      <Pricing submitedData={submitedData} setSubmitedData={setSubmitedData} />
+      <Pricing pricingData={pricingData} setSubmitedData={setSubmitedData} />
       <ShippingInfo
-        submitedData={submitedData}
         setSubmitedData={setSubmitedData}
+        shippingData={shippingData}
       />
-      <Seo />{" "}
+      <Seo seoData={seoData} setSubmitedData={setSubmitedData} />
     </div>
   );
 };
