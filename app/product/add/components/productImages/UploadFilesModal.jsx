@@ -1,31 +1,22 @@
 import UploadFile from "@/app/product/components/UploadFile";
 import { CustomDialoge } from "@/components/Modal";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogClose,
-} from "@/components/ui/dialog";
 import { getOperation, imageBaseUrl } from "@/lib/apiUtils";
 import { produce } from "immer";
 import Image from "next/image";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function UploadFilesModal({ handleSubmit, buttonContext }) {
-  const ModalClose = useRef();
-  const ModalSubmit = useRef();
+export default function UploadFilesModal({
+  buttonContext,
+  selectedImages,
+  setSubmitedData,
+  buttonCss
+}) {
   const [UrlsFiles, setUrlsFiles] = useState([]);
   const [UrlsFilesSelected, setUrlsFilesSelected] = useState([]);
   console.log(UrlsFiles);
   const [open, setOpen] = useState(false);
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setSubmitedData(produce((prev)=>{
-  //       UrlsFiles.map(url=> prev.images.push())
-  //   }));
-  //   setShowModal(false);
-  // };
+
   useEffect(() => {
     const fetchAllFiles = async () => {
       if (open) {
@@ -39,21 +30,30 @@ export default function UploadFilesModal({ handleSubmit, buttonContext }) {
           setUrlsFiles(data.data);
         }
       } else {
-        setUrlsFiles(data.data);
+        setUrlsFiles(data?.data || []);
       }
     };
     fetchAllFiles();
-    if (open && UrlsFilesSelected?.length) {
-      setUrlsFilesSelected([]);
+   
+    if (open && selectedImages?.length) {
+      setUrlsFilesSelected(selectedImages);
     }
   }, [open]);
+  const handleSelectImage = (fileUrl) => {
+    const existed = UrlsFilesSelected?.find((sel) => sel._id === fileUrl._id);
 
+    !existed
+      ? setUrlsFilesSelected((prev) => [fileUrl, ...prev])
+      : setUrlsFilesSelected((prev) =>
+          prev.filter((url) => url._id != fileUrl._id)
+        );
+  };
   return (
     <>
       <button
         onClick={() => setOpen(!open)}
         type="button"
-        className="border w-[30px border-[#eee] rounded-lg w-[100px] h-[100px] font-medium  cursor-pointer flex items-center justify-center size-5     p-3"
+        className={`border w-[30px border-[#eee] rounded-lg  font-medium  cursor-pointer flex items-center justify-center size-5     p-3 ${buttonCss}`}
       >
         {buttonContext}
       </button>
@@ -74,17 +74,7 @@ export default function UploadFilesModal({ handleSubmit, buttonContext }) {
                   <div
                     key={index}
                     className="relative rounded-2xl aspect-square  cursor-pointer  h-[150px] w-[150px] !p-5 !flex !items-center !justify-center mx-auto"
-                    onClick={() => {
-                      const existed = UrlsFilesSelected?.find(
-                        (sel) => sel._id === fileUrl._id
-                      );
-
-                      !existed
-                        ? setUrlsFilesSelected((prev) => [fileUrl, ...prev])
-                        : setUrlsFilesSelected((prev) =>
-                            prev.filter((url) => url._id != fileUrl._id)
-                          );
-                    }}
+                    onClick={() => handleSelectImage(fileUrl)}
                   >
                     <input
                       className="absolute top-2 left-3 z-10 cursor-pointer"
@@ -100,7 +90,6 @@ export default function UploadFilesModal({ handleSubmit, buttonContext }) {
                     <Image
                       fill
                       src={`${imageBaseUrl}/${fileUrl.filename}`}
-                      // src={`/girl2.jpg`}
                       alt={fileUrl.filename}
                       className="object-contain object-center !w-[80%] !h-[80%] mt-[10%] mx-auto border-3 border-[gray] rounded"
                     />
@@ -121,7 +110,13 @@ export default function UploadFilesModal({ handleSubmit, buttonContext }) {
             <button
               className=" text-white font-medium bg-blue-500 text-sm py-2 px-3 rounded-md focus:outline-none hover:bg-blue-400"
               onClick={() => {
-                handleSubmit(UrlsFilesSelected);
+                setSubmitedData(
+                  produce((draft) => {
+                    draft.productDetails.images = UrlsFilesSelected.map(
+                      (item, idx) => ({ ...item, idx, order: idx })
+                    );
+                  })
+                );
                 setOpen(!open);
               }}
             >

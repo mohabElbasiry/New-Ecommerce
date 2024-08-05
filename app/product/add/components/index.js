@@ -72,17 +72,17 @@ export const ProductAddMaim = () => {
       return [...(prev ?? []), submitedData];
     });
   }, [submitedData.productvaritions]);
-  useEffect(() => {
-    setSubmitedData(
-      produce((draft) => {
-        draft.productDetails.images = List.map((item, idx) => ({
-          name: item.name,
-          order: idx,
-          idx,
-        }));
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   // setSubmitedData(
+  //   //   produce((draft) => {
+  //   //     draft.productDetails.images = List.map((item, idx) => ({
+  //   //       name: item.name,
+  //   //       order: idx,
+  //   //       idx,
+  //   //     }));
+  //   //   })
+  //   // );
+  // }, []);
   const dataSteps = [
     {
       key: "steps Variant",
@@ -209,7 +209,7 @@ export const ProductAddMaim = () => {
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
   });
-  console.log("Initial State", submitedData);
+  console.log("Initial State::: ", submitedData);
   return (
     <>
       <TourGuide stepsData={dataSteps} />
