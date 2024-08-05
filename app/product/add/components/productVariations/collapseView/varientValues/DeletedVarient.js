@@ -1,32 +1,27 @@
 import { AccordionContent } from "@/components/ui/accordion";
 import { produce } from "immer";
+import { memo } from "react";
 
-export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
-  console.log("object");
+ const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
+  console.log('rerender')
+
   const Undo = () => {
     setVarients(
       produce((draft) => {
-        const updatedValuesAfterDelete =
-          draft.productvaritions.varitionsValues.map((item) => {
-            if (item?.key === parentname) {
-              const values = item?.values.map((itemv, index) => {
-                if (idx === itemv.itemIndex) {
-                  return {
-                    ...itemv,
-                    deleted: false,
-                  };
-                }
-                return itemv;
-              });
+        draft.productvaritions.varitionsValues.forEach((item) => {
+          if (item?.key === parentname) {
+            item.values.forEach((itemv) => {
+              if (itemv.itemIndex === idx) {
+                itemv.deleted = false; // Directly mutate the item
+              }
+            });
+          }
+        });
 
-              return { ...item, values };
-            }
-            return item;
-          });
-
-        draft.productvaritions.varitionsValues = updatedValuesAfterDelete;
+        // Build the activeVariantsMap in a single iteration
         const activeVariantsMap = new Map();
-        updatedValuesAfterDelete.forEach((item) => {
+
+        draft.productvaritions.varitionsValues.forEach((item) => {
           item.values.forEach((variant) => {
             if (!variant.deleted) {
               variant.values.forEach((v) => {
@@ -39,21 +34,25 @@ export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
           });
         });
 
-        const updatedOptions = draft.productvaritions.variants
-          .map((option) => {
-            const activeValues =
-              activeVariantsMap.get(option.key_en) || new Set();
-            return {
-              ...option,
-              values: option.values.filter((value) =>
-                activeValues.has(value.value_en)
-              ),
-            };
-          })
-          .filter((item) => item?.values.length);
+        // Update the original options array based on activeVariantsMap
+        draft.productvaritions.variants.forEach((option) => {
+          const activeValues =
+            activeVariantsMap.get(option.key_en) || new Set();
+          option.values = option.values.filter((value) =>
+            activeValues.has(value.value_en)
+          );
+        });
 
-        draft.productvaritions.variants = updatedOptions;
-        draft.productvaritions.REfvariants = updatedOptions;
+        // Filter out empty options directly in the original array
+        draft.productvaritions.variants =
+          draft.productvaritions.variants.filter(
+            (option) => option.values.length > 0
+          );
+
+        // Apply the same updates to the REfvariants
+        draft.productvaritions.REfvariants = draft.productvaritions.variants;
+        const { history, ...others } = draft;
+        draft.history.push(others);
       })
     );
   };
@@ -76,3 +75,4 @@ export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
     </div>
   );
 };
+export default memo(DeletedVarient)

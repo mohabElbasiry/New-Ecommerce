@@ -6,6 +6,7 @@ import {
 } from "../functions/updatePropertyBasedOnChild";
 import { useCallback, useEffect } from "react";
 import { produce } from "immer";
+import { debounce } from "lodash";
 
 export const VarientContent = ({
   setVarients,
@@ -130,18 +131,16 @@ border-[#ddd]  mt-1 ${
                 if (!isNaN(e?.target?.value)) {
                   setVarients(
                     produce((draft) => {
-                      const indexMap = createIndexMap(
-                        draft.productvaritions.varitionsValues
-                      );
-                      const updatedPrice = updatePropertyChild(
-                        draft.productvaritions.varitionsValues,
-                        parentIndex,
-                        itemValue?.itemIndex,
+                      updatePropertyChild(
+                        draft,
                         "price",
                         e.target.value,
-                        indexMap
+                        itemValue
                       );
-                      draft.productvaritions.varitionsValues = updatedPrice;
+                      const { history, ...others } = draft;
+                      draft.history.push(others);
+
+                     
                     })
                   );
                 }
@@ -164,18 +163,15 @@ border-[#ddd]  mt-1 ${
                 if (!isNaN(e?.target?.value)) {
                   setVarients(
                     produce((draft) => {
-                      const indexMap = createIndexMap(
-                        draft.productvaritions.varitionsValues
-                      );
-                      const updatedPrice = updatePropertyChild(
-                        draft.productvaritions.varitionsValues,
-                        parentIndex,
-                        itemValue?.itemIndex,
+                      updatePropertyChild(
+                        draft,
                         "quantity",
                         e.target.value,
-                        indexMap
+                        itemValue
                       );
-                      draft.productvaritions.varitionsValues = updatedPrice;
+
+                      const { history, ...others } = draft;
+                      draft.history.push(others);
                     })
                   );
                 }

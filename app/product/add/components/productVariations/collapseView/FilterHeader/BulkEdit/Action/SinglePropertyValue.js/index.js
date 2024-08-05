@@ -2,38 +2,45 @@ import { CustomDialoge } from "@/components/Modal";
 import { produce } from "immer";
 import { defaultValues } from "../defaultValues";
 
-export const SinglePropertyValue = ({setOpenModal,checkedArray,openModal,setVarients})=> {
-    const SetPropertyValues = (property, value) => {
-        setVarients(
-          produce((draft) => {
-            const checkedMap = new Map(
-              checkedArray.map((item) => [item.key, item])
-            );
-            const updatedDraft = draft.productvaritions.varitionsValues.map(
-              (item) => {
-                const checkedItem = checkedMap.get(item?.key);
-                if (checkedItem) {
-                  const values = item?.values?.map((itemv, idx) => {
-                    if (checkedItem?.SelectedItems?.includes(idx)) {
-                      return {
-                        ...itemv,
-                        [property]: value,
-                      };
-                    }
-                    return itemv;
-                  });
+export const SinglePropertyValue = ({
+  setOpenModal,
+  checkedArray,
+  openModal,
+  setVarients,
+}) => {
+  const SetPropertyValues = (property, value) => {
+    setVarients(
+      produce((draft) => {
+        const checkedMap = new Map(
+          checkedArray.map((item) => [item.key, item])
+        );
+        const updatedDraft = draft.productvaritions.varitionsValues.map(
+          (item) => {
+            const checkedItem = checkedMap.get(item?.key);
+            if (checkedItem) {
+              const values = item?.values?.map((itemv, idx) => {
+                if (checkedItem?.SelectedItems?.includes(idx)) {
                   return {
-                    ...item,
-                    values,
+                    ...itemv,
+                    [property]: value,
                   };
                 }
-                return item;
-              }
-            );
-            draft.productvaritions.varitionsValues = updatedDraft;
-          })
+                return itemv;
+              });
+              return {
+                ...item,
+                values,
+              };
+            }
+            return item;
+          }
         );
-      };
+        draft.productvaritions.varitionsValues = updatedDraft;
+        const { history, ...others } = draft;
+        draft.history.push(others);
+      })
+    );
+  };
   return (
     <CustomDialoge
       open={openModal?.isOpen}

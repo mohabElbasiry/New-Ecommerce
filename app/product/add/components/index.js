@@ -56,33 +56,40 @@ export const ProductAddMaim = () => {
     ...ProductMainDefaultValue,
   });
   const [history, setHistory] = useState([ProductMainDefaultValue]);
-  const [data, setData] = useState({
+   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
   });
 
-  useMemo(() => {
-    const maximumLength = 20;
+  // useMemo(() => {
+  //   const maximumLength = 20;
+  //   setHistory((prev) => {
+  //     if (changeonHistory === false) {
+  //       console.log("object");
 
-    setHistory((prev) => {
-      if (prev?.length === maximumLength) {
-        const deleteFirstTenELements = prev.slice(10);
-        return [...deleteFirstTenELements, submitedData];
-      }
-      return [...(prev ?? []), submitedData];
-    });
-  }, [submitedData.productvaritions]);
-  // useEffect(() => {
-  //   // setSubmitedData(
-  //   //   produce((draft) => {
-  //   //     draft.productDetails.images = List.map((item, idx) => ({
-  //   //       name: item.name,
-  //   //       order: idx,
-  //   //       idx,
-  //   //     }));
-  //   //   })
-  //   // );
-  // }, []);
+  //       if (prev?.length === maximumLength) {
+  //         const deleteFirstTenELements = prev.slice(10);
+  //         return [...deleteFirstTenELements, submitedData];
+  //       }
+  //       return [...(prev ?? []), submitedData];
+  //     } else {
+  //       console.log("object");
+  //       return prev;
+  //     }
+  //   });
+  // }, [submitedData?.productvaritions, changeonHistory]);
+
+  useEffect(() => {
+    setSubmitedData(
+      produce((draft) => {
+        draft.productDetails.images = List.map((item, idx) => ({
+          name: item.name,
+          order: idx,
+          idx,
+        }));
+      })
+    );
+  }, []);
   const dataSteps = [
     {
       key: "steps Variant",
@@ -204,12 +211,11 @@ export const ProductAddMaim = () => {
     getValues,
     setError,
     clearErrors,
-
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
   });
-  console.log("Initial State::: ", submitedData);
+  console.log("Initial State", submitedData);
   return (
     <>
       <TourGuide stepsData={dataSteps} />
@@ -230,10 +236,14 @@ export const ProductAddMaim = () => {
             }}
             data={data}
             setData={setData}
-          />
+           />
         </div>
 
-        <BottomBar />
+        <BottomBar
+          setHistory={setHistory}
+          history={submitedData?.history}
+          setSubmitedData={setSubmitedData}
+         />
       </Headercomponent>
     </>
   );

@@ -1,5 +1,4 @@
 import { TooltipF } from "@/components/ToolTipCostom";
- 
 import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
 import { memo, useCallback, useMemo, useState } from "react";
 import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
@@ -94,18 +93,17 @@ const VarientKey = ({
                   if (!isNaN(e?.target?.value)) {
                     setVarients(
                       produce((draft) => {
-                        draft.productvaritions.varitionsValues =
-                          updatePropertyParent(
-                            draft?.productvaritions.varitionsValues,
-                            itemIndex,
-                            e.target.value,
-                            "price"
-                          );
+                        updatePropertyParent(
+                          draft?.productvaritions.varitionsValues,
+                          itemIndex,
+                          e.target.value,
+                          "price"
+                        );
                       })
                     );
                   }
                   return;
-                }, 300)}
+                })}
               />
             </div>
           </TooltipF>
@@ -121,20 +119,14 @@ const VarientKey = ({
                 if (!isNaN(e?.target?.value)) {
                   setVarients(
                     produce((draft) => {
-                      console.log(
-                        updatePropertyParent(
-                          draft?.productvaritions.varitionsValues,
-                          itemIndex,
-                          e.target.value
-                        )
+                      updatePropertyParent(
+                        draft?.productvaritions.varitionsValues,
+                        itemIndex,
+                        e.target.value,
+                        "quantity"
                       );
-                      draft.productvaritions.varitionsValues =
-                        updatePropertyParent(
-                          draft?.productvaritions.varitionsValues,
-                          itemIndex,
-                          e.target.value,
-                          "quantity"
-                        );
+                      const { history, ...others } = draft;
+                      draft.history.push(others);
                     })
                   );
                 }

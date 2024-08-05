@@ -9,7 +9,7 @@ import { shapeData } from "../collapseView/functions/datashape";
 import { ReorderIcon } from "../../drageControl";
 import { uid } from "uid";
 
-export default function CreateVariation({ listIndex, setList, list }) {
+export default function CreateVariation({ listIndex, setList, list,setChangeOnHistory }) {
   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
@@ -355,6 +355,8 @@ export default function CreateVariation({ listIndex, setList, list }) {
                   dataShape,
                   updatedVarient || []
                 );
+                const {history,...others}=draft
+                draft.history.push(others)
               })
             );
           }}
@@ -464,6 +466,8 @@ export default function CreateVariation({ listIndex, setList, list }) {
                   dataShape,
                   updatedVariants
                 );
+                const {history,...others}=draft
+                draft.history.push(others)
               })
             );
           }}

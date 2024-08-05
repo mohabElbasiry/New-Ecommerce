@@ -2,8 +2,14 @@ import { Reorder, motion, useDragControls } from "framer-motion";
 import CreateVariation from "./createVariations";
 import { ReorderIcon } from "../drageControl";
 
-export default function ReorderItem({item,setVarients,idx,data,productVarients}) {
-    const dragControls = useDragControls();
+export default function ReorderItem({
+  item,
+  setVarients,
+  idx,
+  data,
+  productVarients,
+}) {
+  const dragControls = useDragControls();
   return (
     <Reorder.Item
       onDragEnd={(e) => e.stopPropagation()}
@@ -31,20 +37,16 @@ export default function ReorderItem({item,setVarients,idx,data,productVarients})
           onClick={() => {
             setVarients(
               produce((draft) => {
-                draft.productvaritions.variants =
-                  draft?.productvaritions.variants?.map((item, index) => {
-                    if (idx === index) {
-                      return {
-                        ...item,
-
-                        edit: true,
-                      };
-                    }
-                    return item;
-                  });
+                draft?.productvaritions.variants?.forEach((item, index) => {
+                  if (idx === index) {
+                    item["edit"] = true;
+                  }
+                  return item;
+                });
+                const { history, ...others } = draft;
+                draft.history.push(others);
               })
             );
-            // localStorage?.setItem("list", JSON.stringify(list));
           }}
         >
           <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">

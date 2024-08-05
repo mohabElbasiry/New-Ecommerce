@@ -101,28 +101,21 @@ const Actions = ({
         const checkedMap = new Map(
           checkedArray.map((item) => [item.key, item])
         );
-        const updatedDraft = draft.productvaritions.varitionsValues.map(
-          (item) => {
-            const checkedItem = checkedMap.get(item?.key);
-            if (checkedItem) {
-              const values = item?.values?.map((itemv, idx) => {
-                if (checkedItem?.SelectedItems?.includes(idx)) {
-                  return {
-                    ...itemv,
-                    [property]: value,
-                  };
-                }
-                return itemv;
-              });
-              return {
-                ...item,
-                values,
-              };
-            }
-            return item;
+        draft.productvaritions.varitionsValues.forEach((item) => {
+          const checkedItem = checkedMap.get(item?.key);
+          if (checkedItem) {
+            item?.values?.forEach((itemv, idx) => {
+              if (checkedItem?.SelectedItems?.includes(idx)) {
+                item.values[idx] = {
+                  ...itemv,
+                  [property]: value,
+                };
+              }
+            });
           }
-        );
-        draft.productvaritions.varitionsValues = updatedDraft;
+        });
+        const { history, ...others } = draft;
+        draft.history.push(others);
       })
     );
   };
@@ -296,7 +289,7 @@ const Actions = ({
               })
               .filter((item) => {
                 if (!item.values.length) {
-                  return item.deleted ===false;
+                  return item.deleted === false;
                 }
 
                 return item;

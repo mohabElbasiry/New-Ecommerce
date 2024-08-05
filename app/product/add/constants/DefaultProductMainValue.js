@@ -1,3 +1,8 @@
+import { enableMapSet } from "immer";
+
+// Enable support for Map and Set
+enableMapSet();
+
 export const ProductMainDefaultValue = {
   productvaritions: {
     variants: [],
@@ -5,6 +10,8 @@ export const ProductMainDefaultValue = {
     setShapeData: [],
     referencevarients: [],
     REfvariants: [],
+    varientLookup:new Map(),
+
   },
   pricing: {
     price: "",
@@ -32,4 +39,5 @@ export const ProductMainDefaultValue = {
   publishTime: "",
   setSubmitedData: () => {},
   submitedData: {},
+  history: [],
 };

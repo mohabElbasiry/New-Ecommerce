@@ -38,7 +38,7 @@ export const ProductDetailsComponent = ({
             />
             <ProductImages
               setSubmitedData={setSubmitedData}
-              images={submitedData.productDetails.images}
+              images={submitedData?.productDetails?.images}
             />
           </div>
           <div className="w-full overflow-auto ">

@@ -1,6 +1,37 @@
 import { TooltipF } from "@/components/ToolTipCostom";
+import { useCallback, useEffect, useState } from "react";
 
-export const BottomBar = () => {
+export const BottomBar = ({ setHistory, history, setSubmitedData }) => {
+  const [index, setIndex] = useState(0);
+  const currentState = history?.[index];
+
+  const UpdateState = (newIndex) => {
+    setSubmitedData({ ...history[newIndex], history });
+  };
+
+  useEffect(() => {
+    // This effect runs only when you intentionally want to update the history.
+    if (index !== history?.length - 1) {
+      setIndex(history.length - 1);
+    }
+  }, [history]);
+
+  const undo = () => {
+    if (index > 0) {
+      const newIndex = index - 1;
+      setIndex(newIndex);
+      UpdateState(newIndex);
+    }
+  };
+
+  const redo = () => {
+    if (index < history.length - 1) {
+      const newIndex = index + 1;
+      setIndex(newIndex);
+      UpdateState(newIndex);
+    }
+  };
+
   return (
     <div
       className=" 
@@ -28,21 +59,35 @@ export const BottomBar = () => {
       </div>
       <div className="flex items-center  ">
         <TooltipF text={"Undo"}>
-          <img
-            src="/producticons/undo.svg"
-            className=" w-[40px] h-[30px] cursor-pointer  mx-2 rounded p-[5px] bg-[#eee]"
-            width={30}
-            height={30}
-          />
+          <button
+            type="button"
+            onClick={undo}
+            disabled={index === 0}
+            className="disabled:bg-red-200"
+          >
+            <img
+              src="/producticons/undo.svg"
+              className=" w-[40px] h-[30px] cursor-pointer  mx-2 rounded p-[5px] bg-[#eee]"
+              width={30}
+              height={30}
+            />
+          </button>
         </TooltipF>
 
         <TooltipF text={"Redo"}>
-          <img
-            src="/producticons/redo.svg"
-            className="    w-[40px] h-[30px] cursor-pointer  mx-2 rounded p-[5px] bg-[#eee]"
-            width={30}
-            height={30}
-          />
+          <button
+            type="button"
+            disabled={index === history?.length}
+            onClick={redo}
+            className="disabled:bg-red-200"
+          >
+            <img
+              src="/producticons/redo.svg"
+              className="    w-[40px] h-[30px] cursor-pointer  mx-2 rounded p-[5px] bg-[#eee]"
+              width={30}
+              height={30}
+            />
+          </button>
         </TooltipF>
       </div>
     </div>

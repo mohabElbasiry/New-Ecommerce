@@ -3,7 +3,8 @@ import CreateVariation from "../..";
 import { produce } from "immer";
 import { ReorderIcon } from "../../../../drageControl";
 
-export const VariationItem=({productVarients=[],setVarients=()=>{},item ={},idx=-1})=>{
+export const VariationItem=({productVarients=[],
+  setVarients=()=>{},item ={},idx=-1})=>{
 
     const dragControls = useDragControls();
 
@@ -36,6 +37,7 @@ export const VariationItem=({productVarients=[],setVarients=()=>{},item ={},idx=
                 setList={setVarients}
                 listIndex={idx}
                 list={productVarients?.variants}
+ 
               />
             ) : (
               <div
@@ -53,9 +55,12 @@ export const VariationItem=({productVarients=[],setVarients=()=>{},item ={},idx=
                           }
                           return item;
                         });
+                        const {history,...others}=draft
+                        draft.history.push(others)
                     })
                   );
-                 }}
+                  }}
+                 
               >
                 <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">
                   <div className="mt-3  p-2 flex flex-col gap-3 px-2  hover:bg-[#eee] cursor-pointer">
