@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
 import { fetchImage, UploadFileToApi } from "../functions/fun";
 import { PopoverClose } from "@radix-ui/react-popover";
-import UploadFileFromUrlModal from "./uploadFileFromUrlModal";
 
 export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
   const InputRef = useRef();
@@ -106,11 +105,11 @@ export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
               className="z-50 bg-white shadow-2xl  p-2 px-4 text-sm text-gray-600 border rounded-xl"
               onClick={() => InputRef.current.click()}
             >
-              Add Media
+              Add media
             </button>
-            <Popover className="z-50">
-              <PopoverTrigger className="z-50" asChild>
-                <Button className="z-50 text-gray-600" variant="ghost">
+            {/* <Popover className="[z-index:999]">
+              <PopoverTrigger className="[z-index:999]" asChild>
+                <Button className="[z-index:999]  text-gray-600" variant="ghost">
                   Add from URL
                 </Button>
               </PopoverTrigger>
@@ -120,7 +119,9 @@ export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
                     <h3 className="font-medium leading-none">
                       Add media from URL
                     </h3>
-                    <UploadFileFromUrlModal />
+                    <p className="text-sm text-muted-foreground">
+                      Image, or Vimeo URL
+                    </p>
                   </div>
                   <div className="grid gap-2">
                     <div className="grid grid-cols-1 items-center gap-4">
@@ -149,6 +150,25 @@ export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
                       </Button>
                     </PopoverClose>
                   </div>
+                </div>
+              </PopoverContent>
+            </Popover> */}
+            <Popover className="[z-index:999]">
+              <PopoverTrigger className="text-gray-600 text-sm [z-index:999]">
+                Add from URL
+              </PopoverTrigger>
+              <PopoverContent className="text-grey-600 text-sm [z-index:999]">
+                <h4 className="font-[600]">Add media from URL</h4>
+                <div className="my-4" >
+                  <label>Image, YouTube, or Vimeo URL</label>
+                  <div className="flex flex-col gap-3 items-start">
+                    <input
+                      type="text"
+                      placeholder="https://"
+                      className="border outline-none w-full"
+                    />
+                  </div>
+                  <button className="bg-[red]" >add file</button>
                 </div>
               </PopoverContent>
             </Popover>

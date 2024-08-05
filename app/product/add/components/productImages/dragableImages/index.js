@@ -75,7 +75,7 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
           direction="horizontal"
           maxItems={6}
           className="dragable"
-          render={(item, idx) => {
+          render={(item) => {
             return (
               <div>
                 <img

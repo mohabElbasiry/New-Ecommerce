@@ -5,7 +5,7 @@ import "./tree-style.css";
 import { treeData } from "../../constants/treeItemsData";
 import Model from "./Model";
 import { treeRendering } from "./treeRendering";
-
+import { toastMessagener } from "@/components/Layout/RootSignal";
 export default function Tree() {
   const [treeItems, setTreeItems] = useState(treeData);
   const [open, setOpen] = useState(false);
@@ -103,6 +103,7 @@ export default function Tree() {
     return findOperation(treeItems);
   };
   const addNewElementToTree = (newItem) => {
+    toastMessagener.success(`Success from Single toast`);
     setTreeItems((prev) => [...prev, newItem]);
   };
   console.log("get =>>> ", treeItems);

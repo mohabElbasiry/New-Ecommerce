@@ -1,12 +1,15 @@
-import React from 'react'
-import SideMenu from './sidemenu'
+import React from "react";
+import SideMenu from "./sidemenu";
+import RootSignal from "./RootSignal";
 
-export default function CustomLayout({children}) {
+export default function CustomLayout({ children }) {
   return (
-    <div className='flex w-full'>
-    <SideMenu />
-    <div className='flex-1'>
-      {children}</div>
-    </div>
-  )
+    <>
+      <RootSignal />
+      <div className="flex w-full">
+        <SideMenu />
+        <div className="flex-1">{children}</div>
+      </div>
+    </>
+  );
 }
