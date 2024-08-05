@@ -29,7 +29,7 @@ export default function Pricing({
     (val) => {
       // calculate profit and margin
 
-      let price =price;
+      let price =0;
       let profit = +price - +val;
       let Margin = +(+profit / (+price || 0)) * 100;
 

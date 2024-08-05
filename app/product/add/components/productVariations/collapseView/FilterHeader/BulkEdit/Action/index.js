@@ -123,6 +123,8 @@ const Actions = ({
           }
         );
         draft.productvaritions.varitionsValues = updatedDraft;
+        const { history, ...others } = draft;
+        draft.history.push(others);
       })
     );
   };
@@ -296,7 +298,7 @@ const Actions = ({
               })
               .filter((item) => {
                 if (!item.values.length) {
-                  return item.deleted ===false;
+                  return item.deleted === false;
                 }
 
                 return item;

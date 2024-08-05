@@ -25,6 +25,8 @@ export const EditMoreThanOneValues = ({ value, setVarients, setEditValue }) => {
               values,
             };
           });
+        const { history, ...others } = draft;
+        draft.history.push(others);
       })
     );
     setEditValue((prev) => ({ ...prev, open: false }));

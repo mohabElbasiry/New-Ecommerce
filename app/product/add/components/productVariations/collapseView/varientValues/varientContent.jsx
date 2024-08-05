@@ -142,6 +142,8 @@ border-[#ddd]  mt-1 ${
                         indexMap
                       );
                       draft.productvaritions.varitionsValues = updatedPrice;
+                      const {history,...others}=draft
+                      draft.history.push(others)
                     })
                   );
                 }
@@ -176,8 +178,11 @@ border-[#ddd]  mt-1 ${
                         indexMap
                       );
                       draft.productvaritions.varitionsValues = updatedPrice;
+                      const {history,...others}=draft
+                      draft.history.push(others)
                     })
                   );
+                  
                 }
                 return;
               }}

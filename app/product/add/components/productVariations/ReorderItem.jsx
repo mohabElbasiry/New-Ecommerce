@@ -2,8 +2,14 @@ import { Reorder, motion, useDragControls } from "framer-motion";
 import CreateVariation from "./createVariations";
 import { ReorderIcon } from "../drageControl";
 
-export default function ReorderItem({item,setVarients,idx,data,productVarients}) {
-    const dragControls = useDragControls();
+export default function ReorderItem({
+  item,
+  setVarients,
+  idx,
+  data,
+  productVarients,
+}) {
+  const dragControls = useDragControls();
   return (
     <Reorder.Item
       onDragEnd={(e) => e.stopPropagation()}
@@ -42,8 +48,11 @@ export default function ReorderItem({item,setVarients,idx,data,productVarients})
                     }
                     return item;
                   });
+                const { history, ...others } = draft;
+                draft.history.push(others);
               })
             );
+
             // localStorage?.setItem("list", JSON.stringify(list));
           }}
         >

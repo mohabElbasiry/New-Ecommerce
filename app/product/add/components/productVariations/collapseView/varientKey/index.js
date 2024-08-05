@@ -1,5 +1,4 @@
 import { TooltipF } from "@/components/ToolTipCostom";
- 
 import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
 import { memo, useCallback, useMemo, useState } from "react";
 import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
@@ -20,13 +19,13 @@ const VarientKey = ({
   item,
   setVarients = () => {},
 }) => {
-  const SelectedItems = useMemo(() => {
+   const SelectedItems = useMemo(() => {
     return selectedArray?.map((_, idx) => idx);
   }, [selectedArray]);
   const memoizedCheckedArray = useMemo(() => checkedArray, [checkedArray]);
   const checked = useCallback(
     (name) => {
-      const checkedElements = new Map();
+       const checkedElements = new Map();
       if (checkedArray?.length) {
         checkedArray?.forEach((item) => {
           checkedElements.set(item?.key, item);
@@ -41,13 +40,14 @@ const VarientKey = ({
     },
     [memoizedCheckedArray]
   );
-  console.log(item?.valuesL, "item?.valuesL item?.valuesL ");
+  console.log(item?.valuesL ,'item?.valuesL item?.valuesL ');
   if (item?.valuesL >= 2) {
     return (
       <AccordionTrigger
         className="flex 
         items-center w-full justify-between  border-[#ddd] border-b text-sm"
       >
+ 
         <div className="flex items-center gap-3">
           <input
             type="checkbox"
@@ -101,11 +101,14 @@ const VarientKey = ({
                             e.target.value,
                             "price"
                           );
+                          const {history,...others}=draft
+                          draft.history.push(others)
                       })
                     );
+               
                   }
                   return;
-                }, 300)}
+                },300)}
               />
             </div>
           </TooltipF>
@@ -135,7 +138,10 @@ const VarientKey = ({
                           e.target.value,
                           "quantity"
                         );
+                        const {history,...others}=draft
+                        draft.history.push(others)
                     })
+               
                   );
                 }
                 return;

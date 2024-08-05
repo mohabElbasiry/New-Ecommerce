@@ -12,41 +12,40 @@ const MultibleValues = ({
   property,
   setVarients,
 }) => {
-        console.log('adssssss123231321')
+  console.log("adssssss123231321");
   const [EditingValues, SetEditingValues] = useState(SelectedArray);
   useMemo(() => {
     console.log(SelectedArray, "SelectedArraySelectedArray");
     SetEditingValues(SelectedArray);
   }, [SelectedArray]);
 
-  const SetPropertyValues =
-    (property) => {
-      setVarients(
-        produce((draft) => {
-          draft.productvaritions.varitionsValues =
-            draft?.productvaritions?.varitionsValues.map((item) => {
-              return {
-                ...item,
-                values: item?.values?.map((itemv) => {
-                  const Founded = EditingValues?.find(
-                    (itemF) => itemF.val === itemv?.val
-                  );
-                  if (Founded) {
-                    return {
-                      ...itemv,
-                      [property]: Founded[property],
-                    };
-                  }
-                  return itemv;
-                }),
-              };
-            });
-        })
-      )
-      setOpenModal(defaultValues);
-
-      }
-  
+  const SetPropertyValues = (property) => {
+    setVarients(
+      produce((draft) => {
+        draft.productvaritions.varitionsValues =
+          draft?.productvaritions?.varitionsValues.map((item) => {
+            return {
+              ...item,
+              values: item?.values?.map((itemv) => {
+                const Founded = EditingValues?.find(
+                  (itemF) => itemF.val === itemv?.val
+                );
+                if (Founded) {
+                  return {
+                    ...itemv,
+                    [property]: Founded[property],
+                  };
+                }
+                return itemv;
+              }),
+            };
+          });
+        const { history, ...others } = draft;
+        draft.history.push(others);
+      })
+    );
+    setOpenModal(defaultValues);
+  };
 
   return (
     <CustomDialoge
@@ -76,7 +75,7 @@ const MultibleValues = ({
                 onChange={(event) => {
                   const { value, name } = event.target;
                   SetEditingValues((prev) => {
-                     return prev?.map((itemV) => {
+                    return prev?.map((itemV) => {
                       if (itemV?.itemIndex === item?.itemIndex) {
                         return {
                           ...itemV,

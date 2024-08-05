@@ -25,7 +25,6 @@ const ProductVariation = ({
   setHistory,
   setData = () => {},
 }) => {
- 
   return (
     <>
       <p className="my-2 title">Add Varations</p>
@@ -34,7 +33,10 @@ const ProductVariation = ({
         <div className="w-[100%]    ">
           {productVarients?.variants?.length ? (
             <div className=" pb-1  rounded-md px-2 pt-1   border  mb-2">
-        <VariationList productVarients={productVarients} setVarients={setVarients}/>
+              <VariationList
+                productVarients={productVarients}
+                setVarients={setVarients}
+              />
               <p
                 className="cursor-pointer text-sm lowercase border-t p-2 px-2"
                 onClick={() => {
@@ -55,6 +57,8 @@ const ProductVariation = ({
                         ],
                         edit: true,
                       });
+                      const { history, ...others } = draft;
+                      draft.history.push(others);
                     })
                   );
                 }}
@@ -85,12 +89,14 @@ const ProductVariation = ({
                       ],
                       edit: true,
                     });
+                    const { history, ...others } = draft;
+                    draft.history.push(others);
                   })
                 );
               }}
             >
               {" "}
-              Add Varient  Like Colors & Size+
+              Add Varient Like Colors & Size+
             </p>
           ) : null}
         </div>

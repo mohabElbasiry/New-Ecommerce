@@ -18,4 +18,5 @@ export const ProductMainDefaultValue = {
   seo: { tags: [], title: "", description: "" },
   setSubmitedData: () => {},
   submitedData: {},
+  history:[]
 };

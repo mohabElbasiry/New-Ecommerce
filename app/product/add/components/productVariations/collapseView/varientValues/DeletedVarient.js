@@ -54,6 +54,8 @@ export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
 
         draft.productvaritions.variants = updatedOptions;
         draft.productvaritions.REfvariants = updatedOptions;
+        const { history, ...others } = draft;
+        draft.history.push(others);
       })
     );
   };
