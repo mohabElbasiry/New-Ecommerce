@@ -1,9 +1,11 @@
+import { TooltipF } from "@/components/ToolTipCostom";
 import React from "react";
 
 export default function Headercomponent({ handleSubmit, children,submittedData }) {
   const SubmittingData = (data) => {
     console.log(data,submittedData, "sdubmittied Dataffffffffffffffffffff");
   };
+
   return (
     <form onSubmit={handleSubmit(SubmittingData)}>
       <div className="  flex justify-between sticky top-0   bg-[#f4f7f6]  z-[20]  px-3 py-4  ">
@@ -14,8 +16,8 @@ export default function Headercomponent({ handleSubmit, children,submittedData }
        
 
 
-     <div className=" sticky top-0  flex justify-end ">
-        <div className="flex w-full">
+     <div className=" sticky top-0  flex justify-end  ">
+        <div className="flex w-full items-center">
           <div className="  flex  gap-5">
             <img src={"/left.svg"} className="w-[20px]      " />
             <img src={"/right.svg"} className="w-[20px]      " />
@@ -27,6 +29,16 @@ export default function Headercomponent({ handleSubmit, children,submittedData }
           >
             Save
           </button>
+
+    <TooltipF text={<div className="p-3">
+      
+      saddsa
+    </div>}>
+
+          <img src="/producticons/column.svg"
+          className=" w-[20px] h-[20px]"
+          width={30} height={30}/>
+    </TooltipF>
         </div>
        
         </div>

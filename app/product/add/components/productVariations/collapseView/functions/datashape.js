@@ -20,7 +20,7 @@ export function shapeData(combinedTexts, variants) {
           value.value_en === valueGroup.value_en &&
           value.key_en === variants[0].key_en
       );
-      console.log(valueItem, "valueItem");
+      console.log(valueItem, "valueIteadssssssssssssssssssssssssssm");
 
       if (check) {
         valueItem.values.forEach((value) => {

@@ -13,13 +13,16 @@ export default function TextEditor({ content, setContent }) {
   const config = useMemo(
     () => ({
       // Customize toolbar buttons
-      buttons: [
-        "paragraph", "|", "bold", "italic", "underline", "|", "align", "link", "image", "|", "indent", "outdent", "ol", "ul"
-      ],
+      // buttons: [
+      //   "paragraph", "bold", "italic", "underline",
+      
+        
+      // ],
       // Remove specific buttons
-      removeButtons: [
-         "font", "strikethrough", "eraser", "spellcheck", "speechRecognize", "table", "hr", "fullsize", "symbols", "ai-commands", "ai-assistant", "brush"
-      ],
+  //     removeButtons: [
+  //       "spellcheck", "speechRecognize", "table", "hr", 
+  // "ai-assistant", "brush"
+  //     ],
       // Custom image uploader configuration
       uploader: {
         insertImageAsBase64URI: true,
@@ -40,16 +43,18 @@ export default function TextEditor({ content, setContent }) {
   };
 
   return (
-    <div className="h-full w-full ">
+    <div className="h-full  ">
       {/* Main initialization of the Jodit editor */}
       <JoditEditor
         ref={editor}
         value={content}
         config={config}
         onChange={handleChange}
-        className="w-full h-full bg-white min-w-[300px]"
+        className="w-full h-full bg-white min-w-[600px]"
       />
-      <style>{`.jodit-wysiwyg { height: 300px !important; }`}</style>
+      <style>{`.jodit-wysiwyg { height: 200px !important; 
+        display:flex;flex-wrap:no-wrap
+      }`}</style>
     </div>
   );
 }

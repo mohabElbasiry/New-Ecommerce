@@ -10,25 +10,20 @@ export const DeletedVarient = ({ valueItem, setVarients, parentname, idx }) => {
           draft.productvaritions.varitionsValues.map((item) => {
             if (item?.key === parentname) {
               const values = item?.values.map((itemv, index) => {
- 
-                if (idx === valueItem.itemIndex) {
-
-                 
-                   return( {
+                if (idx === itemv.itemIndex) {
+                  return {
                     ...itemv,
                     deleted: false,
-                  });
+                  };
                 }
                 return itemv;
               });
 
-
-               return { ...item, values };
+              return { ...item, values };
             }
             return item;
           });
 
-          console.log(updatedValuesAfterDelete,'updatedValuesAfterDeleteupdatedValuesAfterDelete');
         draft.productvaritions.varitionsValues = updatedValuesAfterDelete;
         const activeVariantsMap = new Map();
         updatedValuesAfterDelete.forEach((item) => {

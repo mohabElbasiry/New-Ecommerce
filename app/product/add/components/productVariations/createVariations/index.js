@@ -430,7 +430,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
             }));
             setList(
               produce((draft) => {
-                const Updated = draft.productvaritions.variants.map(
+                const updatedVariants = draft.productvaritions.variants.map(
                   (item, idx) => {
                     if (idx === listIndex) {
                       return {
@@ -438,9 +438,7 @@ export default function CreateVariation({ listIndex, setList, list }) {
                         key_en: currentOption?.option_en,
                         key_ar: currentOption?.option_ar,
                         values: currentValues?.filter(
-                          (item) =>
-                            // item?.value_ar !== "" &&
-                            item?.value_en !== ""
+                          (valueItem) => valueItem?.value_en !== ""
                         ),
                         edit: false,
                       };
@@ -449,17 +447,22 @@ export default function CreateVariation({ listIndex, setList, list }) {
                   }
                 );
 
-                draft.productvaritions.variants = Updated;
-                draft.productvaritions.REfvariants = Updated;
-                const dataShape = generateQualities(
+                 draft.productvaritions.variants = updatedVariants;
+                draft.productvaritions.REfvariants = updatedVariants;
+
+                 const flatValues =
                   draft.productvaritions.varitionsValues?.flatMap(
                     (item) => item.values
-                  ) || [],
-                  Updated || []
+                  ) || [];
+                const dataShape = generateQualities(
+                  flatValues,
+                  updatedVariants
                 );
+
+                // Update varitionsValues using shapeData
                 draft.productvaritions.varitionsValues = shapeData(
-                  dataShape || [],
-                  Updated || []
+                  dataShape,
+                  updatedVariants
                 );
               })
             );

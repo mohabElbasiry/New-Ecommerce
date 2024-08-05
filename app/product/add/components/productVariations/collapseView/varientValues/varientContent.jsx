@@ -33,27 +33,23 @@ export const VarientContent = ({
 
       setChecked((prev = []) => {
         if (checked) {
-          const founded = checkedArray?.length
-            ? checkedArray?.find((item) => item.key === parentname)
-            : false;
-
-          if (founded === undefined) {
-            return [...prev, { key: parentname, SelectedItems: [idx] }];
-          } else {
-            // const prevSelected = [...prev?.SelectedItems]||[];
-            const added = prev?.map((item) => {
-              if (parentname === item?.key) {
-                return {
-                  ...item,
-                  key: parentname,
-                  SelectedItems: [...item?.SelectedItems, idx],
-                };
+          const updatedArray = prev.reduce(
+            (acc, item) => {
+              if (item.key === parentname) {
+                item.SelectedItems.push(idx); // Mutate the array directly
+                acc.found = true;
               }
+              acc.result.push(item);
+              return acc;
+            },
+            { result: [], found: false }
+          );
 
-              return item;
-            });
-            return added;
+          if (!updatedArray.found) {
+            updatedArray.result.push({ key: parentname, SelectedItems: [idx] });
           }
+
+          return updatedArray.result;
         } else {
           const itemkey = checkedArray.find((item) => item?.key === parentname);
 

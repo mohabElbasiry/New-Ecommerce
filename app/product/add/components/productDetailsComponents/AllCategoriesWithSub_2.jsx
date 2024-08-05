@@ -2,7 +2,7 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function SubCategoriesSelect({ register, error }) {
+export default function SubCategoriesSelect({ register, error ,category}) {
   const [categories, setCategories] = useState([]);
   const [choosenCategory, setChoosenCategory] = useState({});
   const [loading, Setloading] = useState(false);

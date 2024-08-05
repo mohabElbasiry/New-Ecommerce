@@ -12,7 +12,7 @@ export const ProductMainDefaultValue = {
     description_ar: "",
     description_en: "",
     images:[],
-    Stock: { repositry: {}, quantity: "", sku: "" },
+    Stock: { repositry: {}, quantity: "", sku: "" ,barcode:""},
     price: { mainPrice: "", costPerItem: "", DiscountPrice: "" },
   },
   seo: { tags: [], title: "", description: "" },

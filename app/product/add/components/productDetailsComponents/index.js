@@ -1,20 +1,10 @@
 "use client";
-import DraftEditor from "@/components/drafteditor/Draft";
-import { InputWithLabelComponent } from "@/components/inputcomponent";
-import { ProductNav } from "../productNav";
-import Image from "next/image";
-import { BasicData } from "./BasicInfeo";
-import SubCategoriesSelect from "./categoriesWithSub";
-import { Inventory } from "./inventory";
-import Pricing from "./pricing";
-import { useState } from "react";
+import BasicData from "./BasicInfeo";
 import ProductVariation from "../productVariations";
 import { ProductSettings } from "./productSettings";
-import Seo from "./tags";
-import UploadFile from "@/app/product/components/UploadFile";
-import UploadFilesModal from "../productImages/UploadFilesModal";
-import { produce } from "immer";
 import ProductImages from "../productImages";
+import { memoize } from "lodash";
+import { useCallback, useMemo } from "react";
 
 export const ProductDetailsComponent = ({
   submitedData,
@@ -23,18 +13,21 @@ export const ProductDetailsComponent = ({
   data,
   setData,
 }) => {
+  console.log("rerender component Test", formData);
+  
+
   return (
     <div className="    justify-end gap-1 p-3 ml-auto ">
       <div className="flex gap-3 mt-3 ml-auto  ">
         <div
           className="container p-3 m-1  w-[50%]
             overflow-auto
-            flex flex-col gap-3 "
+            flex f+lex-col gap-3 "
         >
           {" "}
           <BasicData
-            submitedData={submitedData}
-            formData={formData}
+            submitedData={submitedData?.productDetails}
+            formData={useMemo(() => formData, [submitedData?.productDetails])}
             setSubmitedData={setSubmitedData}
           />
         </div>

@@ -8,10 +8,10 @@ import {
 
 export function TooltipF({ children, text }) {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={0.3} >
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent >
           <p>{text}</p>
         </TooltipContent>
       </Tooltip>

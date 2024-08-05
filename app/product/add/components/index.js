@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Headercomponent from "./headercomponent";
 import { ProductDetailsComponent } from "./productDetailsComponents";
 import { useForm } from "react-hook-form";
@@ -10,9 +10,10 @@ import { produce } from "immer";
 import { generateQualities } from "./productVariations/collapseView/functions/GenerateQualities";
 import { shapeData } from "./productVariations/collapseView/functions/datashape";
 import TourGuide from "@/components/GlobalUi/TourGuide";
+import { BottomBar } from "./bottombar";
 // import { List } from "./productImages/dragableImages";
 
-   const List = [
+const List = [
   {
     name: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxljCiU3pRUXpw-39aklTNk7BDV3G9Dn7ocw&s",
     order: 0,
@@ -55,11 +56,26 @@ export const ProductAddMaim = () => {
   const [submitedData, setSubmitedData] = useState({
     ...ProductMainDefaultValue,
   });
-
+  const [history, setHistory] = useState([ProductMainDefaultValue]);
   const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
   });
+
+  useMemo(() => {
+    const maximumLength = 20;
+
+    setHistory((prev) => {
+      if (prev?.length === maximumLength) {
+         const deleteFirstTenELements = prev.slice(10);
+        return [...deleteFirstTenELements, submitedData];
+      }
+      return [...(prev ?? []), submitedData];
+    });
+  }, [submitedData.productvaritions]);
+
+  console.log(history, "dsaaaaaaaaaaaaaaaaaaaaa");
+
   useEffect(() => {
     setSubmitedData(
       produce((draft) => {
@@ -198,22 +214,12 @@ export const ProductAddMaim = () => {
     resolver: yupResolver(BasicFormValidation("en")),
   });
 
-  // useEffect(() => {
-  //   const SubmitedData = localStorage.getItem("submitedItem");
-  //   if (submitedData) {
-  //     const ParsingData = JSON.parse(SubmitedData);
-  //     if (ParsingData?.SubmitedValues?.length) {
-  //       setSubmitedData(ParsingData?.SubmitedValues);
-  //     }
-  //   }
-  // }, []);
-  console.log("my submitedData here::: ", submitedData);
   return (
     <>
       <TourGuide stepsData={dataSteps} />
 
       <Headercomponent handleSubmit={handleSubmit}>
-        <div className="flex items-end justify-end   gap-1">
+        <div className="  items-end justify-end   gap-1">
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}
@@ -231,6 +237,8 @@ export const ProductAddMaim = () => {
             setData={setData}
           />
         </div>
+
+        <BottomBar />
       </Headercomponent>
     </>
   );

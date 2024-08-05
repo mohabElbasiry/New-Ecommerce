@@ -1,18 +1,20 @@
-import DraftEditor from "@/components/drafteditor/Draft";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
-import SubCategoriesSelect from "./categoriesWithSub";
 import { Inventory } from "./inventory";
 import Pricing from "./pricing";
 import Seo from "./tags";
 import ShippingInfo from "./ShippingInfo";
 import TextEditor from "@/components/TextEditor";
 import { produce } from "immer";
-export const BasicData = ({
-  submitedData = {},
-  formData = {},
-  setSubmitedData = {},
-}) => {
-  const UdateBasicInfo = (e, setSubmitedData) => {
+import { memo } from "react";
+import { isEqual } from "lodash";
+const BasicData = (
+  {
+    submitedData = {},
+    formData = {},
+    setSubmitedData = ()=>{},
+  }
+) => {
+   const UdateBasicInfo = (e, setSubmitedData) => {
     setSubmitedData((prev) => ({
       ...prev,
       productDetails: {
@@ -22,50 +24,38 @@ export const BasicData = ({
     }));
   };
 
-  const updateDetails  = (e) => {
-    setSubmitedData(produce((prev) => {
-      prev.description = e
-    }))
+  const updateDetails = (e) => {
+    setSubmitedData(
+      produce((prev) => {
+        prev.description = e;
+      })
+    );
   };
 
- 
-  const {
-    errors,
-    register,
-    reset,
-    setValue,
-    getValues,
-    setError,
-    clearErrors,
-    isSubmitting
-  } = formData;
+  const { errors={}, register={} } = formData;
 
-  console.log(submitedData);
- 
   return (
     <div
       className="gap-5
-      rounded-lg p-3
-    flex flex-col w-full"
+      rounded-lg  
+      flex-col w-full"
     >
-      <p className="title">
-        Product Description
-      </p>
-<div className="box p-2">
-<div className="flex flex-col gap-2 w-full">
-     <InputWithLabelComponent
-        Input
-        label="product name "
-        PlaceHolder="Add product name "
-        register={{ ...register("title_en") }}
-        isError={errors?.title_en}
-        message={errors?.title_en?.message}
-        value={submitedData?.productDetails?.title_en}
-        onChange={(e) => {
-          UdateBasicInfo(e, setSubmitedData);
-        }}
-       />
-      {/* <InputWithLabelComponent
+      <p className="title">Product Description</p>
+      <div className="box p-2">
+        <div className="flex flex-col gap-2 w-full">
+          <InputWithLabelComponent
+            Input
+            label="product name "
+            PlaceHolder="Add product name "
+            register={{ ...register("title_en") }}
+            isError={errors?.title_en}
+            message={errors?.title_en?.message}
+            value={submitedData?.title_en}
+            onChange={(e) => {
+              UdateBasicInfo(e, setSubmitedData);
+            }}
+          />
+          {/* <InputWithLabelComponent
         Input
         label="product name in Arabic"
         PlaceHolder="Add product name in Arabic"
@@ -79,47 +69,27 @@ export const BasicData = ({
           UdateBasicInfo(e, setSubmitedData);
         }}
       /> */}
-     </div>
-     
-      {/* <DraftEditor
-        field="Product Description "
-        edit={false}
-        register={{ ...register("description_en") }}
-        setValue={setValue}
-        property={"description_en"}
-        error={errors?.description_en}
-        message={errors?.description_en?.message}
-        setError={setError}
-        clearErrors={clearErrors}
-        value={submitedData?.productDetails?.description_en}
-        onChange={UdateBasicInfo}
-        setSubmitedData={setSubmitedData}
-        isSubmitted={isSubmitting}
-      /> */}
-    <h3>Product Description</h3>
-          <TextEditor content={submitedData?.productDetails?.description_en} setContent={updateDetails } /> 
-      {/* <DraftEditor
-        field="Product Description in Arabic"
-        edit={false}
-        setValue={setValue}
-        register={{ ...register("description_ar") }}
-        property={"description_ar"}
-        error={errors?.description_ar}
-        message={errors?.description_ar?.message}
-        setError={setError}
-        clearErrors={clearErrors}
-        value={submitedData?.productDetails?.description_ar}
-        onChange={UdateBasicInfo}
-        setSubmitedData={setSubmitedData}
-        isSubmitted={isSubmitting}
-      /> */}
-   
-</div>
-      <Inventory errors={errors} submitedData={submitedData} register={register} />{" "}
-      <Pricing submitedData={submitedData} setSubmitedData={setSubmitedData}/>
-      <ShippingInfo submitedData={submitedData} setSubmitedData={setSubmitedData} /> 
-      <Seo />{" "}
+        </div>
 
+        <h3>Product Description</h3>
+        <TextEditor
+          content={submitedData?.description_en}
+          setContent={updateDetails}
+        />
+      </div>
+      {/* <Inventory
+        errors={errors}
+        submitedData={submitedData}
+        register={register}
+      />{" "} */}
+      <Pricing submitedData={submitedData} setSubmitedData={setSubmitedData} />
+      <ShippingInfo
+        submitedData={submitedData}
+        setSubmitedData={setSubmitedData}
+      />
+      <Seo />{" "}
     </div>
   );
 };
+
+export default memo(BasicData);

@@ -73,16 +73,18 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
         <ListManager
           items={sortedList}
           direction="horizontal"
-          maxItems={4}
+          maxItems={6}
           className="dragable"
           render={(item, idx) => {
             return (
               <div>
                 <img
-                  className={`border m-1  overflow-hidden object-cover  ${
+                  className={`border m-1 
+                     overflow-hidden object-cover rounded-xl  ${
                     item?.idx == 0
                       ? "w-[250px]   h-[130px]"
                       : "  w-[100px] h-[120px]"
+
                   }`}
                   src={`${item?.name}`}
                 />
@@ -91,11 +93,7 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
           }}
           onDragEnd={reorderList}
         />
-        <UploadFilesModal
-          buttonContext={
-            <img className="w-[30px]" src="/upload-svgrepo-com.svg" />
-          }
-        />
+     
       </div>
     </>
   );

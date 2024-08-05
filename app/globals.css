@@ -118,6 +118,7 @@ body {
   width: fit-content;
   font-weight: 500;
   color: #000;
+  margin:10px 0px
 }
 
 .scrollbar-styling::-webkit-scrollbar {
@@ -134,3 +135,5 @@ body {
 .scrollbar-styling::-webkit-scrollbar-thumb:hover {
   background: rgb(124, 123, 123);
 }
+
+ 

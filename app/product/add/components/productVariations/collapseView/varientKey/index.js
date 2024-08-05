@@ -1,8 +1,9 @@
 import { TooltipF } from "@/components/ToolTipCostom";
+ 
 import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
 import { memo, useCallback, useMemo, useState } from "react";
 import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
-import { isEqual } from "lodash";
+import { debounce, isEqual } from "lodash";
 import { produce } from "immer";
 
 const VarientKey = ({
@@ -23,10 +24,8 @@ const VarientKey = ({
     return selectedArray?.map((_, idx) => idx);
   }, [selectedArray]);
   const memoizedCheckedArray = useMemo(() => checkedArray, [checkedArray]);
-
   const checked = useCallback(
     (name) => {
-      console.log("executed");
       const checkedElements = new Map();
       if (checkedArray?.length) {
         checkedArray?.forEach((item) => {
@@ -42,14 +41,13 @@ const VarientKey = ({
     },
     [memoizedCheckedArray]
   );
-  console.log(item?.valuesL ,'item?.valuesL item?.valuesL ');
+  console.log(item?.valuesL, "item?.valuesL item?.valuesL ");
   if (item?.valuesL >= 2) {
     return (
       <AccordionTrigger
         className="flex 
         items-center w-full justify-between  border-[#ddd] border-b text-sm"
       >
- 
         <div className="flex items-center gap-3">
           <input
             type="checkbox"
@@ -87,12 +85,12 @@ const VarientKey = ({
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
-                value={maxPrice}
+                defaultValue={maxPrice}
                 type="text"
                 className="text-black max-w-[180px] 
                  h-[38px] rounded-xl p-3  
                 ml-1 outline-[#ddd]"
-                onChange={(e) => {
+                onChange={debounce((e) => {
                   if (!isNaN(e?.target?.value)) {
                     setVarients(
                       produce((draft) => {
@@ -107,7 +105,7 @@ const VarientKey = ({
                     );
                   }
                   return;
-                }}
+                }, 300)}
               />
             </div>
           </TooltipF>

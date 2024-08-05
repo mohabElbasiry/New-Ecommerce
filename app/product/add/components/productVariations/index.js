@@ -22,9 +22,10 @@ const ProductVariation = ({
     Data: [],
     BeforeFilterData: [],
   },
+  setHistory,
   setData = () => {},
 }) => {
-    console.log(productVarients.varitionsValues ,'productVarientsproductVarientsproductVarients');
+ 
   return (
     <>
       <p className="my-2 title">Add Varations</p>
