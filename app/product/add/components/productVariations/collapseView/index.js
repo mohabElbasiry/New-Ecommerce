@@ -138,6 +138,17 @@ const CollapseView = ({
           draft.data = Editeddata;
         })
       );
+
+      setVarients(
+        produce((draft) => {
+          draft.productvaritions.varitionsValues?.forEach((itemF) => {
+            draft.productvaritions.varientLookup.set(itemF.key, itemF);
+
+            // itemF.values.forEach((itemvv) => {
+            // });
+          });
+        })
+      );
     } else {
       setData(
         produce((draft) => {
@@ -156,14 +167,12 @@ const CollapseView = ({
       min: Math.min(...price),
     };
   };
-
-  const callculateQUantity = useCallback(
+   const callculateQUantity = useCallback(
     (values, key) => {
       setVarients(
         produce((draft) => {
           draft.productvaritions.varitionsValues.forEach((element) => {
             if (element.key === key) {
-              console.log(element, "elementelement");
               element.quantity = element?.values?.reduce(
                 (acc, item) => (acc += +item?.quantity),
                 0
@@ -203,7 +212,6 @@ const CollapseView = ({
           value={editvalue.value}
           setVarients={setVarients}
           setEditValue={setEditValue}
-
         />
       </CustomDialoge>
       <Accordion type="multiple" collapsible>
@@ -237,7 +245,6 @@ const CollapseView = ({
                       setChecked={setChecked}
                       parentname={item?.key}
                       setVarients={setVarients}
-                      
                     />
                   );
                 })}

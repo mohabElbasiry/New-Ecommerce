@@ -37,23 +37,16 @@ export default function ReorderItem({
           onClick={() => {
             setVarients(
               produce((draft) => {
-                draft.productvaritions.variants =
-                  draft?.productvaritions.variants?.map((item, index) => {
-                    if (idx === index) {
-                      return {
-                        ...item,
-
-                        edit: true,
-                      };
-                    }
-                    return item;
-                  });
+                draft?.productvaritions.variants?.forEach((item, index) => {
+                  if (idx === index) {
+                    item["edit"] = true;
+                  }
+                  return item;
+                });
                 const { history, ...others } = draft;
                 draft.history.push(others);
               })
             );
-
-            // localStorage?.setItem("list", JSON.stringify(list));
           }}
         >
           <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">

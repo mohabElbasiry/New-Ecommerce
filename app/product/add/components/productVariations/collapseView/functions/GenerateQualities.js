@@ -1,50 +1,3 @@
-// export function generateQualities(prev, attributes,changeShapeData,callback) {
-//     const qualities = [];
-
-//     function generateCombinations(currentCombination, depth) {
-//       if (depth === attributes.length) {
-//         qualities.push({
-//           values: currentCombination,
-//           quantity: 1,
-//           price: 0,
-//           image: [],
-//         });
-//         return;
-//       }
-
-//       attributes[depth].values.forEach((value) => {
-//         const newCombination = currentCombination.slice();
-//         newCombination.push({
-//           key_en: attributes[depth].key_en,
-//           key_ar: attributes[depth].key_ar,
-//           value_en: value.value_en,
-//           value_ar: value.value_ar,
-//           color: value.color,
-//         });
-//         generateCombinations(newCombination, depth + 1);
-//       });
-//     }
-
-//     generateCombinations([], 0);
-
-//     const AdjustArray = qualities
-//       .map((item, index) => {
-//         const Founded = prev.find((item, idx) => idx === index);
-//         if (Founded) {
-//           return {
-//             ...item,
-//             values: item.values,
-//             price: Founded.price,
-//             quantity: Founded.quantity,
-//             image: Founded?.image,
-//           };
-//         }
-//         return item;
-//       })
-//       .map((item, idx) => ({ ...item, itemIndex: idx }));
-//       if(changeShapeData) return callback(AdjustArray,attributes);
-//     return AdjustArray;
-//   }
 export function generateQualities(prev, attributes) {
   const qualities = [];
 
@@ -107,16 +60,7 @@ export function generateQualities(prev, attributes) {
     .map((item, index) => {
       const founded = prev.find((item, idx) => idx === index);
       console.log(founded, "ounded.deletedounded.deleted");
-      // Find the corresponding item in the prev array with the same values array
-      // const founded = prev.find((itemv) => {
-      //   return item.values.every(
-      //     (val, idx) => val.itemIndex === itemv.values[idx].itemIndex
-      //   );
 
-      //   compareValuesArrays(item.values, itemv.values);
-      // });
-
-      // If a matching item is found, merge the properties
       if (founded) {
         return {
           ...item,

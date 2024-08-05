@@ -10,21 +10,13 @@ export const EditMoreThanOneValues = ({ value, setVarients, setEditValue }) => {
   const HandleSubmit = () => {
     setVarients(
       produce((draft) => {
-        draft.productvaritions.varitionsValues =
-          draft.productvaritions.varitionsValues.map((element) => {
-            const values = element.values.map((itemv) => {
-              if (itemv.val === value.val) {
-                return editvalue;
-              } else {
-                return itemv;
-              }
-            });
-
-            return {
-              ...element,
-              values,
-            };
+        draft.productvaritions.varitionsValues.forEach((element) => {
+          element.values.forEach((itemv, index) => {
+            if (itemv.val === value.val) {
+              element.values[index] = editvalue;
+            }
           });
+        });
         const { history, ...others } = draft;
         draft.history.push(others);
       })

@@ -20,7 +20,6 @@ export function shapeData(combinedTexts, variants) {
           value.value_en === valueGroup.value_en &&
           value.key_en === variants[0].key_en
       );
-      console.log(valueItem, "valueIteadssssssssssssssssssssssssssm");
 
       if (check) {
         valueItem.values.forEach((value) => {
@@ -46,6 +45,9 @@ export function shapeData(combinedTexts, variants) {
   });
 
   return data.map((item) => {
-    return { ...item, valuesL: item.values.flatMap((item) => item?.values)?.length };
+    return {
+      ...item,
+      valuesL: item.values.flatMap((item) => item?.values)?.length,
+    };
   });
 }

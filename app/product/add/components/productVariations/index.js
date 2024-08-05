@@ -25,6 +25,8 @@ const ProductVariation = ({
   setHistory,
   setData = () => {},
 }) => {
+
+  console.log(productVarients,'productVarientsproductVarients')
   return (
     <>
       <p className="my-2 title">Add Varations</p>
@@ -44,10 +46,8 @@ const ProductVariation = ({
                     produce((draft) => {
                       draft?.productvaritions?.variants?.push({
                         isColor: "",
-
                         key_en: "",
                         key_ar: "",
-
                         values: [
                           {
                             value_ar: "",

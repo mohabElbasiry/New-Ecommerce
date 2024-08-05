@@ -1,22 +1,12 @@
 import { TooltipF } from "@/components/ToolTipCostom";
 import { useCallback, useEffect, useState } from "react";
 
-export const BottomBar = ({
-  setHistory,
-  history,
-  setSubmitedData,
- }) => {
+export const BottomBar = ({ setHistory, history, setSubmitedData }) => {
   const [index, setIndex] = useState(0);
   const currentState = history?.[index];
 
   const UpdateState = (newIndex) => {
-     console.log(
-      history[newIndex],
-      history,
-      newIndex,
-      "currentStatecurrentState"
-    );
-    setSubmitedData({...history[newIndex],history});
+    setSubmitedData({ ...history[newIndex], history });
   };
 
   useEffect(() => {

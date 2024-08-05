@@ -1,7 +1,7 @@
 import { AccordionContent } from "@/components/ui/accordion";
 
-import { memo, useCallback } from "react";
-import { DeletedVarient } from "./DeletedVarient";
+import { memo, useCallback, useMemo } from "react";
+import  DeletedVarient  from "./DeletedVarient";
 import { VarientContent } from "./varientContent";
 const VarientValues = ({
   itemValue = {},
@@ -15,6 +15,8 @@ const VarientValues = ({
   setEditValue,
 }) => {
   //deleted items
+
+
   if (itemValue?.deleted) {
     return (
       <DeletedVarient

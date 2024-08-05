@@ -67,7 +67,6 @@ export const ProductAddMaim = () => {
   //     if (changeonHistory === false) {
   //       console.log("object");
 
-<<<<<<< HEAD
   //       if (prev?.length === maximumLength) {
   //         const deleteFirstTenELements = prev.slice(10);
   //         return [...deleteFirstTenELements, submitedData];
@@ -80,16 +79,6 @@ export const ProductAddMaim = () => {
   //   });
   // }, [submitedData?.productvaritions, changeonHistory]);
 
-=======
-    setHistory((prev) => {
-      if (prev?.length === maximumLength) {
-        const deleteFirstTenELements = prev.slice(10);
-        return [...deleteFirstTenELements, submitedData];
-      }
-      return [...(prev ?? []), submitedData];
-    });
-  }, [submitedData.productvaritions]);
->>>>>>> 8ca76b1b9f66e79edea1b837f27b7c23882810fd
   useEffect(() => {
     setSubmitedData(
       produce((draft) => {
@@ -226,10 +215,6 @@ export const ProductAddMaim = () => {
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
   });
-<<<<<<< HEAD
-=======
-  console.log("Initial State", submitedData);
->>>>>>> 8ca76b1b9f66e79edea1b837f27b7c23882810fd
   return (
     <>
       <TourGuide stepsData={dataSteps} />
