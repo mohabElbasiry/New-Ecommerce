@@ -12,7 +12,6 @@ import { shapeData } from "./productVariations/collapseView/functions/datashape"
 import TourGuide from "@/components/GlobalUi/TourGuide";
 import { BottomBar } from "./bottombar";
 // import { List } from "./productImages/dragableImages";
-
 const List = [
   {
     name: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxljCiU3pRUXpw-39aklTNk7BDV3G9Dn7ocw&s",
