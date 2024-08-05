@@ -19,9 +19,7 @@ export const InputWithLabelComponent = ({
 }) => {
   return (
     <div className="flex flex-col items-start gap-2 ">
-      <p className={` font-sans capitalize border-l  ${labelcss} `}>
-        {label}
-      </p>
+      <p className={` font-sans capitalize border-l  ${labelcss} `}>{label}</p>
       {Input ? (
         <div className="flex items-center border   rounded-md  overflow-hidden parent-div w-full ">
           {price ? <div className="pl-1 text-sm"> EGP</div> : null}

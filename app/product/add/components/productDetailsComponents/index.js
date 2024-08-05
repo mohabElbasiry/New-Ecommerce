@@ -13,20 +13,15 @@ export const ProductDetailsComponent = ({
   data,
   setData,
 }) => {
-  console.log("rerender component Test", formData);
-  
-
   return (
-    <div className="    justify-end gap-1 p-3 ml-auto ">
+    <div className="justify-end gap-1 p-3 ml-auto ">
       <div className="flex gap-3 mt-3 ml-auto  ">
-        <div
-          className="container p-3 m-1  w-[50%]
-            overflow-auto
-            flex f+lex-col gap-3 "
-        >
-          {" "}
+        <div className="container p-3 m-1  w-[50%] overflow-auto flex f+lex-col gap-3 ">
           <BasicData
             submitedData={submitedData?.productDetails}
+            pricingData={submitedData?.pricing}
+            shippingData={submitedData?.shipping}
+            seoData={submitedData?.seo}
             formData={useMemo(() => formData, [submitedData?.productDetails])}
             setSubmitedData={setSubmitedData}
           />
@@ -34,7 +29,13 @@ export const ProductDetailsComponent = ({
 
         <div className="w-[50%] ">
           <div className="w-[100%]   p-2 flex flex-col gap-3 ">
-            <ProductSettings />
+            <ProductSettings
+              settingsData={{
+                status: submitedData?.status,
+                publishTime: submitedData?.publishTime,
+              }}
+              setSubmitedData={setSubmitedData}
+            />
             <ProductImages
               setSubmitedData={setSubmitedData}
               images={submitedData.productDetails.images}

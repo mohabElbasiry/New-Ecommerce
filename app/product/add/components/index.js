@@ -66,15 +66,12 @@ export const ProductAddMaim = () => {
 
     setHistory((prev) => {
       if (prev?.length === maximumLength) {
-         const deleteFirstTenELements = prev.slice(10);
+        const deleteFirstTenELements = prev.slice(10);
         return [...deleteFirstTenELements, submitedData];
       }
       return [...(prev ?? []), submitedData];
     });
   }, [submitedData.productvaritions]);
-
-  console.log(history, "dsaaaaaaaaaaaaaaaaaaaaa");
-
   useEffect(() => {
     setSubmitedData(
       produce((draft) => {
@@ -212,11 +209,10 @@ export const ProductAddMaim = () => {
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
   });
-
+  console.log("Initial State", submitedData);
   return (
     <>
       <TourGuide stepsData={dataSteps} />
-
       <Headercomponent handleSubmit={handleSubmit}>
         <div className="  items-end justify-end   gap-1">
           <ProductDetailsComponent
