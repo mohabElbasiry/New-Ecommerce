@@ -21,7 +21,6 @@ const VarientKey = ({
   setVarients = () => {},
 }) => {
   const handleAction = (action) => {
-    console.log(action,'actionaction');
     UpdateAction(action, setVarients);
   };
 
@@ -46,7 +45,7 @@ const VarientKey = ({
     },
     [memoizedCheckedArray]
   );
-   if (item?.valuesL >= 2) {
+  if (item?.valuesL >= 2) {
     return (
       <AccordionTrigger
         className="flex 
@@ -104,16 +103,6 @@ const VarientKey = ({
                         property: "price",
                       },
                     });
-                    // setVarients(
-                    //   produce((draft) => {
-                    //     updatePropertyParent(
-                    //       draft?.productvaritions.varitionsValues,
-                    //       itemIndex,
-                    //       e.target.value,
-                    //       "price"
-                    //     );
-                    //   })
-                    // );
                   }
                   return;
                 })}
@@ -130,18 +119,14 @@ const VarientKey = ({
               }}
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
-                  setVarients(
-                    produce((draft) => {
-                      updatePropertyParent(
-                        draft?.productvaritions.varitionsValues,
-                        itemIndex,
-                        e.target.value,
-                        "quantity"
-                      );
-                      const { history, ...others } = draft;
-                      draft.history.push(others);
-                    })
-                  );
+                  handleAction({
+                    type: "updatePropertyParent",
+                    payload: {
+                      itemIndex,
+                      newValue: e.target.value,
+                      property: "price",
+                    },
+                  });
                 }
                 return;
               }}

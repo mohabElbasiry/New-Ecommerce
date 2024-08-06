@@ -6,7 +6,8 @@ import {
 } from "../functions/updatePropertyBasedOnChild";
 import { useCallback, useEffect } from "react";
 import { produce } from "immer";
-import { debounce } from "lodash";
+import { debounce, property } from "lodash";
+import { UpdateAction } from "../../RootFunction/middleWare";
 
 export const VarientContent = ({
   setVarients,
@@ -18,6 +19,10 @@ export const VarientContent = ({
   parentIndex,
   setEditValue,
 }) => {
+  const handleAction = (action) => {
+    UpdateAction(action, setVarients);
+  };
+
   const checked = (() => {
     const checkedItem = checkedArray?.length
       ? checkedArray?.find((item) => item?.key === parentname)
@@ -83,17 +88,7 @@ export const VarientContent = ({
     },
     [idx]
   );
-  const debouncedUpdate = debounce((value, name) => {
-    if (!isNaN(value)) {
-      setVarients(
-        produce((draft) => {
-          updatePropertyChild(draft, "price", value, name, parentname);
-          const { history, ...others } = draft;
-          draft.history.push(others);
-        })
-      );
-    }
-  }, 300);
+ 
   return (
     <div
       className={`flex items-center justify-between pl-3 py-3 
@@ -139,22 +134,20 @@ border-[#ddd]  mt-1 ${
               name={itemValue?.itemIndex}
               type="text"
               className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
-              onChange={debounce((e) => {
+              onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
-                  setVarients(
-                    produce((draft) => {
-                      updatePropertyChild(
-                        draft,
-                        "price",
-                        e.target.value,
-                        e.target.name,
-                        parentname
-                      );
-                    })
-                  );
+                  handleAction({
+                    type: "updatePropertyChild",
+                    payload: {
+                      property: "price",
+                      newValue: e.target.value,
+                      itemIndex: itemValue.itemIndex,
+                      parentname,
+                    },
+                  });
                 }
                 return;
-              },100)}
+              }}
             />
           </div>
         </TooltipF>
@@ -171,17 +164,15 @@ border-[#ddd]  mt-1 ${
               className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
-                  setVarients(
-                    produce((draft) => {
-                      updatePropertyChild(
-                        draft,
-                        "quantity",
-                        e.target.value,
-                        e.target.name,
-                        parentname
-                      );
-                    })
-                  );
+                  handleAction({
+                    type: "updatePropertyChild",
+                    payload: {
+                      property: "quantity",
+                      newValue: e.target.value,
+                      itemIndex: itemValue.itemIndex,
+                      parentname,
+                    },
+                  });
                 }
                 return;
               }}
