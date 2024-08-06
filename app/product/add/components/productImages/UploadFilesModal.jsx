@@ -10,7 +10,7 @@ export default function UploadFilesModal({
   buttonContext,
   selectedImages,
   setSubmitedData,
-  buttonCss
+  buttonCss,
 }) {
   const [UrlsFiles, setUrlsFiles] = useState([]);
   const [UrlsFilesSelected, setUrlsFilesSelected] = useState([]);
@@ -34,14 +34,13 @@ export default function UploadFilesModal({
       }
     };
     fetchAllFiles();
-   
+
     if (open && selectedImages?.length) {
       setUrlsFilesSelected(selectedImages);
     }
   }, [open]);
   const handleSelectImage = (fileUrl) => {
     const existed = UrlsFilesSelected?.find((sel) => sel._id === fileUrl._id);
-
     !existed
       ? setUrlsFilesSelected((prev) => [fileUrl, ...prev])
       : setUrlsFilesSelected((prev) =>
@@ -115,6 +114,9 @@ export default function UploadFilesModal({
                     draft.productDetails.images = UrlsFilesSelected.map(
                       (item, idx) => ({ ...item, idx, order: idx })
                     );
+                    const { history, ...other } = draft;
+                    draft.history .push(other);
+
                   })
                 );
                 setOpen(!open);

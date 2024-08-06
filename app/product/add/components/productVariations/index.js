@@ -1,19 +1,7 @@
-import { memo, useEffect, useState } from "react";
-import CreateVariation from "./createVariations";
-import {
-  useMotionValue,
-  Reorder,
-  useDragControls,
-  motion,
-} from "framer-motion";
-import { ReorderIcon } from "../drageControl";
-import VariationTable from "./variationTables";
+import { memo } from "react";
 import CollapseView from "./collapseView";
 import { produce } from "immer";
-import { shapeData } from "./collapseView/functions/datashape";
-import { generateQualities } from "./collapseView/functions/GenerateQualities";
 import { VariationList } from "./createVariations/variationList";
-
 const ProductVariation = ({
   setVarients = () => {},
   productVarients = {},
@@ -25,8 +13,6 @@ const ProductVariation = ({
   setHistory,
   setData = () => {},
 }) => {
-
-  console.log(productVarients,'productVarientsproductVarients')
   return (
     <>
       <p className="my-2 title">Add Varations</p>

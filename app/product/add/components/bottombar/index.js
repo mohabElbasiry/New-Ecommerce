@@ -6,6 +6,7 @@ export const BottomBar = ({ setHistory, history, setSubmitedData }) => {
   const currentState = history?.[index];
 
   const UpdateState = (newIndex) => {
+    console.log("newIndex", newIndex);
     setSubmitedData({ ...history[newIndex], history });
   };
 

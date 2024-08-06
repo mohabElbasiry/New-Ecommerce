@@ -10,6 +10,9 @@ export const ProductSettings = ({ settingsData, setSubmitedData }) => {
     setSubmitedData(
       produce((draft) => {
         draft[name] = value;
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };

@@ -10,6 +10,9 @@ function ShippingInfo({ setSubmitedData, shippingData }) {
     setSubmitedData(
       produce((draft) => {
         draft.shipping.active = !isChecked ? true : false;
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };
@@ -19,6 +22,9 @@ function ShippingInfo({ setSubmitedData, shippingData }) {
     setSubmitedData(
       produce((draft) => {
         draft.shipping.weight = value;
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };
@@ -29,6 +35,9 @@ function ShippingInfo({ setSubmitedData, shippingData }) {
     setSubmitedData(
       produce((draft) => {
         draft.shipping.type = value;
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };
