@@ -25,7 +25,7 @@ export const EditMoreThanOneValues = ({ value, setVarients, setEditValue }) => {
   };
   if (Object.keys(value).length) {
     return (
-      <div className="bg-[#fff] text-black p-3 rounded-2xl">
+      <div className="bg-[#fefefe] shadow-2xl text-black p-3 rounded-2xl">
         <p
           className="text-black my-3 font-bold text-md 
             capitalize

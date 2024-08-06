@@ -17,16 +17,12 @@ import { VariationList } from "./createVariations/variationList";
 const ProductVariation = ({
   setVarients = () => {},
   productVarients = {},
-  refrenceVarient = [],
   data = {
     Data: [],
     BeforeFilterData: [],
   },
-  setHistory,
   setData = () => {},
 }) => {
-
-  console.log(productVarients,'productVarientsproductVarients')
   return (
     <>
       <p className="my-2 title">Add Varations</p>

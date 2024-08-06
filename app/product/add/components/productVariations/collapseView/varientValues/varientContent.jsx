@@ -83,7 +83,17 @@ export const VarientContent = ({
     },
     [idx]
   );
-  console.log("object");
+  const debouncedUpdate = debounce((value, name) => {
+    if (!isNaN(value)) {
+      setVarients(
+        produce((draft) => {
+          updatePropertyChild(draft, "price", value, name, parentname);
+          const { history, ...others } = draft;
+          draft.history.push(others);
+        })
+      );
+    }
+  }, 300);
   return (
     <div
       className={`flex items-center justify-between pl-3 py-3 
@@ -117,6 +127,7 @@ border-[#ddd]  mt-1 ${
         <p> {itemValue?.val}</p>
       </div>
       <div className="flex gap-1 items-center  mx-2 ">
+        {console.log(itemValue, "sdaaaaaaaaaaa")}
         <TooltipF text={`Change price`}>
           <div className="border flex items-center text-sm pl-1 rounded-xl">
             <p>EGP</p>
@@ -125,9 +136,10 @@ border-[#ddd]  mt-1 ${
                 e.stopPropagation();
               }}
               value={itemValue?.price}
+              name={itemValue?.itemIndex}
               type="text"
               className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
-              onChange={(e) => {
+              onChange={debounce((e) => {
                 if (!isNaN(e?.target?.value)) {
                   setVarients(
                     produce((draft) => {
@@ -135,17 +147,14 @@ border-[#ddd]  mt-1 ${
                         draft,
                         "price",
                         e.target.value,
-                        itemValue
+                        e.target.name,
+                        parentname
                       );
-                      const { history, ...others } = draft;
-                      draft.history.push(others);
-
-                     
                     })
                   );
                 }
                 return;
-              }}
+              },100)}
             />
           </div>
         </TooltipF>
@@ -157,6 +166,7 @@ border-[#ddd]  mt-1 ${
                 e.stopPropagation();
               }}
               value={itemValue?.quantity}
+              name={itemValue?.itemIndex}
               type="text"
               className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
               onChange={(e) => {
@@ -167,11 +177,9 @@ border-[#ddd]  mt-1 ${
                         draft,
                         "quantity",
                         e.target.value,
-                        itemValue
+                        e.target.name,
+                        parentname
                       );
-
-                      const { history, ...others } = draft;
-                      draft.history.push(others);
                     })
                   );
                 }
