@@ -9,12 +9,17 @@ export function createIndexMap(data) {
   return indexMap;
 }
 
-export function updatePropertyChild(draft, property, newValue,itemValue) {
+export function updatePropertyChild(
+  draft,
+  property,
+  newValue,
+  itemValue,
+  parentname
+) {
   draft.productvaritions.varitionsValues.forEach((item) => {
-    if (draft.productvaritions.varientLookup.get(item.key)) {
-      item.values.forEach((itemv, index) => {
-        console.log(itemv.itemIndex === itemValue.itemIndex,'dsaaaaaaaaaa')
-        if (itemv.itemIndex === itemValue.itemIndex) {
+    if (draft.productvaritions.varientLookup.get(parentname)) {
+      item.values.forEach((itemv, idx) => {
+        if (itemv.itemIndex === itemValue) {
           itemv[property] = newValue;
         }
       });

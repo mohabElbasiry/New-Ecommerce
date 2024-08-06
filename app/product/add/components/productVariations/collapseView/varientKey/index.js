@@ -2,8 +2,9 @@ import { TooltipF } from "@/components/ToolTipCostom";
 import { AccordionTrigger, ChevronDown } from "@/components/ui/accordion";
 import { memo, useCallback, useMemo, useState } from "react";
 import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
-import { debounce, isEqual } from "lodash";
+import { debounce, isEqual, property } from "lodash";
 import { produce } from "immer";
+import { UpdateAction } from "../../RootFunction/middleWare";
 
 const VarientKey = ({
   varientsNumbers = 0,
@@ -19,6 +20,10 @@ const VarientKey = ({
   item,
   setVarients = () => {},
 }) => {
+  const handleAction = (action) => {
+    UpdateAction(action, setVarients);
+  };
+
   const SelectedItems = useMemo(() => {
     return selectedArray?.map((_, idx) => idx);
   }, [selectedArray]);
@@ -40,7 +45,6 @@ const VarientKey = ({
     },
     [memoizedCheckedArray]
   );
-  console.log(item?.valuesL, "item?.valuesL item?.valuesL ");
   if (item?.valuesL >= 2) {
     return (
       <AccordionTrigger
@@ -91,16 +95,14 @@ const VarientKey = ({
                 ml-1 outline-[#ddd]"
                 onChange={debounce((e) => {
                   if (!isNaN(e?.target?.value)) {
-                    setVarients(
-                      produce((draft) => {
-                        updatePropertyParent(
-                          draft?.productvaritions.varitionsValues,
-                          itemIndex,
-                          e.target.value,
-                          "price"
-                        );
-                      })
-                    );
+                    handleAction({
+                      type: "updatePropertyParent",
+                      payload: {
+                        itemIndex,
+                        newValue: e.target.value,
+                        property: "price",
+                      },
+                    });
                   }
                   return;
                 })}
@@ -117,18 +119,14 @@ const VarientKey = ({
               }}
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
-                  setVarients(
-                    produce((draft) => {
-                      updatePropertyParent(
-                        draft?.productvaritions.varitionsValues,
-                        itemIndex,
-                        e.target.value,
-                        "quantity"
-                      );
-                      const { history, ...others } = draft;
-                      draft.history.push(others);
-                    })
-                  );
+                  handleAction({
+                    type: "updatePropertyParent",
+                    payload: {
+                      itemIndex,
+                      newValue: e.target.value,
+                      property: "price",
+                    },
+                  });
                 }
                 return;
               }}

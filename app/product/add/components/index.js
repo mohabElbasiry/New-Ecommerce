@@ -61,7 +61,7 @@ export const ProductAddMaim = () => {
     Data: [],
     BeforeFilterData: [],
   });
-
+  console.log(submitedData,'submitedDatasubmitedData');
   // useMemo(() => {
   //   const maximumLength = 20;
   //   setHistory((prev) => {

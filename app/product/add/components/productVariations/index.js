@@ -5,12 +5,10 @@ import { VariationList } from "./createVariations/variationList";
 const ProductVariation = ({
   setVarients = () => {},
   productVarients = {},
-  refrenceVarient = [],
   data = {
     Data: [],
     BeforeFilterData: [],
   },
-  setHistory,
   setData = () => {},
 }) => {
   return (

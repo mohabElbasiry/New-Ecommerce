@@ -19,6 +19,7 @@ import { reorderArray } from "./functions/reorderArray.js";
 import { applyFilters } from "./functions/ApplayFilters.js";
 import { CustomDialoge } from "@/components/Modal/index.js";
 import { EditMoreThanOneValues } from "./editMoreThanOnevalue/index.js";
+import Counter from "../RootFunction/Actions.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -188,6 +189,7 @@ const CollapseView = ({
 
   return (
     <div className="     p-3 ">
+      <Counter/>
       <FilterHeader
         varitions={REfvariants}
         setChecked={setChecked}
