@@ -8,8 +8,21 @@ import { generateQualities } from "../collapseView/functions/GenerateQualities";
 import { shapeData } from "../collapseView/functions/datashape";
 import { ReorderIcon } from "../../drageControl";
 import { uid } from "uid";
+import { initialState } from "../../../constants/initialCreateValuedata";
+import { UpdateAction } from "../RootFunction/middleWare";
 
-export default function CreateVariation({ listIndex, setList, list,setChangeOnHistory }) {
+export default function CreateVariation({
+  listIndex,
+  setList,
+  list,
+  setChangeOnHistory,
+}) {
+  const [createOptionsAndValues, SetCreateOptionsValues] =
+    useState(initialState);
+  console.log(createOptionsAndValues, "createOptionsAndValues");
+  const handleAction = (action) => {
+    UpdateAction(action, SetCreateOptionsValues);
+  };
   const [currentOption, setCurrentOption] = useState({
     option_en: "",
     option_ar: "",
@@ -93,9 +106,18 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
 
   const handleValueChange = useCallback(
     (event, index, isAr = false) => {
-      handleError(event, index, isAr, setError, currentValues, error);
+      const { value, name } = event.target;
+      // handleError(event, index, isAr, setError, currentValues, error);
       const newValues = [...currentValues];
-
+      console.log("object");
+      handleAction({
+        type: "handleValueChange",
+        payload: {
+          value,
+          index,
+          isAr,
+        },
+      });
       if (isAr) {
         // newValues[index] = {
         //   ...newValues[index],
@@ -110,6 +132,7 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
         };
       }
       setCurrentValues(newValues);
+
       // updateOptions(currentOption, newValues);
     },
     [currentValues]
@@ -355,8 +378,8 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
                   dataShape,
                   updatedVarient || []
                 );
-                const {history,...others}=draft
-                draft.history.push(others)
+                const { history, ...others } = draft;
+                draft.history.push(others);
               })
             );
           }}
@@ -449,10 +472,10 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
                   }
                 );
 
-                 draft.productvaritions.variants = updatedVariants;
+                draft.productvaritions.variants = updatedVariants;
                 draft.productvaritions.REfvariants = updatedVariants;
 
-                 const flatValues =
+                const flatValues =
                   draft.productvaritions.varitionsValues?.flatMap(
                     (item) => item.values
                   ) || [];
@@ -466,8 +489,8 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
                   dataShape,
                   updatedVariants
                 );
-                const {history,...others}=draft
-                draft.history.push(others)
+                const { history, ...others } = draft;
+                draft.history.push(others);
               })
             );
           }}
