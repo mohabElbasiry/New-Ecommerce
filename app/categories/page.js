@@ -1,9 +1,12 @@
-import Tree from "./components/tree/Index";
+import { getOperationServer } from "@/lib/apiUtilsServer";
+import CategoriesTree from "./utils/components/categoriesTree/Index";
 
-const page = () => {
+const page = async () => {
+  const categoriesData = await getOperationServer(`/categories`, {});
+  const categories = categoriesData?.data || [];
   return (
     <div>
-      <Tree />
+      <CategoriesTree categories={categories} />
     </div>
   );
 };

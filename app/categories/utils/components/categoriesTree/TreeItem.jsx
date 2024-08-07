@@ -5,7 +5,6 @@ export default function TreeItem({
   treeRendering,
   open,
   setOpen,
-  setTreeItems,
   setSelectedItem,
   deleteElementFromTree,
 }) {
@@ -19,7 +18,7 @@ export default function TreeItem({
           item?.children?.length ? "" : ""
         } `}
       >
-        <span>{item.title}</span>
+        <span>{item.name.en}</span>
         <div
           className={` !bg-transparent  h-4 !border !w-auto !flex !items-center !justify-start !gap-2 z-10`}
         >
@@ -54,7 +53,6 @@ export default function TreeItem({
       {item.children && item.children.length
         ? treeRendering(
             item.children,
-            setTreeItems,
             open,
             setOpen,
             setSelectedItem,
