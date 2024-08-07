@@ -3,23 +3,17 @@ import { produce } from "immer";
 import { VariationItem } from "./variationItem";
 import { shapeData } from "../../collapseView/functions/datashape";
 import { generateQualities } from "../../collapseView/functions/GenerateQualities";
+import { UpdateAction } from "../../RootFunction/middleWare";
 
 export const VariationList = ({ productVarients, setVarients }) => {
+  const handleAction = (action) => {
+    UpdateAction(action, setVarients);
+  };
   const handleReorder = (newVariants) => {
-    setVarients(
-      produce((draft) => {
-        draft.productvaritions.variants = newVariants;
-        draft.productvaritions.varitionsValues = shapeData(
-          generateQualities(
-            draft.productvaritions.varitionsValues?.flatMap(
-              (item) => item?.values
-            ),
-            newVariants || []
-          ),
-          newVariants || []
-        );
-      })
-    );
+    handleAction({
+      type:'handleReorder',
+      payload:newVariants
+    })
   };
 
   return (

@@ -1,20 +1,12 @@
 "use client";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-} from "@/components/ui/accordion";
+import { memo, useCallback, useMemo, useState } from "react";
+import { Accordion, AccordionItem } from "@/components/ui/accordion";
 import { shapeData } from "./functions/datashape.js";
 import VarientKey from "./varientKey/index.js";
 import VarientValues from "./varientValues/index.js";
-import { GroupByFunction } from "../variationTables/Filters/GroupBy.js";
 import FilterHeader from "./FilterHeader/index.jsx";
 import { generateQualities } from "./functions/GenerateQualities.js";
 import { produce } from "immer";
-import DrawerComponent from "@/components/GlobalUi/Drawer/index.jsx";
-import VariantDetails from "@/components/VariantDetails/index.jsx";
-import { dataVariants } from "@/app/product/[id]/data.js";
 import { reorderArray } from "./functions/reorderArray.js";
 import { applyFilters } from "./functions/ApplayFilters.js";
 import { CustomDialoge } from "@/components/Modal/index.js";
@@ -24,7 +16,6 @@ const CollapseView = ({
   varitions = [],
   varitionsValues = [],
   REfvariants = [],
-
   setVarients = () => {},
 }) => {
   const [checkedArray, setChecked] = useState([]);
@@ -168,7 +159,7 @@ const CollapseView = ({
       min: Math.min(...price),
     };
   };
-   const callculateQUantity = useCallback(
+  const callculateQUantity = useCallback(
     (values, key) => {
       setVarients(
         produce((draft) => {
@@ -189,7 +180,7 @@ const CollapseView = ({
 
   return (
     <div className="     p-3 ">
-      <Counter/>
+      <Counter />
       <FilterHeader
         varitions={REfvariants}
         setChecked={setChecked}
