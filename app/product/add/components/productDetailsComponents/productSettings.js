@@ -3,18 +3,17 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { produce } from "immer";
-export const ProductSettings = ({ settingsData, setSubmitedData }) => {
-  console.log("submitedData on ProductSettings ", settingsData);
+import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+export const ProductSettings = ({ setSubmitedData }) => {
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
   const updateData = (event) => {
     const { name, value } = event.target;
-    setSubmitedData(
-      produce((draft) => {
-        draft[name] = value;
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name, value },
+    });
   };
   return (
     <>

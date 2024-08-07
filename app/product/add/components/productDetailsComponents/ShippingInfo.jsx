@@ -1,45 +1,40 @@
 import { produce } from "immer";
 import React, { memo, useState } from "react";
+import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 
 function ShippingInfo({ setSubmitedData, shippingData }) {
   const [isChecked, setIsChecked] = useState(false);
   const [weightType, setWeightType] = useState(shippingData?.type || "kg");
   const [weight, setWeight] = useState(shippingData?.Weight || 0);
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
-    setSubmitedData(
-      produce((draft) => {
-        draft.shipping.active = !isChecked ? true : false;
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name: "active", value: !isChecked ? true : false },
+      target: "shipping",
+    });
   };
   const handleWeightChange = (e) => {
     const value = e.target.value;
     setWeight(value);
-    setSubmitedData(
-      produce((draft) => {
-        draft.shipping.weight = value;
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name: "weight", value },
+      target: "shipping",
+    });
   };
 
   const handleWeightTypeChange = (e) => {
     const value = e.target.value;
     setWeightType(value);
-    setSubmitedData(
-      produce((draft) => {
-        draft.shipping.type = value;
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name: "type", value },
+      target: "shipping",
+    });
   };
   return (
     <>

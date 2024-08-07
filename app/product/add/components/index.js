@@ -203,7 +203,6 @@ export const ProductAddMaim = () => {
       ],
     },
   ];
-  console.log("Mohamed new Salah::: ", submitedData);
   const {
     register,
     handleSubmit,
@@ -216,6 +215,7 @@ export const ProductAddMaim = () => {
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
   });
+  console.log("Mo Salah Nuby::", submitedData);
   return (
     <>
       <TourGuide stepsData={dataSteps} />
