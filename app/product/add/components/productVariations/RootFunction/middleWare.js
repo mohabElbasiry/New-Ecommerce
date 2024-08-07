@@ -15,6 +15,7 @@ const thunkMiddleware = (next) => (action, state, setState) => {
     console.log("Current state:", state);
     const result = next(action, state, setState);
     console.log("Next state:", result);
+ 
     return result;
   };
   

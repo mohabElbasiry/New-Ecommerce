@@ -10,7 +10,7 @@ export const CreateList = ({ setVarients, children }) => {
         className="cursor-pointer add-product-variant text-sm lowercase p-3 rounded-lg shadow bg-[#fff]"
         onClick={() => {
           handleAction({
-            type: "UpdateVarientList",
+            type: "AddVarientList",
             payload: {
               isColor: "",
               key_en: "",

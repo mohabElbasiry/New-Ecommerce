@@ -2,7 +2,7 @@ import { produce } from "immer";
 import { actionHandlers } from "./handler";
 
 export const updateState = (action, setState) => {
-  console.log(setState, "setStatesetState");
+  console.log(setState,action, "setStatesetState");
   setState((prevState) =>
     produce(prevState, (draft) => {
       const handler = actionHandlers[action.type];

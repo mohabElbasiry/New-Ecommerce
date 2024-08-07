@@ -1,21 +1,27 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SketchPicker } from "react-color";
-import { handleError } from "./functions/setError";
+import { handleError } from "./createVariationHook/functions/setError";
 import { Reorder } from "framer-motion";
 import { produce } from "immer";
 import { generateQualities } from "../collapseView/functions/GenerateQualities";
 import { shapeData } from "../collapseView/functions/datashape";
 import { ReorderIcon } from "../../drageControl";
 import { uid } from "uid";
+import { initialState } from "../../../constants/initialCreateValuedata";
+import { UpdateAction } from "../RootFunction/middleWare";
+import { HandleInputChange } from "./createVariationHook/handleInputHook";
 
-export default function CreateVariation({ listIndex, setList, list,setChangeOnHistory }) {
-  const [currentOption, setCurrentOption] = useState({
-    option_en: "",
-    option_ar: "",
-    error: false,
-    ErrorMessage: "",
-  });
+export default function CreateVariation({
+  listIndex,
+  setList,
+  list,
+  setChangeOnHistory,
+}) {
+  const [createOptionsAndValues, SetCreateOptionsValues] =
+    useState(initialState);
+  console.log(createOptionsAndValues, "createOptionsAndValues");
+
   const [currentValues, setCurrentValues] = useState([
     {
       // value_ar: "",
@@ -24,13 +30,25 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
       id: uid(),
     },
   ]);
+  const [currentOption, setCurrentOption] = useState({
+    option_en: "",
+    option_ar: "",
+    error: false,
+    ErrorMessage: "",
+  });
+  const { handleBlur, handleKeyDown, handleValueChange, handleAction } =
+    HandleInputChange({
+      createOptionsAndValues,
+      currentValues,
+      SetCreateOptionsValues,
+      setCurrentValues,
+    });
   const [color, opencolor] = useState({ index: -1, open: false });
   const [GeneralErrorMessage, setGeneralErrorMessage] = useState({
     isError: false,
     ErrorMessage: "",
     value: false,
   });
-  const [error, setError] = useState([]);
   const handleOptionChange = useCallback(
     (event) => {
       if (currentOption.option_en.trim() !== "") {
@@ -54,105 +72,23 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
     },
     [list]
   );
-  const handleKeyDown = useCallback(
-    (event, index, item) => {
-      const itemFounded = currentValues?.find((_, idx) => idx === index);
-      if (
-        event.keyCode === 8 &&
-        event.target.value === "" &&
-        itemFounded &&
-        // itemFounded?.value_ar === "" &&
-        itemFounded?.value_en === ""
-      ) {
-        if (index === 0) {
-          return;
-        }
-        if (currentValues?.some((item, idx) => idx === index)) {
-          if (event?.target?.value === "") {
-            setTimeout(() => {
-              setCurrentValues((prev) => {
-                return prev?.filter((_, idx) => idx !== index);
-              });
-            }, 100);
-            setError((prev) => {
-              if (
-                error?.length &&
-                prev?.some((item) => item?.index === index)
-              ) {
-                return prev?.filter((item) => item?.index !== index);
-              } else {
-                return prev;
-              }
-            });
-          }
-        }
-      }
-    },
-    [currentValues]
-  );
-
-  const handleValueChange = useCallback(
-    (event, index, isAr = false) => {
-      handleError(event, index, isAr, setError, currentValues, error);
-      const newValues = [...currentValues];
-
-      if (isAr) {
-        // newValues[index] = {
-        //   ...newValues[index],
-        //   value_ar: event.target.value,
-        //   color: "",
-        // };
-      } else {
-        newValues[index] = {
-          ...newValues[index],
-          value_en: event.target.value,
-          color: "",
-        };
-      }
-      setCurrentValues(newValues);
-      // updateOptions(currentOption, newValues);
-    },
-    [currentValues]
-  );
 
   const HandleDelete = useCallback(
     (index) => {
-      setCurrentValues((prev) => {
-        const DeletedItem = prev?.filter((item, idx) => idx !== index);
-        return DeletedItem;
+      handleAction({
+        type: "FilterValueUsingIndex",
+        payload: {
+          index,
+        },
       });
+      // setCurrentValues((prev) => {
+      //   const DeletedItem = prev?.filter((item, idx) => idx !== index);
+      //   return DeletedItem;
+      // });
     },
     [JSON.stringify(currentValues)]
   );
-  const handleBlur = (e, idx) => {
-    if (currentValues?.length) {
-      const founded = currentValues?.some((item, iedx) => iedx === idx);
-      if (
-        founded &&
-        e.target.value === "" &&
-        idx !== currentValues?.length - 1
-      ) {
-        setError((prev) => {
-          if (prev?.some((_, i) => i.index === idx)) {
-            prev?.map((item, i) => {
-              if (i === idx) {
-                return {
-                  index: idx,
-                  Message: "Required",
-                  isAr,
-                  isEn: !isAr,
-                };
-              } else {
-                return i;
-              }
-            });
-          } else {
-            return [...prev, { index: idx, Message: "Required" }];
-          }
-        });
-      }
-    }
-  };
+
   useEffect(() => {
     if (document && open) {
       const searchIcon = document.getElementById("action-component");
@@ -174,21 +110,24 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
   }, [color]);
   useEffect(() => {
     if (
-      currentValues[currentValues.length - 1]?.value_en?.trim() !== ""
+      createOptionsAndValues?.currentValues[
+        createOptionsAndValues?.currentValues.length - 1
+      ]?.value_en?.trim() !== ""
       // &&
       // currentValues[currentValues.length - 1]?.value_ar?.trim() !== ""
     ) {
-      setCurrentValues([
-        ...currentValues,
-        {
+      console.log("object");
+      handleAction({
+        type: "handleAddValue",
+        payload: {
           value_ar: "",
           value_en: "",
           color: "",
           id: uid(),
         },
-      ]);
+      });
     }
-  }, [currentValues]);
+  }, [createOptionsAndValues?.currentValues]);
 
   useEffect(() => {
     if (list?.length) {
@@ -230,7 +169,7 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
         </div>
         <p className="my-3">Option values</p>
         <Reorder.Group values={currentValues} onReorder={setCurrentValues}>
-          {currentValues?.map((value, index) => (
+          {createOptionsAndValues?.currentValues?.map((value, index) => (
             <div>
               <Reorder.Item
                 value={value}
@@ -249,13 +188,17 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
                     onChange={(event) => handleValueChange(event, index, false)}
                     PlaceHolder={`option values`}
                     isRequired={index !== currentValues?.length - 1}
-                    onKeyDown={(e) => handleKeyDown(e, index, value)}
-                    onBlur={(e) => handleBlur(e, index)}
+                    onKeyDown={(e) => handleKeyDown(e, index, value, false)}
+                    onBlur={(e) => handleBlur(e, index, false)}
                     isError={
-                      error?.find((item) => item?.index === index)?.en?.Message
+                      createOptionsAndValues?.error?.find(
+                        (item) => item?.index === index
+                      )?.en?.Message
                     }
                     message={
-                      error?.find((item) => item?.index === index)?.en?.Message
+                      createOptionsAndValues?.error?.find(
+                        (item) => item?.index === index
+                      )?.en?.Message
                     }
                     Autocomplete="off"
                   />
@@ -302,8 +245,11 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
                       <SketchPicker />
                     ) : null}
                   </div>
-                  {currentValues?.some((_, idx) => idx === index) &&
-                  index !== currentValues?.length - 1 ? (
+                  {createOptionsAndValues?.currentValues?.some(
+                    (_, idx) => idx === index
+                  ) &&
+                  index !==
+                    createOptionsAndValues?.currentValues?.length - 1 ? (
                     <button
                       type="button"
                       onClick={() => HandleDelete(index)}
@@ -355,8 +301,8 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
                   dataShape,
                   updatedVarient || []
                 );
-                const {history,...others}=draft
-                draft.history.push(others)
+                const { history, ...others } = draft;
+                draft.history.push(others);
               })
             );
           }}
@@ -371,105 +317,66 @@ export default function CreateVariation({ listIndex, setList, list,setChangeOnHi
           onClick={(e) => {
             e.preventDefault();
 
-            const isOneOfOthers = list
-              ?.filter((option) => !option?.edit)
-              .find((option) => {
-                return (
-                  option?.key_en?.trim() === currentOption?.option_en?.trim()
-                );
-              });
+            // const isOneOfOthers = list
+            //   ?.filter((option) => !option?.edit)
+            //   .find((option) => {
+            //     return (
+            //       option?.key_en?.trim() === currentOption?.option_en?.trim()
+            //     );
+            //   });
 
-            if (isOneOfOthers) {
-              return;
-            }
+            // if (isOneOfOthers) {
+            //   return;
+            // }
 
-            if (currentOption.option_en.trim() === "") {
-              setGeneralErrorMessage((prev) => ({
-                ...prev,
-                ErrorMessage: "please Fill This Form",
-                isError: true,
-                value: false,
-              }));
-              return;
-            }
+            // if (currentOption.option_en.trim() === "") {
+            //   setGeneralErrorMessage((prev) => ({
+            //     ...prev,
+            //     ErrorMessage: "please Fill This Form",
+            //     isError: true,
+            //     value: false,
+            //   }));
+            //   return;
+            // }
 
-            if (
-              currentValues?.length === 1 &&
-              currentValues?.[0]?.value_ar?.trim() === "" &&
-              currentValues?.[0]?.value_en?.trim() === ""
-            ) {
-              setGeneralErrorMessage((prev) => ({
-                ...prev,
-                ErrorMessage: "please Fill This Form",
-                isError: true,
-                value: true,
-              }));
+            // if (
+            //   currentValues?.length === 1 &&
+            //   currentValues?.[0]?.value_ar?.trim() === "" &&
+            //   currentValues?.[0]?.value_en?.trim() === ""
+            // ) {
+            //   setGeneralErrorMessage((prev) => ({
+            //     ...prev,
+            //     ErrorMessage: "please Fill This Form",
+            //     isError: true,
+            //     value: true,
+            //   }));
 
-              return;
-            }
-            if (
-              currentValues?.length > 1 &&
-              currentValues
-                ?.filter((idx) => idx !== currentValues - 1)
-                .every(
-                  (item) =>
-                    item?.value_ar?.trim() === "" &&
-                    item?.value_en?.trim() === ""
-                )
-            ) {
-              setGeneralErrorMessage((prev) => ({
-                ...prev,
-                ErrorMessage: "please Fill This Form",
-                isError: true,
-                value: true,
-              }));
-            }
+            //   return;
+            // }
+            // if (
+            //   currentValues?.length > 1 &&
+            //   currentValues
+            //     ?.filter((idx) => idx !== currentValues - 1)
+            //     .every(
+            //       (item) =>
+            //         item?.value_ar?.trim() === "" &&
+            //         item?.value_en?.trim() === ""
+            //     )
+            // ) {
+            //   setGeneralErrorMessage((prev) => ({
+            //     ...prev,
+            //     ErrorMessage: "please Fill This Form",
+            //     isError: true,
+            //     value: true,
+            //   }));
+            // }
 
-            setGeneralErrorMessage((prev) => ({
-              ...prev,
-              ErrorMessage: "",
-              isError: false,
-            }));
-            setList(
-              produce((draft) => {
-                const updatedVariants = draft.productvaritions.variants.map(
-                  (item, idx) => {
-                    if (idx === listIndex) {
-                      return {
-                        ...item,
-                        key_en: currentOption?.option_en,
-                        key_ar: currentOption?.option_ar,
-                        values: currentValues?.filter(
-                          (valueItem) => valueItem?.value_en !== ""
-                        ),
-                        edit: false,
-                      };
-                    }
-                    return item;
-                  }
-                );
-
-                 draft.productvaritions.variants = updatedVariants;
-                draft.productvaritions.REfvariants = updatedVariants;
-
-                 const flatValues =
-                  draft.productvaritions.varitionsValues?.flatMap(
-                    (item) => item.values
-                  ) || [];
-                const dataShape = generateQualities(
-                  flatValues,
-                  updatedVariants
-                );
-
-                // Update varitionsValues using shapeData
-                draft.productvaritions.varitionsValues = shapeData(
-                  dataShape,
-                  updatedVariants
-                );
-                const {history,...others}=draft
-                draft.history.push(others)
-              })
-            );
+            // setGeneralErrorMessage((prev) => ({
+            //   ...prev,
+            //   ErrorMessage: "",
+            //   isError: false,
+            // }));
+            handleAction({ type: "handleUpdateList", payload: { listIndex } });
           }}
         >
           Done

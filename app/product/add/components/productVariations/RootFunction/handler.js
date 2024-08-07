@@ -1,11 +1,11 @@
-import { CreateVariationHandler } from "./Handlersfunctions/createVariations";
+ import { CreateVariationHandler } from "./Handlersfunctions/createVariations";
 import { HandleKeysAndValues } from "./Handlersfunctions/handlekeysAndvalues";
-import { HandleList } from "./Handlersfunctions/handleList";
+import { HandleUpdateList } from "./Handlersfunctions/handleList";
 import { ProductDataHandlers } from "./Handlersfunctions/ProductDetailsHandler";
 
 export const actionHandlers = {
-  ...HandleList,
   ...CreateVariationHandler,
+  ...HandleUpdateList,
   ...HandleKeysAndValues,
   ...ProductDataHandlers,
 };
