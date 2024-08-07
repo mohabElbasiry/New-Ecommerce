@@ -1,5 +1,5 @@
-import { produce } from "immer";
 import { useCallback, useEffect, useRef } from "react";
+import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 
 export default function Pricing({ setSubmitedData, pricingData }) {
   const debounceRef = useRef(null);
@@ -20,23 +20,30 @@ export default function Pricing({ setSubmitedData, pricingData }) {
 
   const handleCalcProfitMargin = useCallback(
     (val) => {
-      // calculate profit and margin
-
       let price = pricingData.price;
       let profit = +pricingData.price - +val;
       let Margin = +(+profit / (+price || 0)) * 100;
-
-      setSubmitedData(
-        produce((draft) => {
-          draft.pricing.profit = val ? profit?.toFixed() : ``;
-          draft.pricing.margin = val ? Margin?.toFixed() : ``;
-          const { history, ...other } = draft;
-          draft.history.push(other);
-        })
-      );
+      const action = {
+        type: "UpdatePropertyByNameAndValue",
+        payload: [
+          { name: "profit", value: val ? profit?.toFixed() : `` },
+          { name: "margin", value: val ? Margin?.toFixed() : `` },
+        ],
+        target: "pricing",
+      };
+      UpdateAction(action, setSubmitedData);
     },
     [pricingData.price, pricingData.Cost_Per_Item]
   );
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    const action = {
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name, value },
+      target: "pricing",
+    };
+    UpdateAction(action, setSubmitedData);
+  };
 
   return (
     <>
@@ -50,13 +57,8 @@ export default function Pricing({ setSubmitedData, pricingData }) {
               <input
                 className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                 type="text"
-                onChange={(e) =>
-                  setSubmitedData(
-                    produce((draft) => {
-                      draft.pricing.price = e.target.value;
-                    })
-                  )
-                }
+                name="price"
+                onChange={(e) => handleChange(e)}
                 value={pricingData.price}
                 defaultValue={pricingData.price}
               />
@@ -66,13 +68,8 @@ export default function Pricing({ setSubmitedData, pricingData }) {
               <input
                 className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                 type="text"
-                onChange={(e) =>
-                  setSubmitedData(
-                    produce((draft) => {
-                      draft.pricing.compare_to_price = e.target.value;
-                    })
-                  )
-                }
+                name="compare_to_price"
+                onChange={(e) => handleChange(e)}
                 value={pricingData.compare_to_price}
                 defaultValue={pricingData.compare_to_price}
               />
@@ -85,13 +82,8 @@ export default function Pricing({ setSubmitedData, pricingData }) {
                 className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
                 type="text"
                 value={pricingData?.Cost_Per_Item}
-                onChange={(e) =>
-                  setSubmitedData(
-                    produce((draft) => {
-                      draft.pricing.Cost_Per_Item = e.target.value;
-                    })
-                  )
-                }
+                name="Cost_Per_Item"
+                onChange={(e) => handleChange(e)}
                 defaultValue={pricingData?.Cost_Per_Item || 0}
               />
             </div>

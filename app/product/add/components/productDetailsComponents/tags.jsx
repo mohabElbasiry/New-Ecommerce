@@ -1,42 +1,45 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { memo, useState } from "react";
 import { produce } from "immer";
+import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 
 function Seo({ seoData, setSubmitedData }) {
   const [tagText, setTagText] = useState("");
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
 
   const handleAddTag = (ta) => {
-    setSubmitedData(
-      produce((draft) => {
-        draft.seo.tags = [...draft.seo.tags, tagText];
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: {
+        name: "tags",
+        value: [...seoData.tags, tagText],
+      },
+      target: "seo",
+    });
     setTagText("");
   };
   const handleRemoveTag = (tag) => {
-    setSubmitedData(
-      produce((draft) => {
-        draft.seo.tags = draft.seo.tags.filter((item) => item !== tag);
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: {
+        name: "tags",
+        value: seoData.tags.filter((item) => item !== tag),
+      },
+      target: "seo",
+    });
   };
   const UdateBasicInfo = (e, setSubmitedData) => {
     const { name, value } = e.target;
-
-    setSubmitedData(
-      produce((draft) => {
-        draft.seo[name] = value;
-        const { history, ...other } = draft;
-        draft.history .push(other);
-
-      })
-    );
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: {
+        name,
+        value,
+      },
+      target: "seo",
+    });
   };
   return (
     <>

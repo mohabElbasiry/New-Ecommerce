@@ -5,6 +5,7 @@ import { produce } from "immer";
 import Image from "next/image";
 
 import { useEffect, useRef, useState } from "react";
+import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 
 export default function UploadFilesModal({
   buttonContext,
@@ -12,6 +13,10 @@ export default function UploadFilesModal({
   setSubmitedData,
   buttonCss,
 }) {
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
+
   const [UrlsFiles, setUrlsFiles] = useState([]);
   const [UrlsFilesSelected, setUrlsFilesSelected] = useState([]);
   console.log(UrlsFiles);
@@ -109,16 +114,16 @@ export default function UploadFilesModal({
             <button
               className=" text-white font-medium bg-blue-500 text-sm py-2 px-3 rounded-md focus:outline-none hover:bg-blue-400"
               onClick={() => {
-                setSubmitedData(
-                  produce((draft) => {
-                    draft.productDetails.images = UrlsFilesSelected.map(
-                      (item, idx) => ({ ...item, idx, order: idx })
-                    );
-                    const { history, ...other } = draft;
-                    draft.history .push(other);
-
-                  })
-                );
+                const selectdItems = UrlsFilesSelected.map((item, idx) => ({
+                  ...item,
+                  idx,
+                  order: idx,
+                }));
+                handleAction({
+                  type: "UpdatePropertyByNameAndValue",
+                  payload: { name: "images", value: selectdItems },
+                  target: "productDetails",
+                });
                 setOpen(!open);
               }}
             >

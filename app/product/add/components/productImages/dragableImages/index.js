@@ -2,22 +2,25 @@ import { ListManager } from "react-beautiful-dnd-grid";
 import { produce } from "immer";
 import UploadFilesModal from "../UploadFilesModal";
 import { imageBaseUrl } from "@/lib/apiUtils";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 
 export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
   function sortListArr(list) {
     return list.slice().sort((first, second) => first.order - second.order);
   }
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
   const sortList = (list) => {
-    setSubmitedData(
-      produce((draft) => {
-        draft.productDetails.images = sortListArr(list).map((item, idx) => ({
-          ...item,
-          idx,
-        }));
-        const { history, ...others } = draft;
-        draft.history.push(others);
-      })
-    );
+    const sortedImages = sortListArr(list).map((item, idx) => ({
+      ...item,
+      idx,
+    }));
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name: "images", value: sortedImages },
+      target: "productDetails",
+    });
   };
 
   const reorderList = (sourceIndex, destinationIndex) => {
@@ -51,24 +54,9 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
       2;
     sortList(list);
   };
-  const HandleSubmit = (images) => {
-    console.log(images, "imagesimagesimages");
-    // setSubmitedData(
-    //   produce((prev) => {
-    //     if (!prev.images) {
-    //       prev.images = [];
-    //     }
-    //     images.forEach((image) => {
-    //       if (!prev.images.some((existingImage) => existingImage === image)) {
-    //         prev.images.push(image);
-    //       }
-    //     });
-    //   })
-    // );
-  };
 
   return (
-    <div className="App flex flex-wrap gap-4" >
+    <div className="App flex flex-wrap gap-4">
       <ListManager
         items={sortedList}
         direction="horizontal"

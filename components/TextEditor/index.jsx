@@ -2,11 +2,12 @@
 import React, { useState, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { produce } from "immer";
+import { UpdateAction } from "@/app/product/add/components/productVariations/RootFunction/middleWare";
 
 // Using dynamic import of Jodit component as it can't render on server side
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-export default function TextEditor({ content, setContent, setSubmitedData }) {
+export default function TextEditor({ content, setSubmitedData }) {
   const editor = useRef(null);
 
   // Custom configuration for Jodit editor
@@ -37,17 +38,16 @@ export default function TextEditor({ content, setContent, setSubmitedData }) {
 
   // Function to handle changes in the editor
   const handleChange = (value) => {
-    console.log("value sad  hdjsad::: ", value);
-    setContent(value);
-    setSubmitedData(
-      produce((draft) => {
-        draft.productDetails.description_en = value;
-      })
-    );
+    const action = {
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name: "description_en", value: value },
+      target: "productDetails",
+    };
+    UpdateAction(action, setSubmitedData);
   };
 
   return (
-    <div className="h-full  ">
+    <div className="h-full">
       {/* Main initialization of the Jodit editor */}
       <JoditEditor
         ref={editor}
