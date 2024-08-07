@@ -14,37 +14,49 @@ const BasicData = ({
   shippingData = {},
   seoData = {},
 }) => {
-  const UdateBasicInfo = (e, setSubmitedData) => {
-    // setSubmitedData((prev) => ({
-    //   ...prev,
-    //   productDetails: {
-    //     ...prev.productDetails,
-    //     [e.target.name]: e.target.value,
-    //   },
-    // }));
+  function debounce(func, wait = 2000) {
+    let timeout;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func.apply(context, args);
+        // Using apply here
+      }, wait);
+    };
+  }
+
+  const UdateBasicInfo = (e, setSubmittedData) => {
     const { value, name } = e.target;
-    setSubmitedData(
+    setSubmittedData(
       produce((draft) => {
         draft.productDetails[name] = value;
       })
     );
+    debounce(() =>
+      setSubmittedData(
+        produce((draft) => {
+          const { history, ...other } = draft;
+          draft.history.push(other);
+        })
+      )
+    ); // Call the debounced function immediately to handle initial update
   };
 
   const updateDetails = (e) => {
     setSubmitedData(
       produce((prev) => {
         prev.description = e;
+        const { history, ...other } = prev;
+        prev.history.push(other);
       })
     );
   };
-
   const { errors = {}, register = {} } = formData;
+
   return (
-    <div
-      className="gap-5
-      rounded-lg  
-      flex-col w-full"
-    >
+    <div className="gap-5  rounded-lg  flex-col w-full">
       <p className="title">Product Description</p>
       <div className="box p-2">
         <div className="flex flex-col gap-2 w-full">

@@ -10,6 +10,9 @@ export const ProductSettings = ({ settingsData, setSubmitedData }) => {
     setSubmitedData(
       produce((draft) => {
         draft[name] = value;
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };
@@ -39,7 +42,11 @@ export const ProductSettings = ({ settingsData, setSubmitedData }) => {
             </div>
           ))}
         </RadioGroup>
-        <InputTimePPicker name = "publishTime" />
+        <InputTimePPicker
+          name="publishTime"
+          onChange={(event) => updateData(event)}
+          setSubmitedData={setSubmitedData}
+        />
       </div>
     </>
   );

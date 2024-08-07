@@ -3,8 +3,7 @@ import BasicData from "./BasicInfeo";
 import ProductVariation from "../productVariations";
 import { ProductSettings } from "./productSettings";
 import ProductImages from "../productImages";
-import { memoize } from "lodash";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 export const ProductDetailsComponent = ({
   submitedData,

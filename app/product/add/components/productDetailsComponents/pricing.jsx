@@ -1,20 +1,21 @@
-import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { produce } from "immer";
 import { useCallback, useEffect, useRef } from "react";
 
 export default function Pricing({ setSubmitedData, pricingData }) {
   const debounceRef = useRef(null);
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    debounceRef.current = setTimeout(() => {
-      handleCalcProfitMargin(pricingData?.Cost_Per_Item);
-    }, 1200);
+    if (pricingData.Cost_Per_Item && pricingData.price) {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+      debounceRef.current = setTimeout(() => {
+        handleCalcProfitMargin(pricingData?.Cost_Per_Item);
+      }, 1200);
 
-    return () => {
-      clearTimeout(debounceRef.current);
-    };
+      return () => {
+        clearTimeout(debounceRef.current);
+      };
+    }
   }, [pricingData.Cost_Per_Item, pricingData.price]);
 
   const handleCalcProfitMargin = useCallback(
@@ -29,6 +30,8 @@ export default function Pricing({ setSubmitedData, pricingData }) {
         produce((draft) => {
           draft.pricing.profit = val ? profit?.toFixed() : ``;
           draft.pricing.margin = val ? Margin?.toFixed() : ``;
+          const { history, ...other } = draft;
+          draft.history.push(other);
         })
       );
     },

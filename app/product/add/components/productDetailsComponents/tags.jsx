@@ -9,6 +9,9 @@ function Seo({ seoData, setSubmitedData }) {
     setSubmitedData(
       produce((draft) => {
         draft.seo.tags = [...draft.seo.tags, tagText];
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
     setTagText("");
@@ -17,6 +20,9 @@ function Seo({ seoData, setSubmitedData }) {
     setSubmitedData(
       produce((draft) => {
         draft.seo.tags = draft.seo.tags.filter((item) => item !== tag);
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };
@@ -26,6 +32,9 @@ function Seo({ seoData, setSubmitedData }) {
     setSubmitedData(
       produce((draft) => {
         draft.seo[name] = value;
+        const { history, ...other } = draft;
+        draft.history .push(other);
+
       })
     );
   };

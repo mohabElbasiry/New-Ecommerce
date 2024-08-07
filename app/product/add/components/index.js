@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import Headercomponent from "./headercomponent";
 import { ProductDetailsComponent } from "./productDetailsComponents";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { shapeData } from "./productVariations/collapseView/functions/datashape"
 import TourGuide from "@/components/GlobalUi/TourGuide";
 import { BottomBar } from "./bottombar";
 // import { List } from "./productImages/dragableImages";
+
 const List = [
   {
     name: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxljCiU3pRUXpw-39aklTNk7BDV3G9Dn7ocw&s",
@@ -56,11 +57,11 @@ export const ProductAddMaim = () => {
     ...ProductMainDefaultValue,
   });
   const [history, setHistory] = useState([ProductMainDefaultValue]);
-   const [data, setData] = useState({
+  const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
   });
-  console.log(submitedData,'submitedDatasubmitedData');
+
   // useMemo(() => {
   //   const maximumLength = 20;
   //   setHistory((prev) => {
@@ -79,17 +80,17 @@ export const ProductAddMaim = () => {
   //   });
   // }, [submitedData?.productvaritions, changeonHistory]);
 
-  useEffect(() => {
-    setSubmitedData(
-      produce((draft) => {
-        draft.productDetails.images = List.map((item, idx) => ({
-          name: item.name,
-          order: idx,
-          idx,
-        }));
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   setSubmitedData(
+  //     produce((draft) => {
+  //       draft.productDetails.images = List.map((item, idx) => ({
+  //         name: item.name,
+  //         order: idx,
+  //         idx,
+  //       }));
+  //     })
+  //   );
+  // }, []);
   const dataSteps = [
     {
       key: "steps Variant",
@@ -202,7 +203,7 @@ export const ProductAddMaim = () => {
       ],
     },
   ];
-
+  console.log("Mohamed new Salah::: ", submitedData);
   const {
     register,
     handleSubmit,
@@ -219,7 +220,7 @@ export const ProductAddMaim = () => {
     <>
       <TourGuide stepsData={dataSteps} />
       <Headercomponent handleSubmit={handleSubmit}>
-        <div className="  items-end justify-end   gap-1">
+        <div className="  items-end justify-end  gap-1">
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}
@@ -235,14 +236,13 @@ export const ProductAddMaim = () => {
             }}
             data={data}
             setData={setData}
-           />
+          />
         </div>
-
         <BottomBar
           setHistory={setHistory}
           history={submitedData?.history}
           setSubmitedData={setSubmitedData}
-         />
+        />
       </Headercomponent>
     </>
   );

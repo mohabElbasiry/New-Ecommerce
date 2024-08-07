@@ -1,8 +1,7 @@
 import { ListManager } from "react-beautiful-dnd-grid";
 import { produce } from "immer";
 import UploadFilesModal from "../UploadFilesModal";
-import { useState } from "react";
-import UploadFile from "@/app/product/components/UploadFile";
+import { imageBaseUrl } from "@/lib/apiUtils";
 
 export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
   function sortListArr(list) {
@@ -15,6 +14,8 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
           ...item,
           idx,
         }));
+        const { history, ...others } = draft;
+        draft.history.push(others);
       })
     );
   };
@@ -67,7 +68,7 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
   };
 
   return (
-    <div className="App">
+    <div className="App flex flex-wrap gap-4" >
       <ListManager
         items={sortedList}
         direction="horizontal"
@@ -82,18 +83,21 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
                     ? "w-[250px]   h-[130px]"
                     : "  w-[100px] h-[120px]"
                 }`}
-                src={`${item?.name}`}
+                src={`${imageBaseUrl}/${item.filename}`}
               />
             </div>
           );
         }}
         onDragEnd={reorderList}
       />
-      <UploadFilesModal
-        buttonContext={
-          <img className="w-[30px]" src="/upload-svgrepo-com.svg" />
-        }
-      />
+      <div>
+        <UploadFilesModal
+          buttonContext={<img className=" " src="/upload-svgrepo-com.svg" />}
+          buttonCss={"w-[100px] h-[124px]"}
+          selectedImages={sortedList}
+          setSubmitedData={setSubmitedData}
+        />
+      </div>
     </div>
   );
 };

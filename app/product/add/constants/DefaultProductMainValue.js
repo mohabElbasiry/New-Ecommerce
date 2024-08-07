@@ -37,7 +37,7 @@ export const ProductMainDefaultValue = {
   seo: { tags: [], title: "", description: "" },
   status: "",
   publishTime: "",
-  setSubmitedData: () => {},
-  submitedData: {},
+  // setSubmitedData: () => {},
+  // submitedData: {},
   history: [],
 };
