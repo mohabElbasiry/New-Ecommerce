@@ -61,7 +61,7 @@ export const ProductAddMaim = () => {
     Data: [],
     BeforeFilterData: [],
   });
-  console.log(submitedData,'submitedDatasubmitedData');
+
   // useMemo(() => {
   //   const maximumLength = 20;
   //   setHistory((prev) => {
@@ -203,7 +203,7 @@ export const ProductAddMaim = () => {
       ],
     },
   ];
-  console.log("Mohamed Salah::: ", submitedData);
+  console.log("Mohamed new Salah::: ", submitedData);
   const {
     register,
     handleSubmit,
