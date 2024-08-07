@@ -13,6 +13,8 @@ import { produce } from "immer";
 import { shapeData } from "./collapseView/functions/datashape";
 import { generateQualities } from "./collapseView/functions/GenerateQualities";
 import { VariationList } from "./createVariations/variationList";
+import { UpdateAction } from "./RootFunction/middleWare";
+import { CreateList } from "./createlist";
 
 const ProductVariation = ({
   setVarients = () => {},
@@ -35,65 +37,16 @@ const ProductVariation = ({
                 productVarients={productVarients}
                 setVarients={setVarients}
               />
-              <p
-                className="cursor-pointer text-sm lowercase border-t p-2 px-2"
-                onClick={() => {
-                  setVarients(
-                    produce((draft) => {
-                      draft?.productvaritions?.variants?.push({
-                        isColor: "",
-                        key_en: "",
-                        key_ar: "",
-                        values: [
-                          {
-                            value_ar: "",
-                            value_en: "",
-                            color: "",
-                          },
-                        ],
-                        edit: true,
-                      });
-                      const { history, ...others } = draft;
-                      draft.history.push(others);
-                    })
-                  );
-                }}
-              >
+              <CreateList setVarients={setVarients}>
                 {" "}
-                Add Another Varient +
-              </p>
+                Add Another Varient{" "}
+              </CreateList>
             </div>
           ) : null}
           {!productVarients?.variants?.length ? (
-            <p
-              className="cursor-pointer add-product-variant text-sm lowercase p-3 rounded-lg shadow bg-[#fff]"
-              onClick={() => {
-                setVarients(
-                  produce((draft) => {
-                    draft?.productvaritions?.variants?.push({
-                      isColor: "",
-
-                      key_en: "",
-                      key_ar: "",
-
-                      values: [
-                        {
-                          value_ar: "",
-                          value_en: "",
-                          color: "",
-                        },
-                      ],
-                      edit: true,
-                    });
-                    const { history, ...others } = draft;
-                    draft.history.push(others);
-                  })
-                );
-              }}
-            >
-              {" "}
-              Add Varient Like Colors & Size+
-            </p>
+            <CreateList setVarients={setVarients}>
+              Add Varient Like Colors & Size+{" "}
+            </CreateList>
           ) : null}
         </div>
         {productVarients?.variants?.filter((item) => !item?.edit)?.length ? (
@@ -106,10 +59,6 @@ const ProductVariation = ({
             REfvariants={productVarients?.REfvariants}
           />
         ) : null}
-
-        {/* <VariationTable varitions={productVarients?.variants} 
-      // setSubmitedData={setSubmitedData}
-       /> */}
       </div>
     </>
   );
