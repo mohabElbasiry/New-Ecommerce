@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Toaster
-          position="bottom-center"
+          position="top-right"
           reverseOrder={false}
           toastOptions={toastOptions}
           

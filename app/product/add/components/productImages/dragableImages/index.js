@@ -1,8 +1,7 @@
 import { ListManager } from "react-beautiful-dnd-grid";
-import { produce } from "immer";
 import UploadFilesModal from "../UploadFilesModal";
-import { imageBaseUrl } from "@/lib/apiUtils";
 import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
+import { imageBaseUrl } from "@/lib/baseUrl";
 
 export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
   function sortListArr(list) {

@@ -5,39 +5,39 @@ import "./tree-style.css";
 import { treeData } from "../../constants/treeItemsData";
 import Model from "./Model";
 import { treeRendering } from "./treeRendering";
-import { toastMessagener } from "@/components/Layout/RootSignal";
-export default function Tree() {
+export default function CategoriesTree({ categories }) {
+  console.log("Categories tree", categories);
   const [treeItems, setTreeItems] = useState(treeData);
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(undefined);
   const addElementToTree = (newItem) => {
-    const updateTree = (items) => {
-      return items.map((item) => {
-        if (item.id === selectedItem?.id) {
-          return {
-            ...item,
-            hasNext: true,
-            children: [
-              ...(item?.children || []),
-              {
-                ...newItem,
-                hasNext: false,
-                hasPrev: true,
-                parent: { id: item.id, title: item.title },
-              },
-            ],
-          };
-        }
-        if (item?.children?.length) {
-          return {
-            ...item,
-            children: updateTree(item?.children),
-          };
-        }
-        return item;
-      });
-    };
-    setTreeItems((prevTreeItems) => updateTree(prevTreeItems));
+    // const updateTree = (items) => {
+    //   return items.map((item) => {
+    //     if (item.id === selectedItem?.id) {
+    //       return {
+    //         ...item,
+    //         hasNext: true,
+    //         children: [
+    //           ...(item?.children || []),
+    //           {
+    //             ...newItem,
+    //             hasNext: false,
+    //             hasPrev: true,
+    //             parent: { id: item.id, title: item.title },
+    //           },
+    //         ],
+    //       };
+    //     }
+    //     if (item?.children?.length) {
+    //       return {
+    //         ...item,
+    //         children: updateTree(item?.children),
+    //       };
+    //     }
+    //     return item;
+    //   });
+    // };
+    // setTreeItems((prevTreeItems) => updateTree(prevTreeItems));
   };
   const editElementToTree = (changedTitle) => {
     const updateTree = (items) => {
@@ -86,28 +86,23 @@ export default function Tree() {
     };
     setTreeItems((prevTreeItems) => RemovingItems(prevTreeItems));
   };
-  const findItemOfTree = (itemId) => {
-    const findOperation = (items) => {
-      const existedParent = items.find((el) => el.id === itemId);
-      if (existedParent) {
-        console.log("existedParent", existedParent);
-        return existedParent;
-      } else {
-        return items?.find((i) => {
-          if (i?.children?.length && i?.children.find((c) => c.id === itemId)) {
-            return i;
-          }
-        });
-      }
-    };
-    return findOperation(treeItems);
-  };
-  const addNewElementToTree = (newItem) => {
-    toastMessagener.success(`Success from Single toast`);
-    setTreeItems((prev) => [...prev, newItem]);
-  };
-  console.log("get =>>> ", treeItems);
-  console.log("find =>>> ", findItemOfTree(1076382));
+  // const findItemOfTree = (itemId) => {
+  //   const findOperation = (items) => {
+  //     const existedParent = items.find((el) => el.id === itemId);
+  //     if (existedParent) {
+  //       console.log("existedParent", existedParent);
+  //       return existedParent;
+  //     } else {
+  //       return items?.find((i) => {
+  //         if (i?.children?.length && i?.children.find((c) => c.id === itemId)) {
+  //           return i;
+  //         }
+  //       });
+  //     }
+  //   };
+  //   return findOperation(treeItems);
+  // };
+
   return (
     <div className="tree relative px-4 w-1/2">
       <div className="flex justify-end items-center h-60 w-[90%] mx-auto">
@@ -125,16 +120,14 @@ export default function Tree() {
         open={open}
         setOpen={setOpen}
         addElementToTree={addElementToTree}
-        addNewElementToTree={addNewElementToTree}
         editElementToTree={editElementToTree}
         selectedItem={selectedItem}
       />
-      {!treeItems?.length ? (
+      {!categories?.length ? (
         <p className="text-center text-3xl">No items yet</p>
       ) : (
         treeRendering(
-          treeItems,
-          setTreeItems,
+          categories,
           open,
           setOpen,
           setSelectedItem,

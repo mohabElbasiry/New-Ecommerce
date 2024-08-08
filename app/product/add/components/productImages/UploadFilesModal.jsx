@@ -1,11 +1,11 @@
 import UploadFile from "@/app/product/components/UploadFile";
 import { CustomDialoge } from "@/components/Modal";
-import { getOperation, imageBaseUrl } from "@/lib/apiUtils";
-import { produce } from "immer";
 import Image from "next/image";
 
 import { useEffect, useRef, useState } from "react";
 import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { getOperationClient } from "@/lib/apiUtilsServer";
+import { imageBaseUrl } from "@/lib/baseUrl";
 
 export default function UploadFilesModal({
   buttonContext,
@@ -25,7 +25,7 @@ export default function UploadFilesModal({
   useEffect(() => {
     const fetchAllFiles = async () => {
       if (open) {
-        const data = await getOperation(`/upload`, {
+        const data = await getOperationClient(`/upload`, {
           method: "GET",
           headers: {
             token: true,

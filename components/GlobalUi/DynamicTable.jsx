@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MultiSelect from "../../app/product/[id]/components/Select";
+import { CircleDashed, Plus } from "lucide-react";
+import Link from "next/link";
 const defaultData = {
   Keys: ["Key1", "Key2", "Key3"],
-
   values: [
     {
       Key1: "value1",
@@ -37,7 +38,7 @@ const defaultData = {
       <td>return custom component for Row </td>
     </>
   ),
-  enableSelect:true,
+  enableSelect: true,
 };
 export default function DynamicTable({ data = defaultData }) {
   const ItemsFirst =
@@ -53,24 +54,29 @@ export default function DynamicTable({ data = defaultData }) {
     ...data?.Keys,
     ...ItemsLast,
   ]);
-
+  console.log("data.values", data.values);
   const [selectedItemsValues, setSelectedItemsValues] = useState(
     data.values.map((ItemValue) => {
       const filteredItemValue = {};
       Object.keys(ItemValue).forEach((ItemVal) => {
         if (selectedItems.includes(ItemVal)) {
+          if (ItemVal?.id) {
+            filteredItemValue.id = ItemVal.id;
+          }
           filteredItemValue[ItemVal] = ItemValue[ItemVal];
         }
       });
       return filteredItemValue;
     })
   );
-
   useEffect(() => {
     setSelectedItemsValues(
       data.values.map((ItemValue) => {
         const filteredItemValue = {};
         Object.keys(ItemValue).forEach((ItemVal) => {
+          if (ItemValue?._id) {
+            filteredItemValue._id = ItemValue._id;
+          }
           if (selectedItems.includes(ItemVal)) {
             filteredItemValue[ItemVal] = ItemValue[ItemVal];
           }
@@ -79,7 +85,8 @@ export default function DynamicTable({ data = defaultData }) {
       })
     );
   }, [selectedItems, data.values]);
-
+  const [checkedItems, setCheckedItems] = useState([]);
+  console.log("checkedItems::::=>", checkedItems);
   return (
     <div className="py-5 bg-white m-5">
       <div className="p-5">
@@ -90,12 +97,45 @@ export default function DynamicTable({ data = defaultData }) {
         />
       </div>
       <div className="bg-white sm:rounded-lg mt-5 relative max-h-[calc(100vh-200px)] overflow-x-auto overflow-y-scroll scroll-bar">
+        <div className="flex items-center justify-between gap-4 h-12 !bg-white px-3 ">
+          <Link href={`/categories/add`} className="inline mx-3">
+            <Plus className="inline" />
+          </Link>
+          {data.enableSelect && checkedItems?.length ? (
+            <button
+              onClick={() => setCheckedItems([])}
+              className="bg-[#C75050] text-white py-1 px-2 rounded-xl text-sm"
+            >
+              Delete
+            </button>
+          ) : null}
+        </div>
         <table className="w-full text-sm text-left table-auto">
           <thead className="ltr:text-left rtl:text-right bg-[#E3EEEF] h-[70px]">
             <tr className="ltr:text-left rtl:text-right">
-              {data?.enableSelect?<th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                #
-              </th>:null}
+              {data?.enableSelect ? (
+                <th
+                  // className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 border !border-[red] flex items-center gap-4"
+                  className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 flex items-center mt-4 gap-3"
+                >
+                  <input
+                    className="accent-primary h-5 w-5"
+                    type="checkbox"
+                    checked={checkedItems?.length}
+                    onChange={() => {
+                      checkedItems?.length
+                        ? setCheckedItems([])
+                        : setCheckedItems(
+                            selectedItemsValues.map((vl) => vl._id)
+                          );
+                    }}
+                  />
+                  {data.enableSelect && checkedItems?.length ? (
+                    <span>{checkedItems.length} selected</span>
+                  ) : null}
+                </th>
+              ) : null}
+
               {data?.customColumn?.theFirst &&
               data?.customColumn?.theFirst?.length > 0
                 ? data?.customColumn?.theFirst
@@ -157,21 +197,41 @@ export default function DynamicTable({ data = defaultData }) {
                 : null}
             </tr>
           </thead>
-
+          {console.log("selectedItemsValues body", selectedItemsValues)}
           <tbody className="divide-y divide-gray-200">
             {selectedItems.length
               ? selectedItemsValues?.map((item, idx) => (
                   <tr
                     key={selectedItems.length + idx}
-                    className="bg-transparent h-32"
+                    className={`bg-transparent h-32 ${
+                      checkedItems.includes(item._id)
+                        ? "!bg-[#F3F4F6]"
+                        : "!bg-white"
+                    }`}
                   >
-                    {data?.enableSelect?<td
-                      className={`whitespace-nowrap px-4 py-2 text-gray-700 bg-transparent`}
-                    >
-                      <div className="flex text-primary gap-2 xs:w-full items-center">
-                        <input className="accent-primary" type="checkbox" />
-                      </div>
-                    </td>:null}
+                    {data?.enableSelect ? (
+                      <td
+                        className={`whitespace-nowrap px-4 py-1  text-gray-700 `}
+                      >
+                        <div className="flex text-primary gap-2 xs:w-full items-center">
+                          <input
+                            className="accent-primary"
+                            type="checkbox"
+                            checked={checkedItems.includes(item._id)}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              if (checked) {
+                                setCheckedItems((prev) => [...prev, item._id]);
+                              } else {
+                                setCheckedItems((prev) =>
+                                  prev.filter((el) => el !== item._id)
+                                );
+                              }
+                            }}
+                          />
+                        </div>
+                      </td>
+                    ) : null}
                     {data?.customColumn?.theFirst &&
                     data?.customColumn?.theFirst?.length > 0
                       ? data?.customColumn?.theFirst
