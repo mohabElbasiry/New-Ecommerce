@@ -8,7 +8,7 @@ export const handleError = (
   currentValues,
   error
 ) => {
-  console.log(index, "indexindexindex");
+  console.log('object');
   if (index === 0 || value === "" || !currentValues?.length) {
     return;
   }

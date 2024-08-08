@@ -1,29 +1,41 @@
-import { useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { handleError } from "./functions/setError";
 import { UpdateAction } from "../../RootFunction/middleWare";
-export const HandleInputChange = ({
-  currentValues,
-  createOptionsAndValues,
-  SetCreateOptionsValues,
-}) => {
-  const handleAction = (action) => {
-    UpdateAction(action, SetCreateOptionsValues);
-  };
-  const handleBlur = (e, idx, isAr) => {
-    console.log("object");
-    handleError(
-      e.target.value,
-      idx,
-      isAr,
-      SetCreateOptionsValues,
-      createOptionsAndValues.currentValues,
-      createOptionsAndValues?.error
-    );
-  };
+import { initialState } from "@/app/product/add/constants/initialCreateValuedata";
+import { uid } from "uid";
+export const HandleInputChange = ({ list, listIndex }) => {
+  const [createOptionsAndValues, SetCreateOptionsValues] =
+    useState(initialState);
+
+  const handleAction = (action) => UpdateAction(action, SetCreateOptionsValues);
+
+  useMemo(() => {
+    if (
+      createOptionsAndValues?.currentValues[
+        createOptionsAndValues?.currentValues.length - 1
+      ]?.value_en?.trim() !== ""
+      // &&
+    ) {
+      handleAction({
+        type: "handleAddValue",
+        payload: {
+          value_ar: "",
+          value_en: "",
+          color: "",
+          id: uid(),
+        },
+      });
+    }
+  }, [createOptionsAndValues?.currentValues]);
+
+  useMemo(() => {
+    handleAction({
+      type: "handleEditDefaultValues",
+      payload: { list, listIndex },
+    });
+  }, [list]);
   const handleValueChange = useCallback(
     (event, index, isAr = false) => {
-      console.log("object");
-
       const { value } = event.target;
       handleAction({
         type: "handleValueChange",
@@ -36,52 +48,35 @@ export const HandleInputChange = ({
 
       // updateOptions(currentOption, newValues);
     },
-    [currentValues]
+    [createOptionsAndValues.currentValues]
   );
   const handleKeyDown = useCallback(
     (event, index, item, isAr) => {
-      // const { value, name, keyCode } = event;
-      console.log(event);
-      // if (event.code === 8) {
-      //   console.log("object");
-      // }
-      // const itemFounded = createOptionsAndValues?.currentValues?.find(
-      //   (_, idx) => idx === index
-      // );
+      if (index === 0) {
+        return;
+      }
 
-      // if (
-      //   keyCode === 8 &&
-      //   event.target.value === "" &&
-      //   itemFounded &&
-      //   // itemFounded?.value_ar === "" &&
-      //   itemFounded?.value_en === ""
-      // ) {
-      //   if (index === 0) {
-      //     return;
-      //   }
-
-      //   if (
-      //     createOptionsAndValues?.currentValues?.some(
-      //       (item, idx) => idx === index
-      //     )
-      //   ) {
-
-      //     console.log('object');
-      //     if (event?.target?.value === "") {
-      //       setTimeout(() => {
-      //         handleAction({
-      //           type: "FilterValueUsingIndex",
-      //           payload: {
-      //             index,
-      //           },
-      //         });
-      //       }, 100);
-      //     }
-      //   }
-      // }
+      if (event.keyCode === 8) {
+        if (event?.target?.value === "") {
+          setTimeout(() => {
+            handleAction({
+              type: "FilterValueUsingIndex",
+              payload: {
+                index,
+              },
+            });
+          }, 100);
+        }
+      }
     },
-    [currentValues]
+    [createOptionsAndValues?.currentValues]
   );
 
-  return { handleBlur, handleKeyDown, handleValueChange, handleAction };
+  return {
+    handleKeyDown,
+    handleValueChange,
+    handleAction,
+    createOptionsAndValues,
+    SetCreateOptionsValues,
+  };
 };

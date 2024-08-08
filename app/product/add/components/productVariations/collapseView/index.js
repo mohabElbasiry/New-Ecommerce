@@ -180,8 +180,7 @@ const CollapseView = ({
 
   return (
     <div className="     p-3 ">
-      <Counter />
-      <FilterHeader
+       <FilterHeader
         varitions={REfvariants}
         setChecked={setChecked}
         data={data?.data}
