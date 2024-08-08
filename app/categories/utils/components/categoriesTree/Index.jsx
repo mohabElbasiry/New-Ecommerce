@@ -5,8 +5,6 @@ import "./tree-style.css";
 import { treeData } from "../../constants/treeItemsData";
 import Model from "./Model";
 import { treeRendering } from "./treeRendering";
-import { toastMessagener } from "@/components/Layout/RootSignal";
-import { categoryHandler } from "../../functions";
 export default function CategoriesTree({ categories }) {
   console.log("Categories tree", categories);
   const [treeItems, setTreeItems] = useState(treeData);
@@ -88,30 +86,22 @@ export default function CategoriesTree({ categories }) {
     };
     setTreeItems((prevTreeItems) => RemovingItems(prevTreeItems));
   };
-  const findItemOfTree = (itemId) => {
-    const findOperation = (items) => {
-      const existedParent = items.find((el) => el.id === itemId);
-      if (existedParent) {
-        console.log("existedParent", existedParent);
-        return existedParent;
-      } else {
-        return items?.find((i) => {
-          if (i?.children?.length && i?.children.find((c) => c.id === itemId)) {
-            return i;
-          }
-        });
-      }
-    };
-    return findOperation(treeItems);
-  };
-  const addNewElementToTree = async (newItem) => {
-    // toastMessagener.success(`Success from Single toast`);
-    // setTreeItems((prev) => [...prev, newItem]);
-    // console.log("res func", res);
-    console.log("new item هذا", newItem);
-    const cr = await categoryHandler.creation(newItem);
-    console.log("cr", cr);
-  };
+  // const findItemOfTree = (itemId) => {
+  //   const findOperation = (items) => {
+  //     const existedParent = items.find((el) => el.id === itemId);
+  //     if (existedParent) {
+  //       console.log("existedParent", existedParent);
+  //       return existedParent;
+  //     } else {
+  //       return items?.find((i) => {
+  //         if (i?.children?.length && i?.children.find((c) => c.id === itemId)) {
+  //           return i;
+  //         }
+  //       });
+  //     }
+  //   };
+  //   return findOperation(treeItems);
+  // };
 
   return (
     <div className="tree relative px-4 w-1/2">
@@ -130,7 +120,6 @@ export default function CategoriesTree({ categories }) {
         open={open}
         setOpen={setOpen}
         addElementToTree={addElementToTree}
-        addNewElementToTree={addNewElementToTree}
         editElementToTree={editElementToTree}
         selectedItem={selectedItem}
       />

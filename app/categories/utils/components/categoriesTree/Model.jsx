@@ -1,15 +1,15 @@
 import { useEffect, useState, useRef } from "react";
+import { handleCreateCategory } from "../../functions";
+import { toastMessagener } from "@/components/Layout/RootSignal";
 
 export default function Model({
   open,
   setOpen,
+  addNwewElement,
   addElementToTree,
-  addNewElementToTree,
   editElementToTree,
   selectedItem,
 }) {
-  const [text, setText] = useState("");
-
   const [nameText, setNameText] = useState({
     en: "",
     ar: "",
@@ -31,39 +31,46 @@ export default function Model({
     return () => document.removeEventListener("click", handleClickoutside);
   }, [open, setOpen]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!nameText.en || nameText.en.trim() === "") {
       inputRefEN.current.focus();
     } else if (nameText.ar.trim() === "" || nameText.ar.trim() === "") {
       inputRefAR.current.focus();
     } else {
       if (open && selectedItem?.updatedId) {
-        editElementToTree(text);
+        editElementToTree(nameText);
       } else {
-        typeof selectedItem === "string"
-          ? addNewElementToTree({
-              name: nameText,
-            })
-          : addElementToTree({
-              id: Math.floor(1000000 + Math.random() * 1000000),
-              title: text,
-            });
+        let payload = {
+          name: nameText,
+        };
+        if (selectedItem?.createdId) {
+          payload.parentId = selectedItem?.createdId;
+        }
+        await handleCreateCategory(payload).then((res) => {
+          if (res.status === "success") {
+            toastMessagener.success(res.messages[0].message_en);
+            reseting();
+          } else {
+            toastMessagener.error(
+              res.messages.at(res.messages.length - 1).message_en
+            );
+          }
+        });
       }
-
-      setNameText({
-        en: "",
-        ar: "",
-      });
-      setOpen(false);
     }
   };
   const handleChangeName = (e) => {
     const { name, value } = e.target;
-
     setNameText({
       ...nameText,
       [name]: value,
+    });
+  };
+  const reseting = () => {
+    setOpen(false);
+    setNameText({
+      en: "",
+      ar: "",
     });
   };
   useEffect(() => {
@@ -81,7 +88,7 @@ export default function Model({
       } bg-[#00000094] top-0 left-0 h-full w-full  z-20 flex items-center justify-center`}
     >
       <form
-        onSubmit={handleSubmit}
+        action={handleSubmit}
         className="model-body w-[500px] h-[325px] bg-white rounded-3xl p-10 text-black"
       >
         <h1 className="mb-8 text-center text-lg font-semibold">

@@ -1,15 +1,18 @@
 "use server";
-import { getOperationServer } from "@/lib/apiUtilsServer";
-export const categoryHandler = {
-  creation: async (data) => {
-    return await getOperationServer(`/categories`, {
+import { serversOperations } from "@/lib/apiUtilsServer";
+
+export async function handleCreateCategory(bodyData) {
+  return await serversOperations({
+    endpoint: "/categories",
+    payload: {
       method: "POST",
+      data: bodyData,
       headers: {
         token: true,
       },
-      body: data,
-    });
-  },
-  updating: () => {},
-  deleting: () => {},
-};
+    },
+    revalidation: {
+      tag: "Category",
+    },
+  });
+}
