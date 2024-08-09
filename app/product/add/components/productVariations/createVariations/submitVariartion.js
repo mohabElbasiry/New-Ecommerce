@@ -1,8 +1,12 @@
+import { produce } from "immer";
+
 export const CreateAndDeleteVariations = ({
   handleListAction,
   currentOptions,
   currentValues,
   SetCreateOptionsValues,
+  list,
+  listIndex,
 }) => {
   return (
     <div className={"flex justify-between p-3 border-t-2  border-b-2 "}>
@@ -41,7 +45,11 @@ export const CreateAndDeleteVariations = ({
                 return;
               }
               const hasErrors = draft.error?.some((item) => item?.en?.Message);
-
+              if (option_en.trim() === "") {
+                draft.currentOptions.ErrorMessage = "Please Fill this Input";
+                draft.currentOptions.error = true;
+                return;
+              }
               if (!hasErrors) {
                 handleListAction({
                   type: "handleUpdateList",

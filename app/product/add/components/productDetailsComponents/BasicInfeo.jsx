@@ -4,8 +4,10 @@ import Seo from "./tags";
 import ShippingInfo from "./ShippingInfo";
 import TextEditor from "@/components/TextEditor";
 import { produce } from "immer";
-import { memo } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { debounce } from "lodash";
+import { DebounceHook } from "../hooks/DebounceHook";
 const BasicData = ({
   submitedData = {},
   formData = {},
@@ -14,21 +16,10 @@ const BasicData = ({
   shippingData = {},
   seoData = {},
 }) => {
-  function debounce(func, wait = 2000) {
-    let timeout;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        func.apply(context, args);
-        // Using apply here
-      }, wait);
-    };
-  }
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
   };
+  const { useDebounceForUpdate } = DebounceHook({ handleAction });
   const UdateBasicInfo = (ev) => {
     const { value } = ev.target;
     handleAction({
@@ -36,14 +27,7 @@ const BasicData = ({
       payload: { name: "title_en", value },
       target: "productDetails",
     });
-    debounce(() =>
-      setSubmitedData(
-        produce((draft) => {
-          const { history, ...other } = draft;
-          draft.history.push(other);
-        })
-      )
-    ); // Call the debounced function immediately to handle initial update
+    useDebounceForUpdate(value);
   };
 
   const { errors = {}, register = {} } = formData;

@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import UpdateOptionsValue from "./variationOption";
 import VariationValues from "./variationsValues";
+import { CreateAndDeleteVariations } from "../submitVariartion";
 
 export const CreateVariationList = ({
   createOptionsAndValues,
@@ -9,8 +10,8 @@ export const CreateVariationList = ({
   handleKeyDown,
   list,
   listIndex,
-  handleAction,
-  SetCreateOptionsValues
+  SetCreateOptionsValues,
+  handleListAction,
 }) => {
   return (
     <div>
@@ -26,12 +27,21 @@ export const CreateVariationList = ({
           error={createOptionsAndValues.error}
           handleKeyDown={handleKeyDown}
           handleValueChange={handleValueChange}
-           SetCreateOptionsValues={SetCreateOptionsValues}
+          SetCreateOptionsValues={SetCreateOptionsValues}
         />
       </div>
       <p className="p-2 text-sm capitalize text-red-500">
         {GeneralErrorMessage?.isError ? GeneralErrorMessage?.ErrorMessage : ""}
       </p>
+
+      <CreateAndDeleteVariations
+        SetCreateOptionsValues={SetCreateOptionsValues}
+        currentOptions={createOptionsAndValues.currentOptions}
+        currentValues={createOptionsAndValues.currentValues}
+        handleListAction={handleListAction}
+        list={list}
+        listIndex={listIndex}
+      />
     </div>
   );
 };

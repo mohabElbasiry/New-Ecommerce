@@ -30,7 +30,6 @@ export default function CreateVariation({ listIndex, setList, list }) {
       list={list}
       handleKeyDown={handleKeyDown}
       listIndex={listIndex}
-      handleAction={handleAction}
-    />
+     />
   );
 }

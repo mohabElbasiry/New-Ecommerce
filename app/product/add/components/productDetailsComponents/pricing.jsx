@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useRef } from "react";
 import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { DebounceHook } from "../hooks/DebounceHook";
 
 export default function Pricing({ setSubmitedData, pricingData }) {
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
   const debounceRef = useRef(null);
+  const { useDebounceForUpdate } = DebounceHook({ handleAction });
+
   useEffect(() => {
     if (pricingData.Cost_Per_Item && pricingData.price) {
       if (debounceRef.current) {
@@ -31,7 +37,7 @@ export default function Pricing({ setSubmitedData, pricingData }) {
         ],
         target: "pricing",
       };
-      UpdateAction(action, setSubmitedData);
+      handleAction(action);
     },
     [pricingData.price, pricingData.Cost_Per_Item]
   );
@@ -43,6 +49,7 @@ export default function Pricing({ setSubmitedData, pricingData }) {
       target: "pricing",
     };
     UpdateAction(action, setSubmitedData);
+    useDebounceForUpdate(value)
   };
 
   return (

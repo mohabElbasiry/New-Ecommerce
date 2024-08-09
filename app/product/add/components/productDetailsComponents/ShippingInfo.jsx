@@ -3,7 +3,7 @@ import React, { memo, useState } from "react";
 import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 
 function ShippingInfo({ setSubmitedData, shippingData }) {
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(shippingData.active);
   const [weightType, setWeightType] = useState(shippingData?.type || "kg");
   const [weight, setWeight] = useState(shippingData?.Weight || 0);
   const handleAction = (action) => {

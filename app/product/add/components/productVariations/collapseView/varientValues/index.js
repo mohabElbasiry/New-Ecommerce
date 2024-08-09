@@ -15,7 +15,7 @@ const VarientValues = ({
   setEditValue,
 }) => {
   //deleted items
-
+ 
 
   if (itemValue?.deleted) {
     return (

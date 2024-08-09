@@ -23,9 +23,6 @@ export const InputTimePPicker = ({ name, setSubmitedData }) => {
           setSubmitedData(
             produce((draft) => {
               draft[name] = selectedDates[0];
-              const { history, ...other } = draft;
-              draft.history .push(other);
-
             })
           );
         }}
