@@ -5,6 +5,7 @@ import { updatePropertyParent } from "../functions/updatePropertyBasedOnParent";
 import { debounce, isEqual, property } from "lodash";
 import { produce } from "immer";
 import { UpdateAction } from "../../RootFunction/middleWare";
+import { DebounceHook } from "../../../hooks/DebounceHook";
 
 const VarientKey = ({
   varientsNumbers = 0,
@@ -23,6 +24,8 @@ const VarientKey = ({
   const handleAction = (action) => {
     UpdateAction(action, setVarients);
   };
+
+  const { useDebounceForUpdate } = DebounceHook({ handleAction });
 
   const SelectedItems = useMemo(() => {
     return selectedArray?.map((_, idx) => idx);
@@ -127,6 +130,8 @@ const VarientKey = ({
                       property: "price",
                     },
                   });
+
+                  useDebounceForUpdate(e.target.value);
                 }
                 return;
               }}

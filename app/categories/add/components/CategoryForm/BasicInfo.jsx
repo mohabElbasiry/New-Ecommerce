@@ -24,10 +24,8 @@ function BasicInfo({ formData, setFormData }) {
       />
       <InputWithLabelComponent
         Input
-        label="english name"
-        PlaceHolder="english name"
-        // isError={errors?.name_en}
-        // message={errors?.name_en?.message}
+        label="arabic name"
+        PlaceHolder="arabic name"
         name="name_ar"
         value={formData.name_ar}
         onChange={(event) => handleChange(event)}

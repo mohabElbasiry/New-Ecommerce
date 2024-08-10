@@ -1,16 +1,12 @@
 "use client";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-
+import { useEffect, useRef, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
 import { fetchImage, UploadFileToApi } from "../functions/fun";
-import { PopoverClose } from "@radix-ui/react-popover";
 
 export default function UploadFile({
   setUrlsFiles,
@@ -53,7 +49,6 @@ export default function UploadFile({
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-
     setSelectedFiles((prev) => [...files, ...prev]);
   };
 
@@ -74,12 +69,11 @@ export default function UploadFile({
       setUrlsFiles,
       setUrlsFilesSelected
     );
-
+  console.log("selectedFiles", selectedFiles);
   useEffect(() => {
-    console.log("fdsafdsafdsafdsaf");
     selectedFiles.length ? handleUploadFile() : null;
   }, [selectedFiles]);
-
+  console.log("selectedFiles:: ", selectedFiles);
   return (
     <>
       <div className="max-w-screen relative my-other-step p-4 ">

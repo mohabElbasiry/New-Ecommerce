@@ -34,8 +34,7 @@ import { memo } from "react";
           });
         });
 
-        // Update the original options array based on activeVariantsMap
-        draft.productvaritions.variants.forEach((option) => {
+         draft.productvaritions.variants.forEach((option) => {
           const activeValues =
             activeVariantsMap.get(option.key_en) || new Set();
           option.values = option.values.filter((value) =>

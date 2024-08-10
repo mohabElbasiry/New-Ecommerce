@@ -1,5 +1,20 @@
+import UploadFile from "@/app/product/components/UploadFile";
+import { produce } from "immer";
+import { useState } from "react";
 
-export default function CheckActiveAndImage() {
+export default function CheckActiveAndImage({ formData, setFormData }) {
+  const [urlsFiles, setUrlsFiles] = useState([]);
+  const [urlsFilesSelected, setUrlsFilesSelected] = useState([]);
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+    setFormData(
+      produce((draft) => {
+        draft[name] = JSON.parse(value);
+      })
+    );
+  };
+  console.log("urlsFiles", urlsFiles);
+  console.log("urlsFilesSelected", urlsFilesSelected);
   return (
     <div>
       <div className="bg-white p-6 h-32 rounded-2xl">
@@ -10,6 +25,7 @@ export default function CheckActiveAndImage() {
             name="isActive"
             id="active"
             value={true}
+            checked={formData.isActive}
             onChange={(event) => handleChange(event)}
           />
           <label className="cursor-pointer" htmlFor="active">
@@ -22,6 +38,7 @@ export default function CheckActiveAndImage() {
             name="isActive"
             id="dis-active"
             value={false}
+            checked={!formData.isActive}
             onChange={(event) => handleChange(event)}
           />
           <label className="cursor-pointer" htmlFor="dis-active">
@@ -33,10 +50,8 @@ export default function CheckActiveAndImage() {
         <p>Image</p>
         <UploadFile
           notURL
-          // setUrlsFiles={setUrlsFiles}
-          // setUrlsFilesSelected={setUrlsFilesSelected}
-          setUrlsFiles={[]}
-          setUrlsFilesSelected={() => console.log("test")}
+          setUrlsFiles={setUrlsFiles}
+          setUrlsFilesSelected={setUrlsFilesSelected}
         />
       </div>
     </div>

@@ -21,7 +21,7 @@ export const ProductMainDefaultValue = {
     margin: "",
   },
   shipping: {
-    active: false,
+    active: true,
     weight: "",
     type: "",
   },

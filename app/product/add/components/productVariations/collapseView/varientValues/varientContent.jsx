@@ -8,6 +8,7 @@ import { useCallback, useEffect } from "react";
 import { produce } from "immer";
 import { debounce, property } from "lodash";
 import { UpdateAction } from "../../RootFunction/middleWare";
+import { DebounceHook } from "../../../hooks/DebounceHook";
 
 export const VarientContent = ({
   setVarients,
@@ -22,6 +23,8 @@ export const VarientContent = ({
   const handleAction = (action) => {
     UpdateAction(action, setVarients);
   };
+  
+  const { useDebounceForUpdate } = DebounceHook({ handleAction });
 
   const checked = (() => {
     const checkedItem = checkedArray?.length
@@ -145,6 +148,7 @@ border-[#ddd]  mt-1 ${
                       parentname,
                     },
                   });
+                  useDebounceForUpdate(value)
                 }
                 return;
               }}

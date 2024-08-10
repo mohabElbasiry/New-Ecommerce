@@ -5,13 +5,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import React, { useCallback, useState } from "react";
-import Joyride, {
-  ACTIONS,
-  EVENTS,
-  ORIGIN,
-  STATUS,
-} from "react-joyride";
+import React, { useCallback, useEffect, useState } from "react";
+import Joyride, { ACTIONS, EVENTS, ORIGIN, STATUS } from "react-joyride";
 const defaultDataSteps = [
   {
     key: "the First Step",
@@ -27,21 +22,17 @@ const defaultDataSteps = [
         target: ".my-other-step",
       },
     ],
-   FunctionSteps: ({  index }) => {
-     
-        if (index == 0) {
-          ("do something in first step");
-        } else if (index == 1) {
-          ("do something in scound step");
-        } else {
-          ("do something in onter steps");
-        }
-      
+    FunctionSteps: ({ index }) => {
+      if (index == 0) {
+        ("do something in first step");
+      } else if (index == 1) {
+        ("do something in scound step");
+      } else {
+        ("do something in onter steps");
+      }
     },
-   FunctionLastSteps: () => {
-   
-        ("do something in last step");
-      
+    FunctionLastSteps: () => {
+      ("do something in last step");
     },
   },
   {
@@ -52,33 +43,32 @@ const defaultDataSteps = [
         content: "This another awesome feature!",
       },
     ],
-   FunctionSteps: ({ key, index }) => {
-   
-        if (index == 0) {
-          ("do something in first step");
-        } else if (index == 1) {
-          ("do something in scound step");
-        } else {
-          ("do something in onter steps");
-        }
-      
+    FunctionSteps: ({ key, index }) => {
+      if (index == 0) {
+        ("do something in first step");
+      } else if (index == 1) {
+        ("do something in scound step");
+      } else {
+        ("do something in onter steps");
+      }
     },
-   FunctionLastSteps: () => {
-     
-        ("do something in last step");
-      
+    FunctionLastSteps: () => {
+      ("do something in last step");
     },
   },
 ];
 
 export default function TourGuide({ stepsData = defaultDataSteps }) {
-  const [{ run, steps, key ,item}, setState] = useState({
+  const [isMounted, setIsMounted] = useState(false);
+  const [{ run, steps, key, item }, setState] = useState({
     run: false,
     steps: stepsData?.[0]?.value,
     key: stepsData?.[0]?.key,
-    item: stepsData?.[0]
+    item: stepsData?.[0],
   });
-
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const handleJoyrideCallback = useCallback(
     (data) => {
       const { action, index, origin, status, type } = data;
@@ -86,19 +76,19 @@ export default function TourGuide({ stepsData = defaultDataSteps }) {
       if (action === ACTIONS.CLOSE && origin === ORIGIN.KEYBOARD) {
         // do something
       }
-      item?.FunctionSteps? item?.FunctionSteps({  index }):null;
+      item?.FunctionSteps ? item?.FunctionSteps({ index }) : null;
 
       if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
         // Update state to advance the tour
         // setStepIndex(index + (action === ACTIONS.PREV ? -1 : 1));
       } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
         // You need to set our running state to false, so we can restart if we click start again.
-        item?.FunctionLastSteps? item?.FunctionLastSteps():null;
+        item?.FunctionLastSteps ? item?.FunctionLastSteps() : null;
         setState({
           run: false,
           steps: stepsData?.[0]?.value,
           key: stepsData?.[0]?.key,
-          item: stepsData?.[0]
+          item: stepsData?.[0],
         });
       }
 
@@ -114,7 +104,7 @@ export default function TourGuide({ stepsData = defaultDataSteps }) {
       run: true,
       steps: steps?.value,
       key: steps?.key,
-      item:steps
+      item: steps,
     });
   };
   return (
@@ -135,7 +125,7 @@ export default function TourGuide({ stepsData = defaultDataSteps }) {
       />
       <DropdownMenu>
         <DropdownMenuTrigger className="rounded-full fixed bottom-10 right-10">
-          <Button  className="rounded-full ">?</Button>
+          <Button className="rounded-full ">?</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-32 shadow  border  mx-5 bg-white ">
           {stepsData.map((step, index) => (
@@ -144,7 +134,7 @@ export default function TourGuide({ stepsData = defaultDataSteps }) {
               className="cursor-pointer"
               onClick={() => handleClickStart(step)}
             >
-              {step.key}{" "}
+              {step.key} 
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

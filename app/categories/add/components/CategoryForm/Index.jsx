@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CategoryBreadCrump from "../CategoryBreadCrump";
 import BasicInfo from "./BasicInfo";
+import CheckActiveAndImage from "./CheckActiveAndImage";
 export default function CategoryForm() {
   const [formData, setFormData] = useState({
     name_en: "",
@@ -9,15 +10,23 @@ export default function CategoryForm() {
     description_en: "",
     description_ar: "",
     image: "",
-    isActive: null,
+    isActive: true,
   });
 
   const [errors, setErrors] = useState({});
-  console.log("data once chaned:: ", formData);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("from data submit", formData);
   };
+  const abilitySubmit = useMemo(
+    () =>
+      Object.values(formData)
+        .filter((val) => typeof val === "string")
+        .some((item) => item?.length),
+    [formData]
+  );
+
   return (
     <>
       <CategoryBreadCrump />
@@ -32,11 +41,24 @@ export default function CategoryForm() {
             }}
             setFormData={setFormData}
           />
-          {/* <CheckActiveAndImage /> */}
+          <CheckActiveAndImage
+            formData={{
+              isActive: formData.isActive,
+              image: formData.image,
+            }}
+            setFormData={setFormData}
+          />
         </div>
 
         <div className="flex justify-end mt-4">
-          <button type="submit" className="bg-gray-400 rounded-lg py-1 px-2">
+          <button
+            type="submit"
+            className={`${
+              abilitySubmit
+                ? "bg-black text-white"
+                : "bg-gray-400 pointer-events-none"
+            }  rounded-lg py-1 px-2`}
+          >
             save
           </button>
         </div>

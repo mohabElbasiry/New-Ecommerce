@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useEffect, useRef, useState } from "react";
 import { UpdateAction } from "../productVariations/RootFunction/middleWare";
-import { getOperationClient } from "@/lib/apiUtilsServer";
+import { getOperationClient } from "@/lib/apiUtilsClient";
 import { imageBaseUrl } from "@/lib/baseUrl";
 
 export default function UploadFilesModal({
@@ -31,6 +31,7 @@ export default function UploadFilesModal({
             token: true,
           },
         });
+        
         if (data?.data?.length) {
           setUrlsFiles(data.data);
         }
@@ -39,7 +40,7 @@ export default function UploadFilesModal({
       }
     };
     fetchAllFiles();
-
+    console.log("selectedImages", selectedImages);
     if (open && selectedImages?.length) {
       setUrlsFilesSelected(selectedImages);
     }

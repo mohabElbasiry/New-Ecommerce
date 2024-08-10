@@ -220,7 +220,6 @@ export const ProductAddMaim = () => {
     <>
       <TourGuide stepsData={dataSteps} />
       <Headercomponent handleSubmit={handleSubmit}>
-        <div className="items-end justify-end  gap-1">
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}
@@ -237,8 +236,7 @@ export const ProductAddMaim = () => {
             data={data}
             setData={setData}
           />
-        </div>
-        <BottomBar
+         <BottomBar
           setHistory={setHistory}
           history={submitedData?.history}
           setSubmitedData={setSubmitedData}

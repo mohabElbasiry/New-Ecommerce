@@ -14,15 +14,26 @@ export const HandleKeysAndValues = {
     state,
     { payload: { property, newValue, itemIndex, parentname } }
   ) {
-    console.log(newValue, itemIndex, parentname, "adsssssssssssssssssssssss");
     state.productvaritions.varitionsValues.forEach((item) => {
-      if (state.productvaritions.varientLookup.get(parentname)) {
-        item.values.forEach((itemv, idx) => {
+      
+      if (item.parentname === parentname) {
+
+        item.values.forEach((itemv) => {
+
           if (itemv.itemIndex === itemIndex) {
             itemv[property] = newValue;
           }
         });
       }
     });
+    //   if (state.productvaritions.varientLookup.get(parentname)) {
+    //   // state.productvaritions.varientLookup
+    //   //   .get(parentname)
+    //   //   .values.forEach((itemv, idx) => {
+    //   //     if (itemv.itemIndex === itemIndex) {
+    //   //       itemv[property] = newValue;
+    //   //     }
+    //   //   });
+    // }
   },
 };

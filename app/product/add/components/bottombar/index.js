@@ -74,11 +74,13 @@ export const BottomBar = ({ setHistory, history, setSubmitedData }) => {
             />
           </button>
         </TooltipF>
-
+    {
+      console.log('index === history?.length',index ,history?.length)
+    }
         <TooltipF text={"Redo"}>
           <button
             type="button"
-            disabled={index === history?.length}
+            disabled={index === history?.length-1}
             onClick={redo}
             className="disabled:bg-red-200"
           >
