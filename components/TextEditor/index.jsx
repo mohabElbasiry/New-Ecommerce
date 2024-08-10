@@ -7,7 +7,7 @@ import { UpdateAction } from "@/app/product/add/components/productVariations/Roo
 // Using dynamic import of Jodit component as it can't render on server side
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-export default function TextEditor({ content, setSubmitedData }) {
+export default function TextEditor({ content, name, setSubmitedData }) {
   const editor = useRef(null);
 
   // Custom configuration for Jodit editor
@@ -38,12 +38,20 @@ export default function TextEditor({ content, setSubmitedData }) {
 
   // Function to handle changes in the editor
   const handleChange = (value) => {
-    const action = {
-      type: "UpdatePropertyByNameAndValue",
-      payload: { name: "description_en", value: value },
-      target: "productDetails",
-    };
-    UpdateAction(action, setSubmitedData);
+    if (name) {
+      setSubmitedData(
+        produce((draft) => {
+          draft[name] = value;
+        })
+      );
+    } else {
+      const action = {
+        type: "UpdatePropertyByNameAndValue",
+        payload: { name: "description_en", value: value },
+        target: "productDetails",
+      };
+      UpdateAction(action, setSubmitedData);
+    }
   };
 
   return (
@@ -56,7 +64,7 @@ export default function TextEditor({ content, setSubmitedData }) {
         onChange={handleChange}
         className="w-full h-full bg-white min-w-[600px]"
       />
-      <style>{`.jodit-wysiwyg { height: 200px !important; 
+      <style>{`.jodit-wysiwyg { height: 150px !important; 
         display:flex;flex-wrap:no-wrap
       }`}</style>
     </div>

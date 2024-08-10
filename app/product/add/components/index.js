@@ -220,7 +220,7 @@ export const ProductAddMaim = () => {
     <>
       <TourGuide stepsData={dataSteps} />
       <Headercomponent handleSubmit={handleSubmit}>
-        <div className="  items-end justify-end  gap-1">
+        <div className="items-end justify-end  gap-1">
           <ProductDetailsComponent
             submitedData={submitedData}
             setSubmitedData={setSubmitedData}

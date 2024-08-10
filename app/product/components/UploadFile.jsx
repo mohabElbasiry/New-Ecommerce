@@ -12,7 +12,11 @@ import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
 import { fetchImage, UploadFileToApi } from "../functions/fun";
 import { PopoverClose } from "@radix-ui/react-popover";
 
-export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
+export default function UploadFile({
+  setUrlsFiles,
+  setUrlsFilesSelected,
+  notURL,
+}) {
   const InputRef = useRef();
   const InputUrlsRef = useRef();
   const progressBar = useRef();
@@ -154,12 +158,14 @@ export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
               </PopoverContent>
             </Popover> */}
             <Popover className="[z-index:999]">
-              <PopoverTrigger className="text-gray-600 text-sm [z-index:999]">
-                Add from URL
-              </PopoverTrigger>
+              {!notURL ? (
+                <PopoverTrigger className="text-gray-600 text-sm [z-index:999]">
+                  Add from URL
+                </PopoverTrigger>
+              ) : null}
               <PopoverContent className="text-grey-600 text-sm [z-index:999]">
                 <h4 className="font-[600]">Add media from URL</h4>
-                <div className="my-4" >
+                <div className="my-4">
                   <label>Image, YouTube, or Vimeo URL</label>
                   <div className="flex flex-col gap-3 items-start">
                     <input
@@ -168,7 +174,7 @@ export default function UploadFile({ setUrlsFiles, setUrlsFilesSelected }) {
                       className="border outline-none w-full"
                     />
                   </div>
-                  <button className="bg-[red]" >add file</button>
+                  <button className="bg-[red]">add file</button>
                 </div>
               </PopoverContent>
             </Popover>
