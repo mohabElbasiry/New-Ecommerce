@@ -12,6 +12,7 @@ import { applyFilters } from "./functions/ApplayFilters.js";
 import { CustomDialoge } from "@/components/Modal/index.js";
 import { EditMoreThanOneValues } from "./editMoreThanOnevalue/index.js";
 import Counter from "../RootFunction/Actions.js";
+import { UpdateAction } from "../RootFunction/middleWare.js";
 const CollapseView = ({
   varitions = [],
   varitionsValues = [],
@@ -20,15 +21,14 @@ const CollapseView = ({
 }) => {
   const [checkedArray, setChecked] = useState([]);
   const [data, setData] = useState({ data: [] });
+  const handleAction = (action) => {
+    UpdateAction(action, setData);
+  };
 
   const [Filters, setFilters] = useState({
     search: "",
-
     FilterValues: [],
-    GroupBy: {
-      key: "",
-      reorderArray: [],
-    },
+    GroupBy: { key: "", reorderArray: [] },
     sortBy: {
       sortMethod: "",
       sortKey: "",
@@ -48,99 +48,16 @@ const CollapseView = ({
     );
     setChecked([]);
   }, [REfvariants]);
-  function sortItemsByQuantity(items, order = "asc", property) {
-    let Sorteditems = [];
-    if (order === "asc") {
-      Sorteditems = items.map((item) => {
-        const values = item?.values.sort((a, b) => {
-          return +a[property] - +b[property];
-        });
-        return {
-          ...item,
-          values,
-        };
-      });
-    } else if (order === "desc") {
-      Sorteditems = items?.map((item) => {
-        const values = item?.values?.sort(
-          (a, b) => +b[property] - +a[property]
-        );
-        return {
-          ...item,
-          values,
-        };
-      });
-    } else {
-      Sorteditems = items.map((item) => {
-        item.values.sort((a, b) => {
-          if (order === "asc") {
-            return a[property] > b[property] ? 1 : -1;
-          } else if (order === "desc") {
-            return a[property] < b[property] ? 1 : -1;
-          }
-        });
-        return item;
-      });
-    }
-
-    return [...Sorteditems];
-  }
+ 
+ 
   useMemo(() => {
     if (varitionsValues?.length) {
-      setData(
-        produce((draft) => {
-          let Editeddata = varitionsValues;
 
-          if (Filters?.GroupBy?.key !== "") {
-            Editeddata = shapeData(
-              generateQualities(
-                varitionsValues?.flatMap((item) => item?.values),
-                reorderArray(varitions, Filters?.GroupBy?.key) || []
-              ),
-              reorderArray(varitions, Filters?.GroupBy?.key) || []
-            );
-
-            console.log("Executed");
-          }
-          if (Filters?.FilterValues?.length) {
-            Editeddata = applyFilters(Editeddata, Filters);
-          }
-          if (Filters?.search !== "") {
-            Editeddata = Editeddata?.map((item) => {
-              const values = item?.values?.filter((item) => {
-                return item?.options?.some(
-                  (itemO) =>
-                    itemO?.val?.includes(Filters?.search) ||
-                    itemO?.key_en?.includes(Filters?.search) ||
-                    itemO?.value_en?.includes(Filters?.search)
-                );
-              });
-
-              return { ...item, values };
-            }).filter((item) => item?.values?.length);
-          }
-          if (Filters?.sortBy?.sortKey !== "") {
-            Editeddata = sortItemsByQuantity(
-              Editeddata,
-              Filters?.sortBy?.sortMethod,
-              Filters?.sortBy?.sortKey
-            );
-          }
-
-          draft.data = Editeddata;
-        })
-      );
-
-      setVarients(
-        produce((draft) => {
-          draft.productvaritions.varitionsValues?.forEach((itemF) => {
-            draft.productvaritions.varientLookup.set(itemF.key, itemF);
-
-            // itemF.values.forEach((itemvv) => {
-            // });
-          });
-        })
-      );
+      handleAction({
+        type: "FilterData",
+        payload: { varitionsValues, Filters, setVarients,varitions  },
+      });
+       
     } else {
       setData(
         produce((draft) => {
@@ -180,7 +97,7 @@ const CollapseView = ({
 
   return (
     <div className="     p-3 ">
-       <FilterHeader
+      <FilterHeader
         varitions={REfvariants}
         setChecked={setChecked}
         data={data?.data}
@@ -237,6 +154,7 @@ const CollapseView = ({
                       setChecked={setChecked}
                       parentname={item?.key}
                       setVarients={setVarients}
+                      parentitemIndex={item?.itemIndex}
                     />
                   );
                 })}

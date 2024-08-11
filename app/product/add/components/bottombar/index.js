@@ -15,6 +15,9 @@ export const BottomBar = ({ setHistory, history, setSubmitedData }) => {
     if (index !== history?.length - 1) {
       setIndex(history.length - 1);
     }
+    if(!history.length){
+ 
+    }
   }, [history]);
 
   const undo = () => {

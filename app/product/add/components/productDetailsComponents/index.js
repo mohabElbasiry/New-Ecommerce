@@ -1,5 +1,5 @@
 "use client";
-import BasicData from "./BasicInfeo";
+import BasicData from "./BasicInfoData";
 import ProductVariation from "../productVariations";
 import { ProductSettings } from "./productSettings";
 import ProductImages from "../productImages";

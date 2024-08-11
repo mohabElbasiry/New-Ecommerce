@@ -29,16 +29,13 @@ export const VariationItem = ({
             handleAction({ type: "EditVarient", payload: { idx } });
           }}
         >
-          <div className="flex items-start gap-2 p-3 w-[100%] hover:bg-[#eee]">
-            <div className="mt-3  p-2 flex flex-col gap-3 px-2  hover:bg-[#eee] cursor-pointer">
-              <ReorderIcon dragControls={dragControls} />
-            </div>
+          <div className="flex items-start w-full gap-2 p-3   hover:bg-[#eee]">
             <div className="   ">
               <p>{item?.key_en}</p>
               <ul className="w-[100%] flex gap-3 flex-wrap">
                 {item?.values?.map((CurrentValueitem) => {
                   return (
-                    <li className="bg-[#ddd] px-3 rounded-md text-sm ">
+                    <li className="bg-[#ddd] px-3 rounded-md text-sm  ">
                       {CurrentValueitem?.value_en}
                     </li>
                   );

@@ -1,5 +1,6 @@
 export const ProductDataHandlers = {
   UpdatePropertyByNameAndValue: (state, { payload, target }) => {
+    console.log(payload,'payload');
     if (!target) {
       state[payload.name] = payload.value;
     }

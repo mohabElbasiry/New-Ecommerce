@@ -10,8 +10,8 @@ export const CreateVariationList = ({
   handleKeyDown,
   list,
   listIndex,
-  SetCreateOptionsValues,
-  handleListAction,
+   SetCreateOptionsValues,
+   handleListAction
 }) => {
   return (
     <div>
@@ -27,7 +27,7 @@ export const CreateVariationList = ({
           error={createOptionsAndValues.error}
           handleKeyDown={handleKeyDown}
           handleValueChange={handleValueChange}
-          SetCreateOptionsValues={SetCreateOptionsValues}
+           SetCreateOptionsValues={SetCreateOptionsValues}
         />
       </div>
       <p className="p-2 text-sm capitalize text-red-500">
@@ -35,13 +35,13 @@ export const CreateVariationList = ({
       </p>
 
       <CreateAndDeleteVariations
-        SetCreateOptionsValues={SetCreateOptionsValues}
-        currentOptions={createOptionsAndValues.currentOptions}
-        currentValues={createOptionsAndValues.currentValues}
-        handleListAction={handleListAction}
-        list={list}
-        listIndex={listIndex}
+      SetCreateOptionsValues={SetCreateOptionsValues}
+      currentOptions={createOptionsAndValues.currentOptions}
+      currentValues={createOptionsAndValues.currentValues}
+      handleListAction={handleListAction}
+      list={list}
+      listIndex={listIndex}
       />
-    </div>
+      </div>
   );
 };

@@ -1,3 +1,4 @@
+import { CollapseViewHandlers } from "./Handlersfunctions/collapseView";
 import { CreateVariationHandler } from "./Handlersfunctions/createVariations";
 import { HandleKeysAndValues } from "./Handlersfunctions/handlekeysAndvalues";
 import { HandleUpdateList } from "./Handlersfunctions/handleList";
@@ -10,4 +11,5 @@ export const actionHandlers = {
   ...HandleKeysAndValues,
   ...ProductDataHandlers,
   ...Settings,
+  ...CollapseViewHandlers
 };

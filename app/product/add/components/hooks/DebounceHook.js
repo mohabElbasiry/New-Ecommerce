@@ -6,7 +6,7 @@ export const DebounceHook = ({ handleAction }) => {
     debounce((value) => {
         console.log('excuted')
       handleAction({ type: "UpdateHistory" });
-    }, 300),
+    }, 500),
     []
   );
 

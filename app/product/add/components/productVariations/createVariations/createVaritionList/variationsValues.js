@@ -12,6 +12,7 @@ const VariationValues = ({
   error,
   SetCreateOptionsValues,
 }) => {
+  
   const handleAction = (action) => UpdateAction(action, SetCreateOptionsValues);
   const HandleDelete = useCallback(
     (index) => {
@@ -26,15 +27,10 @@ const VariationValues = ({
   );
 
   return (
-    <Reorder.Group values={currentValues}>
-      {currentValues?.map((value, index) => (
+    <div>
+         {currentValues?.map((value, index) => (
         <div>
-          <Reorder.Item
-            value={value}
-            key={value}
-            dragListener={false}
-            className="flex gap-2  w-[100%] flex-col "
-          >
+          
             <div className="flex gap-3 relative items-center add-values-variant">
               <InputWithLabelComponent
                 Input
@@ -90,11 +86,10 @@ const VariationValues = ({
                 </button>
               ) : null}
             </div>
-            <ReorderIcon />
-          </Reorder.Item>
+       
         </div>
       ))}
-    </Reorder.Group>
-  );
+    </div>
+   );
 };
 export default memo(VariationValues);

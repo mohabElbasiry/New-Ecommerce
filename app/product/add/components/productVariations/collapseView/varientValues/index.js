@@ -13,6 +13,7 @@ const VarientValues = ({
   parentname,
   setVarients = () => {},
   setEditValue,
+  parentitemIndex
 }) => {
   //deleted items
  
@@ -38,6 +39,7 @@ const VarientValues = ({
         itemValue={itemValue}
         parentIndex={parentIndex}
         setEditValue={setEditValue}
+        parentitemIndex={parentitemIndex}
       />
     );
   } else {
@@ -52,6 +54,7 @@ const VarientValues = ({
           itemValue={itemValue}
           parentIndex={parentIndex}
           setEditValue={setEditValue}
+          parentitemIndex={parentitemIndex}
         />
       </AccordionContent>
     );

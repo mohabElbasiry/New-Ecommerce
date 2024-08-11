@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const SortableItem = ({ id, edit, children }) => {
+  const SortableItem = ({ id, edit, children }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -13,6 +13,7 @@ const SortableItem = ({ id, edit, children }) => {
     margin: "5px 0",
     border: "1px solid #ddd",
     borderRadius: "5px",
+    backgroundColor: "#f8f8f8",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -20,13 +21,13 @@ const SortableItem = ({ id, edit, children }) => {
 
   return (
     <div ref={setNodeRef} style={style}>
-      <div className="w-[98%] block flex-row">{children} </div>
+      {children}
       {!edit && (
-        <button {...attributes} {...listeners} style={{ cursor: "grab",width:'2%' }}>
+        <button {...attributes} {...listeners} style={{ cursor: "grab" }}>
           ☰
         </button>
       )}
     </div>
   );
 };
-export default memo(SortableItem);
+export default memo(SortableItem)
