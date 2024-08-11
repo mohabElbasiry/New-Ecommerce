@@ -3,21 +3,61 @@ import { useMemo, useState } from "react";
 import CategoryBreadCrump from "../CategoryBreadCrump";
 import BasicInfo from "./BasicInfo";
 import CheckActiveAndImage from "./CheckActiveAndImage";
-export default function CategoryForm() {
+import { handleCreateCategory } from "@/app/categories/utils/functions";
+import { toastMessagener } from "@/components/Layout/RootSignal";
+import { useRouter } from "next/navigation";
+export default function CategoryForm({ parentId }) {
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
     description_en: "",
     description_ar: "",
-    image: "",
+    image: "test.png",
     isActive: true,
   });
-
+  const resetForm = () => {
+    setFormData((prev) => {
+      const prevKeys = Object.keys(prev);
+      const result = prevKeys.reduce(
+        (acc, key) => ({ ...acc, [key]: key === "isActive" ? true : "" }),
+        {}
+      );
+      return result;
+    });
+  };
+  const router = useRouter();
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("from data submit", formData);
+    setLoading(true);
+
+    let payload = { ...formData };
+    payload["name"] = { en: formData.name_en, ar: formData.name_ar };
+    payload["description"] = {
+      en: formData.description_en,
+      ar: formData.description_ar,
+    };
+    if (parentId) {
+      payload.parentId = parentId;
+    }
+    ["name_en", "name_ar", "description_en", "description_ar"].forEach(
+      (delKey) => delete payload[delKey]
+    );
+    await handleCreateCategory(payload).then((res) => {
+      setLoading(false);
+      if (res.status === "success") {
+        toastMessagener.success(res.messages[0].message_en);
+        router.push(`/categories`);
+        reseting();
+      } else {
+        toastMessagener.error(
+          res.messages.at(res.messages.length - 1).message_en
+        );
+      }
+    });
+    resetForm();
   };
   const abilitySubmit = useMemo(
     () =>
@@ -26,6 +66,7 @@ export default function CategoryForm() {
         .some((item) => item?.length),
     [formData]
   );
+  console.log(";formData;;", formData);
 
   return (
     <>
@@ -59,7 +100,7 @@ export default function CategoryForm() {
                 : "bg-gray-400 pointer-events-none"
             }  rounded-lg py-1 px-2`}
           >
-            save
+            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </form>
