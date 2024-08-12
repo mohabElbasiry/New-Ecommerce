@@ -76,8 +76,9 @@
 }
 
 .parent-div:focus-within {
-  border-color: #14151662;
-  border-width: 3px;
+  border-color: #00000062;
+  border-width: 1px;
+  box-shadow:rgba(99, 99, 99, 0.2) -1px 1px 10px 0px
 }
 /* width */
 ::-webkit-scrollbar {

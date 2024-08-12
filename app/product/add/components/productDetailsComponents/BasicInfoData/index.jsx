@@ -7,6 +7,7 @@ import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 import  ProductTitle  from "./Title";
 import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
 import ProductImages from "../../productImages";
+import  Inventory  from "./Inventory";
 const BasicData = ({
   submitedData = {},
   formData = {},
@@ -34,11 +35,6 @@ const BasicData = ({
   return (
     <div className="gap-5  rounded-lg  flex-col w-full">
       <div className="box p-3 mb-3">
-      <ProductImages
-              setSubmitedData={setSubmitedData}
-              images={ images}
-            />
-      </div>
       <div className="box p-2">
         
         <div className="flex flex-col gap-2 w-full">
@@ -52,8 +48,14 @@ const BasicData = ({
          handleAction={handleAction} />
           </LanguageSelect>
 
+      <ProductImages
+              setSubmitedData={setSubmitedData}
+              images={ images}
+            />
+      </div>
         </div>
       </div>
+      <Inventory errors={errors} register={register}  submitedData={setSubmitedData}/>
       <Pricing pricingData={pricingData} setSubmitedData={setSubmitedData} />
       <ShippingInfo
         setSubmitedData={setSubmitedData}

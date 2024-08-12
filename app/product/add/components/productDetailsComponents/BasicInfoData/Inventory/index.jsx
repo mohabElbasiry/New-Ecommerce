@@ -1,33 +1,29 @@
 import { CheckboxD } from "@/components/GlobalUi/checkbox";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
-import SubCategoriesSelect from "./categoriesWithSub";
-import SubCategoriesSelect_2 from "./AllCategoriesWithSub_2";
+import SubCategoriesSelect from "../categoriesWithSub";
+import SubCategoriesSelect_2 from "../AllCategoriesWithSub_2";
+import { memo } from "react";
+import { LocationsContainer } from "./locations";
 
-export const Inventory = ({ register, submitedData, errors }) => {
+  const Inventory = ({ register, submitedData, errors }) => {
   return (
     <>
       <p className="title">Inventory</p>
       <div className="box p-3  flex gap-3 flex-col">
-        <SubCategoriesSelect_2
+        {/* <SubCategoriesSelect_2
           category={submitedData.category}
           register={register}
           error={errors}
-        />
+        /> */}
+      
+        <CheckboxD text={`Track Quantity `} />
+        <LocationsContainer/>
+
         <CheckboxD
           text={`Continue selling when out of stock `}
           infoText="This will complete sales when available inventory reaches zero and below."
         />
-        <CheckboxD text={`Track Quantity `} />
-
         <div className="grid grid-cols-3 place-items-center gap-2">
-          <InputWithLabelComponent
-            label="Quantity"
-            PlaceHolder=""
-            Input
-            inputType="number"
-            register={{ ...register("Quantity") }}
-            min={0}
-          />
           <InputWithLabelComponent
             label="SKU(optional)"
             PlaceHolder=""
@@ -40,7 +36,6 @@ export const Inventory = ({ register, submitedData, errors }) => {
 ."
           />
           <InputWithLabelComponent
-            labelcss="text-sm mb-1"
             label="Barcode"
             Input
             min={1}
@@ -53,3 +48,4 @@ export const Inventory = ({ register, submitedData, errors }) => {
     </>
   );
 };
+export default memo(Inventory)

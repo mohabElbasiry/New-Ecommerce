@@ -22,7 +22,8 @@ export const InputWithLabelComponent = ({
     <div className="flex flex-col items-start gap-2 ">
       <p className={` font-sans capitalize border-l  ${labelcss} `}>{label}</p>
       {Input ? (
-        <div className="flex items-center border   rounded-md  overflow-hidden parent-div w-full ">
+        <div className="flex items-center border  border-black
+          rounded-md  overflow-hidden parent-div w-full ">
           {price ? <div className="pl-1 text-sm"> EGP</div> : null}
           <input
             className={`     w-full focus-none font-sem p-1
@@ -30,7 +31,7 @@ export const InputWithLabelComponent = ({
           text-[#333]   appearance-none   
          px-3   focus:outline-none     
              border-s-0 rounded-s-none 
-            ${isError ? "border-red-400" : ""}         ${inputCss} `}
+            ${isError ? "border-red-400" : ""}   !h-[32px]      ${inputCss}  `}
             {...props}
             placeholder={price ? "--" : PlaceHolder}
             type={inputType}
