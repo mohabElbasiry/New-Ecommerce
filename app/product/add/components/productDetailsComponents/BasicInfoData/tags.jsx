@@ -1,7 +1,7 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { memo, useState } from "react";
 import { produce } from "immer";
-import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 
 function Seo({ seoData, setSubmitedData }) {
   const [tagText, setTagText] = useState("");

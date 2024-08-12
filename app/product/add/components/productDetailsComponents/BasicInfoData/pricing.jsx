@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
-import { UpdateAction } from "../productVariations/RootFunction/middleWare";
-import { DebounceHook } from "../hooks/DebounceHook";
+import { memo, useCallback, useEffect, useRef } from "react";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
+import { DebounceHook } from "../../hooks/DebounceHook";
 
-export default function Pricing({ setSubmitedData, pricingData }) {
+ function Pricing({ setSubmitedData, pricingData }) {
+  console.log('object');
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
   };
@@ -126,3 +127,6 @@ export default function Pricing({ setSubmitedData, pricingData }) {
     </>
   );
 }
+
+
+export default memo(Pricing)

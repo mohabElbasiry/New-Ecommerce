@@ -1,7 +1,7 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
-import Pricing from "../../../productDetailsComponents/pricing";
+import Pricing from "../../../productDetailsComponents/BasicInfoData/pricing";
 import { produce } from "immer";
 
 export const EditMoreThanOneValues = ({ value, setVarients, setEditValue }) => {

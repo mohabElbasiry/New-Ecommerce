@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Headercomponent from "./headercomponent";
 import { ProductDetailsComponent } from "./productDetailsComponents";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { BasicFormValidation } from "./productDetailsComponents/BasicFormValidationSchema";
+import { BasicFormValidation } from "./productDetailsComponents/BasicInfoData/BasicFormValidationSchema";
 import { ProductMainDefaultValue } from "../constants/DefaultProductMainValue";
 import { produce } from "immer";
 import { generateQualities } from "./productVariations/collapseView/functions/GenerateQualities";
@@ -80,17 +80,17 @@ export const ProductAddMaim = () => {
   //   });
   // }, [submitedData?.productvaritions, changeonHistory]);
 
-  // useEffect(() => {
-  //   setSubmitedData(
-  //     produce((draft) => {
-  //       draft.productDetails.images = List.map((item, idx) => ({
-  //         name: item.name,
-  //         order: idx,
-  //         idx,
-  //       }));
-  //     })
-  //   );
-  // }, []);
+  useEffect(() => {
+    setSubmitedData(
+      produce((draft) => {
+        draft.productDetails.images = List.map((item, idx) => ({
+          name: item.name,
+          order: idx,
+          idx,
+        }));
+      })
+    );
+  }, []);
   const dataSteps = [
     {
       key: "steps Variant",
@@ -215,10 +215,10 @@ export const ProductAddMaim = () => {
   } = useForm({
     resolver: yupResolver(BasicFormValidation("en")),
   });
-  console.log("Mo Salah Nuby::", submitedData);
+
   return (
     <>
-      <TourGuide stepsData={dataSteps} />
+      {/* <TourGuide stepsData={dataSteps} /> */}
       <Headercomponent handleSubmit={handleSubmit}>
           <ProductDetailsComponent
             submitedData={submitedData}

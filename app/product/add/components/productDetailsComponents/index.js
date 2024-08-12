@@ -1,7 +1,7 @@
 "use client";
 import BasicData from "./BasicInfoData";
 import ProductVariation from "../productVariations";
-import { ProductSettings } from "./productSettings";
+import { ProductSettings } from "./BasicInfoData/productSettings";
 import ProductImages from "../productImages";
 import { useMemo } from "react";
 
