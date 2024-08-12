@@ -3,7 +3,9 @@ import { getOperationServer } from "@/lib/apiUtilsServer";
 import CategoriesTable from "./utils/components/CategoriesTable";
 
 const page = async ({ searchParams }) => {
-  let endpoint = searchParams?.c ? `/${searchParams?.c}/childs` : "?isRoot=true";
+  let endpoint = searchParams?.c
+    ? `/${searchParams?.c}/childs`
+    : "?isRoot=true";
   const categoriesData = await getOperationServer(`/categories${endpoint}`, {
     next: {
       tags: ["Category"],
