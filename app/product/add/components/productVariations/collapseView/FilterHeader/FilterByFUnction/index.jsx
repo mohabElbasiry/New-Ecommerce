@@ -45,10 +45,10 @@ export const FiltersKeys_values = ({
     <div>
       <p className="text-sm my-2 flex  ">Filter By</p>
       {console.log(FilterValues, "FilterValuesFilterValues")}
-      <div className="flex gap-3 mt-2">
+      <div className="flex gap-3 mt-2 ">
         {varitions?.map((item) => {
           return (  
-            <DropdownMenuRadioGroupSelect
+            <DropdownMenuRadioGroupSelect className="w-fit"
               list={item?.values?.map((iv) => {
                 return iv?.value_en;
               })}
@@ -62,8 +62,9 @@ export const FiltersKeys_values = ({
         <div className="flex gap-3 items-center ml-1   m-2 p-1">
           {FilterValues?.map((item) => {
             return (
-              <div className="p-1 rounded h-[20px] flex items-center justify-between overflow-hidden pe-0 gap-3   !text-[12px]  bg-[#eee]
-               uppercase border border-[#ddd] my-2 w-fit">
+              <div className="p-1 rounded h-[20px] flex items-center justify-between 
+              overflow-hidden pe-0 gap-3  w-fit   !text-[12px]  bg-[#eee]
+               uppercase border border-[#ddd] my-2  ">
                 {item?.value}
                 <button type="button" className="bg-[#eee] text-[#333] p-1 " onClick={()=>{
                   setFilters(produce(draft=>{

@@ -37,7 +37,8 @@ export const HandleInputChange = ({ list, listIndex }) => {
   const handleValueChange = useCallback(
     (event, index, isAr = false) => {
       const { value } = event.target;
-      handleAction({
+
+       handleAction({
         type: "handleValueChange",
         payload: {
           value,

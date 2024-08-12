@@ -12,15 +12,16 @@ export const HandleKeysAndValues = {
   },
   updatePropertyChild(
     state,
-    { payload: { property, newValue, itemIndex, parentname } }
+    { payload: { property, newValue, itemIndex, parentname, parentitemIndex } }
   ) {
+    console.log( state.productvaritions.varitionsValues,'adssssssssssssssssssssssssssssssssss');
     state.productvaritions.varitionsValues.forEach((item) => {
-      
-      if (item.parentname === parentname) {
+      if (item.itemIndex === parentitemIndex) {
 
         item.values.forEach((itemv) => {
-
+  
           if (itemv.itemIndex === itemIndex) {
+
             itemv[property] = newValue;
           }
         });

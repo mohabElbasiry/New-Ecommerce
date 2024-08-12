@@ -24,7 +24,7 @@ const syncAfterware = (state, setState, { type }, whiteList) => {
 
   if (whiteList.includes(type)) {
     const { history, ...other } = state;
-    state.history.push(other ?? {});
+    state.history.push(state ?? {});
   }
 };
 

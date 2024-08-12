@@ -15,6 +15,7 @@ export const InputWithLabelComponent = ({
   register,
   onChange = () => {},
   price = false,
+  defaultValue,
   ...props
 }) => {
   return (
@@ -38,7 +39,9 @@ export const InputWithLabelComponent = ({
             autoComplete="off"
             min={inputType === "number" ? 0 : ""}
             defaultValue={
-              inputType === "number" ? props?.defaultNumberValues || 0 : ""
+              inputType === "number"
+                ? props?.defaultNumberValues || 0
+                : "" || defaultValue
             }
             onChange={onChange}
           />

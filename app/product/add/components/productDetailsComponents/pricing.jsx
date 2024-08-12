@@ -16,7 +16,7 @@ export default function Pricing({ setSubmitedData, pricingData }) {
       }
       debounceRef.current = setTimeout(() => {
         handleCalcProfitMargin(pricingData?.Cost_Per_Item);
-      }, 1200);
+      }, 100);
 
       return () => {
         clearTimeout(debounceRef.current);

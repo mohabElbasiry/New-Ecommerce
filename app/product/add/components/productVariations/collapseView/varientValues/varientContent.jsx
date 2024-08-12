@@ -19,11 +19,12 @@ export const VarientContent = ({
   itemValue,
   parentIndex,
   setEditValue,
+  parentitemIndex
 }) => {
   const handleAction = (action) => {
     UpdateAction(action, setVarients);
   };
-  
+
   const { useDebounceForUpdate } = DebounceHook({ handleAction });
 
   const checked = (() => {
@@ -91,7 +92,7 @@ export const VarientContent = ({
     },
     [idx]
   );
- 
+
   return (
     <div
       className={`flex items-center justify-between pl-3 py-3 
@@ -114,18 +115,12 @@ border-[#ddd]  mt-1 ${
           checked={checked}
           onChange={HandleChange}
         />
-        <UpdateQualityImages
-          // setAutoGenerate={setAutoGenerate}
-          // setBeforeFiltered={setBeforeFiltered}
-          index={idx}
-          item={itemValue}
-        />
+        <UpdateQualityImages index={idx} item={itemValue} />
       </div>
       <div>
         <p> {itemValue?.val}</p>
       </div>
       <div className="flex gap-1 items-center  mx-2 ">
-        {console.log(itemValue, "sdaaaaaaaaaaa")}
         <TooltipF text={`Change price`}>
           <div className="border flex items-center text-sm pl-1 rounded-xl">
             <p>EGP</p>
@@ -146,9 +141,10 @@ border-[#ddd]  mt-1 ${
                       newValue: e.target.value,
                       itemIndex: itemValue.itemIndex,
                       parentname,
+                      parentitemIndex
                     },
                   });
-                  useDebounceForUpdate(value)
+                  useDebounceForUpdate(e?.target?.value);
                 }
                 return;
               }}
@@ -175,6 +171,7 @@ border-[#ddd]  mt-1 ${
                       newValue: e.target.value,
                       itemIndex: itemValue.itemIndex,
                       parentname,
+                      parentitemIndex
                     },
                   });
                 }

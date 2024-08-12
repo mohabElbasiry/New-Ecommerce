@@ -1,13 +1,14 @@
 import { InputWithLabelComponent } from "@/components/inputcomponent";
-import Pricing from "./pricing";
-import Seo from "./tags";
-import ShippingInfo from "./ShippingInfo";
+import Pricing from "../pricing";
+import Seo from "../tags";
+import ShippingInfo from "../ShippingInfo";
 import TextEditor from "@/components/TextEditor";
 import { produce } from "immer";
 import { memo, useCallback, useEffect } from "react";
-import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 import { debounce } from "lodash";
-import { DebounceHook } from "../hooks/DebounceHook";
+import { DebounceHook } from "../../hooks/DebounceHook";
+import { Description } from "./description";
 const BasicData = ({
   submitedData = {},
   formData = {},
@@ -49,7 +50,12 @@ const BasicData = ({
               UdateBasicInfo(e);
             }}
           />
-
+          
+   <Description 
+  description_ar={submitedData.description_ar} 
+  description_en={submitedData.description_en}
+  handleAction={handleAction}
+  />
           {/* <InputWithLabelComponent
         Input
         label="product name in Arabic"
@@ -66,10 +72,7 @@ const BasicData = ({
       /> */}
         </div>
         <h3>Product Description</h3>
-        <TextEditor
-          content={submitedData?.description_en}
-          setSubmitedData={setSubmitedData}
-        />
+        
       </div>
       {/* <Inventory
         errors={errors}

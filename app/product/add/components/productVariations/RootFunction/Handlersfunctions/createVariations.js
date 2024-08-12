@@ -1,25 +1,24 @@
+import { produce } from "immer";
 import { handleError } from "./helper/Error";
 
 export const CreateVariationHandler = {
-  handleValueChange(state, { payload: { value, index, isAr = false } }) {
-    const newValues = [...state?.currentValues];
+  handleValueChange: (state, { payload: { value, index, isAr = false } }) => {
     handleError(value, index, isAr, state, state?.currentValues, state?.error);
+
     if (isAr) {
-      // newValues[index] = {
-      //   ...newValues[index],
-      //   value_ar: event.target.value,
+      // draft.currentValues[index] = {
+      //   ...draft.currentValues[index],
+      //   value_ar: value,
       //   color: "",
       // };
     } else {
-      newValues[index] = {
-        ...newValues[index],
+      state.currentValues[index] = {
+        ...state.currentValues[index],
         value_en: value,
         color: "",
       };
     }
-    state.currentValues = newValues;
   },
-
   handleEditDefaultValues(state, { payload: { list = [], listIndex = -1 } }) {
     const listV = list[listIndex];
 
