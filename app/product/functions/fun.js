@@ -85,9 +85,7 @@ export async function handleUploadMedia(
         method: "POST",
         body: formData,
       });
-
       const data = await res.json();
-
       setUrlsFiles((prev) => [data, ...prev]);
       setUrlsFilesSelected((prev) => [data, ...prev]);
       const elapsedTime = Date.now() - startTime;

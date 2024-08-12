@@ -52,7 +52,7 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
       </DragAndDropElelements>
       <div>
         <UploadFilesModal
-          buttonContext={<img className=" " src="/upload-svgrepo-com.svg" />}
+          buttonContext={<img className="" src="/upload-svgrepo-com.svg" />}
           buttonCss={"w-[100px] h-[124px]"}
           selectedImages={sortedList}
           setSubmitedData={setSubmitedData}
