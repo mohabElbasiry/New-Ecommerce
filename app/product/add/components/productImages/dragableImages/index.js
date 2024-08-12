@@ -2,82 +2,60 @@ import { ListManager } from "react-beautiful-dnd-grid";
 import UploadFilesModal from "../UploadFilesModal";
 import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 import { imageBaseUrl } from "@/lib/baseUrl";
-
+import DragAndDropElelements from "@/components/GlobalUi/DragAndDropElements";
+import SortableItem from './sortable'
+import { produce } from "immer";
+import { arrayMove } from "@dnd-kit/sortable";
 export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
-  function sortListArr(list) {
-    return list.slice().sort((first, second) => first.order - second.order);
-  }
-  const handleAction = (action) => {
-    UpdateAction(action, setSubmitedData);
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+  
+    if (active.id !== over.id) {
+      setSubmitedData((prevItems) =>
+        produce(prevItems, (draft) => {
+           const images = prevItems.productDetails.images
+          const oldIndex = images.findIndex(
+            (item) => item.name === active.id
+          );
+          const newIndex = images.findIndex(
+            (item) => item.name === over.id
+          );
+          draft.productDetails.images = arrayMove(
+            images,
+            oldIndex,
+            newIndex
+          );
+        })
+      );
+    }
   };
-  const sortList = (list) => {
-    const sortedImages = sortListArr(list).map((item, idx) => ({
-      ...item,
-      idx,
-    }));
-    handleAction({
-      type: "UpdatePropertyByNameAndValue",
-      payload: { name: "images", value: sortedImages },
-      target: "productDetails",
-    });
-  };
-
-  const reorderList = (sourceIndex, destinationIndex) => {
-    const list = sortedList.map((item) => ({ ...item }));
-
-    if (destinationIndex === sourceIndex) {
-      return;
-    }
-    if (destinationIndex === 0) {
-      list[sourceIndex].order = list?.[0]?.order - 1;
-      sortList(list);
-      return;
-    }
-
-    if (destinationIndex === list?.length - 1) {
-      sortList(list);
-      return;
-    }
-
-    if (destinationIndex < sourceIndex) {
-      list[sourceIndex].order =
-        (list?.[destinationIndex]?.order +
-          list?.[destinationIndex - 1]?.order) /
-        2;
-      sortList(list);
-      return;
-    }
-
-    list[sourceIndex].order =
-      (list?.[destinationIndex]?.order + list?.[destinationIndex + 1]?.order) /
-      2;
-    sortList(list);
-  };
-
   return (
     <div className="App flex flex-wrap gap-4">
-      <ListManager
-        items={sortedList}
-        direction="horizontal"
-        maxItems={4}
-        className="dragable"
-        render={(item, idx) => {
-          return (
-            <div>
-              <img
-                className={`border m-1  overflow-hidden object-cover  ${
-                  item?.idx == 0
-                    ? "w-[250px]   h-[130px]"
-                    : "  w-[100px] h-[120px]"
-                }`}
-                src={`${imageBaseUrl}/${item.filename}`}
-              />
-            </div>
-          );
-        }}
-        onDragEnd={reorderList}
-      />
-      <div>
+     
+       <DragAndDropElelements                                  
+    items={sortedList?.map((item) => item?.name)}
+    handleDragEnd={handleDragEnd}
+    className="flex items-center  relative"
+  >
+
+
+ {
+  sortedList.map((item,idx)=>{
+    return(
+        <SortableItem key={item?.name}
+      customcss={'absolute  z-2  bg-[#eee] w-[30px] top-1 h-fit  rounded-md right-1'}
+      id={item?.name} edit={false}>
+
+<img src={item.name}  className={`  rounded-md
+ ${idx===0?'w-[200px] h-[200px]'
+  :'w-[130px] !h-[120px]  '}`}  />
+
+      </SortableItem>
+     ) 
+  })
+ }
+  </DragAndDropElelements>
+       <div>
         <UploadFilesModal
           buttonContext={<img className=" " src="/upload-svgrepo-com.svg" />}
           buttonCss={"w-[100px] h-[124px]"}
@@ -88,3 +66,4 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
     </div>
   );
 };
+

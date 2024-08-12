@@ -9,7 +9,11 @@ import {
 import {
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  horizontalListSortingStrategy
+  , rectSortingStrategy
+  , rectSwappingStrategy
+  , verticalListSortingStrategy, 
+
 } from "@dnd-kit/sortable";
 import { memo } from "react";
 
@@ -27,7 +31,7 @@ const DragAndDropElelements = ({ handleDragEnd, items, children }) => {
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
+      <SortableContext items={items} strategy={rectSwappingStrategy}>
         {/* //Items in Map  */}
 
         {children}

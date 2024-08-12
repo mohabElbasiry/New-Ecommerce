@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import React, { memo, useState } from "react";
-import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 
 function ShippingInfo({ setSubmitedData, shippingData }) {
   const [isChecked, setIsChecked] = useState(shippingData.active);

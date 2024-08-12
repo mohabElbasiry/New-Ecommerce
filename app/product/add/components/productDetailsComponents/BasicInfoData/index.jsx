@@ -1,14 +1,11 @@
-import { InputWithLabelComponent } from "@/components/inputcomponent";
-import Pricing from "../pricing";
-import Seo from "../tags";
-import ShippingInfo from "../ShippingInfo";
-import TextEditor from "@/components/TextEditor";
-import { produce } from "immer";
-import { memo, useCallback, useEffect } from "react";
+ import Pricing from "./pricing";
+import Seo from "./tags";
+import ShippingInfo from "./ShippingInfo";
+  import { memo  } from "react";
 import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
-import { debounce } from "lodash";
-import { DebounceHook } from "../../hooks/DebounceHook";
-import { Description } from "./description";
+  import { Description } from "./description";
+import  ProductTitle  from "./Title";
+import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
 const BasicData = ({
   submitedData = {},
   formData = {},
@@ -20,7 +17,6 @@ const BasicData = ({
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
   };
-  const { useDebounceForUpdate } = DebounceHook({ handleAction });
   const UdateBasicInfo = (ev) => {
     const { value } = ev.target;
     handleAction({
@@ -38,47 +34,18 @@ const BasicData = ({
       <p className="title">Product Description</p>
       <div className="box p-2">
         <div className="flex flex-col gap-2 w-full">
-          <InputWithLabelComponent
-            Input
-            label="product name "
-            PlaceHolder="Add product name"
-            register={{ ...register("title_en") }}
-            isError={errors?.title_en}
-            message={errors?.title_en?.message}
-            value={submitedData?.title_en}
-            onChange={(e) => {
-              UdateBasicInfo(e);
-            }}
-          />
-          
-   <Description 
-  description_ar={submitedData.description_ar} 
-  description_en={submitedData.description_en}
-  handleAction={handleAction}
-  />
-          {/* <InputWithLabelComponent
-        Input
-        label="product name in Arabic"
-        PlaceHolder="Add product name in Arabic"
-        register={{ ...register("title_ar") }}
-        setValue={setValue}
-        property={"description_en"}
-        isError={errors?.title_ar}
-        message={errors?.title_ar?.message}
-        value={submitedData?.productDetails?.title_ar}
-        onChange={(e) => {
-          UdateBasicInfo(e, setSubmitedData);
-        }}
-      /> */}
+          <LanguageSelect>
+
+      <ProductTitle errors={errors} register={register} setSubmitedData={setSubmitedData}
+       title_ar={submitedData.title_ar} title_en={submitedData.title_en}/>
+      <Description 
+        description_ar={submitedData.description_ar} 
+       description_en={submitedData.description_en}
+         handleAction={handleAction} />
+          </LanguageSelect>
+
         </div>
-        <h3>Product Description</h3>
-        
       </div>
-      {/* <Inventory
-        errors={errors}
-        submitedData={submitedData}
-        register={register}
-      />{" "} */}
       <Pricing pricingData={pricingData} setSubmitedData={setSubmitedData} />
       <ShippingInfo
         setSubmitedData={setSubmitedData}

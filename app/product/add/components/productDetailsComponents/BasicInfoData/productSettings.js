@@ -3,7 +3,7 @@ import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { produce } from "immer";
-import { UpdateAction } from "../productVariations/RootFunction/middleWare";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 export const ProductSettings = ({ setSubmitedData }) => {
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
