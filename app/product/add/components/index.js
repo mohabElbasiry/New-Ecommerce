@@ -80,17 +80,17 @@ export const ProductAddMaim = () => {
   //   });
   // }, [submitedData?.productvaritions, changeonHistory]);
 
-  useEffect(() => {
-    setSubmitedData(
-      produce((draft) => {
-        draft.productDetails.images = List.map((item, idx) => ({
-          name: item.name,
-          order: idx,
-          idx,
-        }));
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   setSubmitedData(
+  //     produce((draft) => {
+  //       draft.productDetails.images = List.map((item, idx) => ({
+  //         name: item.name,
+  //         order: idx,
+  //         idx,
+  //       }));
+  //     })
+  //   );
+  // }, []);
   const dataSteps = [
     {
       key: "steps Variant",

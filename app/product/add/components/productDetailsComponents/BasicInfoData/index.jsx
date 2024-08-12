@@ -1,10 +1,10 @@
- import Pricing from "./pricing";
+import Pricing from "./pricing";
 import Seo from "./tags";
 import ShippingInfo from "./ShippingInfo";
-  import { memo  } from "react";
+import { memo } from "react";
 import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
-  import { Description } from "./description";
-import  ProductTitle  from "./Title";
+import { Description } from "./description";
+import ProductTitle from "./Title";
 import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
 import ProductImages from "../../productImages";
 const BasicData = ({
@@ -14,7 +14,7 @@ const BasicData = ({
   pricingData = {},
   shippingData = {},
   seoData = {},
-  images=[]
+  images = [],
 }) => {
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
@@ -34,24 +34,24 @@ const BasicData = ({
   return (
     <div className="gap-5  rounded-lg  flex-col w-full">
       <div className="box p-3 mb-3">
-      <ProductImages
-              setSubmitedData={setSubmitedData}
-              images={ images}
-            />
+        <ProductImages setSubmitedData={setSubmitedData} images={images} />
       </div>
       <div className="box p-2">
-        
         <div className="flex flex-col gap-2 w-full">
           <LanguageSelect>
-
-      <ProductTitle errors={errors} register={register} setSubmitedData={setSubmitedData}
-       title_ar={submitedData.title_ar} title_en={submitedData.title_en}/>
-      <Description 
-        description_ar={submitedData.description_ar} 
-       description_en={submitedData.description_en}
-         handleAction={handleAction} />
+            <ProductTitle
+              errors={errors}
+              register={register}
+              setSubmitedData={setSubmitedData}
+              title_ar={submitedData.title_ar}
+              title_en={submitedData.title_en}
+            />
+            <Description
+              description_ar={submitedData.description_ar}
+              description_en={submitedData.description_en}
+              handleAction={handleAction}
+            />
           </LanguageSelect>
-
         </div>
       </div>
       <Pricing pricingData={pricingData} setSubmitedData={setSubmitedData} />
@@ -60,7 +60,6 @@ const BasicData = ({
         shippingData={shippingData}
       />
       <Seo seoData={seoData} setSubmitedData={setSubmitedData} />
-    
     </div>
   );
 };

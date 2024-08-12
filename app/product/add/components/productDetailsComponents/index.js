@@ -22,7 +22,6 @@ export const ProductDetailsComponent = ({
             shippingData={submitedData?.shipping}
             seoData={submitedData?.seo}
             images={submitedData?.productDetails?.images}
-
             formData={useMemo(() => formData, [submitedData?.productDetails])}
             setSubmitedData={setSubmitedData}
           />

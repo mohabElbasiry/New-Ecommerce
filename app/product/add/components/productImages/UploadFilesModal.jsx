@@ -36,7 +36,7 @@ export default function UploadFilesModal({
           setUrlsFiles(data?.data);
         }
       } else {
-        setUrlsFiles(data?.data || []);
+        // setUrlsFiles(data?.data || []);
       }
     };
     fetchAllFiles();

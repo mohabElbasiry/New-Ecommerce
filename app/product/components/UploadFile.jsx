@@ -6,7 +6,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
-import { fetchImage, UploadFileToApi } from "../functions/fun";
+import {
+  fetchImage,
+  handleUploadMedia,
+  UploadFileToApi,
+} from "../functions/fun";
 
 export default function UploadFile({
   setUrlsFiles,
@@ -62,13 +66,21 @@ export default function UploadFile({
   };
 
   const handleUploadFile = () =>
-    UploadFileToApi(
+    // UploadFileToApi(
+    //   selectedFiles,
+    //   progressBarParent,
+    //   progressBar,
+    //   setUrlsFiles,
+    //   setUrlsFilesSelected
+    // );
+    handleUploadMedia(
       selectedFiles,
       progressBarParent,
       progressBar,
       setUrlsFiles,
       setUrlsFilesSelected
     );
+
   console.log("selectedFiles", selectedFiles);
   useEffect(() => {
     selectedFiles.length ? handleUploadFile() : null;
