@@ -2,8 +2,9 @@
 import DynamicTable from "@/components/GlobalUi/DynamicTable";
 import { getOperationClient } from "@/lib/apiUtilsClient";
 import moment from "moment";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-export default function CategoriesTable({ categories }) {
+export default function CategoriesTable({ categories, cId = "" }) {
   const data = (payload) => {
     return {
       Keys: ["fullName", "createdAt"],
@@ -13,7 +14,7 @@ export default function CategoriesTable({ categories }) {
             _id: item._id,
             fullName: {
               _id: item._id,
-              name: item.name,
+              name: item.fullName,
               isRoot: item.isRoot,
               isLeaf: item.isLeaf,
             },
@@ -24,9 +25,12 @@ export default function CategoriesTable({ categories }) {
       },
       customColumn: {
         fullName: ({ item }) => {
+          const searchParams = useSearchParams();
+          const params = new URLSearchParams(searchParams);
+          const router = useRouter();
           const fetchSubCategories = async (cId) => {
             const childsData = await getOperationClient(
-              `/categories/${cId}/child`,
+              `/categories/${cId}/childs`,
               {
                 method: "GET",
                 headers: {
@@ -34,7 +38,9 @@ export default function CategoriesTable({ categories }) {
                 },
               }
             );
-            if (childsData?.data) {
+            params.set("c", cId);
+            router.push(`categories?${params.toString()}`);
+            if (childsData?.data?.length) {
               setDataDynamic(data(childsData?.data));
             } else {
               setDataDynamic(data([]));
@@ -43,7 +49,7 @@ export default function CategoriesTable({ categories }) {
           return (
             <div>
               <button onClick={() => fetchSubCategories(item?._id)}>
-                {item?.name?.en} : isLeaf {JSON.stringify(item?.isLeaf)}
+                {item?.name?.en}
               </button>
             </div>
           );
@@ -59,7 +65,7 @@ export default function CategoriesTable({ categories }) {
   return (
     <div className="bg-white shadow w-[90%] mx-auto p-4 grid gap-6 rounded-md">
       <h3 className="text-lg">Categories</h3>
-      <DynamicTable data={dataDynamic} />
+      <DynamicTable data={dataDynamic} cId={cId} />
     </div>
   );
 }
