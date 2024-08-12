@@ -21,6 +21,8 @@ export const ProductDetailsComponent = ({
             pricingData={submitedData?.pricing}
             shippingData={submitedData?.shipping}
             seoData={submitedData?.seo}
+            images={submitedData?.productDetails?.images}
+
             formData={useMemo(() => formData, [submitedData?.productDetails])}
             setSubmitedData={setSubmitedData}
           />
@@ -35,10 +37,7 @@ export const ProductDetailsComponent = ({
               }}
               setSubmitedData={setSubmitedData}
             />
-            <ProductImages
-              setSubmitedData={setSubmitedData}
-              images={submitedData?.productDetails?.images}
-            />
+       
           </div>
           <div className="w-full overflow-auto ">
             <ProductVariation

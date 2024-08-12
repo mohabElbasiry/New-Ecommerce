@@ -52,8 +52,7 @@ export const Description =({
   {
     lang==="ar"?  
     <div className="flex flex-col">
-    description In Arabic
-   
+    
    <DescriptionContent
    content={description_ar}
    handleChange={handleChange}
@@ -65,8 +64,7 @@ export const Description =({
   {
     lang==="en"?  
     <div className="flex flex-col">
-        description In English
-
+ 
    
    <DescriptionContent
    content={description_en}

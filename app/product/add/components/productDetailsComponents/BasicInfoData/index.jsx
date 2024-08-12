@@ -6,6 +6,7 @@ import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
   import { Description } from "./description";
 import  ProductTitle  from "./Title";
 import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
+import ProductImages from "../../productImages";
 const BasicData = ({
   submitedData = {},
   formData = {},
@@ -13,6 +14,7 @@ const BasicData = ({
   pricingData = {},
   shippingData = {},
   seoData = {},
+  images=[]
 }) => {
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
@@ -31,8 +33,14 @@ const BasicData = ({
 
   return (
     <div className="gap-5  rounded-lg  flex-col w-full">
-      <p className="title">Product Description</p>
+      <div className="box p-3 mb-3">
+      <ProductImages
+              setSubmitedData={setSubmitedData}
+              images={ images}
+            />
+      </div>
       <div className="box p-2">
+        
         <div className="flex flex-col gap-2 w-full">
           <LanguageSelect>
 
@@ -52,6 +60,7 @@ const BasicData = ({
         shippingData={shippingData}
       />
       <Seo seoData={seoData} setSubmitedData={setSubmitedData} />
+    
     </div>
   );
 };
