@@ -6,25 +6,30 @@ export const LanguageSelect=({children})=>{
     const childrenWithProps =  Children.map(children, (child) =>
          cloneElement(child, {  lang })
       );
-
+      const active ="bg-[#eee] px-6 rounded-md  !h-[25px]"
     return(
-<div className="border-b border-gray-200">
-      <nav className="-mb-px flex gap-6" aria-label="Tabs">
+<div className="border-b border-gray-200 ">
+      <nav className=" flex gap-6      w-fit  px-1 rounded h-[33px]  mb-2 
+       overflow-hidden items-center " aria-label="Tabs">
         <a
           href="#"
-          className="shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          className={`shrink-0 border-b-2 border-transparent  
+           text-sm font-medium text-gray-500 hover:border-gray-300 flex items-center
+            hover:text-gray-700 px-2 py-1 ${lang==="en"&&active}`}
         
         onClick={()=>setLang('en')}>
-          En
+          English
         </a>
 
         <a
           href="#"
-          className="shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+          className={`shrink-0 border-b-2 border-transparent  
+            text-sm font-medium text-gray-500 hover:border-gray-300 flex items-center
+             hover:text-gray-700 px-2 py-1 ${lang==="ar"&&active}`}
           onClick={()=>setLang('ar')}
 
       >
-          Ar
+          Arabic
         </a>
 
        

@@ -25,7 +25,7 @@ import { memo, useCallback } from "react";
     {
       lang==="en"?<InputWithLabelComponent
       Input
-      label="product name In English"
+      // label="product name In English"
       PlaceHolder="Add product name"
       register={{ ...register("title_en") }}
       isError={errors?.title_en}
@@ -39,7 +39,7 @@ import { memo, useCallback } from "react";
   {
       lang==="ar"?<InputWithLabelComponent
       Input
-      label="product name In Arabic"
+      // label="product name In Arabic"
       PlaceHolder="Add product name"
       register={{ ...register("title_ar") }}
       isError={errors?.title_ar}
