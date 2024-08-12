@@ -31,9 +31,9 @@ export default function UploadFilesModal({
             token: true,
           },
         });
-        
+
         if (data?.data?.length) {
-          setUrlsFiles(data.data);
+          setUrlsFiles(data?.data);
         }
       } else {
         setUrlsFiles(data?.data || []);

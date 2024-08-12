@@ -32,6 +32,8 @@ export function UploadFileToApi(
   progressBarParent.current.style.display = "block";
   const xhr = new XMLHttpRequest();
   xhr.upload.addEventListener("progress", function (e) {
+    console.log("loaddddddddddddd progress");
+
     if (e.lengthComputable) {
       const percentComplete = (e.loaded / e.total) * 100;
       console.log("percentComplete", percentComplete);
@@ -43,24 +45,32 @@ export function UploadFileToApi(
     }
   });
   xhr.addEventListener("load", function () {
+    console.log("xhr LOAD EVENT", xhr);
     if (xhr.status >= 200 && xhr.status < 300) {
       let response = JSON.parse(xhr.response);
       console.log("response?.fileUrl", response);
       setUrlsFiles(
-        produce((prev) => {
-          prev.unshift(response);
-        })
+        // produce((prev) => {
+        //   prev.unshift(response);
+        // })
+        (prev) => {
+          return [response, ...prev];
+        }
       );
       setUrlsFilesSelected(
-        produce((prev) => {
-          prev.unshift(response);
-        })
+        // produce((prev) => {
+        //   prev.unshift(response);
+        // })
+        (prev) => {
+          return [response, ...prev];
+        }
       );
       // Handle the response here (e.g., parse the response JSON and update the UI)
     } else {
       console.error("Error uploading file:", xhr.statusText);
     }
   });
+
   xhr.open("POST", baseUrl + "upload/file");
   xhr.setRequestHeader("Authorization", headers);
   xhr.send(formData);

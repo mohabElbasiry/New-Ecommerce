@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 export default function CategoriesTable({ categories, cId = "" }) {
   const data = (payload) => ({
-    Keys: ["fullName", "createdAt", ""],
+    Keys: ["fullName", "createdAt"],
     values: !payload?.length
       ? []
       : payload.map((item) => ({
@@ -60,6 +60,9 @@ export default function CategoriesTable({ categories, cId = "" }) {
   });
   const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
+  const handleDeleteItem = (itemId) => { 
+    
+  }
   return (
     <div className="bg-white shadow w-[90%] mx-auto p-4 grid gap-6 rounded-md">
       <div className="flex items-center gap-3">

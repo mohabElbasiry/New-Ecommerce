@@ -187,6 +187,9 @@ export default function DynamicTable({
                       );
                     })
                 : null}
+              {isOptions ? (
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"></th>
+              ) : null}
               {data?.customColumn?.theLast &&
               data?.customColumn?.theLast?.length > 0
                 ? data?.customColumn?.theLast
@@ -203,6 +206,9 @@ export default function DynamicTable({
                     ))
                 : null}
             </tr>
+            {/* {isOptions && (
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"></th>
+            )} */}
           </thead>
 
           <tbody className="divide-y divide-gray-200">
@@ -294,8 +300,8 @@ export default function DynamicTable({
                             className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center `}
                           >
                             <div className="flex items-center">
-                              <Settings />
-                              <Trash2 />
+                              <Settings className="cursor-pointer mx-1" />
+                              <Trash2 className="cursor-pointer" />
                             </div>
                           </td>
                         ) : null}
