@@ -40,7 +40,7 @@ const defaultData = {
   ),
   enableSelect: true,
 };
-export default function DynamicTable({ data = defaultData }) {
+export default function DynamicTable({ data = defaultData, cId }) {
   const ItemsFirst =
     data?.customColumn?.theFirst?.length > 0
       ? data?.customColumn?.theFirst?.map((ItemFirst) => ItemFirst.key)
@@ -98,7 +98,10 @@ export default function DynamicTable({ data = defaultData }) {
       </div>
       <div className="bg-white sm:rounded-lg mt-5 relative max-h-[calc(100vh-200px)] overflow-x-auto overflow-y-scroll scroll-bar">
         <div className="flex items-center justify-between gap-4 h-12 !bg-white px-3 ">
-          <Link href={`/categories/add`} className="inline mx-3">
+          <Link
+            href={`/categories/add${cId ? `?c=${cId}` : ``}`}
+            className="inline mx-3"
+          >
             <Plus className="inline" />
           </Link>
           {data.enableSelect && checkedItems?.length ? (

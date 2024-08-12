@@ -66,7 +66,6 @@ export default function CategoryForm({ parentId }) {
         .some((item) => item?.length),
     [formData]
   );
-  console.log(";formData;;", formData);
 
   return (
     <>
