@@ -2,7 +2,8 @@ import React, { memo } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const SortableItem = ({ id, edit, children }) => {
+const SortableItem = ({ id, edit,disabled, children }) => {
+  console.log(disabled,'disabled');
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -20,12 +21,19 @@ const SortableItem = ({ id, edit, children }) => {
 
   return (
     <div ref={setNodeRef} style={style}>
-      <div className="w-[98%] block flex-row">{children} </div>
       {!edit && (
-        <button {...attributes} {...listeners} style={{ cursor: "grab",width:'2%' }}>
-          ☰
-        </button>
+       <>
+       {
+        !disabled? <button  {...attributes} {...listeners}
+        type="button" style={{ cursor: "grab",width:'2%' }}>
+         ☰
+       </button >:<button  type="button" >
+         ☰
+       </button>
+       }
+       </>
       )}
+      <div className="w-[98%] block flex-row">{children} </div>
     </div>
   );
 };

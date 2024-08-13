@@ -12,8 +12,8 @@ const VariationValues = ({
   error,
   SetCreateOptionsValues,
 }) => {
-  
-  const handleAction = (action) => UpdateAction(action, SetCreateOptionsValues);
+  const handleAction = useCallback((action)=>UpdateAction(action, SetCreateOptionsValues),[])
+
   const HandleDelete = useCallback(
     (index) => {
       handleAction({
@@ -25,8 +25,7 @@ const VariationValues = ({
     },
     [currentValues]
   );
-
-  return (
+   return (
     <div>
          {currentValues?.map((value, index) => (
         <div>
@@ -74,7 +73,7 @@ const VariationValues = ({
                 }
                 Autocomplete="off"
               /> */}
-              <ColorPicker index={index} />
+              <ColorPicker index={index} color_value={value?.color} handleAction={handleAction} />
               {currentValues?.some((_, idx) => idx === index) &&
               index !== currentValues?.length - 1 ? (
                 <button

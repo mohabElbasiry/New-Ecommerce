@@ -47,7 +47,7 @@ export const Description =({
  
 
   <div className="hidden sm:block">
-    <div className="border-b border-gray-200">
+    <div className=" ">
  
   {
     lang==="ar"?  

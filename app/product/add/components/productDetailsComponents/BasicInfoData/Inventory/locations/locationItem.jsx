@@ -1,6 +1,7 @@
+import { CheckboxD } from "@/components/GlobalUi/checkbox"
 import { InputWithLabelComponent } from "@/components/inputcomponent"
 
-export const LocationItem=()=>{
+export const LocationItem=({trackQuantity,edit})=>{
 
 
 
@@ -8,18 +9,32 @@ export const LocationItem=()=>{
     return(<>
     
     <li className="list-none flex items-center justify-between">
-        <p>
-            location Name
+
+        <div className="flex items-center gap-1">
+
+        {
+            edit?
+                 <CheckboxD/>
+             :null
+        }
+        <p className="p-0  m-0">
+            location name
         </p>
 
-        <InputWithLabelComponent
-        defaultValue={''}
-        Input
-        PlaceHolder="0"
-        inputType="number"
-            inputCss="!w-[100px] flex items-center 
-            text-center"
-        />
+        </div>
+
+        {
+            trackQuantity?   <InputWithLabelComponent
+            defaultValue={''}
+            Input
+            PlaceHolder="0"
+            inputType="number"
+                inputCss="!w-[100px] flex items-center 
+                text-center"
+            />:"Not Tracked"
+        }
+        
+     
 
     </li>
     </>)

@@ -15,7 +15,8 @@ const BasicData = ({
   pricingData = {},
   shippingData = {},
   seoData = {},
-  images=[]
+  images=[],
+  inventory,children,
 }) => {
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
@@ -35,7 +36,7 @@ const BasicData = ({
   return (
     <div className="gap-5  rounded-lg  flex-col w-full">
       <div className="box p-3 mb-3">
-      <div className="box p-2">
+      <div className="  p-2">
         
         <div className="flex flex-col gap-2 w-full">
           <LanguageSelect>
@@ -55,12 +56,18 @@ const BasicData = ({
       </div>
         </div>
       </div>
-      <Inventory errors={errors} register={register}  submitedData={setSubmitedData}/>
+      <Inventory  
+      inventory={inventory}
+      setSubmitedData={setSubmitedData}/>
       <Pricing pricingData={pricingData} setSubmitedData={setSubmitedData} />
       <ShippingInfo
         setSubmitedData={setSubmitedData}
         shippingData={shippingData}
       />
+  {
+    children
+  }
+
       <Seo seoData={seoData} setSubmitedData={setSubmitedData} />
     
     </div>

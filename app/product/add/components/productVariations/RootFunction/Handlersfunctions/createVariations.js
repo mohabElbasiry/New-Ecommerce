@@ -51,4 +51,12 @@ export const CreateVariationHandler = {
     state.currentValues = itemsAfterFiltered;
     // handleError(value, index, isAr, state, state?.currentValues, state?.error);
   },
+  updateColor(state, {
+    payload:{index,color}
+  }) {
+    state.currentValues[index].color=color
+      console.log( index,color,'statestate');
+    
+    // handleError(value, index, isAr, state, state?.currentValues, state?.error);
+  },
 };

@@ -31,9 +31,11 @@ export const VariationList = ({ productVarients, setVarients }) => {
       );
     }
   };
-  const Dragable = productVarients?.variants?.map((item) => item.edit).length
-    ? false
-    : true;
+   const Dragable = productVarients?.variants?.filter((item) => item.edit===true).length
+    ? true
+    : false;
+
+    console.log(productVarients?.variants?.filter((item) => item.edit===true));
   return (
     <DragAndDropElelements
       items={productVarients?.variants?.map((item) => item?.key_en)}
@@ -42,7 +44,9 @@ export const VariationList = ({ productVarients, setVarients }) => {
     >
       {productVarients?.variants?.map((item, idx) => {
         return (
-          <SortableItem key={item?.key_en} id={item?.key_en} edit={false}>
+          <SortableItem key={item?.key_en} id={item?.key_en} 
+          disabled ={productVarients?.variants?.length===1}
+          edit={item?.edit||Dragable} >
             <VariationItem
               key={item?.key_en}
               productVarients={productVarients}
