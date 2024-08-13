@@ -1,10 +1,13 @@
 import UploadFile from "@/app/product/components/UploadFile";
+import MediaUploader from "@/components/MediaUploader/Index";
 import { produce } from "immer";
 import { useState } from "react";
 
 export default function CheckActiveAndImage({ formData, setFormData }) {
   const [urlsFiles, setUrlsFiles] = useState([]);
-  const [urlsFilesSelected, setUrlsFilesSelected] = useState([]);
+
+  const [uploadLength, setUploadLength] = useState(0);
+
   const handleChange = (event) => {
     const { value, name } = event.target;
     setFormData(
@@ -13,8 +16,7 @@ export default function CheckActiveAndImage({ formData, setFormData }) {
       })
     );
   };
-  console.log("urlsFiles", urlsFiles);
-  console.log("urlsFilesSelected", urlsFilesSelected);
+
   return (
     <div>
       <div className="bg-white p-6 h-32 rounded-2xl">
@@ -47,11 +49,12 @@ export default function CheckActiveAndImage({ formData, setFormData }) {
         </div>
       </div>
       <div className="bg-white p-6 h-72 rounded-2xl mt-6">
-        <p>Image</p>
-        <UploadFile
+        <MediaUploader
           notURL
+          type="single"
+          urlsFiles={urlsFiles}
           setUrlsFiles={setUrlsFiles}
-          setUrlsFilesSelected={setUrlsFilesSelected}
+          setUploadLength={setUploadLength}
         />
       </div>
     </div>

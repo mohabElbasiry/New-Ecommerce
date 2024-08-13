@@ -66,19 +66,35 @@ export function UploadFileToApi(
   xhr.send(formData);
 }
 export async function handleUploadMedia(
-  files,
-  progressBarParent,
-  progressBar,
-  setUrlsFiles,
-  setUrlsFilesSelected
+  uploadedFiles = [],
+  files = [],
+  setSelectedFiles = () => {},
+  setUrlsFiles = () => {},
+  setUrlsFilesSelected = () => {},
+  setUploadLength = () => {},
+  setOpen = () => {},
+  type = "",
+  setSubmitedData = () => {}
 ) {
-  progressBarParent.current.style.display = "block";
-  const formData = new FormData();
-  formData.append("file", files[0]);
-  if (files?.length) {
-    const startTime = Date.now();
+  if (uploadedFiles?.length || files?.length) {
+    const formData = new FormData();
+    if (type === "single") {
+      uploadedFiles?.length
+        ? formData.append("files", uploadedFiles[0])
+        : formData.append("files", files[0]);
+      setOpen(false);
+      setUploadLength(1);
+    } else {
+      console.log("filessqwqewqewqewqe", files);
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
+    
+      setUploadLength(files.length);
+    }
+
     try {
-      const res = await fetch(`${baseUrl}/upload/file`, {
+      const res = await fetch(`${baseUrl}/upload/files`, {
         headers: {
           Authorization: token,
         },
@@ -86,16 +102,22 @@ export async function handleUploadMedia(
         body: formData,
       });
       const data = await res.json();
-      setUrlsFiles((prev) => [data, ...prev]);
-      setUrlsFilesSelected((prev) => [data, ...prev]);
-      const elapsedTime = Date.now() - startTime;
-      const progressPercentage = Math.min(100, (elapsedTime / 1) * 100);
-      progressBar.current.style.width = `${progressPercentage}%`;
-      setTimeout(() => {
-        progressBarParent.current.style.display = "none";
-      }, 2000);
-      console.log("last upload data", data);
+      if (type === "single") {
+        setUrlsFiles(data);
+        setOpen(false);
+      } else {
+        setUrlsFiles((prev) => [...data, ...prev]);
+        setUrlsFilesSelected((prev) => [...data, ...prev]);
+      }
+
+      setUploadLength(0);
+      if (type !== "single") {
+        setTimeout(() => {
+          setSelectedFiles([]);
+        }, 1000);
+      }
     } catch (er) {
+      setUploadLength(0);
       console.log("er", er);
     }
   }

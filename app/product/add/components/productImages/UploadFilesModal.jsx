@@ -1,13 +1,12 @@
 import UploadFile from "@/app/product/components/UploadFile";
 import { CustomDialoge } from "@/components/Modal";
 import Image from "next/image";
-
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 import { getOperationClient } from "@/lib/apiUtilsClient";
 import { imageBaseUrl } from "@/lib/baseUrl";
 
-export default function UploadFilesModal({
+function UploadFilesModal({
   buttonContext,
   selectedImages,
   setSubmitedData,
@@ -19,6 +18,7 @@ export default function UploadFilesModal({
 
   const [UrlsFiles, setUrlsFiles] = useState([]);
   const [UrlsFilesSelected, setUrlsFilesSelected] = useState([]);
+  const [uploadLength, setUploadLength] = useState(0);
   console.log(UrlsFiles);
   const [open, setOpen] = useState(false);
 
@@ -69,8 +69,25 @@ export default function UploadFilesModal({
             <UploadFile
               setUrlsFiles={setUrlsFiles}
               setUrlsFilesSelected={setUrlsFilesSelected}
+              setUploadLength={setUploadLength}
             />
             <div className="mt-4 2xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 grid gap-4 h-[47vh] overflow-y-scroll scrollbar-styling">
+              {uploadLength > 0
+                ? [...Array(uploadLength)].map(() => (
+                    <div className="h-[180px]  flex items-center justify-center ">
+                      <div className="w-3/4 h-3/4 flex items-center justify-center border rounded-2xl">
+                        <div
+                          class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] text-black"
+                          role="status"
+                        >
+                          <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                            Loading...
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                : null}
               {UrlsFiles.map((fileUrl, index) => (
                 <div
                   className="bg-transparent [&:hover>div]:bg-[#F1F1F1] "
@@ -136,3 +153,4 @@ export default function UploadFilesModal({
     </>
   );
 }
+export default memo(UploadFilesModal);
