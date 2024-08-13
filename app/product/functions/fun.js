@@ -42,7 +42,7 @@ export function UploadFileToApi(
         }, 2000);
     }
   });
-  xhr.addEventListener("load", function () {
+  xhr.upload.addEventListener("load", function () {
     if (xhr.status >= 200 && xhr.status < 300) {
       let response = JSON.parse(xhr.response);
       console.log("response?.fileUrl", response);
@@ -65,7 +65,63 @@ export function UploadFileToApi(
   xhr.setRequestHeader("Authorization", headers);
   xhr.send(formData);
 }
+export async function handleUploadMedia(
+  uploadedFiles = [],
+  files = [],
+  setSelectedFiles = () => {},
+  setUrlsFiles = () => {},
+  setUrlsFilesSelected = () => {},
+  setUploadLength = () => {},
+  setOpen = () => {},
+  type = "",
+  setSubmitedData = () => {}
+) {
+  if (uploadedFiles?.length || files?.length) {
+    const formData = new FormData();
+    if (type === "single") {
+      uploadedFiles?.length
+        ? formData.append("files", uploadedFiles[0])
+        : formData.append("files", files[0]);
+      setOpen(false);
+      setUploadLength(1);
+    } else {
+      console.log("filessqwqewqewqewqe", files);
+      files.forEach((file) => {
+        formData.append("files", file);
+      });
+    
+      setUploadLength(files.length);
+    }
 
+    try {
+      const res = await fetch(`${baseUrl}/upload/files`, {
+        headers: {
+          Authorization: token,
+        },
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (type === "single") {
+        setUrlsFiles(data);
+        setOpen(false);
+      } else {
+        setUrlsFiles((prev) => [...data, ...prev]);
+        setUrlsFilesSelected((prev) => [...data, ...prev]);
+      }
+
+      setUploadLength(0);
+      if (type !== "single") {
+        setTimeout(() => {
+          setSelectedFiles([]);
+        }, 1000);
+      }
+    } catch (er) {
+      setUploadLength(0);
+      console.log("er", er);
+    }
+  }
+}
 export function getAverageColor(imageElement, ratio) {
   const canvas = document.createElement("canvas");
 

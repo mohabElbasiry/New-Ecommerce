@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MultiSelect from "../../app/product/[id]/components/Select";
-import { CircleDashed, Plus } from "lucide-react";
+import { CircleDashed, Plus, Settings, Trash2 } from "lucide-react";
 import Link from "next/link";
 const defaultData = {
   Keys: ["Key1", "Key2", "Key3"],
@@ -40,7 +40,11 @@ const defaultData = {
   ),
   enableSelect: true,
 };
-export default function DynamicTable({ data = defaultData, cId }) {
+export default function DynamicTable({
+  data = defaultData,
+  isOptions,
+  itemId,
+}) {
   const ItemsFirst =
     data?.customColumn?.theFirst?.length > 0
       ? data?.customColumn?.theFirst?.map((ItemFirst) => ItemFirst.key)
@@ -86,7 +90,7 @@ export default function DynamicTable({ data = defaultData, cId }) {
     );
   }, [selectedItems, data.values]);
   const [checkedItems, setCheckedItems] = useState([]);
-  console.log("checkedItems::::=>", checkedItems);
+
   return (
     <div className="py-5 bg-white m-5">
       <div className="p-5">
@@ -99,7 +103,7 @@ export default function DynamicTable({ data = defaultData, cId }) {
       <div className="bg-white sm:rounded-lg mt-5 relative max-h-[calc(100vh-200px)] overflow-x-auto overflow-y-scroll scroll-bar">
         <div className="flex items-center justify-between gap-4 h-12 !bg-white px-3 ">
           <Link
-            href={`/categories/add${cId ? `?c=${cId}` : ``}`}
+            href={`/categories/add${itemId ? `?c=${itemId}` : ``}`}
             className="inline mx-3"
           >
             <Plus className="inline" />
@@ -169,7 +173,7 @@ export default function DynamicTable({ data = defaultData, cId }) {
                             key={key}
                             className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
                           >
-                            <CustomComponent key={key} />
+                            <CustomComp onent key={key} />
                           </th>
                         );
                       }
@@ -183,6 +187,9 @@ export default function DynamicTable({ data = defaultData, cId }) {
                       );
                     })
                 : null}
+              {isOptions ? (
+                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"></th>
+              ) : null}
               {data?.customColumn?.theLast &&
               data?.customColumn?.theLast?.length > 0
                 ? data?.customColumn?.theLast
@@ -199,8 +206,11 @@ export default function DynamicTable({ data = defaultData, cId }) {
                     ))
                 : null}
             </tr>
+            {/* {isOptions && (
+              <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"></th>
+            )} */}
           </thead>
-          {console.log("selectedItemsValues body", selectedItemsValues)}
+
           <tbody className="divide-y divide-gray-200">
             {selectedItems.length
               ? selectedItemsValues?.map((item, idx) => (
@@ -253,37 +263,49 @@ export default function DynamicTable({ data = defaultData, cId }) {
                     {data?.customRow ? (
                       <data.customRow itemRow={item} />
                     ) : (
-                      selectedItems?.map((key, index) => {
-                        if (key && item[key]) {
-                          if (data?.customColumn?.[key]) {
-                            let CustomComponent = data.customColumn[key];
-                            return (
+                      <>
+                        {selectedItems?.map((key, index) => {
+                          if (key && item[key]) {
+                            if (data?.customColumn?.[key]) {
+                              let CustomComponent = data.customColumn[key];
+                              return (
+                                <td
+                                  key={`item-${key}-${item[key]}`}
+                                  className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
+                                >
+                                  <CustomComponent item={item[key]} />
+                                </td>
+                              );
+                            }
+                            return typeof item[key] === "object" ? (
                               <td
                                 key={`item-${key}-${item[key]}`}
                                 className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
                               >
-                                <CustomComponent item={item[key]} />
+                                {JSON.stringify(item[key])}
+                              </td>
+                            ) : (
+                              <td
+                                key={`item-${key}-${item[key]}`}
+                                className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
+                              >
+                                {item[key]}
                               </td>
                             );
                           }
-                          return typeof item[key] === "object" ? (
-                            <td
-                              key={`item-${key}-${item[key]}`}
-                              className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
-                            >
-                              {JSON.stringify(item[key])}
-                            </td>
-                          ) : (
-                            <td
-                              key={`item-${key}-${item[key]}`}
-                              className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
-                            >
-                              {item[key]}
-                            </td>
-                          );
-                        }
-                        return null;
-                      })
+                          return null;
+                        })}
+                        {isOptions ? (
+                          <td
+                            className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center `}
+                          >
+                            <div className="flex items-center">
+                              <Settings className="cursor-pointer mx-1" />
+                              <Trash2 className="cursor-pointer" />
+                            </div>
+                          </td>
+                        ) : null}
+                      </>
                     )}
                     {data?.customColumn?.theLast &&
                     data?.customColumn?.theLast?.length > 0

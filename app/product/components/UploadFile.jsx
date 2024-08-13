@@ -1,22 +1,23 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
-import { fetchImage, UploadFileToApi } from "../functions/fun";
+import { fetchImage, handleUploadMedia } from "../functions/fun";
 
-export default function UploadFile({
+function UploadFile({
   setUrlsFiles,
   setUrlsFilesSelected,
+  setUploadLength,
   notURL,
+  type,
+  setSubmitedData = () => {},
 }) {
   const InputRef = useRef();
-  const InputUrlsRef = useRef();
-  const progressBar = useRef();
-  const progressBarParent = useRef();
+
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [file, setFile] = useState();
   const [showModal, setShowModal] = useState(false);
@@ -52,32 +53,38 @@ export default function UploadFile({
     setSelectedFiles((prev) => [...files, ...prev]);
   };
 
-  const handleGetFromUrl = async () => {
-    const url = InputUrlsRef.current.value;
-    if (!url) return;
-    const file = await fetchImage(url);
-    if (file) {
-      setSelectedFiles((prev) => [file, ...prev]);
-    }
-  };
+  // const handleGetFromUrl = async () => {
+  //   const url = InputUrlsRef.current.value;
+  //   if (!url) return;
+  //   const file = await fetchImage(url);
+  //   if (file) {
+  //     setSelectedFiles((prev) => [file, ...prev]);
+  //   }
+  // };
 
   const handleUploadFile = () =>
-    UploadFileToApi(
+    handleUploadMedia(
+      undefined,
       selectedFiles,
-      progressBarParent,
-      progressBar,
+      setSelectedFiles,
       setUrlsFiles,
-      setUrlsFilesSelected
+      setUrlsFilesSelected,
+      setUploadLength,
+      undefined,
+      type,
+      setSubmitedData
     );
-  console.log("selectedFiles", selectedFiles);
   useEffect(() => {
     selectedFiles.length ? handleUploadFile() : null;
   }, [selectedFiles]);
+  useEffect(() => {}, []);
+
   console.log("selectedFiles:: ", selectedFiles);
   return (
     <>
-      <div className="max-w-screen relative my-other-step p-4 ">
-        <div
+      <p>Image</p>
+      <div className="relative  p-4 w-full  mt-4">
+        {/* <div
           className="bg-gray-200 rounded-full h-2 absolute z-10 inset-x-0 top-1 left-0  hidden"
           ref={progressBarParent}
         >
@@ -86,7 +93,7 @@ export default function UploadFile({
             ref={progressBar}
             style={{ width: "0%" }}
           ></div>
-        </div>
+        </div> */}
         {/* {selectedFiles.length ? (
           <Button
             type="button"
@@ -96,7 +103,7 @@ export default function UploadFile({
             Upload
           </Button>
         ) : null} */}
-        <label className=" relative flex justify-center items-center flex-col gap-6 w-full  h-44 px-4  transition bg-white border-2  border-dashed border-black rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+        <label className="relative flex justify-center items-center flex-col gap-6 w-full  h-44 px-4  transition bg-white border-2  border-dashed border-black rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
           <span className="flex justify-center items-center gap-3">
             <button
               type="button"
@@ -151,6 +158,7 @@ export default function UploadFile({
                 </div>
               </PopoverContent>
             </Popover> */}
+            {console.log("check type upload file=>> ", type)}
             <Popover className="[z-index:999]">
               {!notURL ? (
                 <PopoverTrigger className="text-gray-600 text-sm [z-index:999]">
@@ -181,7 +189,7 @@ export default function UploadFile({
             name="file_upload"
             ref={InputRef}
             accept="image/*,video/*"
-            multiple
+            multiple={type === "single" ? false : true}
             className="opacity-0 absolute top-0 left-0 z-[3] w-full h-full cursor-pointer "
             onChange={handleFileChange}
           />
@@ -198,3 +206,4 @@ export default function UploadFile({
     </>
   );
 }
+export default memo(UploadFile);
