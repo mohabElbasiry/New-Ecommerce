@@ -10,7 +10,7 @@ import { produce } from "immer";
 import { generateQualities } from "./productVariations/collapseView/functions/GenerateQualities";
 import { shapeData } from "./productVariations/collapseView/functions/datashape";
 import TourGuide from "@/components/GlobalUi/TourGuide";
- // import { List } from "./productImages/dragableImages";
+// import { List } from "./productImages/dragableImages";
 
 const List = [
   {
@@ -55,7 +55,7 @@ export const ProductAddMaim = () => {
   const [submitedData, setSubmitedData] = useState({
     ...ProductMainDefaultValue,
   });
-   const [data, setData] = useState({
+  const [data, setData] = useState({
     Data: [],
     BeforeFilterData: [],
   });
@@ -217,26 +217,26 @@ export const ProductAddMaim = () => {
   return (
     <>
       {/* <TourGuide stepsData={dataSteps} /> */}
-      <Headercomponent handleSubmit={handleSubmit}
-      hsitory={submitedData?.history}
+      <Headercomponent
+        handleSubmit={handleSubmit}
+        hsitory={submitedData?.history}
       >
-          <ProductDetailsComponent
-            submitedData={submitedData}
-            setSubmitedData={setSubmitedData}
-            formData={{
-              register,
-              reset,
-              setValue,
-              getValues,
-              errors,
-              setError,
-              clearErrors,
-              isSubmitting,
-            }}
-            data={data}
-            setData={setData}
-          />
-       
+        <ProductDetailsComponent
+          submitedData={submitedData}
+          setSubmitedData={setSubmitedData}
+          formData={{
+            register,
+            reset,
+            setValue,
+            getValues,
+            errors,
+            setError,
+            clearErrors,
+            isSubmitting,
+          }}
+          data={data}
+          setData={setData}
+        />
       </Headercomponent>
     </>
   );

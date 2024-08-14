@@ -73,8 +73,7 @@ export async function handleUploadMedia(
   setUrlsFilesSelected = () => {},
   setUploadLength = () => {},
   setOpen = () => {},
-  type = "",
-  setSubmitedData = () => {}
+  type = ""
 ) {
   if (uploadedFiles?.length || files?.length) {
     const formData = new FormData();
@@ -85,11 +84,9 @@ export async function handleUploadMedia(
       setOpen(false);
       setUploadLength(1);
     } else {
-      console.log("filessqwqewqewqewqe", files);
       files.forEach((file) => {
         formData.append("files", file);
       });
-
       setUploadLength(files.length);
     }
 
@@ -102,29 +99,16 @@ export async function handleUploadMedia(
         body: formData,
       });
       const data = await res.json();
-      console.log("uploaded multi images::: ", data);
+      console.log("Response of Data", data);
       if (type === "single") {
         setUrlsFiles(data);
         setOpen(false);
       } else {
-        if (setSubmitedData) {
-          setSubmitedData(
-            produce((draft) => {
-              draft.images = data;
-            })
-          );
-        } else {
-          setUrlsFiles((prev) => [...data, ...prev]);
-          setUrlsFilesSelected((prev) => [...data, ...prev]);
-        }
+        setUrlsFiles((prev) => [...data, ...prev]);
+        setUrlsFilesSelected((prev) => [...data, ...prev]);
+        setSelectedFiles((prev) => [...data, ...prev]);
       }
-
       setUploadLength(0);
-      if (type !== "single") {
-        setTimeout(() => {
-          setSelectedFiles([]);
-        }, 1000);
-      }
     } catch (er) {
       setUploadLength(0);
       console.log("er", er);

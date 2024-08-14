@@ -1,10 +1,8 @@
 "use client";
 import BasicData from "./BasicInfoData";
 import ProductVariation from "../productVariations";
- import ProductImages from "../productImages";
 import { useMemo } from "react";
 import { ProductSettings } from "./productSettings";
-
 export const ProductDetailsComponent = ({
   submitedData,
   setSubmitedData,
@@ -25,8 +23,8 @@ export const ProductDetailsComponent = ({
             inventory={submitedData?.Stock}
             formData={useMemo(() => formData, [submitedData?.productDetails])}
             setSubmitedData={setSubmitedData}
-         >
-          <ProductVariation
+          >
+            <ProductVariation
               productVarients={submitedData?.productvaritions}
               setVarients={setSubmitedData}
               data={data}
@@ -35,19 +33,15 @@ export const ProductDetailsComponent = ({
                 submitedData?.productvaritions?.referencevarients
               }
             />
-           </BasicData>
+          </BasicData>
         </div>
-
-        <div className="w-fit ">
+        <div className="w-fit">
           <div className="w-[100%]   p-2 flex flex-col gap-3 ">
-         
             <ProductSettings
-              settings={ submitedData?.settings}
+              settings={submitedData?.settings}
               setSubmitedData={setSubmitedData}
             />
-       
           </div>
-         
         </div>
       </div>
     </div>

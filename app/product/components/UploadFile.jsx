@@ -6,7 +6,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ReactPhotoEditor } from "@/components/ReactPhotoEditor";
-import { fetchImage, handleUploadMedia } from "../functions/fun";
+import { handleUploadMedia } from "../functions/fun";
 
 function UploadFile({
   setUrlsFiles,
@@ -21,12 +21,6 @@ function UploadFile({
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [file, setFile] = useState();
   const [showModal, setShowModal] = useState(false);
-
-  const showModalHandler = () => {
-    if (file) {
-      setShowModal(true);
-    }
-  };
 
   const hideModal = () => {
     setShowModal(false);
@@ -70,16 +64,12 @@ function UploadFile({
       setUrlsFiles,
       setUrlsFilesSelected,
       setUploadLength,
-      undefined,
-      type,
-      setSubmitedData
+      undefined
     );
   useEffect(() => {
     selectedFiles.length ? handleUploadFile() : null;
   }, [selectedFiles]);
-  useEffect(() => {}, []);
 
-  console.log("selectedFiles:: ", selectedFiles);
   return (
     <>
       <p>Image</p>
@@ -158,7 +148,7 @@ function UploadFile({
                 </div>
               </PopoverContent>
             </Popover> */}
-            {console.log("check type upload file=>> ", type)}
+
             <Popover className="[z-index:999]">
               {!notURL ? (
                 <PopoverTrigger className="text-gray-600 text-sm [z-index:999]">

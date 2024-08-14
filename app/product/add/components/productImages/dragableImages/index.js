@@ -1,11 +1,11 @@
-import UploadFilesModal from "../UploadFilesModal";
-import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
-import { imageBaseUrl } from "@/lib/baseUrl";
 import DragAndDropElelements from "@/components/GlobalUi/DragAndDropElements";
 import SortableItem from "./sortable";
 import { produce } from "immer";
 import { arrayMove } from "@dnd-kit/sortable";
 import MediaUploader from "@/components/MediaUploader/Index";
+import { useState } from "react";
+import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
+import ImageSpinner from "@/components/GlobalUi/ImageSpinner";
 export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -25,6 +25,19 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
       );
     }
   };
+  const handleAction = (action) => {
+    UpdateAction(action, setSubmitedData);
+  };
+
+  const handleSetImages = (uploadedImages) => {
+    handleAction({
+      type: "UpdatePropertyByNameAndValue",
+      payload: { name: "images", value: uploadedImages },
+      target: "productDetails",
+    });
+  };
+  const [urlsFiles, setUrlsFiles] = useState([]);
+  const [uploadLength, setUploadLength] = useState(0);
   return (
     <div className="App flex flex-wrap gap-4">
       <DragAndDropElelements
@@ -33,6 +46,9 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
         className="flex items-center  relative"
       >
         <>
+          {uploadLength > 0
+            ? [...Array(uploadLength)].map(() => <ImageSpinner />)
+            : null}
           {sortedList.map((item, idx) => {
             return (
               <SortableItem
@@ -57,8 +73,11 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
       <div>
         <MediaUploader
           type="multi"
-          selectedImages={sortedList}
+          urlsFiles={urlsFiles}
+          setUrlsFiles={setUrlsFiles}
           setSubmitedData={setSubmitedData}
+          setUploadLength={setUploadLength}
+          handleSetImages={handleSetImages}
         />
       </div>
     </div>
