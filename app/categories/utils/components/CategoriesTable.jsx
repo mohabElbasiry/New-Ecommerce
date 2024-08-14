@@ -64,14 +64,18 @@ export default function CategoriesTable({ categories, cId = "" }) {
     
   }
   return (
-    <div className="bg-white shadow w-[90%] mx-auto p-4 grid gap-6 rounded-md">
-      <div className="flex items-center gap-3">
+    <div className=" shadow w-[90%] mx-auto   grid gap-6 rounded-md">
+      {/* <div className="flex items-center gap-3">
         {cId ? (
           <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
         ) : null}
         <h3 className="text-lg">Categories</h3>
-      </div>
+      </div> */}
+
+      <div>
       <DynamicTable data={dataDynamic} itemId={cId} isOptions />
+
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MultiSelect from "../../app/product/[id]/components/Select";
 import { CircleDashed, Plus, Settings, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { TableHead } from "./tableHead";
 const defaultData = {
   Keys: ["Key1", "Key2", "Key3"],
   values: [
@@ -58,8 +59,7 @@ export default function DynamicTable({
     ...data?.Keys,
     ...ItemsLast,
   ]);
-  console.log("data.values", data.values);
-  const [selectedItemsValues, setSelectedItemsValues] = useState(
+   const [selectedItemsValues, setSelectedItemsValues] = useState(
     data.values.map((ItemValue) => {
       const filteredItemValue = {};
       Object.keys(ItemValue).forEach((ItemVal) => {
@@ -92,7 +92,7 @@ export default function DynamicTable({
   const [checkedItems, setCheckedItems] = useState([]);
 
   return (
-    <div className="py-5 bg-white m-5">
+    <div className="py-0   m-5">
       <div className="p-5">
         <MultiSelect
           values={[...ItemsFirst, ...data.Keys, ...ItemsLast]}
@@ -100,30 +100,17 @@ export default function DynamicTable({
           setSelectedItems={setSelectedItems}
         />
       </div>
-      <div className="bg-white sm:rounded-lg mt-5 relative max-h-[calc(100vh-200px)] overflow-x-auto overflow-y-scroll scroll-bar">
-        <div className="flex items-center justify-between gap-4 h-12 !bg-white px-3 ">
-          <Link
-            href={`/categories/add${itemId ? `?c=${itemId}` : ``}`}
-            className="inline mx-3"
-          >
-            <Plus className="inline" />
-          </Link>
-          {data.enableSelect && checkedItems?.length ? (
-            <button
-              onClick={() => setCheckedItems([])}
-              className="bg-[#C75050] text-white py-1 px-2 rounded-xl text-sm"
-            >
-              Delete
-            </button>
-          ) : null}
-        </div>
+      <div className="   mt-5 relative max-h-[calc(100vh-200px)]
+       overflow-x-auto overflow-y-scroll scroll-bar">
+        <TableHead data={data} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
         <table className="w-full text-sm text-left table-auto">
-          <thead className="ltr:text-left rtl:text-right bg-[#E3EEEF] h-[70px]">
+          <thead className="ltr:text-left rtl:text-right bg-[#E6E6E6] h-[60px]">
             <tr className="ltr:text-left rtl:text-right">
               {data?.enableSelect ? (
-                <th
-                  // className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 border !border-[red] flex items-center gap-4"
-                  className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 flex items-center mt-4 gap-3"
+                  <th
+                   
+                  className="whitespace-nowrap   
+                  font-medium text-gray-900 text-center  w-[50px]"
                 >
                   <input
                     className="accent-primary h-5 w-5"
@@ -152,7 +139,9 @@ export default function DynamicTable({
                     ?.map((ItemFirst, index) => (
                       <th
                         key={ItemFirst.key + index}
-                        className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
+                        className="whitespace-nowrap px-4 
+                        font-medium text-gray-900 text-center
+                         border-r border-r-black "
                       >
                         {ItemFirst.name}
                       </th>
@@ -171,7 +160,9 @@ export default function DynamicTable({
                         return (
                           <th
                             key={key}
-                            className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
+                            className="whitespace-nowrap px-4 
+                          border-r border-r-[#E6E6E6]
+                            font-medium text-gray-900 text-center"
                           >
                             <CustomComp onent key={key} />
                           </th>
@@ -180,16 +171,21 @@ export default function DynamicTable({
                       return (
                         <th
                           key={key}
-                          className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
+                          className="whitespace-nowrap px-4 
+                        border-r  border-r-[#E6E6E6]  font-medium text-gray-900 text-center"
                         >
                           {key}
                         </th>
                       );
                     })
                 : null}
-              {isOptions ? (
-                <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"></th>
+              {isOptions&&data?.customColumn?.theLast ? (
+                <th className="whitespace-nowrap px-4   
+                font-medium text-gray-900 text-center border-r border-r-[#E6E6E6]"></th>
               ) : null}
+
+
+
               {data?.customColumn?.theLast &&
               data?.customColumn?.theLast?.length > 0
                 ? data?.customColumn?.theLast

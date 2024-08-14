@@ -1,11 +1,12 @@
-import { MenuItem } from './menuItem';
+import { MenuItem } from "./menuItem";
 
 export const MenuList = ({ menu, open, cn }) => {
+  console.log(menu,'menu');
   return (
     <>
       <ul className="mt-2 space-y-1 px-5 pl-[3rem]">
         {menu?.map((submenu, index) => {
-          return (
+            return (
             <>
               {submenu?.subMenu?.length ? (
                 <details
@@ -19,11 +20,11 @@ export const MenuList = ({ menu, open, cn }) => {
                     text-white"
                       >
                         {submenu.Icon}
-                      </div>{' '}
+                      </div>{" "}
                       <p
                         className={cn(
-                          open ? 'block' : 'hidden',
-                          'transition-all duration-700 delay-1000   truncate ...',
+                          open ? "block" : "hidden",
+                          "transition-all duration-700 delay-1000   truncate ..."
                         )}
                       >
                         {submenu.title}
@@ -53,7 +54,7 @@ export const MenuList = ({ menu, open, cn }) => {
                   <MenuList cn={cn} menu={submenu?.subMenu} open={open} />
                 </details>
               ) : (
-                <MenuItem menuItem={submenu} cn={cn} open={open} />
+                <MenuItem menuItem={submenu} cn={cn}  index={index} open={open} />
               )}
             </>
           );

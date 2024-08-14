@@ -1,12 +1,12 @@
 import Link from "next/link"
 
-export const MenuItem=({open,menuItem,cn})=>{
+export const MenuItem=({open,menuItem,cn,index})=>{
 
 
 
     return( 
  
-    <li  className={`${open&&'itemLi'}`} key={menuItem.title}>
+    <li  className={`${open &&'itemLi'}`} key={menuItem.title}>
         <Link
           href={menuItem.href}
           className="flex gap-2 items-center menu_side rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
