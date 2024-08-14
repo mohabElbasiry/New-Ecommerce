@@ -130,7 +130,8 @@ export const EditMoreThanOneValues = ({ value, setVarients, setEditValue }) => {
             // }}
             inputCss="w-fit text-sm !px-1 shadow 
               -[#ddd]   flex justify-center  
-           shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
+           shadow bg-white max-w-[300px] 
+             h-[30px] !rounded-[12px]
          !p-5  !shadow-none
            "
             inputType="number"
@@ -157,7 +158,7 @@ export const EditMoreThanOneValues = ({ value, setVarients, setEditValue }) => {
             inputCss="w-fit text-sm !px-1 shadow 
               bg-[#ddd]   flex justify-center  
            shadow bg-white max-w-[300px]   h-[30px] !rounded-[12px]
-         !p-5  !shadow-none  outline-none !border-none !focus:outline-none 
+         !p-5  !shadow-none         !focus:    
            "
           />
         </div>

@@ -6,6 +6,7 @@ import { debounce, isEqual, property } from "lodash";
 import { produce } from "immer";
 import { UpdateAction } from "../../RootFunction/middleWare";
 import { DebounceHook } from "../../../hooks/DebounceHook";
+import { InputWithLabelComponent } from "@/components/inputcomponent";
 
 const VarientKey = ({
   varientsNumbers = 0,
@@ -85,17 +86,17 @@ const VarientKey = ({
         </div>
         <div className="flex gap-1 items-center">
           <TooltipF text={`This Will Apply To All ${varientsNumbers} Varients`}>
-            <div className="border flex items-center pl-1 rounded-xl">
-              <p>EGP</p>
-              <input
+            <div className=" ">
+               <InputWithLabelComponent
+               Input
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
+                price
                 defaultValue={maxPrice}
-                type="text"
-                className="text-black max-w-[180px] 
-                 h-[38px] rounded-xl p-3  
-                ml-1 outline-[#ddd]"
+                type="text" 
+                inputCss={'text-center w-[140px]'}
+               
                 onChange={debounce((e) => {
                   if (!isNaN(e?.target?.value)) {
                     handleAction({
@@ -112,14 +113,15 @@ const VarientKey = ({
               />
             </div>
           </TooltipF>
-          {console.log(item, "TotalQuantityTotalQuantity")}
-          <TooltipF text={"Change Varients"}>
-            <input
+           <TooltipF text={"Change Varients"}>
+            <InputWithLabelComponent
+            Input
               type="number"
               value={TotalQuantity}
               onClick={(e) => {
                 e.stopPropagation();
               }}
+              inputCss="!w-[140px] text-center !bg-[#eee] !border-none"
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
                   handleAction({
@@ -136,10 +138,7 @@ const VarientKey = ({
                 return;
               }}
               disabled={item?.valuesL > 1}
-              className={`p-3 ${
-                item?.valuesL > 1 ? "bg-[#eee]" : ""
-              } border border-md  rounded-md py-2 text-center
-             max-w-[150px] mr-6`}
+           
             />
           </TooltipF>
         </div>

@@ -9,6 +9,7 @@ import { produce } from "immer";
 import { debounce, property } from "lodash";
 import { UpdateAction } from "../../RootFunction/middleWare";
 import { DebounceHook } from "../../../hooks/DebounceHook";
+import { InputWithLabelComponent } from "@/components/inputcomponent";
 
 export const VarientContent = ({
   setVarients,
@@ -62,13 +63,12 @@ export const VarientContent = ({
           return updatedArray.result;
         } else {
           const itemkey = checkedArray.find((item) => item?.key === parentname);
-
-          if (itemkey && !itemkey?.SelectedItems.length) {
+           if (itemkey && !itemkey?.SelectedItems.length) {
             const FilterItemKeyPrev = prev?.filter(
               (item) => item?.key !== parentname
             );
 
-            return FilterItemKeyPrev;
+            return FilterItemKeyPrev.flatMap(item=>item);
           } else {
             const FilterItemKeyPrev = prev?.map((item) => {
               if (item?.key === parentname) {
@@ -84,8 +84,8 @@ export const VarientContent = ({
               }
               return item;
             });
-
-            return FilterItemKeyPrev;
+              console.log(FilterItemKeyPrev,'FilterItemKeyPrev');
+            return FilterItemKeyPrev.flatMap(item=>item);
           }
         }
       });
@@ -95,10 +95,10 @@ export const VarientContent = ({
 
   return (
     <div
-      className={`flex items-center justify-between pl-3 py-3 
-border-[#ddd]  mt-1 ${
-        checked ? "bg-[#eeeeee9d]" : "bg-[white]"
-      } rounded-xl cursor-pointer `}
+      className={`flex items-center justify-between pl-3 h-[50px] py-3 
+border-[#333]  mt-1 ${
+        checked ? "bg-[#eee]" : "bg-[white]"
+      } rounded-sm cursor-pointer `}
       onClick={() =>
         setEditValue(
           produce((draft) => {
@@ -122,16 +122,18 @@ border-[#ddd]  mt-1 ${
       </div>
       <div className="flex gap-1 items-center  mx-2 ">
         <TooltipF text={`Change price`}>
-          <div className="border flex items-center text-sm pl-1 rounded-xl">
-            <p>EGP</p>
-            <input
+          <div className="  flex items-center text-sm pl-1 rounded-xl mx-2">
+             <InputWithLabelComponent
+            inputCss="!w-[130px] text-center"
+            Input
               onClick={(e) => {
                 e.stopPropagation();
               }}
               value={itemValue?.price}
               name={itemValue?.itemIndex}
               type="text"
-              className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
+              price
+            
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
                   handleAction({
@@ -153,15 +155,17 @@ border-[#ddd]  mt-1 ${
         </TooltipF>
 
         <TooltipF text={`Change Quantity`}>
-          <div className="border flex items-center pl-1 rounded-xl">
-            <input
+          <div className="     border-none ">
+            <InputWithLabelComponent
+            inputCss="!w-[130px] text-center"
+            Input
               onClick={(e) => {
                 e.stopPropagation();
               }}
               value={itemValue?.quantity}
               name={itemValue?.itemIndex}
               type="text"
-              className="text-black max-w-[180px]  h-[38px] rounded-xl p-3   ml-1  outline-[#ddd]"
+                
               onChange={(e) => {
                 if (!isNaN(e?.target?.value)) {
                   handleAction({

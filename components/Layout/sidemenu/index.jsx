@@ -38,7 +38,7 @@ const [open, setOpen] = useState(true)
     setOpen((prev=>!prev))
   }
   return (
-    <div className={cn( open?"w-80":"w-20"   ,"transition-all duration-700    flex h-screen flex-col  border-r justify-between bg-[#ffffff] sticky top-0")}>
+    <div className={cn( open?"w-80":"w-20"   ,"transition-all duration-700 flex h-screen flex-col   justify-between   sticky top-0")}>
     <div className=" py-6 relative">
     <button type="button" onClick={toggleMenu} className="absolute text-white top-1/4 -right-4 w-8 h-8 flex justify-center items-center  bg-gray-500 rounded-full">
      {open? <ChevronsLeft />:<ChevronsRight />}
@@ -53,7 +53,8 @@ const [open, setOpen] = useState(true)
         {menuData.map((menuItem, index) => (
           <li key={index}>
             {menuItem.subMenu ? (
-              <details className="group [&_summary::-webkit-details-marker]:hidden transition-all duration-700">
+              <details className="group [&_summary::-webkit-details-marker]:hidden
+               transition-all duration-700">
                 <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                   <div className="text-sm font-medium flex items-center gap-2 "><div className="w-10 h-10 bg-gray-700 rounded-full flex justify-center items-center text-white"> {menuItem.Icon}</div> <p  className={cn( open?"block":"hidden"   ,"transition-all duration-700 delay-1000   truncate ...")} >{menuItem.title}</p></div>
                   <div className="shrink-0 transition duration-300 group-open:-rotate-180">

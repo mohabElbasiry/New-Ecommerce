@@ -31,13 +31,19 @@ export const ProductMainDefaultValue = {
     description_ar: "",
     description_en: "",
     images: [],
-    Stock: { repositry: {}, quantity: "", sku: "", barcode: "" },
     price: { mainPrice: "", costPerItem: "", DiscountPrice: "" },
   },
-  seo: { tags: [], title: "", description: "" },
+  Stock: {trackQuantity:true, locations:[],sku: "", barcode: "" ,continue_out_stock:false},
+  settings:{
+    tags: [],
+    statues:'active',
+    publishTime:"",
+    AllowRating:false,
+    Featured:false
+  },
+  seo: {   title: "", description: "" },
   status: "",
-  publishTime: "",
-  // setSubmitedData: () => {},
+   // setSubmitedData: () => {},
   // submitedData: {},
   history: [],
 };

@@ -1,10 +1,12 @@
 import { TooltipF } from "@/components/ToolTipCostom";
 import React from "react";
+import { ProductMangeBar } from "./bottombar";
 
 export default function Headercomponent({
   handleSubmit,
   children,
-  submittedData,
+   hsitory,
+   setSubmitedData
 }) {
   const SubmittingData = (data) => {
     console.log(data, submittedData, "sdubmittied Dataffffffffffffffffffff");
@@ -20,21 +22,10 @@ export default function Headercomponent({
           </p>
         </div>
 
-        <div className=" sticky top-0  flex justify-end ">
-          <div className="flex w-full">
-            <div className="  flex  gap-5">
-              <img src={"/left.svg"} className="w-[20px]      " />
-              <img src={"/right.svg"} className="w-[20px]      " />
-            </div>
-            <button
-              className="
-             p-1 w-[100px] ml-auto text-black rounded-md"
-              type="submit"
-            >
-              Save
-            </button>
-          </div>
-        </div>
+        <ProductMangeBar
+           history={hsitory}
+          setSubmitedData={setSubmitedData}
+        />
       </div>
       {children}
     </form>

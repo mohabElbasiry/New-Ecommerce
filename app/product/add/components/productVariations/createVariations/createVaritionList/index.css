@@ -1,0 +1,13 @@
+.flexbox-fix{
+    flex-wrap: wrap;
+}
+
+.flexbox-fix:nth-child(0){
+    width:50% !important
+
+}
+.sketch-picker.colorPicker {
+    padding: 5px !important;
+    border: 1px solid #fff !important;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

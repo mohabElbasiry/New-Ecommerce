@@ -1,7 +1,7 @@
 import { Children, cloneElement, useState } from "react"
 
 export const LanguageSelect=({children})=>{
-    const [lang,setLang]=useState('ar')
+    const [lang,setLang]=useState('en')
 
     const childrenWithProps =  Children.map(children, (child) =>
          cloneElement(child, {  lang })

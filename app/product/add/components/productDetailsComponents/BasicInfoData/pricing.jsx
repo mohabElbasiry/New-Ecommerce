@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useRef } from "react";
 import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
 import { DebounceHook } from "../../hooks/DebounceHook";
+import { InputWithLabelComponent } from "@/components/inputcomponent";
 
  function Pricing({ setSubmitedData, pricingData }) {
   console.log('object');
@@ -56,39 +57,41 @@ import { DebounceHook } from "../../hooks/DebounceHook";
   return (
     <>
       {" "}
-      <h3 className="font-medium ">Pricing</h3>
-      <div className=" bg-white rounded-lg border-[0.5px] shadow p-5">
-        <div className="flex gap-8 mt-5  flex-col">
+      <div className=" bg-white rounded-lg border-[0.5px] shadow p-2 mt-2">
+        <div className="flex gap-8    flex-col">
           <div className="flex gap-5  flex-wrap">
             <div className="grid gap-2 min-w-52 w-[30%]">
-              <h4 className="text-gray-500">Price</h4>
-              <input
-                className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
+               <InputWithLabelComponent
+              
+                label="Price"
                 type="text"
                 name="price"
                 onChange={(e) => handleChange(e)}
                 value={pricingData.price}
                 defaultValue={pricingData.price}
+                Input
               />
             </div>
             <div className="grid gap-2 min-w-52 w-[30%]">
-              <h4 className="text-gray-500">Compare-at price</h4>
-              <input
-                className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
+               <InputWithLabelComponent
+              label="Compare-at price"
+                  
                 type="text"
                 name="compare_to_price"
                 onChange={(e) => handleChange(e)}
                 value={pricingData.compare_to_price}
                 defaultValue={pricingData.compare_to_price}
+                Input
               />
             </div>
           </div>
           <div className="flex gap-5  flex-wrap">
             <div className="grid gap-2 min-w-52 w-[30%]">
-              <h4 className="text-gray-500">Cost per item</h4>
-              <input
-                className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
+               <InputWithLabelComponent
+               
                 type="text"
+                label="Cost per item"
+                Input
                 value={pricingData?.Cost_Per_Item}
                 name="Cost_Per_Item"
                 onChange={(e) => handleChange(e)}
@@ -96,10 +99,10 @@ import { DebounceHook } from "../../hooks/DebounceHook";
               />
             </div>
             <div className="grid gap-2 min-w-52 w-[30%]">
-              <h4 className="text-gray-500">profit</h4>
-              <input
-                className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
-                type="text"
+               <InputWithLabelComponent
+                  label="profit"
+                 Input
+                 type="text"
                 disabled
                 value={pricingData.profit ? `${pricingData?.profit}` : "00.00"}
                 defaultValue={
@@ -108,10 +111,11 @@ import { DebounceHook } from "../../hooks/DebounceHook";
               />
             </div>
             <div className="grid gap-2 min-w-52 w-[30%]">
-              <h4 className="text-gray-500">Margin</h4>
-              <input
-                className="w-full p-1.5 text-[#333] appearance-none px-3 focus:outline-none border rounded-md"
-                type="text"
+               <InputWithLabelComponent
+                label="Margin"
+
+                Input
+                 type="text"
                 disabled
                 value={
                   pricingData.margin ? `${pricingData?.margin} %` : "00.00"

@@ -24,12 +24,10 @@ const FilterHeader = ({
   }, [Filters]);
   return (
     <>
-      <div className="header p-3 flex justify-between items-center">
+      <div className="header p-3 flex justify-between items-center  mb-1">
         {varitions?.length > 1 ? (
           <GroupedView varitions={varitions} setFilters={setFilters} />
-        ) : (
-          <div></div>
-        )}
+        ) : (<></>        )}
         <div className="GroupBy flex items-center  text-sm gap-3">
           <SortBy setFilters={setFilters} />
         </div>
@@ -53,18 +51,9 @@ const FilterHeader = ({
           FilterValues={Filters?.FilterValues}
         />
       </div>
-      {checkedArray?.[0]?.SelectedItems?.length ? (
+      {checkedArray?.length ? (
         <div className="batchedit flex items-center   w-full justify-between">
           <div className="flex items-center gap-2  text-sm ">
-            {/* <input
-              id="Selected"
-              className="text-center
-          w-[30px]
-          flex justify-start"
-              type="checkbox"
-              checked={checkedArray?.map((item) => item?.SelectedItems).length}
-            /> */}
-
             <CheckedComponent
               checkedArray={checkedArray}
               functionToExecute={(checkedArray) =>
@@ -74,12 +63,22 @@ const FilterHeader = ({
               }
               onChange={(e) => {
                 setChecked((prev = []) => {
-                  return data?.map((item) => {
-                    return {
-                      key: item?.key,
-                      SelectedItems: item?.values?.map((i, _idx) => _idx),
-                    };
-                  });
+  
+                  if(data?.flatMap(item=>item.values).length!==checkedArray.flatMap(item=>item.SelectedItems).length){
+            
+                    return data?.map((item) => {
+                         return {
+       key: item?.key,
+      SelectedItems: item?.values?.map((i, _idx) => _idx),
+    };
+  });
+
+ }
+
+     if(prev.flatMap(item=>item.SelectedItems).length){
+    return []
+              }
+
                 });
               }}
             />
@@ -100,15 +99,10 @@ const FilterHeader = ({
           </div>
         </div>
       ) : (
-        <div className=" grid grid-cols-4 justify-between">
-          <input
-            className="text-center
-          w-[20px]
-          flex justify-start"
-            type="checkbox"
-            checked={
-              checkedArray?.flatMap((item) => item)?.length ? true : false
-            }
+        <div className=" grid grid-cols-2 justify-between border-b border-b-[#ddd] pb-2">
+      <div className="flex justify-evenly">
+      <CheckedComponent
+      functionToExecute={(checkedArray)=>checkedArray?.flatMap((item) => item)?.length ? true : false  }
             onChange={(e) => {
               setChecked((prev = []) => {
                 const Allitems = data?.map((item) => {
@@ -117,26 +111,19 @@ const FilterHeader = ({
                     SelectedItems: item?.values?.map((i, _idx) => _idx),
                   };
                 });
+                 ;
+                return Allitems;
 
-                const isEqualIndex =
-                  Allitems?.flatMap((item) => item?.SelectedItems).length ===
-                  data?.flatMap((item) => item?.values?.map((i, _idx) => _idx))
-                    .length;
-
-                if (e.target.checked) {
-                  if (!isEqualIndex) {
-                    return Allitems;
-                  }
-                }
-                if (!e.target.checked ) {
-                  return Allitems;
-                }
               });
             }}
           />
-          <p className="text-center flex justify-start w-[20.3%]">Varients</p>
-          <p className="text-center flex justify-start w-[20.3%]">Price</p>
-          <p className="text-center flex justify-start w-[20.3%]">Quantity</p>
+          <p className="text-center flex justify-start w-[20.3%] mx-auto ">Varients</p>
+  
+      </div>
+  <div className="flex items-center  justify-around  ">
+  <p className="  text-start">Price</p>
+  <p className="text-center flex justify-start w-[20.3%]">Quantity</p>
+  </div>
         </div>
       )}
     </>

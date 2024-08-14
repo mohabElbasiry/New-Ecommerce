@@ -1,8 +1,9 @@
 .jodit-container:not(.jodit_inline) {
     background-color: #f5f5f6 !important;
-    border: 1px solid #eee !important;
+    border: 1px solid #D4D4D4    !important;
     border-radius: 15px !important;
     overflow: hidden !important;
+
 }
 
 .jodit-toolbar__box:not(:empty) {

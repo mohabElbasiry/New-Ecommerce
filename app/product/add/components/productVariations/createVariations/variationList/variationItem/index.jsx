@@ -13,7 +13,7 @@ export const VariationItem = ({
   const handleAction = (action) => {
     UpdateAction(action, setVarients);
   };
-  const dragControls = useDragControls();
+  const dragControls  = useDragControls();
 
   return (
     <>

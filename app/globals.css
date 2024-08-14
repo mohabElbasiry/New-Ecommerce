@@ -76,9 +76,9 @@
 }
 
 .parent-div:focus-within {
-  border-color: #14151662;
-  border-width: 3px;
-}
+  border-color: #00000062;
+  border-width: 1px;
+ }
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -110,6 +110,7 @@ body {
 
 .box {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 2px 4px 0px;
+  /* box-shadow:1px 1px 2px 0px #0000001A; */
   background: #fffdfd;
   border-radius: 10px;
 }

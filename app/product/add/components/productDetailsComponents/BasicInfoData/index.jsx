@@ -7,6 +7,7 @@ import { Description } from "./description";
 import ProductTitle from "./Title";
 import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
 import ProductImages from "../../productImages";
+import  Inventory  from "./Inventory";
 const BasicData = ({
   submitedData = {},
   formData = {},
@@ -14,7 +15,8 @@ const BasicData = ({
   pricingData = {},
   shippingData = {},
   seoData = {},
-  images = [],
+  images=[],
+  inventory,children,
 }) => {
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
@@ -34,9 +36,8 @@ const BasicData = ({
   return (
     <div className="gap-5  rounded-lg  flex-col w-full">
       <div className="box p-3 mb-3">
-        <ProductImages setSubmitedData={setSubmitedData} images={images} />
-      </div>
-      <div className="box p-2">
+      <div className="  p-2">
+        
         <div className="flex flex-col gap-2 w-full">
           <LanguageSelect>
             <ProductTitle
@@ -52,13 +53,26 @@ const BasicData = ({
               handleAction={handleAction}
             />
           </LanguageSelect>
+
+      <ProductImages
+              setSubmitedData={setSubmitedData}
+              images={ images}
+            />
+      </div>
         </div>
       </div>
+      <Inventory  
+      inventory={inventory}
+      setSubmitedData={setSubmitedData}/>
       <Pricing pricingData={pricingData} setSubmitedData={setSubmitedData} />
       <ShippingInfo
         setSubmitedData={setSubmitedData}
         shippingData={shippingData}
       />
+  {
+    children
+  }
+
       <Seo seoData={seoData} setSubmitedData={setSubmitedData} />
     </div>
   );
