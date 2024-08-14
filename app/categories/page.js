@@ -1,5 +1,4 @@
 import { getOperationServer } from "@/lib/apiUtilsServer";
-// import CategoriesTree from "./utils/components/categoriesTree/Index";
 import CategoriesTable from "./utils/components/CategoriesTable";
 
 const page = async ({ searchParams }) => {

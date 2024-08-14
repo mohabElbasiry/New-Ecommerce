@@ -1,10 +1,11 @@
 "use client";
 import DynamicTable from "@/components/GlobalUi/DynamicTable";
 import { getOperationClient } from "@/lib/apiUtilsClient";
-import { ArrowLeft } from "lucide-react";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { handleDeleteCategory } from "../functions";
+import { toastMessagener } from "@/components/Layout/RootSignal";
 export default function CategoriesTable({ categories, cId = "" }) {
   const data = (payload) => ({
     Keys: ["fullName", "createdAt"],
@@ -60,22 +61,40 @@ export default function CategoriesTable({ categories, cId = "" }) {
   });
   const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
+  const deleteCategory = (itemId) => { 
+    handleDeleteCategory(itemId).then(res => {
+      console.log('resss of deleteCategory haza:',res) 
+      if (res.status === "success") { 
+        toastMessagener.success(res?.messages[0]?.message_en)
+        const filtered = categories.filter(c => c._id !== itemId )
+        setDataDynamic(data(filtered)) 
+      } else { 
+
+      }
+    })
+  }
+  
   return (
-    <div className="bg-white shadow w-[90%] mx-auto p-4 grid gap-6 rounded-md">
-      <div className="flex items-center gap-3">
+    <div className=" shadow w-[90%] mx-auto   grid gap-6 rounded-md">
+      {/* <div className="flex items-center gap-3">
         {cId ? (
           <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
         ) : null}
         <h3 className="text-lg">Categories</h3>
-      </div>
+      </div> */}
+
+      <div>
       <DynamicTable
         data={dataDynamic}
         itemId={cId}
         isOptions={{
           edit: (itemId) => router.push(`/categories/edit_c=${itemId}`),
-          delete: (itemId) => {},
+          delete: async (itemId) => deleteCategory(itemId),
         }}
+        
       />
+
+      </div>
     </div>
   );
 }

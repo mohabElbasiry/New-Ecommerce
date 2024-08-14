@@ -95,7 +95,7 @@ const VarientKey = ({
                 price
                 defaultValue={maxPrice}
                 type="text" 
-                inputCss={'text-center w-[140px]'}
+                className={'text-center w-[140px]'}
                
                 onChange={debounce((e) => {
                   if (!isNaN(e?.target?.value)) {

@@ -12,7 +12,20 @@ export async function handleCreateCategory(bodyData) {
       },
     },
     revalidation: {
-      tag: "Category",
+      tag: ["Category"],
     },
   });
 }
+
+export async function handleDeleteCategory  (itemId)  { 
+  return await serversOperations({endpoint:`/categories/${itemId}`, payload : {
+    method : 'DELETE',
+    headers : {
+      token : true
+    }
+  },
+  revalidation: {
+    tag: ["Category"],
+  },
+})
+}  
