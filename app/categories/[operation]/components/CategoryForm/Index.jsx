@@ -6,7 +6,9 @@ import CheckActiveAndImage from "./CheckActiveAndImage";
 import { handleCreateCategory } from "@/app/categories/utils/functions";
 import { toastMessagener } from "@/components/Layout/RootSignal";
 import { useRouter } from "next/navigation";
+import { validationData } from "../../functions";
 export default function CategoryForm({ parentId }) {
+  const [urlsFiles, setUrlsFiles] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
     name_ar: "",
@@ -26,13 +28,18 @@ export default function CategoryForm({ parentId }) {
     });
   };
   const router = useRouter();
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState();
+  console.log("formErrors", formErrors);
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-
+    const errors = validationData(formData);
+    if (Object.keys(errors).length) {
+      setLoading(false);
+      return setFormErrors(errors);
+    }
     let payload = { ...formData };
     payload["name"] = { en: formData.name_en, ar: formData.name_ar };
     payload["description"] = {
@@ -42,22 +49,25 @@ export default function CategoryForm({ parentId }) {
     if (parentId) {
       payload.parentId = parentId;
     }
+    if (urlsFiles?.length) {
+      payload.image = urlsFiles?.[0]?.filename || "";
+    }
     ["name_en", "name_ar", "description_en", "description_ar"].forEach(
       (delKey) => delete payload[delKey]
     );
     await handleCreateCategory(payload).then((res) => {
+      console.log("[ressssssssss OMNAR", res);
       setLoading(false);
       if (res.status === "success") {
         toastMessagener.success(res.messages[0].message_en);
+        resetForm();
         router.push(`/categories`);
-        reseting();
       } else {
         toastMessagener.error(
           res.messages.at(res.messages.length - 1).message_en
         );
       }
     });
-    resetForm();
   };
   const abilitySubmit = useMemo(
     () =>
@@ -66,7 +76,6 @@ export default function CategoryForm({ parentId }) {
         .some((item) => item?.length),
     [formData]
   );
-
   return (
     <>
       <CategoryBreadCrump />
@@ -80,16 +89,19 @@ export default function CategoryForm({ parentId }) {
               description_ar: formData.description_ar,
             }}
             setFormData={setFormData}
+            formErrors={formErrors}
+            setFormErrors = {setFormErrors}
           />
           <CheckActiveAndImage
             formData={{
               isActive: formData.isActive,
               image: formData.image,
             }}
+            urlsFiles={urlsFiles}
+            setUrlsFiles={setUrlsFiles}
             setFormData={setFormData}
           />
         </div>
-
         <div className="flex justify-end mt-4">
           <button
             type="submit"

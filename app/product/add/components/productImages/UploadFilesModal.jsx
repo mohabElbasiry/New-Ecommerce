@@ -2,24 +2,22 @@ import UploadFile from "@/app/product/components/UploadFile";
 import { CustomDialoge } from "@/components/Modal";
 import Image from "next/image";
 import { memo, useEffect, useState } from "react";
-import { UpdateAction } from "../productVariations/RootFunction/middleWare";
 import { getOperationClient } from "@/lib/apiUtilsClient";
 import { imageBaseUrl } from "@/lib/baseUrl";
 import ImageSpinner from "@/components/GlobalUi/ImageSpinner";
 
 function UploadFilesModal({
   buttonContext,
-  selectedImages,
+ 
   setSubmitedData,
   buttonCss,
+  handleSetImages,
+  urlsFilesSelected,
+  setUrlsFilesSelected,
+  itemUploadedImages,
 }) {
-  const handleAction = (action) => {
-    UpdateAction(action, setSubmitedData);
-  };
   const [UrlsFiles, setUrlsFiles] = useState([]);
-  const [UrlsFilesSelected, setUrlsFilesSelected] = useState([]);
   const [uploadLength, setUploadLength] = useState(0);
-  console.log("UrlsFiles after=>> ", UrlsFiles);
   const [open, setOpen] = useState(false);
   useEffect(() => {
     const fetchAllFiles = async () => {
@@ -35,23 +33,23 @@ function UploadFilesModal({
           setUrlsFiles(data?.data);
         }
       } else {
-        // setUrlsFiles(data?.data || []);
+        setUrlsFiles([]);
       }
     };
     fetchAllFiles();
-    if (open && selectedImages?.length) {
-      setUrlsFilesSelected(selectedImages);
+    if (open && itemUploadedImages?.length) {
+      setUrlsFilesSelected(itemUploadedImages);
     }
   }, [open]);
   const handleSelectImage = (fileUrl) => {
-    const existed = UrlsFilesSelected?.find((sel) => sel._id === fileUrl._id);
+    const existed = urlsFilesSelected?.find((sel) => sel._id === fileUrl._id);
     !existed
       ? setUrlsFilesSelected((prev) => [fileUrl, ...prev])
       : setUrlsFilesSelected((prev) =>
           prev.filter((url) => url._id != fileUrl._id)
         );
   };
-  console.log("UrlsFiles", UrlsFiles);
+
   return (
     <>
       <button
@@ -89,7 +87,7 @@ function UploadFilesModal({
                       className="absolute top-2 left-3 z-10 cursor-pointer"
                       type="checkbox"
                       checked={
-                        UrlsFilesSelected?.find(
+                        urlsFilesSelected?.find(
                           (sel) => sel._id === fileUrl._id
                         )
                           ? true
@@ -119,16 +117,13 @@ function UploadFilesModal({
             <button
               className="text-white font-medium bg-blue-500 text-sm py-2 px-3 rounded-md focus:outline-none hover:bg-blue-400"
               onClick={() => {
-                const selectdItems = UrlsFilesSelected.map((item, idx) => ({
-                  ...item,
-                  idx,
-                  order: idx,
-                }));
-                handleAction({
-                  type: "UpdatePropertyByNameAndValue",
-                  payload: { name: "images", value: selectdItems },
-                  target: "productDetails",
-                });
+                handleSetImages(
+                  urlsFilesSelected.map((item, idx) => ({
+                    ...item,
+                    idx,
+                    order: idx,
+                  }))
+                );
                 setOpen(!open);
               }}
             >

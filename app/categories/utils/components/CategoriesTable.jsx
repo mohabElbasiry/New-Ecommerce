@@ -60,9 +60,6 @@ export default function CategoriesTable({ categories, cId = "" }) {
   });
   const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
-  const handleDeleteItem = (itemId) => { 
-    
-  }
   return (
     <div className="bg-white shadow w-[90%] mx-auto p-4 grid gap-6 rounded-md">
       <div className="flex items-center gap-3">
@@ -71,7 +68,14 @@ export default function CategoriesTable({ categories, cId = "" }) {
         ) : null}
         <h3 className="text-lg">Categories</h3>
       </div>
-      <DynamicTable data={dataDynamic} itemId={cId} isOptions />
+      <DynamicTable
+        data={dataDynamic}
+        itemId={cId}
+        isOptions={{
+          edit: (itemId) => router.push(`/categories/edit_c=${itemId}`),
+          delete: (itemId) => {},
+        }}
+      />
     </div>
   );
 }

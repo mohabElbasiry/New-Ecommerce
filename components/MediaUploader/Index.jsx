@@ -6,20 +6,16 @@ import { useEffect } from "react";
 export default function MediaUploader({
   type,
   notURL = false,
-  sortedList = [],
-  selectedImages = [],
   urlsFiles = [],
+  itemUploadedImages = [],
   setUrlsFiles = () => {},
-  setUrlsFilesSelected = () => {},
-  setSubmitedData = () => {},
   setUploadLength = () => {},
   handleSetImages = () => {},
+  urlsFilesSelected = [],
+  setUrlsFilesSelected = () => {},
 }) {
-  console.log(".....selectedImages.....", selectedImages);
-  console.log(".....urlsFiles.....", urlsFiles);
-  console.log(".....sortedList.....", sortedList);
   useEffect(() => {
-    if (type === "multi" && urlsFiles?.length) {
+    if (type === "multi" && urlsFiles?.length && handleSetImages) {
       handleSetImages(urlsFiles);
     }
   }, [urlsFiles?.length, type]);
@@ -58,7 +54,10 @@ export default function MediaUploader({
             notURL={notURL}
             buttonContext={<img className="" src="/upload-svgrepo-com.svg" />}
             buttonCss={"w-[100px] h-[124px]"}
-            selectedImages={sortedList}
+            itemUploadedImages={itemUploadedImages}
+            handleSetImages={handleSetImages}
+            urlsFilesSelected={urlsFilesSelected}
+            setUrlsFilesSelected={setUrlsFilesSelected}
           />
         )
       ) : null}

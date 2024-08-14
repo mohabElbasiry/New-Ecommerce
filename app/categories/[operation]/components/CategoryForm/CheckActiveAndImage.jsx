@@ -3,9 +3,12 @@ import MediaUploader from "@/components/MediaUploader/Index";
 import { produce } from "immer";
 import { useState } from "react";
 
-export default function CheckActiveAndImage({ formData, setFormData }) {
-  const [urlsFiles, setUrlsFiles] = useState([]);
-
+export default function CheckActiveAndImage({
+  formData,
+  setFormData,
+  urlsFiles,
+  setUrlsFiles,
+}) {
   const [uploadLength, setUploadLength] = useState(0);
 
   const handleChange = (event) => {

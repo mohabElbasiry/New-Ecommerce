@@ -42,11 +42,6 @@ function UploadFile({
     }
   };
 
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    setSelectedFiles((prev) => [...files, ...prev]);
-  };
-
   // const handleGetFromUrl = async () => {
   //   const url = InputUrlsRef.current.value;
   //   if (!url) return;
@@ -56,19 +51,28 @@ function UploadFile({
   //   }
   // };
 
-  const handleUploadFile = () =>
+  // const handleFileChange = (event) => {
+  //   const files = Array.from(event.target.files);
+  //   setSelectedFiles((prev) => [...files, ...prev]);
+  // };
+
+  const handleUploadFile = (e) =>
     handleUploadMedia(
-      undefined,
+      Array.from(e.target.files),
       selectedFiles,
       setSelectedFiles,
       setUrlsFiles,
       setUrlsFilesSelected,
       setUploadLength,
-      undefined
+      undefined,
+      type
     );
-  useEffect(() => {
-    selectedFiles.length ? handleUploadFile() : null;
-  }, [selectedFiles]);
+
+  // useEffect(() => {
+  //   if (selectedFiles?.length) {
+  //     selectedFiles.length ? handleUploadFile() : null;
+  //   }
+  // }, [selectedFiles]);
 
   return (
     <>
@@ -97,57 +101,10 @@ function UploadFile({
           <span className="flex justify-center items-center gap-3">
             <button
               type="button"
-              className="z-50 bg-white shadow-2xl  p-2 px-4 text-sm text-gray-600 border rounded-xl"
-              onClick={() => InputRef.current.click()}
+              className="z-0 bg-white shadow-2xl  p-2 px-4 text-sm text-gray-600 border rounded-xl"
             >
               Add media
             </button>
-            {/* <Popover className="[z-index:999]">
-              <PopoverTrigger className="[z-index:999]" asChild>
-                <Button className="[z-index:999]  text-gray-600" variant="ghost">
-                  Add from URL
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <h3 className="font-medium leading-none">
-                      Add media from URL
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Image, or Vimeo URL
-                    </p>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-1 items-center gap-4">
-                      <input
-                        ref={InputUrlsRef}
-                        type="url"
-                        placeholder="https://"
-                        defaultValue="https://"
-                        className="p-2 border rounded-xl h-10"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-5 items-center">
-                    {" "}
-                    <Button
-                      className="flex-1 p-4 px-2"
-                      onClick={handleGetFromUrl}
-                    >
-                      {" "}
-                      Add file
-                    </Button>
-                    <PopoverClose className="flex-1">
-                      <Button className="w-full p-4 px-2" variant="outline">
-                        {" "}
-                        Close
-                      </Button>
-                    </PopoverClose>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover> */}
 
             <Popover className="[z-index:999]">
               {!notURL ? (
@@ -181,7 +138,7 @@ function UploadFile({
             accept="image/*,video/*"
             multiple={type === "single" ? false : true}
             className="opacity-0 absolute top-0 left-0 z-[3] w-full h-full cursor-pointer "
-            onChange={handleFileChange}
+            onChange={handleUploadFile}
           />
         </label>
       </div>

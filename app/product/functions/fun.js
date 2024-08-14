@@ -75,20 +75,19 @@ export async function handleUploadMedia(
   setOpen = () => {},
   type = ""
 ) {
-  if (uploadedFiles?.length || files?.length) {
+  if (uploadedFiles?.length) {
     const formData = new FormData();
+    console.log("uploadedFiles", uploadedFiles);
     if (type === "single") {
-      uploadedFiles?.length
-        ? formData.append("files", uploadedFiles[0])
-        : formData.append("files", files[0]);
+      formData.append("files", uploadedFiles[0]);
       setOpen(false);
       setUploadLength(1);
     } else {
-      files.forEach((file) => {
+      uploadedFiles.forEach((file) => {
         formData.append("files", file);
       });
-      setUploadLength(files.length);
-    }
+      setUploadLength(uploadedFiles.length);
+    } 
 
     try {
       const res = await fetch(`${baseUrl}/upload/files`, {
@@ -98,15 +97,18 @@ export async function handleUploadMedia(
         method: "POST",
         body: formData,
       });
+      console.log("response of formData after=>> ", formData.get("files"));
       const data = await res.json();
-      console.log("Response of Data", data);
+      const resImages = data?.data || [];
+      console.log("response of data after=>> ", data);
       if (type === "single") {
-        setUrlsFiles(data);
+        setUrlsFiles(resImages);
+        setSelectedFiles(resImages);
         setOpen(false);
       } else {
-        setUrlsFiles((prev) => [...data, ...prev]);
-        setUrlsFilesSelected((prev) => [...data, ...prev]);
-        setSelectedFiles((prev) => [...data, ...prev]);
+        setUrlsFiles((prev) => [...resImages, ...prev]);
+        setUrlsFilesSelected((prev) => [...resImages, ...prev]);
+        setSelectedFiles((prev) => [...resImages, ...prev]);
       }
       setUploadLength(0);
     } catch (er) {

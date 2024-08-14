@@ -58,7 +58,9 @@ export default function DynamicTable({
     ...data?.Keys,
     ...ItemsLast,
   ]);
+
   console.log("data.values", data.values);
+
   const [selectedItemsValues, setSelectedItemsValues] = useState(
     data.values.map((ItemValue) => {
       const filteredItemValue = {};
@@ -73,6 +75,7 @@ export default function DynamicTable({
       return filteredItemValue;
     })
   );
+
   useEffect(() => {
     setSelectedItemsValues(
       data.values.map((ItemValue) => {
@@ -89,8 +92,8 @@ export default function DynamicTable({
       })
     );
   }, [selectedItems, data.values]);
-  const [checkedItems, setCheckedItems] = useState([]);
 
+  const [checkedItems, setCheckedItems] = useState([]);
   return (
     <div className="py-5 bg-white m-5">
       <div className="p-5">
@@ -300,7 +303,10 @@ export default function DynamicTable({
                             className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center `}
                           >
                             <div className="flex items-center">
-                              <Settings className="cursor-pointer mx-1" />
+                              <Settings
+                                className="cursor-pointer mx-1"
+                                onClick={() => isOptions.edit(item._id)}
+                              />
                               <Trash2 className="cursor-pointer" />
                             </div>
                           </td>

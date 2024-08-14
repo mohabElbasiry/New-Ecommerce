@@ -9,7 +9,6 @@ import ImageSpinner from "@/components/GlobalUi/ImageSpinner";
 export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
-
     if (active.id !== over.id) {
       setSubmitedData((prevItems) =>
         produce(prevItems, (draft) => {
@@ -36,8 +35,11 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
       target: "productDetails",
     });
   };
+
   const [urlsFiles, setUrlsFiles] = useState([]);
+  const [urlsFilesSelected, setUrlsFilesSelected] = useState([]);
   const [uploadLength, setUploadLength] = useState(0);
+
   return (
     <div className="App flex flex-wrap gap-4">
       <DragAndDropElelements
@@ -74,10 +76,13 @@ export const DragableImagesBox = ({ images: sortedList, setSubmitedData }) => {
         <MediaUploader
           type="multi"
           urlsFiles={urlsFiles}
+          itemUploadedImages={sortedList}
           setUrlsFiles={setUrlsFiles}
           setSubmitedData={setSubmitedData}
           setUploadLength={setUploadLength}
           handleSetImages={handleSetImages}
+          urlsFilesSelected={urlsFilesSelected}
+          setUrlsFilesSelected={setUrlsFilesSelected}
         />
       </div>
     </div>
