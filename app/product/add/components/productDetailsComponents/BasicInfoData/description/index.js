@@ -1,13 +1,3 @@
-import TextEditor from "@/components/TextEditor/index_2"
-import { UpdateAction } from "../../../productVariations/RootFunction/middleWare";
-import ReusableTabs from "@/components/shadcntaps";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-import { useState } from "react";
 import { DescriptionContent } from "./DescriptionContent";
  
 export const Description =({
@@ -45,9 +35,7 @@ export const Description =({
 
 <div>
  
-
-  <div className="hidden sm:block">
-    <div className=" ">
+ 
  
   {
     lang==="ar"?  
@@ -76,7 +64,6 @@ export const Description =({
   }
  
 
-    </div>
-  </div>
+ 
 </div></>)
 }

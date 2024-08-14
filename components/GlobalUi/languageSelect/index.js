@@ -8,7 +8,7 @@ export const LanguageSelect=({children})=>{
       );
       const active ="bg-[#eee] px-6 rounded-md  !h-[25px]"
     return(
-<div className="border-b border-gray-200 ">
+<div  >
       <nav className=" flex gap-6      w-fit  px-1 rounded h-[33px]  mb-2 
        overflow-hidden items-center " aria-label="Tabs">
         <a

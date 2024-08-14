@@ -1,4 +1,18 @@
 .menu_side{
-    border-left:1px solid #ddd;
+    /* border-left:1px solid #ddd; */
     border-radius: 0px;
+}
+
+.itemLi{
+ position: relative;   
+}
+.itemLi::before {
+    content: '';
+    width: 1px;
+    height: 12%;
+    background: #b1b1b1;
+    position: absolute;
+    height: 109%;
+    left: 17px;
+
 }

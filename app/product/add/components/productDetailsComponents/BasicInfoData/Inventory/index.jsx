@@ -49,13 +49,13 @@ import { UpdateAction } from "../../../productVariations/RootFunction/middleWare
           checked={continue_out_stock}
           infoText="This will complete sales when available inventory reaches zero and below."
         />
-        <div className="grid grid-cols-3 place-items-center gap-4">
+        <div className="grid grid-cols-2  gap-4">
           <InputWithLabelComponent
             label="SKU(optional)"
             PlaceHolder=""
             Input
             min={1}
-          
+        inputCss="w-full"
             MoreInfoText="A SKU, which stands for Stock Keeping Unit, is a unique 
     identifier for each of your products that makes it easier to track inventory.
    .
@@ -65,7 +65,7 @@ import { UpdateAction } from "../../../productVariations/RootFunction/middleWare
             label="Barcode"
             Input
             min={1}
-            MoreInfo
+            inputCss="w-full"
             MoreInfoText={`Barcode (ISBN, UPC, GTIN) - Barcodes are typically used by resellers. 
      `}
           />{" "}
