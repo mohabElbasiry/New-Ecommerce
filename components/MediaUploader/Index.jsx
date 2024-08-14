@@ -6,6 +6,7 @@ export default function MediaUploader({
   type,
   notURL = false,
   sortedList = [],
+  selectedImages = [],
   urlsFiles = [],
   setUrlsFiles = () => {},
   setUrlsFilesSelected = () => {},
@@ -33,24 +34,13 @@ export default function MediaUploader({
         )
       ) : null}
       {type === "multi" ? (
-        urlsFiles.length === 0 ? (
-          <UploadFile
-            notURL={notURL}
-            setUrlsFiles={setUrlsFiles}
-            setUrlsFilesSelected={setUrlsFilesSelected}
-            setUploadLength={setUploadLength}
-            setSubmitedData={setSubmitedData}
-            type={type}
-          />
-        ) : (
-          <UploadFilesModal
-            notURL={notURL}
-            buttonContext={<img className="" src="/upload-svgrepo-com.svg" />}
-            buttonCss={"w-[100px] h-[124px]"}
-            selectedImages={sortedList}
-            setSubmitedData={setSubmitedData}
-          />
-        )
+        <UploadFilesModal
+          notURL={notURL}
+          buttonContext={<img className="" src="/upload-svgrepo-com.svg" />}
+          buttonCss={"w-[100px] h-[124px]"}
+          selectedImages={sortedList || selectedImages}
+          setSubmitedData={setSubmitedData}
+        />
       ) : null}
     </>
   );

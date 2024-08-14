@@ -89,7 +89,7 @@ export async function handleUploadMedia(
       files.forEach((file) => {
         formData.append("files", file);
       });
-    
+
       setUploadLength(files.length);
     }
 
@@ -102,12 +102,21 @@ export async function handleUploadMedia(
         body: formData,
       });
       const data = await res.json();
+      console.log("uploaded multi images::: ", data);
       if (type === "single") {
         setUrlsFiles(data);
         setOpen(false);
       } else {
-        setUrlsFiles((prev) => [...data, ...prev]);
-        setUrlsFilesSelected((prev) => [...data, ...prev]);
+        if (setSubmitedData) {
+          setSubmitedData(
+            produce((draft) => {
+              draft.images = data;
+            })
+          );
+        } else {
+          setUrlsFiles((prev) => [...data, ...prev]);
+          setUrlsFilesSelected((prev) => [...data, ...prev]);
+        }
       }
 
       setUploadLength(0);
