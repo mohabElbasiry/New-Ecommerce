@@ -1,7 +1,7 @@
 export const validationData = (formData) => {
   let errors = {};
 
-  if (!formData?.name_ar) {
+  if (!formData?.name_en) {
     errors.name_en = "required";
   }
   if (!formData?.name_ar) {

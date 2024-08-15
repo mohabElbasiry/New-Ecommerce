@@ -11,7 +11,7 @@ function BasicInfo({ formData, setFormData, formErrors, setFormErrors }) {
         draft[name] = value;
       })
     );
-    if (value && name in formErrors) {
+    if (value && formErrors?.hasOwnProperty(name)) {
       setFormErrors((prev) => ({
         ...prev,
         [name]: "",

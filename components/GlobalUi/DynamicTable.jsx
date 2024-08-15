@@ -43,6 +43,7 @@ const defaultData = {
 export default function DynamicTable({
   data = defaultData,
   isOptions,
+  navigations,
   itemId,
 }) {
   const ItemsFirst =
@@ -58,7 +59,7 @@ export default function DynamicTable({
     ...data?.Keys,
     ...ItemsLast,
   ]);
-   const [selectedItemsValues, setSelectedItemsValues] = useState(
+  const [selectedItemsValues, setSelectedItemsValues] = useState(
     data.values.map((ItemValue) => {
       const filteredItemValue = {};
       Object.keys(ItemValue).forEach((ItemVal) => {
@@ -100,18 +101,22 @@ export default function DynamicTable({
           setSelectedItems={setSelectedItems}
         />
       </div>
-      <div className="   mt-5 relative max-h-[calc(100vh-200px)]
-       overflow-x-auto overflow-y-scroll scroll-bar">
-        <TableHead data={data} checkedItems={checkedItems} setCheckedItems={setCheckedItems} />
+      <div
+        className="   mt-5 relative max-h-[calc(100vh-200px)]
+       overflow-x-auto overflow-y-scroll scroll-bar"
+      >
+        <TableHead
+          navigations={navigations}
+          data={data}
+          itemId={itemId}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+        />
         <table className="w-full text-sm text-left table-auto">
           <thead className="ltr:text-left rtl:text-right bg-[#E6E6E6] h-[60px]">
             <tr className="ltr:text-left rtl:text-right">
               {data?.enableSelect ? (
-                  <th
-                   
-                  className="whitespace-nowrap   
-                  font-medium text-gray-900 text-center  w-[50px]"
-                >
+                <th className="whitespace-nowrap font-medium text-gray-900 text-center  w-[50px]">
                   <input
                     className="accent-primary h-5 w-5"
                     type="checkbox"
@@ -179,12 +184,12 @@ export default function DynamicTable({
                       );
                     })
                 : null}
-              {isOptions/* &&data?.customColumn?.theLast */ ? (
-                <th className="whitespace-nowrap px-4   
-                font-medium text-gray-900 text-center border-r border-r-[#E6E6E6]"></th>
+              {isOptions /* &&data?.customColumn?.theLast */ ? (
+                <th
+                  className="whitespace-nowrap px-4   
+                font-medium text-gray-900 text-center border-r border-r-[#E6E6E6]"
+                ></th>
               ) : null}
-
-
 
               {data?.customColumn?.theLast &&
               data?.customColumn?.theLast?.length > 0
@@ -202,7 +207,6 @@ export default function DynamicTable({
                     ))
                 : null}
             </tr>
-           
           </thead>
 
           <tbody className="divide-y divide-gray-200">
@@ -298,8 +302,9 @@ export default function DynamicTable({
                                 className="cursor-pointer mx-1"
                                 onClick={() => isOptions.edit(item._id)}
                               />
-                              <Trash2 className="cursor-pointer" 
-                               onClick={() => isOptions.delete(item._id)}
+                              <Trash2
+                                className="cursor-pointer"
+                                onClick={() => isOptions.delete(item._id)}
                               />
                             </div>
                           </td>

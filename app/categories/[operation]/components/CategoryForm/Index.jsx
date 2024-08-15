@@ -1,13 +1,16 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CategoryBreadCrump from "../CategoryBreadCrump";
 import BasicInfo from "./BasicInfo";
 import CheckActiveAndImage from "./CheckActiveAndImage";
-import { handleCreateCategory } from "@/app/categories/utils/functions";
+import { handleCategoryOperations } from "@/app/categories/utils/functions";
 import { toastMessagener } from "@/components/Layout/RootSignal";
 import { useRouter } from "next/navigation";
 import { validationData } from "../../functions";
-export default function CategoryForm({ parentId }) {
+import { getOperationClient } from "@/lib/apiUtilsClient";
+export default function CategoryForm({ parentId, editId, params }) {
+  console.log("Params in categoryForm", params);
+  console.log("Params in parentId", parentId);
   const [urlsFiles, setUrlsFiles] = useState([]);
   const [formData, setFormData] = useState({
     name_en: "",
@@ -51,15 +54,19 @@ export default function CategoryForm({ parentId }) {
     }
     if (urlsFiles?.length) {
       payload.image = urlsFiles?.[0]?.filename || "";
+    } else {
+      delete payload.image;
     }
     ["name_en", "name_ar", "description_en", "description_ar"].forEach(
       (delKey) => delete payload[delKey]
     );
-    await handleCreateCategory(payload).then((res) => {
-      console.log("[ressssssssss OMNAR", res);
+    const editedById = editId && params.operation === "edit" ? editId : "";
+    await handleCategoryOperations(payload, editedById).then((res) => {
       setLoading(false);
       if (res.status === "success") {
-        toastMessagener.success(res.messages[0].message_en);
+        toastMessagener.success(
+          res.messages.at(res.messages.length - 1).message_en
+        );
         resetForm();
         router.push(`/categories`);
       } else {
@@ -76,6 +83,30 @@ export default function CategoryForm({ parentId }) {
         .some((item) => item?.length),
     [formData]
   );
+  useEffect(() => {
+    if (editId && params.operation === "edit") {
+      const getCategoryData = async () => {
+        console.log("check edit form");
+        const categoryData = await getOperationClient(`/categories/${editId}`, {
+          method: "GET",
+          headers: {
+            token: true,
+          },
+        });
+        !categoryData?.data
+          ? null
+          : setFormData({
+              name_en: categoryData?.data?.name?.en,
+              name_ar: categoryData?.data?.name?.ar,
+              description_en: categoryData?.data?.description?.en,
+              description_ar: categoryData?.data?.description?.ar,
+              image: categoryData?.data?.image,
+              isActive: categoryData?.data?.isActive,
+            });
+      };
+      getCategoryData();
+    }
+  }, [params, editId]);
   return (
     <>
       <CategoryBreadCrump />
@@ -90,7 +121,7 @@ export default function CategoryForm({ parentId }) {
             }}
             setFormData={setFormData}
             formErrors={formErrors}
-            setFormErrors = {setFormErrors}
+            setFormErrors={setFormErrors}
           />
           <CheckActiveAndImage
             formData={{
