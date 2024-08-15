@@ -216,7 +216,7 @@ export const ProductAddMaim = () => {
 
   return (
     <>
-      {/* <TourGuide stepsData={dataSteps} /> */}
+      <TourGuide stepsData={dataSteps} />
       <Headercomponent
         handleSubmit={handleSubmit}
         hsitory={submitedData?.history}

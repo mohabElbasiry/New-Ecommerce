@@ -5,7 +5,8 @@ const page = async ({ searchParams }) => {
   let endpoint = searchParams?.c
     ? `/${searchParams?.c}/childs`
     : "?isRoot=true";
-  const categoriesData = await getOperationServer(`/categories${endpoint}`, {
+  const categoriesData = 
+  await getOperationServer(`/categories`, {
     next: {
       tags: ["Category"],
       revalidate: 1,
@@ -16,7 +17,8 @@ const page = async ({ searchParams }) => {
   return (
     <div className="pt-20">
       {/* <CategoriesTree categories={categories} /> */}
-      <CategoriesTable categories={categories} cId={searchParams?.c} />
+      <CategoriesTable categories={categories}
+       cId={searchParams?.c} />
     </div>
   );
 };
