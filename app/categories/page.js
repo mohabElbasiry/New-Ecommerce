@@ -12,13 +12,10 @@ const page = async ({ searchParams }) => {
       revalidate: 1,
     },
   });
-  console.log("categoriesData", categoriesData);
   const categories = categoriesData?.data || [];
   return (
     <div className="pt-20">
-      {/* <CategoriesTree categories={categories} /> */}
-      <CategoriesTable categories={categories}
-       cId={searchParams?.c} />
+      <CategoriesTable categories={categories} cId={searchParams?.c} />
     </div>
   );
 };

@@ -6,7 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { handleDeleteCategory } from "../functions";
 import { toastMessagener } from "@/components/Layout/RootSignal";
+import Image from "next/image";
+import { imageBaseUrl } from "@/lib/baseUrl";
 export default function CategoriesTable({ categories, cId = "" }) {
+  console.log('client categories',categories)
   const data = (payload) => ({
     Keys: ["fullName", "createdAt"],
     values: !payload?.length
@@ -18,6 +21,7 @@ export default function CategoriesTable({ categories, cId = "" }) {
             name: item.fullName,
             isRoot: item.isRoot,
             isLeaf: item.isLeaf,
+            image: item?.image?.filename,
           },
           createdAt: item.createdAt,
         })),
@@ -51,7 +55,16 @@ export default function CategoriesTable({ categories, cId = "" }) {
           <div>
             <button onClick={() => fetchSubCategories(item?._id)}>
               {item?.name?.en}
-            </button>
+            </button>{" "}
+            {item?.image ? (
+              <Image
+                src={imageBaseUrl + "/" + item.image}
+                alt={item.name.en}
+                height={20}
+                width={20}
+                className="h-[20px[ w-[20px]"
+              />
+            ) : null}
           </div>
         );
       },
@@ -61,19 +74,19 @@ export default function CategoriesTable({ categories, cId = "" }) {
   });
   const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
-  const deleteCategory = (itemId) => { 
-    handleDeleteCategory(itemId).then(res => {
-      console.log('resss of deleteCategory haza:',res) 
-      if (res.status === "success") { 
-        toastMessagener.success(res?.messages[0]?.message_en)
-        const filtered = categories.filter(c => c._id !== itemId )
-        setDataDynamic(data(filtered)) 
-      } else { 
-
+  const deleteCategory = (itemId) => {
+    handleDeleteCategory(itemId).then((res) => {
+      console.log("resss of deleteCategory haza:", res);
+      if (res.status === "success") {
+        toastMessagener.success(res?.messages[0]?.message_en);
+        const filtered = categories.filter((c) => c._id !== itemId);
+        setDataDynamic(data(filtered));
+      } else {
+        toastMessagener.error(res?.messages[0]?.message_en);
       }
-    })
-  }
-  
+    });
+  };
+
   return (
     <div className=" shadow w-[90%] mx-auto   grid gap-6 rounded-md">
       {/* <div className="flex items-center gap-3">
@@ -84,16 +97,18 @@ export default function CategoriesTable({ categories, cId = "" }) {
       </div> */}
 
       <div>
-      <DynamicTable
-        data={dataDynamic}
-        itemId={cId}
-        isOptions={{
-          edit: (itemId) => router.push(`/categories/edit_c=${itemId}`),
-          delete: async (itemId) => deleteCategory(itemId),
-        }}
-        
-      />
-
+        <DynamicTable
+          data={dataDynamic}
+          itemId={cId}
+          navigations={{
+            add: (itemId = "") =>
+              `/categories/add${itemId ? `?c=${itemId}` : ""}`,
+          }}
+          isOptions={{
+            edit: (itemId) => router.push(`/categories/edit?cEd=${itemId}`),
+            delete: async (itemId) => deleteCategory(itemId),
+          }}
+        />
       </div>
     </div>
   );

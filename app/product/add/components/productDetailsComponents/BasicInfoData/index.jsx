@@ -22,15 +22,6 @@ const BasicData = ({
   const handleAction = (action) => {
     UpdateAction(action, setSubmitedData);
   };
-  const UdateBasicInfo = (ev) => {
-    const { value } = ev.target;
-    handleAction({
-      type: "UpdatePropertyByNameAndValue",
-      payload: { name: "title_en", value },
-      target: "productDetails",
-    });
-    useDebounceForUpdate(value);
-  };
 
   const { errors = {}, register = {} } = formData;
 
