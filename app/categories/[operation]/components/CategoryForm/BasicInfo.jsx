@@ -1,7 +1,8 @@
-import { InputWithLabelComponent } from "@/components/inputcomponent";
-import TextEditor from "@/components/TextEditor";
+import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
 import { produce } from "immer";
 import React, { memo } from "react";
+import CategoryFormInput from "./CategoryFormInput";
+import CategoryFormTextEditor from "./CategoryFormTextEditor";
 
 function BasicInfo({ formData, setFormData, formErrors, setFormErrors }) {
   const handleChange = (event) => {
@@ -11,6 +12,12 @@ function BasicInfo({ formData, setFormData, formErrors, setFormErrors }) {
         draft[name] = value;
       })
     );
+    if (value === "") {
+      setFormErrors((prev) => ({
+        ...prev,
+        [name]: "Required*",
+      }));
+    }
     if (value && formErrors?.hasOwnProperty(name)) {
       setFormErrors((prev) => ({
         ...prev,
@@ -20,40 +27,14 @@ function BasicInfo({ formData, setFormData, formErrors, setFormErrors }) {
   };
   return (
     <div className=" bg-white p-8 col-span-2 rounded-2xl">
-      <InputWithLabelComponent
-        Input
-        label="english name"
-        PlaceHolder="english name"
-        name="name_en"
-        value={formData.name_en}
-        onChange={(event) => handleChange(event)}
-        isError={formErrors?.name_en}
-        message={formErrors?.name_en}
-      />
-      <InputWithLabelComponent
-        Input
-        label="arabic name"
-        PlaceHolder="arabic name"
-        name="name_ar"
-        value={formData.name_ar}
-        onChange={(event) => handleChange(event)}
-        isError={formErrors?.name_ar}
-        message={formErrors?.name_ar}
-      />
-      <div className="mt-5">
-        <TextEditor
-          content={formData.description_en}
-          name="description_en"
-          setSubmitedData={setFormData}
+      <LanguageSelect>
+        <CategoryFormInput
+          formData={formData}
+          formErrors={formErrors}
+          handleChange={handleChange}
         />
-        <div className=" mt-10">
-          <TextEditor
-            content={formData.description_ar}
-            name="description_ar"
-            setSubmitedData={setFormData}
-          />
-        </div>
-      </div>
+        <CategoryFormTextEditor formData={formData} setFormData={setFormData} />
+      </LanguageSelect>
     </div>
   );
 }

@@ -53,9 +53,9 @@ export default function CategoryForm({ parentId, editId, params }) {
       payload.parentId = parentId;
     }
     if (urlsFiles?.length) {
-      payload.image = urlsFiles?.[0]?.filename || "";
+      payload.image = urlsFiles?.[0]?.filename || "test-add.png";
     } else {
-      delete payload.image;
+      payload.image = "test.png";
     }
     ["name_en", "name_ar", "description_en", "description_ar"].forEach(
       (delKey) => delete payload[delKey]

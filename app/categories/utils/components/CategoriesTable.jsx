@@ -6,7 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { handleDeleteCategory } from "../functions";
 import { toastMessagener } from "@/components/Layout/RootSignal";
+import Image from "next/image";
+import { imageBaseUrl } from "@/lib/baseUrl";
 export default function CategoriesTable({ categories, cId = "" }) {
+  console.log('client categories',categories)
   const data = (payload) => ({
     Keys: ["fullName", "createdAt"],
     values: !payload?.length
@@ -18,6 +21,7 @@ export default function CategoriesTable({ categories, cId = "" }) {
             name: item.fullName,
             isRoot: item.isRoot,
             isLeaf: item.isLeaf,
+            image: item?.image?.filename,
           },
           createdAt: item.createdAt,
         })),
@@ -51,7 +55,16 @@ export default function CategoriesTable({ categories, cId = "" }) {
           <div>
             <button onClick={() => fetchSubCategories(item?._id)}>
               {item?.name?.en}
-            </button>
+            </button>{" "}
+            {item?.image ? (
+              <Image
+                src={imageBaseUrl + "/" + item.image}
+                alt={item.name.en}
+                height={20}
+                width={20}
+                className="h-[20px[ w-[20px]"
+              />
+            ) : null}
           </div>
         );
       },
