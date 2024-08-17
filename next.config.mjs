@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  experimental: {
+    serverActions: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -12,11 +15,13 @@ const nextConfig = {
         protocol: "https",
         hostname: "you-in.online",
         pathname: "**",
-      },{
+      },
+      {
         protocol: "https",
         hostname: "www.you-in.online",
         pathname: "**",
-      },{
+      },
+      {
         protocol: "https",
         hostname: "letsenhance.io",
         pathname: "**",
