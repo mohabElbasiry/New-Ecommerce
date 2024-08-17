@@ -16,34 +16,26 @@ export const InputWithLabelComponent = ({
   onChange = () => {},
   price = false,
   defaultValue,
-<<<<<<< HEAD
   parentCss,
-=======
-  lang,
->>>>>>> bd55f730d95a92ca708cd1139fc44c4717861f55
+  Icon,
+  description={descriptionText:"",descriptionCss:""},
   ...props
 }) => {
+  console.log(Icon);
   return (
     <div className= {`${parentCss}`}>
       <p className={` font-sans capitalize border-l  ${labelcss} `}>{label}</p>
+    {description?.descriptionText!==""? <p className={`${description?.descriptionCss}`}>{description?.descriptionText}</p>:null} 
       {Input ? (
-<<<<<<< HEAD
         <div className="flex items-center border  border-[#D4D4D4]
           rounded-md  overflow-hidden parent-div w-full ">
           {price ? <div className="pl-1 text-sm border-r
            border-r-[#D4D4D4] p-1"> EGP</div> : null}
-=======
-        <div
-          className="flex items-center border  border-[#D4D4D4]
-          rounded-md  overflow-hidden parent-div w-full "
-        >
-          {price ? (
-            <div className="pl-1 text-sm border-r border-r-[#D4D4D4] p-1">
-              {" "}
-              EGP
-            </div>
-          ) : null}
->>>>>>> bd55f730d95a92ca708cd1139fc44c4717861f55
+           {
+            Icon?<>
+            {Icon}
+            </>:null
+           }
           <input
             className={`     w-full focus-none font-sem p-1
            bg-transparent   

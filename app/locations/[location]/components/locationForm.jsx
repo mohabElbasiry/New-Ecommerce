@@ -2,12 +2,39 @@
 import AutoCompelete from "@/components/GlobalUi/autocompelete";
 import { InputWithLabelComponent } from "@/components/inputcomponent";
 import { MoveLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import cities from "../../../../lib/cities.json";
 import { CountryCode } from "./countryCodeSelect";
+import { MainublateData } from "../functions/DataEdit";
+import { CountrySelect } from "./country";
+import { GovernmentSelect } from "./governmentSelect";
+import { SetSubmittedForm } from "../functions/submitData";
 
+const initialchoosen = {
+  country: {},
+  city: "",
+  mame: "",
+  errorInput: [],
+  isError: false,
+  errorMessage: "This Feild is Required",
+  address: "",
+  postalCode: "",
+  phone: "",
+  apertment: "",
+  code: "",
+  state: "",
+};
 export const LocationForm = ({ locationsData }) => {
-  const [refLocations, setRefLocations] = useState([]);
+  // const [state, formAction] = useActionState(SetSubmittedForm, initialchoosen)
+
+  const locationRef = MainublateData(locationsData);
   const [locationMangement, setLocations] = useState({
     locations: [],
     DefaultGovernment: {},
@@ -15,172 +42,175 @@ export const LocationForm = ({ locationsData }) => {
     governments: [],
     DefaultGovernmentRef: [],
   });
-  const [choosen, setChoosen] = useState({
-    SelectedCountry: {},
-    selectedCity: "",
-  });
+  const [choosen, setChoosen] = useState(initialchoosen);
+
+  const updateFeild = useCallback((e) => {
+    const { name, value } = e.target;
+    setChoosen((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  }, []);
+  const isChange = useMemo(() => {}, [choosen]);
   useEffect(() => {
     const Default = locationsData.find(
       (country) => country?.name?.common === "Saudi Arabia"
     );
-
     const DefaultGovernment = cities?.data?.find((item) => {
       return item?.country === Default?.name?.common;
     })?.cities;
-    const MainubiulateLocations = locationsData.map((country) => {
-      return {
-        ar: country?.translations.ara.common,
-        en: country?.name?.common,
-        code: country?.idd?.suffixes
-          ?.map((suffix) => country.idd.root + suffix)
-          .join(", "),
-        flag: country.flags,
-      };
-    });
-
     setChoosen({
       ...choosen,
-      SelectedCountry: Default,
-      selectedCity: DefaultGovernment?.[0],
+      country: Default?.name?.common,
+      code: Default?.idd?.suffixes
+        ?.map((suffix) => Default.idd.root + suffix)
+        .toString(),
+      state: Default?.capital?.toString(),
     });
-    console.log(DefaultGovernment, "DefaultGovernment");
-    setRefLocations(MainubiulateLocations);
+
     setLocations({
-      locations: MainubiulateLocations,
+      locations: locationRef,
       DefaultCountry: Default,
       DefaultGovernmentRef: DefaultGovernment,
       DefaultGovernment,
       governments: cities?.data,
     });
   }, []);
-  console.log(choosen, "choosen");
+  function checkEmptyFields(fields) {
+    const emptyFields = [];
+
+    for (const [key, value] of Object.entries(fields)) {
+      if (!value) {
+        emptyFields.push(key);
+      }
+    }
+
+    return emptyFields.length ? emptyFields : null;
+  }
+
   return (
     <div>
-      <div className="locationForm">
+      <div className="locationForm flex flex-col gap-6 w-[70%] m-auto">
         <p className="title flex items-center gap-3">
           <MoveLeft />
           Add Location{" "}
         </p>
+        <form
+          action={async (formData) => {
+            const Action = await SetSubmittedForm(formData);
+          }}
+        >
+          <div className="box flex flex-col items-center   py-3">
+            <InputWithLabelComponent
+              Input
+              isRequired
+              PlaceHolder="Location name"
+              inputCss="  !text-sm"
+              description={{
+                descriptionText:
+                  "Give this location a short name to make it easy to identify. You’ll see this name in areas like orders and products. If this location offers in-store pickup, it will be visible to your customers at checkout and in notifications.",
+                descriptionCss: "text-sm my-2 text-[#7E7E7E]",
+              }}
+              parentCss={"w-[97%]"}
+              label="Name Of Location"
+              name="name"
+              onChange={updateFeild}
+              value={choosen?.name}
+            />
 
-        <div className="box flex flex-col items-center w-[80%]">
-          <AutoCompelete
-            array={locationMangement.locations}
-            header={"country / region"}
-            onChange={(e) => {
-              const { name, value } = e.target;
+            <CountrySelect
+              cities={cities}
+              locations={locationMangement?.locations}
+              locationRef={locationRef}
+              setChoosen={setChoosen}
+              setLocations={setLocations}
+              choosen={choosen}
+              value={choosen?.country}
+            />
+            <InputWithLabelComponent
+              Input
+              defaultValue={""}
+              isRequired
+              label="Address"
+              inputCss="!w-[90%]"
+              parentCss={`w-[97%] my-1`}
+              labelcss="my-1"
+              name={"address"}
+              onChange={updateFeild}
+              value={choosen?.address}
+            />
+            <InputWithLabelComponent
+              Input
+              defaultValue={""}
+              isRequired
+              label="Apartment, suite, etc"
+              inputCss="!w-[90%]"
+              parentCss={`w-[97%] my-1`}
+              labelcss="my-1"
+              onChange={updateFeild}
+              name={"apertment"}
+              value={choosen?.apertment}
+            />
 
-              setLocations((prev) => {
-                if (value?.trim() !== "") {
-                  const filteredLocation = refLocations.filter(
-                    (item) =>
-                      item.en?.toLowerCase().includes(value.toLowerCase()) ||
-                      item?.ar.includes(value)
-                  );
+            <div className=" flex items-center gap-3 w-full px-5">
+              <InputWithLabelComponent
+                Input
+                defaultValue={""}
+                label="city"
+                parentCss={`w-[100%] my-1`}
+                labelcss="my-1"
+                onChange={updateFeild}
+                name={"city"}
+                value={choosen?.city}
+              />
+              <GovernmentSelect
+                DefaultGovernment={locationMangement?.DefaultGovernment}
+                state={choosen?.state}
+                setLocations={setLocations}
+                setChoosen={setChoosen}
+                value={choosen?.state}
+              />
+            </div>
+            <InputWithLabelComponent
+              Input
+              defaultValue={""}
+              label="Postal code"
+              inputCss="!w-[90%]"
+              parentCss={`w-[97%] my-1`}
+              labelcss="my-1"
+              onChange={updateFeild}
+              name={"postalCode"}
+              value={choosen?.postalCode}
+            />
+            <CountryCode
+              data={locationRef}
+              defaultValue={locationMangement?.DefaultCountry}
+              setChoosen={setChoosen}
+              code={choosen?.code}
+              value={choosen?.phone}
+            />
+          </div>
 
-                  return {
-                    ...prev,
-                    locations: filteredLocation,
-                  };
-                } else {
-                  return refLocations;
-                }
-              });
-            }}
-            onChooseCountry={(choosen, setValue) => {
-              const government = cities?.data?.find((item) => {
-                return (
-                  item?.country.toLowerCase().trim() ===
-                  choosen?.en.toLowerCase().trim()
-                );
-              });
-              setValue(choosen.en);
-              setLocations((prev) => {
-                return {
-                  ...prev,
-                  DefaultGovernment: choosen,
-                  DefaultGovernment: government?.cities ?? undefined,
-                  DefaultGovernmentRef: government?.cities ?? undefined,
-                };
-              });
-            }}
-            choosenValue={choosen?.SelectedCountry?.name?.common}
-            ShowingItem={`en`}
-            parentclassname={`
-              w-[90%]
-              `}
-          />
-          <AutoCompelete
-            array={
-              locationMangement.DefaultGovernment ?? [
-                "there's no data for this location",
-              ]
-            }
-            header={"City"}
-            onChange={(e) => {
-              const { name, value } = e.target;
-
-              setLocations((prev) => {
-                if (value?.trim() !== "") {
-                  return {
-                    ...prev,
-                    DefaultGovernment: prev?.DefaultGovernmentRef?.filter(
-                      (item) =>
-                        item
-                          .toLowerCase()
-                          .trim()
-                          .includes(value.toLowerCase().trim())
-                    ),
-                  };
-                } else {
-                  return {
-                    ...prev,
-                    DefaultGovernment: prev.DefaultGovernmentRef,
-                  };
-                  ab;
-                }
-              });
-            }}
-            onChooseCountry={(choosen, setValue) => {
-              setValue(choosen);
-              setLocations((prev) => {
-                return {
-                  ...prev,
-                  DefaultGovernment: choosen,
-                };
-              });
-            }}
-            choosenValue={choosen?.selectedCity}
-            parentclassname={`
-              w-[90%]
-              `}
-          />
-          <CountryCode data={locationMangement.locations}
-           defaultValue={locationMangement?.DefaultCountry}/>
-          <InputWithLabelComponent
-            Input
-            defaultValue={""}
-            isRequired
-            label="Name"
-            inputCss="!w-[90%]"
-            parentCss={`w-[95%] my-3`}
-          />
-          <InputWithLabelComponent
-            Input
-            defaultValue={""}
-            isRequired
-            label="Country/region"
-            inputCss="!w-[90%]"
-            parentCss={`w-[95%] my-3`}
-          />
-          <InputWithLabelComponent
-            Input
-            defaultValue={""}
-            isRequired
-            label="Address"
-            inputCss="!w-[90%]"
-            parentCss={`w-[95%] my-3`}
-          />
-        </div>
+          <div className="Footer flex justify-end gap-2   ">
+            <button
+              className="bg-[#eee] p-2 rounded-md 
+        h-[30px] text-sm  capitalize flex items-center
+         text-black hover:bg-[#fff] hover:text-black border !border-[#ddd] "
+              type="button"
+            >
+              deactivate
+            </button>
+            <button
+              className="bg-[#333] p-2 rounded-md 
+        h-[30px] text-sm  capitalize flex items-center text-white hover:bg-[#fff] hover:text-black"
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

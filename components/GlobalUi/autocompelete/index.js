@@ -9,6 +9,8 @@ export default function AutoCompelete({
   parentclassname,
   ShowingItem,
   choosenValue,
+  Icon,
+  ...props
 }) {
   const [open, setOpen] = useState();
   const [value, setValue] = useState(choosenValue);
@@ -42,16 +44,20 @@ export default function AutoCompelete({
 
       <div className="relative w-full">
         <div className="inputTag relative w-full">
-          <input
+          <InputWithLabelComponent
+           Icon={Icon}
+           labelcss="my-2"
+          Input
             type="text"
             value={value}
-            className="border p-2 w-full rounded"
-            placeholder={"Seclect Collection"}
+             placeholder={"Seclect Collection"}
             onChange={(e) => {
               setValue(e.target.value);
               setOpen(true);
               onChange(e);
             }}
+          {...props}
+
           />
         </div>
         {open ? (

@@ -1,10 +1,9 @@
 import { LocationForm } from "./components/locationForm";
-
+import countries from '@/lib/countries.json'
 export default async function LocationsPage({ params }) {
   let LocationsData = [];
   try {
-    const fetChAllLocation = await fetch("https://restcountries.com/v3.1/all");
-    const locations = await fetChAllLocation.json();
+     const locations =   countries ;
     if (locations?.length) {
       LocationsData = locations;
     }
@@ -15,7 +14,6 @@ export default async function LocationsPage({ params }) {
 
   if (location !== "new") {
   }
-  console.log(LocationsData,'LocationsData');
-
+ 
   return <LocationForm locationsData={LocationsData} location={{}} />;
 }
