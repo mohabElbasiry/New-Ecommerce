@@ -3,13 +3,11 @@ import GlobalDynamicTable from "@/components/GlobalUi/GlobalTable/Index";
 import { getOperationClient } from "@/lib/apiUtilsClient";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { handleDeleteCategory } from "../functions";
 import { toastMessagener } from "@/components/Layout/RootSignal";
 import Image from "next/image";
 import { imageBaseUrl } from "@/lib/baseUrl";
 export default function CategoriesTable({ categories, cId = "",paginagtionOptions }) {
-  
   const data = (payload) => ({
     Keys: ["fullName", "createdAt"],
     values: !payload?.length
@@ -73,22 +71,17 @@ export default function CategoriesTable({ categories, cId = "",paginagtionOption
     
     enableSelect: true,
   });
-  // const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
   const deleteCategory = (itemId) => {
     handleDeleteCategory(itemId).then((res) => {
       if (res.status === "success") {
         toastMessagener.success(res?.messages[0]?.message_en);
-        const filtered = categories.filter((c) => c._id !== itemId);
-        setDataDynamic(data(filtered));
       } else {
         toastMessagener.error(res?.messages[0]?.message_en);
       }
     });
   };
-  // useEffect(() => { 
-  //   setDataDynamic(data(categories))
-  // },[categories])
+
   console.log('paginagtionOptions',paginagtionOptions)
   return (
     <div className=" shadow w-[90%] mx-auto   grid gap-6 rounded-md">

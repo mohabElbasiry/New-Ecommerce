@@ -1,5 +1,6 @@
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export const TableOptions = ({
@@ -11,6 +12,21 @@ export const TableOptions = ({
   filterProperties,
 }) => {
   const [isSearch,setIsSearch] = useState(false)
+  const searchParmas = useSearchParams();
+  const params = new URLSearchParams(searchParmas)
+  const paramsKeys = Object.keys(Object.fromEntries(params));
+  const pathname = usePathname()
+  const router= useRouter()
+  const handleFilter = (param) => { 
+   if (param === 'all' ) { 
+      paramsKeys.forEach((key) => { 
+        params.delete(key)
+      })
+      router.replace(pathname +  params.toString())
+      console.log('paramsKeys',paramsKeys)
+   } else {}
+  }
+  
   return (
     <div className={`flex items-center ${!filterProperties?.filters ? "justify-end" : "justify-between" } gap-4 bg-white px-3 !py-3`} >
       {/* <Link href={navigations.add(itemId)} className="inline mx-3">
@@ -21,7 +37,9 @@ export const TableOptions = ({
         {filterProperties?.filters ? (
 
           <div className="flex items-center gap-2" >
-          <button className="text-[#7E7E7E] text-sm p-2 rounded-lg hover:bg-[#E6E6E6] " >All </button>
+          <button  
+            onClick={()=> handleFilter('all') }
+          className={`text-[#7E7E7E] text-sm p-2 rounded-lg ${!paramsKeys?.length ? 'bg-[#E6E6E6]' : ''}  hover:bg-[#E6E6E6] `} >All </button>
 
           {[...Array(3)].map((_,idx) => ( 
             <button className="text-[#7E7E7E] text-sm p-2 rounded-lg hover:bg-[#E6E6E6] " >Filter{idx + 1} </button>

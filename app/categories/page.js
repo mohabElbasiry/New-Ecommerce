@@ -6,11 +6,11 @@ const page = async ({ searchParams }) => {
 
   let paginagtionOptions = {
     totalPages: 3,
-    limit: 1,
+    limit: 2,
   };
   const queries = querying({
     searchParams,
-    defaults: { page: 1, limit: 1 },
+    defaults: { page: 1, limit: 2 },
   })
   const categoriesData =  await getOperationServer(`/categories${queries}`, {
     next: {
@@ -24,8 +24,8 @@ const page = async ({ searchParams }) => {
     paginagtionOptions.totalPages = categoriesData.pagination.totalPages;
     paginagtionOptions.hasNext = categoriesData.pagination.hasNextPage;
     paginagtionOptions.hasPrev = categoriesData.pagination.hasPreviousPage;
-    
   }
+  
   return (
     <div className="pt-20">
       <CategoriesTable categories={categories} cId={searchParams?.c} paginagtionOptions = {paginagtionOptions} />
