@@ -6,9 +6,13 @@ function TableBody(
 ) {
   return (
     <tbody className="divide-y divide-gray-200">
+      {console.log('selectedItems inslide',selectedItems)}
     {selectedItems.length
       ? selectedDataItems?.map((item, idx) => (
           <tr
+          style = {{
+            height : '64px !important'
+          }}
             key={selectedItems.length + idx}
             className={`bg-transparent h-32 ${
               checkedItems.includes(item._id)
@@ -37,6 +41,7 @@ function TableBody(
                     }}
                   />
                 </div>
+              
               </td>
             ) : null}
                 {selectedItems?.map((key) => {
@@ -45,28 +50,31 @@ function TableBody(
                       let CustomComponent = data.customColumn[key];
                       return (
                         <td
+                        style = {{
+                           height : '64px !important'
+                        }}
                         key={`item-${key}-${item[key]}`}
-                        className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
+                        className={`whitespace-nowrap px-3 border-r border- font-medium text-gray-600 bg-transparent text-center !h-full`}
                         >
-                          {console.log('seeeeeeeeeeeeeeeeeeeeeeeeee',selectedItems)}
                           <CustomComponent item={item[key]} /> 
-
                         </td>
                       );
                     }
                     return typeof item[key] === "object" ? (
                       <td
                         key={`item-${key}-${item[key]}`}
-                        className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
+                        className={`whitespace-nowrap px-3 [background:blue] font-medium text-gray-600 bg-transparent text-center`}
+                      
                       >
                         {JSON.stringify(item[key])}
                       </td>
                     ) : (
                       <td
                         key={`item-${key}-${item[key]}`}
-                        className={`whitespace-nowrap px-3  py-2 font-medium text-gray-600 bg-transparent text-center`}
+                        className={`whitespace-nowrap px-3 py-2 [background:green] font-medium text-gray-600 bg-transparent text-center`}
+                      
                       >
-                        {item[key]} tes
+                        {item[key]}
                       </td>
                     );
                   }
@@ -74,7 +82,8 @@ function TableBody(
                 })}
                 {isOptions ? (
                   <td
-                    className={`whitespace-nowrap px-3 py-2 font-medium  text-gray-600 bg-transparent text-center `}
+                    className={`whitespace-nowrap px-3 py-2 font-medium  text-gray-600 bg-transparent text-center`}
+                   
                   >
                     <div className="flex items-center justify-center">
                       <Settings

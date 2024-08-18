@@ -1,53 +1,18 @@
 import MultiSelect from "@/app/product/[id]/components/Select";
 import { useState , useEffect  } from "react";
-import { Settings, Trash2 } from "lucide-react";
 import { TableOptions } from "./tableOptions/Index";
 import TableHead from "./global_tableHead/Index";
 import TableBody from "./global_tableBody/Index";
+import TableFooter from "./global_tableFooter";
 
-// const defaultData = {
-//   Keys: ["Key1", "Key2", "Key3"],
-//   values: [
-//     {
-//       Key1: "value1",
-//       Key2: "value2",
-//       Key3: "value3",
-//     },
-//   ],
-//   customHeader: {
-//     Key_You_want_change_this_name: () => <span>name header for Key</span>,
-//   },
-//   customColumn: {
-//     theFirst: [
-//       {
-//         name: "different Key In First",
-//         key: "differentKeyInFirst",
-//         value: ({ item }) => <>{item ? item : "different Value In First"}</>,
-//       },
-//     ],
-//     Key: ({ item }) => <>{item ? item : "custom Column for species key"}</>,
-//     theLast: [
-//       {
-//         name: "different Key In Last",
-//         key: "differentKeyInLast",
-//         value: ({ item }) => <>{item ? item : "different Value In Last"}</>,
-//       },
-//     ],
-//   },
-//   customRow: ({ itemRow }) => (
-//     <>
-//       <td>return custom component for Row </td>
-//       <td>return custom component for Row </td>
-//       <td>return custom component for Row </td>
-//     </>
-//   ),
-//   enableSelect: true,
-// };
 export default function GlobalDynamicTable({
-  data  ,
+  data,
   isOptions,
   navigations,
   itemId,
+  filterProperties,
+  footerOptions,
+ 
 }) {
   const ItemsFirst =
     data?.customColumn?.theFirst?.length > 0
@@ -93,8 +58,7 @@ export default function GlobalDynamicTable({
     );
   }, [selectedItems, data.values]);
   const [checkedItems, setCheckedItems] = useState([]);
-  console.log('selectedDataItems',selectedDataItems)
-
+  console.log('footerOptions level 1',footerOptions)
   return (
     <div className="py-0 m-5">
       <div className="p-5">
@@ -104,17 +68,19 @@ export default function GlobalDynamicTable({
           setSelectedItems={setSelectedItems}
         />
       </div>
-      <div
-        className="   mt-5 relative max-h-[calc(100vh-200px)]
-       overflow-x-auto overflow-y-scroll scroll-bar"
+      <div className="mt-5 relative max-h-[calc(100vh-200px)] overflow-x-auto overflow-y-scroll scroll-bar"
       >
-        <TableOptions
+        {filterProperties?.filters || filterProperties.search ? (
+
+          <TableOptions
           navigations={navigations}
           data={data}
           itemId={itemId}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
-        />
+          filterProperties ={filterProperties}
+          />
+        ):null }
         <table className="w-full text-sm text-left table-auto">
         
         <TableHead  
@@ -131,10 +97,14 @@ export default function GlobalDynamicTable({
           selectedDataItems = {selectedDataItems}
           checkedItems = {checkedItems}
           setCheckedItems = {setCheckedItems}
-          isOptions  = {isOptions }
+          isOptions={isOptions}
           />
         </table>
       </div>
+          {footerOptions ? (
+            
+            <TableFooter footerOptions = {footerOptions} />
+          ) : null  }
     </div>
   );
 }

@@ -1,0 +1,38 @@
+/ const defaultData = {
+//   Keys: ["Key1", "Key2", "Key3"],
+//   values: [
+//     {
+//       Key1: "value1",
+//       Key2: "value2",
+//       Key3: "value3",
+//     },
+//   ],
+//   customHeader: {
+//     Key_You_want_change_this_name: () => <span>name header for Key</span>,
+//   },
+//   customColumn: {
+//     theFirst: [
+//       {
+//         name: "different Key In First",
+//         key: "differentKeyInFirst",
+//         value: ({ item }) => <>{item ? item : "different Value In First"}</>,
+//       },
+//     ],
+//     Key: ({ item }) => <>{item ? item : "custom Column for species key"}</>,
+//     theLast: [
+//       {
+//         name: "different Key In Last",
+//         key: "differentKeyInLast",
+//         value: ({ item }) => <>{item ? item : "different Value In Last"}</>,
+//       },
+//     ],
+//   },
+//   customRow: ({ itemRow }) => (
+//     <>
+//       <td>return custom component for Row </td>
+//       <td>return custom component for Row </td>
+//       <td>return custom component for Row </td>
+//     </>
+//   ),
+//   enableSelect: true,
+// };

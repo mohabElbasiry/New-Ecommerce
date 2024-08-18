@@ -3,12 +3,12 @@ import GlobalDynamicTable from "@/components/GlobalUi/GlobalTable/Index";
 import { getOperationClient } from "@/lib/apiUtilsClient";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { handleDeleteCategory } from "../functions";
 import { toastMessagener } from "@/components/Layout/RootSignal";
 import Image from "next/image";
 import { imageBaseUrl } from "@/lib/baseUrl";
-export default function CategoriesTable({ categories, cId = "" }) {
+export default function CategoriesTable({ categories, cId = "",paginagtionOptions }) {
   
   const data = (payload) => ({
     Keys: ["fullName", "createdAt"],
@@ -68,12 +68,12 @@ export default function CategoriesTable({ categories, cId = "" }) {
           </div>
         );
       },
-      createdAt: ({ item }) => <div>{moment(item).format("YYYY-MM-DD")}</div>,
+      createdAt: ({ item }) => <div className=""  >{moment(item).format("YYYY-MM-DD")}</div>,
     },
     
     enableSelect: true,
   });
-  const [dataDynamic, setDataDynamic] = useState(data(categories));
+  // const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
   const deleteCategory = (itemId) => {
     handleDeleteCategory(itemId).then((res) => {
@@ -86,18 +86,16 @@ export default function CategoriesTable({ categories, cId = "" }) {
       }
     });
   };
-
+  // useEffect(() => { 
+  //   setDataDynamic(data(categories))
+  // },[categories])
+  console.log('paginagtionOptions',paginagtionOptions)
   return (
     <div className=" shadow w-[90%] mx-auto   grid gap-6 rounded-md">
-      {/* <div className="flex items-center gap-3">
-        {cId ? (
-          <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
-        ) : null}
-        <h3 className="text-lg">Categories</h3>
-      </div> */}
+    
       <div>
-        <GlobalDynamicTable
-          data={dataDynamic}
+        <GlobalDynamicTable     
+          data={data(categories)}
           itemId={cId}
           navigations={{
             add: (itemId = "") =>
@@ -107,8 +105,12 @@ export default function CategoriesTable({ categories, cId = "" }) {
             edit: (itemId) => router.push(`/categories/edit?cEd=${itemId}`),
             delete: async (itemId) => deleteCategory(itemId),
           }}
-          customData = {{
-            headCols : [{key : "fullname",value : "fullName"  },{}]
+          filterProperties = {{
+            filters:true,
+            search:true
+          }}
+          footerOptions = {{
+            paginagtionOptions,
           }}
         />
         {/* <DynamicTable
