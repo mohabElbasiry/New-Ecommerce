@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/customselect";
 import Image from "next/image";
 export const CountryCode = ({ data, defaultValue, code, setChoosen ,value}) => {
-   return (
+  console.log(code,'codecode');
+  return (
     <div className="flex items-center w-full gap-1 px-5  my-2">
       <Select
       value={code}
