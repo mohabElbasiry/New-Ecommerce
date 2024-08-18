@@ -1,5 +1,5 @@
 "use client";
-import DynamicTable from "@/components/GlobalUi/DynamicTable";
+import GlobalDynamicTable from "@/components/GlobalUi/GlobalTable/Index";
 import { getOperationClient } from "@/lib/apiUtilsClient";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,7 +9,7 @@ import { toastMessagener } from "@/components/Layout/RootSignal";
 import Image from "next/image";
 import { imageBaseUrl } from "@/lib/baseUrl";
 export default function CategoriesTable({ categories, cId = "" }) {
-  console.log('client categories',categories)
+  
   const data = (payload) => ({
     Keys: ["fullName", "createdAt"],
     values: !payload?.length
@@ -70,13 +70,13 @@ export default function CategoriesTable({ categories, cId = "" }) {
       },
       createdAt: ({ item }) => <div>{moment(item).format("YYYY-MM-DD")}</div>,
     },
+    
     enableSelect: true,
   });
   const [dataDynamic, setDataDynamic] = useState(data(categories));
   const router = useRouter();
   const deleteCategory = (itemId) => {
     handleDeleteCategory(itemId).then((res) => {
-      console.log("resss of deleteCategory haza:", res);
       if (res.status === "success") {
         toastMessagener.success(res?.messages[0]?.message_en);
         const filtered = categories.filter((c) => c._id !== itemId);
@@ -95,9 +95,8 @@ export default function CategoriesTable({ categories, cId = "" }) {
         ) : null}
         <h3 className="text-lg">Categories</h3>
       </div> */}
-
       <div>
-        <DynamicTable
+        <GlobalDynamicTable
           data={dataDynamic}
           itemId={cId}
           navigations={{
@@ -108,7 +107,22 @@ export default function CategoriesTable({ categories, cId = "" }) {
             edit: (itemId) => router.push(`/categories/edit?cEd=${itemId}`),
             delete: async (itemId) => deleteCategory(itemId),
           }}
+          customData = {{
+            headCols : [{key : "fullname",value : "fullName"  },{}]
+          }}
         />
+        {/* <DynamicTable
+          data={dataDynamic}
+          itemId={cId}
+          navigations={{
+            add: (itemId = "") =>
+              `/categories/add${itemId ? `?c=${itemId}` : ""}`,
+          }}
+          isOptions={{
+            edit: (itemId) => router.push(`/categories/edit?cEd=${itemId}`),
+            delete: async (itemId) => deleteCategory(itemId),
+          }}
+        /> */}
       </div>
     </div>
   );

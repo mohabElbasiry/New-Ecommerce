@@ -73,7 +73,6 @@ export default function DynamicTable({
       return filteredItemValue;
     })
   );
-
   useEffect(() => {
     setSelectedItemsValues(
       data.values.map((ItemValue) => {
@@ -90,10 +89,9 @@ export default function DynamicTable({
       })
     );
   }, [selectedItems, data.values]);
-
   const [checkedItems, setCheckedItems] = useState([]);
   return (
-    <div className="py-0   m-5">
+    <div className="py-0 m-5">
       <div className="p-5">
         <MultiSelect
           values={[...ItemsFirst, ...data.Keys, ...ItemsLast]}
@@ -116,7 +114,7 @@ export default function DynamicTable({
           <thead className="ltr:text-left rtl:text-right bg-[#E6E6E6] h-[60px]">
             <tr className="ltr:text-left rtl:text-right">
               {data?.enableSelect ? (
-                <th className="whitespace-nowrap font-medium text-gray-900 text-center  w-[50px]">
+                <th className="whitespace-nowrap  font-medium text-gray-900 text-center  w-[50px]">
                   <input
                     className="accent-primary h-5 w-5"
                     type="checkbox"
@@ -135,23 +133,23 @@ export default function DynamicTable({
                 </th>
               ) : null}
 
-              {data?.customColumn?.theFirst &&
-              data?.customColumn?.theFirst?.length > 0
-                ? data?.customColumn?.theFirst
+              {data?.customColumn?.firstName &&
+              data?.customColumn?.firstName?.length > 0
+                ? data?.customColumn?.firstName
                     ?.filter((ItemFirst) =>
                       selectedItems.includes(ItemFirst?.key)
                     )
                     ?.map((ItemFirst, index) => (
                       <th
                         key={ItemFirst.key + index}
-                        className="whitespace-nowrap px-4 
-                        font-medium text-gray-900 text-center
-                         border-r border-r-black "
+                        className="whitespace-nowrap px-4 font-medium text-gray-900 text-center
+                         border-r border-r-[#D4D4D4]"
                       >
                         {ItemFirst.name}
                       </th>
                     ))
                 : null}
+               
               {selectedItems?.length
                 ? selectedItems
                     ?.filter(
@@ -165,9 +163,7 @@ export default function DynamicTable({
                         return (
                           <th
                             key={key}
-                            className="whitespace-nowrap px-4 
-                          border-r border-r-[#E6E6E6]
-                            font-medium text-gray-900 text-center"
+                            className="whitespace-nowrap px-4  border-l border-l-[#E6E6E6] font-medium text-gray-900 text-center last-of-type:border-l-transparent "
                           >
                             <CustomComp onent key={key} />
                           </th>
@@ -176,18 +172,17 @@ export default function DynamicTable({
                       return (
                         <th
                           key={key}
-                          className="whitespace-nowrap px-4 
-                        border-r  border-r-[#E6E6E6]  font-medium text-gray-900 text-center"
+                          className="whitespace-nowrap px-4 border-r  border-r-[#333]  font-medium text-gray-900 text-center"
                         >
                           {key}
-                        </th>
+                        </th> 
                       );
                     })
                 : null}
               {isOptions /* &&data?.customColumn?.theLast */ ? (
                 <th
                   className="whitespace-nowrap px-4   
-                font-medium text-gray-900 text-center border-r border-r-[#E6E6E6]"
+                font-medium text-gray-900 text-center"
                 ></th>
               ) : null}
 
@@ -208,7 +203,6 @@ export default function DynamicTable({
                 : null}
             </tr>
           </thead>
-
           <tbody className="divide-y divide-gray-200">
             {selectedItems.length
               ? selectedItemsValues?.map((item, idx) => (
@@ -285,7 +279,7 @@ export default function DynamicTable({
                             ) : (
                               <td
                                 key={`item-${key}-${item[key]}`}
-                                className={`whitespace-nowrap px-3 py-2 font-medium text-gray-600 bg-transparent text-center`}
+                                className={`whitespace-nowrap px-3  py-2 font-medium text-gray-600 bg-transparent text-center`}
                               >
                                 {item[key]}
                               </td>
