@@ -11,11 +11,11 @@ export const GovernmentSelect = ({
       value={state}
       array={DefaultGovernment ?? ["there's no data for this location"]}
       header={"Government"}
+      name="state"
+      isRequired
       onChange={(e) => {
         const { name, value } = e.target;
-        setChoosen((prev) => {
-          return { ...prev, state: value };
-        });
+        
         setLocations((prev) => {
           if (value?.trim() !== "") {
             return {
@@ -34,16 +34,16 @@ export const GovernmentSelect = ({
       }}
       onChooseCountry={(choosen, setValue) => {
         setValue(choosen);
-        console.log(choosen);
-        setChoosen((prev) => {
+         setChoosen((prev) => {
           return { ...prev, state: choosen };
         });
-        setLocations((prev) => {
-          return {
-            ...prev,
-            DefaultGovernment: choosen,
-          };
-        });
+
+        // setLocations((prev) => {
+        //   return {
+        //     ...prev,
+        //     DefaultGovernment: choosen,
+        //   };
+        // });
       }}
       choosenValue={state}
       parentclassname={`

@@ -13,33 +13,31 @@ import {
 import cities from "../../../../lib/cities.json";
 import { CountryCode } from "./countryCodeSelect";
 import { MainublateData } from "../functions/DataEdit";
-import { CountrySelect } from "./country";
+import CountrySelect from "./country";
 import { GovernmentSelect } from "./governmentSelect";
-import { SetSubmittedForm } from "../functions/submitData";
+import { CreateLocationAction } from "@/actions/createLocation";
 
 const initialchoosen = {
+  name: "",
+  address: "",
   country: {},
   city: "",
-  mame: "",
   errorInput: [],
   isError: false,
   errorMessage: "This Feild is Required",
-  address: "",
   postalCode: "",
   phone: "",
   apertment: "",
   code: "",
   state: "",
+  isActive: false,
+  isDefault: false,
 };
 export const LocationForm = ({ locationsData }) => {
-  // const [state, formAction] = useActionState(SetSubmittedForm, initialchoosen)
-
-  const locationRef = MainublateData(locationsData);
+  const locationRef = useCallback(MainublateData(locationsData), []);
   const [locationMangement, setLocations] = useState({
     locations: [],
     DefaultGovernment: {},
-    DefaultCountry: {},
-    governments: [],
     DefaultGovernmentRef: [],
   });
   const [choosen, setChoosen] = useState(initialchoosen);
@@ -53,7 +51,6 @@ export const LocationForm = ({ locationsData }) => {
       };
     });
   }, []);
-  const isChange = useMemo(() => {}, [choosen]);
   useEffect(() => {
     const Default = locationsData.find(
       (country) => country?.name?.common === "Saudi Arabia"
@@ -61,6 +58,9 @@ export const LocationForm = ({ locationsData }) => {
     const DefaultGovernment = cities?.data?.find((item) => {
       return item?.country === Default?.name?.common;
     })?.cities;
+
+    //if there is data
+    console.log(Default?.languages, "asddddddddddddddd");
     setChoosen({
       ...choosen,
       country: Default?.name?.common,
@@ -68,14 +68,14 @@ export const LocationForm = ({ locationsData }) => {
         ?.map((suffix) => Default.idd.root + suffix)
         .toString(),
       state: Default?.capital?.toString(),
+      cca2: Default?.cca2,
+      // language:Object.keys(),
     });
 
     setLocations({
       locations: locationRef,
-      DefaultCountry: Default,
       DefaultGovernmentRef: DefaultGovernment,
       DefaultGovernment,
-      governments: cities?.data,
     });
   }, []);
   function checkEmptyFields(fields) {
@@ -86,20 +86,32 @@ export const LocationForm = ({ locationsData }) => {
         emptyFields.push(key);
       }
     }
-
     return emptyFields.length ? emptyFields : null;
   }
-
+  console.log(choosen, "choosemsaddddddd");
   return (
     <div>
-      <div className="locationForm flex flex-col gap-6 w-[70%] m-auto">
+      <div className="locationForm flex flex-col gap-6 w-[70%] m-auto ">
         <p className="title flex items-center gap-3">
           <MoveLeft />
-          Add Location{" "}
+          Add Location
         </p>
         <form
+          className="flex flex-col gap-3 "
           action={async (formData) => {
-            const Action = await SetSubmittedForm(formData);
+            const emptyFeilds = checkEmptyFields({ ...choosen });
+            const { errorInput, isError, errorMessage, code, ...others } =
+              choosen;
+            const DeleteEmpty = Object.entries(others).filter(
+              ([key, value]) => !emptyFeilds.some((item) => item === key)
+            );
+            const ToBackend = Object.fromEntries(DeleteEmpty);
+
+            try {
+              const Action = await CreateLocationAction(ToBackend);
+              const res = await Action;
+              console.log(res, "resadsssssssssssssssssssss");
+            } catch (err) {}
           }}
         >
           <div className="box flex flex-col items-center   py-3">
@@ -107,7 +119,6 @@ export const LocationForm = ({ locationsData }) => {
               Input
               isRequired
               PlaceHolder="Location name"
-              inputCss="  !text-sm"
               description={{
                 descriptionText:
                   "Give this location a short name to make it easy to identify. You’ll see this name in areas like orders and products. If this location offers in-store pickup, it will be visible to your customers at checkout and in notifications.",
@@ -126,7 +137,6 @@ export const LocationForm = ({ locationsData }) => {
               locationRef={locationRef}
               setChoosen={setChoosen}
               setLocations={setLocations}
-              choosen={choosen}
               value={choosen?.country}
             />
             <InputWithLabelComponent
@@ -186,10 +196,9 @@ export const LocationForm = ({ locationsData }) => {
             />
             <CountryCode
               data={locationRef}
-              defaultValue={locationMangement?.DefaultCountry}
               setChoosen={setChoosen}
               code={choosen?.code}
-              value={choosen?.phone}
+              value={choosen?.code}
             />
           </div>
 

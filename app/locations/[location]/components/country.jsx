@@ -1,14 +1,14 @@
 import AutoCompelete from "@/components/GlobalUi/autocompelete";
 import { Search } from "lucide-react";
+import { memo } from "react";
 
-export const CountrySelect = ({
+const CountrySelect = ({
   setLocations,
   locationRef,
   locations,
   cities,
   setChoosen,
-  choosen,
-  value
+  value,
 }) => {
   return (
     <AutoCompelete
@@ -17,6 +17,8 @@ export const CountrySelect = ({
       array={locations}
       header={"country / region"}
       className="  p-2 w-full rounded mx-2 !h-[32px]"
+      name={"country"}
+      isRequired
       onChange={(e) => {
         const { name, value } = e.target;
 
@@ -53,6 +55,8 @@ export const CountrySelect = ({
           country: choosen.en,
           state: choosen?.capital,
           code: choosen?.code,
+          cca2: choosen?.cca2,
+          language: choosen?.languages,
         }));
         setLocations((prev) => {
           return {
@@ -71,3 +75,4 @@ export const CountrySelect = ({
     />
   );
 };
+export default memo(CountrySelect);
