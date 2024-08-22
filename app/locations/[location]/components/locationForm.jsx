@@ -198,7 +198,7 @@ export const LocationForm = ({ locationsData }) => {
               data={locationRef}
               setChoosen={setChoosen}
               code={choosen?.code}
-              value={choosen?.code}
+              value={choosen?.phone}
             />
           </div>
 

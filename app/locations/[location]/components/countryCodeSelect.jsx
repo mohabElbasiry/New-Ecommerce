@@ -63,9 +63,12 @@ export const CountryCode = ({ data, defaultValue, code, setChoosen ,value}) => {
           })}
         </SelectContent>
       </Select>
+      {
+        console.log(value,'value')
+      }
       <InputWithLabelComponent
         Input
-        value={value?.split(' ')[1]??""}
+        value={value?.split(' ')[1]??0}
         className="!border-none !rounded-none
      outline-none w-full h-[32px] px-2"
         parentCss={"w-full"}

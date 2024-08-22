@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 export default function SubCategoriesSelect({ register, error }) {
   const [categories, setCategories] = useState([]);
   const [choosenCategory, setChoosenCategory] = useState({});
+  const [ids, setIds] = useState([]);
   const [loading, Setloading] = useState(false);
   const [open, setOpen] = useState(false);
   const [collection, setCollection] = useState([]);
 
-  console.log(choosenCategory, "choosenCategorychoosenCategory");
+  console.log(ids, "ids");
   const FetchDAta = async (query, callback) => {
     Setloading(true);
     try {
@@ -116,6 +117,7 @@ export default function SubCategoriesSelect({ register, error }) {
       }
     );
   };
+  console.log(ids, "idsaddddddddddddddddddddd");
   return (
     <div className=" grid   gap-2">
       <p>collections</p>
@@ -150,6 +152,9 @@ export default function SubCategoriesSelect({ register, error }) {
               className="text-lg flex gap-3 p-3 hover:bg-[#eee]  w-full  action-component "
               onClick={() => {
                 refetch("item", "category");
+                setIds((prev) => {
+                  return prev.slice(0, -1);
+                });
               }}
             >
               {Object?.keys(choosenCategory)?.length ? (
@@ -160,13 +165,15 @@ export default function SubCategoriesSelect({ register, error }) {
                 ? choosenCategory?.name_en
                 : "collections"}
             </button>
-            {categories?.length &&
+            {categories?.length ? (
               categories?.map((item) => {
                 return (
                   <>
                     {item?.subCategoriesCount || item?.subSubCategoriesCount ? (
                       <li
                         onClick={() => {
+                          setIds((prev) => [...prev, item?._id]);
+
                           if (item?.subSubCategoriesCount) {
                             refetch(item, "subSubCategories");
                             setChoosenCategory({
@@ -175,7 +182,6 @@ export default function SubCategoriesSelect({ register, error }) {
                             });
                           } else {
                             refetch(item, "subCategories");
-                            console.log(item, "itemitem13231");
                             setChoosenCategory({
                               ...item,
                               FetchCat: "subCategories",
@@ -218,20 +224,12 @@ export default function SubCategoriesSelect({ register, error }) {
                     )}
                   </>
                 );
-              })}
-
-            {/* <li
-            className="p-3 border-b border-[#eee]  border-t rounded flex items-center justify-between px-3 
-          cursor-pointer hover:bg-[#eee]"
-          >
-            test
-          </li>
-          <li
-            className="p-3 border-b border-[#eee]  border-t rounded flex items-center justify-between px-3 
-          cursor-pointer hover:bg-[#eee]"
-          >
-            test
-          </li> */}
+              })
+            ) : (
+              <p className="  flex justify-between p-2">
+                there is no category yet add one <span>+</span>
+              </p>
+            )}
           </ul>
         ) : null}
       </div>

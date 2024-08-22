@@ -3,6 +3,8 @@ import { enableMapSet } from "immer";
 // Enable support for Map and Set
 enableMapSet();
 
+  const selectImage = useSelector
+
 export const ProductMainDefaultValue = {
   productvaritions: {
     variants: [],

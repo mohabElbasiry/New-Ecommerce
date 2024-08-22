@@ -37,6 +37,7 @@ import { UpdateAction } from "../../../productVariations/RootFunction/middleWare
           register={register}
           error={errors}
         /> */}
+          <SubCategoriesSelect/>
       
         <CheckboxD checked={trackQuantity} 
         text={`Track Quantity `}   

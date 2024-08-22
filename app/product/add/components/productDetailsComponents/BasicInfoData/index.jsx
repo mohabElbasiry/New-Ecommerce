@@ -1,9 +1,9 @@
 import Pricing from "./pricing";
 import Seo from "./tags";
 import ShippingInfo from "./ShippingInfo";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { UpdateAction } from "../../productVariations/RootFunction/middleWare";
-import { Description } from "./description";
+import  Description  from "./description";
 import ProductTitle from "./Title";
 import { LanguageSelect } from "@/components/GlobalUi/languageSelect";
 import ProductImages from "../../productImages";
@@ -19,9 +19,9 @@ const BasicData = ({
   inventory,
   children,
 }) => {
-  const handleAction = (action) => {
+  const handleAction = useCallback((action) => {
     UpdateAction(action, setSubmitedData);
-  };
+  },[]);
 
   const { errors = {}, register = {} } = formData;
 
@@ -56,7 +56,7 @@ const BasicData = ({
         shippingData={shippingData}
       />
       {children}
-
+  
       <Seo seoData={seoData} setSubmitedData={setSubmitedData} />
     </div>
   );

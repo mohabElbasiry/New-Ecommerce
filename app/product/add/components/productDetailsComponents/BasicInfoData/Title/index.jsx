@@ -11,7 +11,7 @@ const ProductTitle = ({
   errors,
   lang,
 }) => {
-  console.log("object");
+  console.log("objectProductTitleProductTitle");
   const handleAction = useCallback((action) => {
     UpdateAction(action, setSubmitedData);
   }, []);

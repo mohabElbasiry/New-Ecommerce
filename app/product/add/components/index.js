@@ -40,7 +40,7 @@ const List = [
     id: "@das",
   },
   {
-    name: "https://www.w3schools.com/w3images/nature.jpg",
+    name: "https://www.w3schoocategoriesWithSub.jsxls.com/w3images/nature.jpg",
     order: 5,
     id: "@das",
   },

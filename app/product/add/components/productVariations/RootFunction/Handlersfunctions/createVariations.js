@@ -2,7 +2,8 @@ import { produce } from "immer";
 import { handleError } from "./helper/Error";
 
 export const CreateVariationHandler = {
-  handleValueChange: (state, { payload: { value, index, isAr = false } }) => {
+  handleValueChange: (state, { payload: 
+    { value, index, isAr = false } }) => {
     handleError(value, index, isAr, state, state?.currentValues, state?.error);
 
     if (isAr) {
